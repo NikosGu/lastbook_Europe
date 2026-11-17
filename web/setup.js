@@ -173,8 +173,8 @@
     folder = folder || (cur() && cur().folder) || S.default_folder || (rf ? asData(rf) : '');
     if (!choice.pack) {
       const rec = S.recommend || {};
-      const small = packById('small');
-      choice.pack = small && small.available !== false ? 'small' : null;
+      const p = packById(rec.pack);   // the engine's suggestion: the smallest library available
+      choice.pack = p && p.available !== false ? p.id : null;
       choice.ai = !!rec.ai && aiFits();
       if (cur()) { choice.pack = cur().pack; choice.ai = !!cur().model }
     }

@@ -199,7 +199,7 @@ function backButton(from, fallback = t('app.back.back')) {
   else if (href.startsWith('#/watch')) label = t('app.back.video');
   else if (href.startsWith('#/read')) label = t('app.back.page');
   else if (href.startsWith('#/library') || href.startsWith('#/shelf') || href.startsWith('#/collection') || href.startsWith('#/encyclopedias') || href.startsWith('#/prepare')) label = t('app.lib.title');
-  else if (href === '#/' || href === '#') label = t('nav.videos');
+  else if (href === '#/' || href === '#') label = t('nav.home');
   return `<a class="back" href="${esc(href)}" data-back>${ico('back')}<span>${esc(label)}</span></a>`;
 }
 // Links into readers carry where you came from; refresh it at click time (sections may have opened since render).
@@ -245,7 +245,7 @@ function parse() {
   return { parts: path.split('/').filter(Boolean).map(decodeURIComponent), q: new URLSearchParams(qs || '') };
 }
 // The sidebar row each page belongs to. Reading pages stay under Library, articles under Encyclopedias; search results select no row.
-const NAV_OF = { '': 'videos', t: '', ask: 'ask', videos: 'videos', watch: 'videos', map: 'map', library: 'library', learn: 'library', browse: 'library', shelf: 'library', collection: 'library', read: 'library', wiki: 'encyclopedias', search: '', saved: 'saved', encyclopedias: 'encyclopedias', prepare: 'prepare', about: 'about' };
+const NAV_OF = { '': 'home', t: 'home', ask: 'ask', videos: 'videos', watch: 'videos', map: 'map', library: 'library', learn: 'library', browse: 'library', shelf: 'library', collection: 'library', read: 'library', wiki: 'encyclopedias', search: '', saved: 'saved', encyclopedias: 'encyclopedias', prepare: 'prepare', about: 'about' };
 let leaving = null;  // cleanup hook for the current view (player, chat stream…)
 async function route() {
   const cameFromSide = !!(document.activeElement && document.activeElement.closest && document.activeElement.closest('.side,.tabbar'));
@@ -265,7 +265,7 @@ async function route() {
   sessionStorage.setItem('sg.scroll', JSON.stringify(scrolls));
   current = h;
   const y = typeof at === 'number' ? scrolls[h] : null;   // read now: while the page is rebuilt it scrolls (shorter, then taller), and those scrolls are recorded too
-  const v = parts[0] || 'videos';
+  const v = parts[0] || '';   // the home page: the guides and the search (the starter library is reading, not videos)
   document.body.className = v ? 'v-' + v : 'home';
   const nav = v === 'read' && (q.get('from') || '').startsWith('#/about') ? 'about' : NAV_OF[v] || '';   // Sources, opened from About, stays under About
   $$('[data-nav]').forEach(a => nav && (a.dataset.nav === nav || (a.dataset.also || '').split(' ').includes(nav)) ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
@@ -491,7 +491,7 @@ async function topicPage(id, open) {
   const sec = (icon, title, items) => items && items.length ? `<details class="more"><summary>${ico(icon)}<span>${title} <span class="n">· ${items.length}</span></span></summary><div class="body"><ul class="list">${items.map(i => rowItem({ ...i, preview: true })).join('')}</ul></div></details>` : '';
   const vids = topicVideos(topic);
   const related = (topic.related || []).map(topicById).filter(Boolean);
-  main.innerHTML = `<div class="ghero" ${tcStyle(id)}><div class="ghero-in">${crumbs([[t('nav.videos'), '#/videos'], [learn ? t('app.learn.title') : t('app.home.now'), learn ? '#/library' : '#/'], [shortOf(id, topic.title)]])}
+  main.innerHTML = `<div class="ghero" ${tcStyle(id)}><div class="ghero-in">${crumbs([[t('nav.home'), '#/'], ...(learn ? [[t('app.learn.title'), '#/library']] : []), [shortOf(id, topic.title)]])}
       <div class="row1"><span class="ico">${ico(topic.id)}</span><h1>${esc(topic.title)}</h1></div><p class="lead">${esc(topic.intro || '')}</p>
       <div class="vactions" style="margin-bottom:0">${askLink('topic:' + id, t('app.topic.ask'))}</div></div></div>
     <div class="gcols" ${tcStyle(id)}><div>
