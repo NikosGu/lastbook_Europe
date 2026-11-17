@@ -137,6 +137,9 @@ place; a guide still says what its cited page says, no more. Form of address unc
   terms (nie wymiataj na ślepo palcem jamy ustnej, nie oddycha prawidłowo, RKO, przegotować, plecak ewakuacyjny, wiaty
   for shelters, sinice); the map's search hint shortened. To check first: the first-aid warnings and labels, uciśnięcia
   nadbrzusza.
+- `content/uncovered.json` (what a guide says when the library holds none, or only some, of its documents): the
+  "partial" sentence no longer reads word for word in Italian, French, Spanish and Polish ("qui manca il loro
+  contenuto", "leur contenu n'apparaît donc pas ici"); the German and Spanish intros are plainer.
 - Also: route titles lose a numbered "Step N:" prefix in any language (the list numbers them); setup names an installed
   pack the manifest does not list by its name.
 
