@@ -10,17 +10,25 @@ New-Item -ItemType Directory -Force -Path $Out | Out-Null
 $Out = (Resolve-Path $Out).Path
 $Ver = (Select-String -Path "$Root\Cargo.toml" -Pattern '^version = "(.*)"' | Select-Object -First 1).Matches[0].Groups[1].Value
 Set-Location $Root
-cargo build --release --locked -p lastbook-app -p lastbook-llm
+# LASTBOOK_VULKAN=1: the local AI also on graphics cards, through Vulkan (needs the Vulkan SDK, and Ninja in a Visual Studio
+# environment); llama.cpp's backends then go beside the runner, which loads the ones this computer can run
+$Target = if ($env:CARGO_TARGET_DIR) { $env:CARGO_TARGET_DIR } else { "target" }
+$Features = @()
+if ($env:LASTBOOK_VULKAN -eq "1") {
+  New-Item -ItemType Directory -Force -Path "$Target\release\build\deps" | Out-Null   # llama-cpp-sys-2 copies its libraries there
+  $Features = @("--features", "lastbook-llm/vulkan")
+}
+cargo build --release --locked -p lastbook-app -p lastbook-llm @Features
 if ($LASTEXITCODE -ne 0) { throw "cargo build failed" }
 $Stage = Join-Path $env:RUNNER_TEMP "lastbook-stage"
 if (-not $env:RUNNER_TEMP) { $Stage = Join-Path $env:TEMP "lastbook-stage" }
 if (Test-Path $Stage) { Remove-Item -Recurse -Force $Stage }
 New-Item -ItemType Directory -Force -Path $Stage | Out-Null
-Copy-Item "target\release\lastbook.exe", "target\release\lastbook-llm.exe" $Stage
+Copy-Item "$Target\release\lastbook.exe", "$Target\release\lastbook-llm.exe" $Stage
 # llama.cpp's libraries and its backends (Vulkan, and the CPU variants), which the runner loads from beside itself
 # (built only with the runner's "vulkan" feature; Cargo puts the crate's output in build\llama-cpp-sys-2-<hash>\out, or in
 # build\llama-cpp-sys-2\<hash>\out in its newer layout)
-$SysOut = Get-ChildItem "target\release\build" -Directory -Recurse -Filter "out" -ErrorAction SilentlyContinue | Where-Object { $_.FullName -match 'llama-cpp-sys-2[-\\]' -and (Test-Path "$($_.FullName)\bin\*.dll") } | Select-Object -First 1
+$SysOut = Get-ChildItem "$Target\release\build" -Directory -Recurse -Filter "out" -ErrorAction SilentlyContinue | Where-Object { $_.FullName -match 'llama-cpp-sys-2[-\\]' -and (Test-Path "$($_.FullName)\bin\*.dll") } | Select-Object -First 1
 if ($SysOut) {
   Get-ChildItem "$($SysOut.FullName)\bin" -Filter "*.dll" | Where-Object { $_.Name -match '^(llama|ggml)' } | Copy-Item -Destination $Stage
   if (Test-Path "$($SysOut.FullName)\backends") { Get-ChildItem "$($SysOut.FullName)\backends" -Filter "*.dll" | Copy-Item -Destination $Stage }

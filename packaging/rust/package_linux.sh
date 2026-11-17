@@ -9,16 +9,24 @@ OUT="${1:-$ROOT/dist}"
 VER="$("$ROOT/packaging/rust/version.sh")"
 ARCH="$(dpkg --print-architecture 2>/dev/null || echo amd64)"
 cd "$ROOT"
-cargo build --release --locked -p lastbook-app -p lastbook-llm
+# LASTBOOK_VULKAN=1: the local AI also on graphics cards, through Vulkan (needs libvulkan-dev, glslc and spirv-headers);
+# llama.cpp's backends then go beside the runner, which loads the ones this computer can run
+T="${CARGO_TARGET_DIR:-target}"
+FEATURES=()
+if [ "${LASTBOOK_VULKAN:-0}" = 1 ]; then
+  mkdir -p "$T/release/build/deps"   # llama-cpp-sys-2 copies its libraries there under Cargo's newer folder layout
+  FEATURES=(--features lastbook-llm/vulkan)
+fi
+cargo build --release --locked -p lastbook-app -p lastbook-llm "${FEATURES[@]}"
 STAGE="$(mktemp -d)"
 OPT="$STAGE/opt/lastbook-europe"
 mkdir -p "$OPT" "$STAGE/usr/bin" "$STAGE/usr/share/applications" "$STAGE/usr/share/pixmaps" "$STAGE/usr/share/doc/lastbook-europe" "$STAGE/DEBIAN"
-cp target/release/lastbook target/release/lastbook-llm "$OPT/"
+cp "$T/release/lastbook" "$T/release/lastbook-llm" "$OPT/"
 # llama.cpp's libraries and its backends (Vulkan, and the CPU variants), which the runner loads from beside itself
 # (built only with the runner's "vulkan" feature; Cargo puts the crate's output in build/llama-cpp-sys-2-<hash>/out, or in
 # build/llama-cpp-sys-2/<hash>/out in its newer layout)
 SYSOUT=""
-for d in $(find target/release/build -type d -path '*llama-cpp-sys-2*/out' -prune 2>/dev/null); do
+for d in $(find "$T/release/build" -type d -path '*llama-cpp-sys-2*/out' -prune 2>/dev/null); do
   if [ -n "$(ls "$d"/lib/lib*.so* 2>/dev/null)" ]; then SYSOUT="$d"; fi
 done
 if [ -n "$SYSOUT" ]; then

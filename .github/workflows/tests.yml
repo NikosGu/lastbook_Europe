@@ -113,6 +113,17 @@ jobs:
           cp "$OUT"/bin/*.dll "$T/" 2>/dev/null || true
           if [ -d "$OUT/backends" ]; then cp -P "$OUT"/backends/* "$T/"; fi
           ls "$T" | grep -Ei 'ggml|llama' || true
-      - name: The runner answers
+      - name: What the runner can run on (the processor's backend loaded from beside it)
         shell: bash
-        run: '"$CARGO_TARGET_DIR/debug/lastbook-llm" || test $? -eq 2'
+        run: |
+          "$CARGO_TARGET_DIR/debug/lastbook-llm" --devices | tee devices.json
+          grep -q '"backend":"CPU"' devices.json
+      - name: The runner's tests, with Vulkan (Linux)
+        if: runner.os == 'Linux'
+        run: cargo test -p lastbook-llm --features vulkan --locked
+      - name: The runner's tests, with Vulkan (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          CMAKE_GENERATOR: Ninja
+        run: cargo test -p lastbook-llm --features vulkan --locked

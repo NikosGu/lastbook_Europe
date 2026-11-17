@@ -24,13 +24,28 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-15, windows-2022, ubuntu-24.04]
+    env:
+      # the local AI on graphics cards through Vulkan, on Windows and Linux; the Mac has Metal
+      LASTBOOK_VULKAN: ${{ matrix.os == 'macos-15' && '0' || '1' }}
+      # short on Windows: the Vulkan shader generator's build lies deep inside llama.cpp's, past 260-character paths
+      CARGO_TARGET_DIR: ${{ matrix.os == 'windows-2022' && 'C:/t' || 'target' }}
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
-      - name: Linux build libraries
+      - name: Linux build libraries, and Vulkan's
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libclang-dev cmake
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libclang-dev cmake libvulkan-dev glslc spirv-headers
+      - name: Vulkan SDK (Windows)
+        if: runner.os == 'Windows'
+        uses: jakoch/install-vulkan-sdk-action@v1
+        with:
+          vulkan_version: latest
+          install_runtime: true
+          cache: true
+      - name: The compiler's environment (Windows), for Ninja
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
       - name: Package (macOS)
         if: runner.os == 'macOS'
         run: bash packaging/rust/package_macos.sh dist
@@ -39,6 +54,8 @@ jobs:
         run: bash packaging/rust/package_linux.sh dist
       - name: Package (Windows)
         if: runner.os == 'Windows'
+        env:
+          CMAKE_GENERATOR: Ninja
         run: powershell -ExecutionPolicy Bypass -File packaging\rust\package_windows.ps1 -Out dist
       - name: The packaged app opens (macOS, a picture of its first page)
         if: runner.os == 'macOS'
@@ -47,18 +64,22 @@ jobs:
           mkdir -p shots
           "/tmp/lb/Lastbook Europe.app/Contents/MacOS/lastbook" --home "$RUNNER_TEMP/lb-home" --size 1000x800 --after 4 --snapshot shots/macos-setup.png
           hdiutil detach /tmp/lb
-      - name: The packaged runner answers (Linux)
+      - name: The packaged runner finds what it can run on (Linux)
         if: runner.os == 'Linux'
         run: |
           sudo apt-get install -y ./dist/*.deb
-          /opt/lastbook-europe/lastbook-llm || test $? -eq 2
+          /opt/lastbook-europe/lastbook-llm --devices | tee devices.json
+          grep -q '"backend":"CPU"' devices.json
+      # PowerShell, not bash, wherever Rust links on Windows: Git's bash finds its own "link" before Visual Studio's
+      - name: Build lastbook-tools, for the PDF check
+        shell: pwsh
+        run: cargo build --release --locked -p lastbook-tools --bin lastbook-tools
       # A library of one PDF page of our own (packaging/rust/check-library), built with lastbook-tools and the PDFium the
       # package holds, then the packaged app opened on that page, finding its PDFium by itself: a picture to look at, and
       # the page's drawing in the library's cache, which only PDFium makes.
       - name: The packaged app draws a PDF page (a picture of it)
         shell: bash
         run: |
-          cargo build --release --locked -p lastbook-tools --bin lastbook-tools
           TMP_SH="$RUNNER_TEMP"; RUN=""
           case "$RUNNER_OS" in
             macOS)
@@ -70,9 +91,11 @@ jobs:
             Windows)
               pwsh -NoProfile -Command "Expand-Archive -Path (Get-Item dist/*-windows-x64.zip).FullName -DestinationPath '$RUNNER_TEMP\lb-app'"
               TMP_SH="$(cygpath -u "$RUNNER_TEMP")"
-              APP="$TMP_SH/lb-app/lastbook.exe"; PDFIUM="$RUNNER_TEMP\lb-app" ;;
+              APP="$TMP_SH/lb-app/lastbook.exe"; PDFIUM="$RUNNER_TEMP\lb-app"
+              "$TMP_SH/lb-app/lastbook-llm.exe" --devices | tee devices.json   # the packaged runner loads its backends
+              grep -q '"backend":"CPU"' devices.json ;;
           esac
-          LASTBOOK_PDFIUM="$PDFIUM" target/release/lastbook-tools build-library --sources packaging/rust/check-library/sources.json \
+          LASTBOOK_PDFIUM="$PDFIUM" "$CARGO_TARGET_DIR/release/lastbook-tools" build-library --sources packaging/rust/check-library/sources.json \
             --docs packaging/rust/check-library --out "$RUNNER_TEMP/check/LastbookData"
           mkdir -p shots
           T=""; if command -v timeout >/dev/null; then T="timeout 180"; fi   # macOS has no timeout; the app quits after its picture anyway
