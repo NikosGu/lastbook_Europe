@@ -3,21 +3,29 @@
 //! search can never disagree on a key.
 //!
 //! An address is a node, or a building (the middle of its outline). Its country is `addr:country`, else the region's
-//! country when the point lies inside it; its town is `addr:city`, else the municipality it lies in.
+//! country when the point lies inside it; its town is `addr:city`, else the municipality it lies in. A street named in
+//! two languages (Triq ir-Repubblika, Republic Street) files it under both, and a town's other names (Floriana for
+//! Il-Furjana, Luxemburg for Luxembourg) join its key, so the search finds it as people there write it.
 
 use crate::map::admin::Admin;
 use crate::map::geo;
-use crate::map::osm::{Kind, Thing};
+use crate::map::osm::{Kind, Tags, Thing};
+use crate::map::places;
 use lastbook_engine::map::address::{self, countries, Address};
-use lastbook_engine::map::text::name_key;
+use lastbook_engine::map::text::{fold, name_key};
 use lastbook_engine::regions;
-use rusqlite::Connection;
+use rusqlite::{params, Connection};
 use std::collections::HashMap;
 use std::path::Path;
 
 /// The elements an address comes from.
 pub fn wanted(_: Kind, t: &[(&str, &str)]) -> bool {
     t.iter().any(|(k, v)| !v.is_empty() && matches!(*k, "addr:housenumber" | "addr:conscriptionnumber" | "addr:streetnumber"))
+}
+
+/// Streets named in more than one language, for the other names of the addresses on them.
+pub fn street_wanted(kind: Kind, t: &[(&str, &str)]) -> bool {
+    kind == Kind::Way && t.iter().any(|(k, _)| *k == "highway") && t.iter().any(|(k, _)| *k == "name") && t.iter().any(|(k, _)| k.starts_with("name:"))
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -29,6 +37,56 @@ pub struct Row {
     pub country: String,
     pub lat: f64,
     pub lon: f64,
+    /// The same address again, under another name of its street.
+    pub alias: bool,
+}
+
+/// A postcode in its country's own form ("VLT 1117", "1012 AB", "1611" shown L-1611), letters folded as the official
+/// codes are written ("ŻTN 3000" is ZTN 3000). None when it has no shape of the country's postcodes ("1210" in Malta):
+/// the address is kept without it.
+pub fn postcode(written: &str, country: &str) -> Option<String> {
+    let up: String = written.trim().chars().map(|c| if c.is_ascii() { c.to_ascii_uppercase().to_string() } else { fold(&c.to_string()).to_uppercase() }).collect();
+    let (_, key, _) = countries::postcode_candidates(&up).into_iter().find(|(c, _, partial)| *c == country && !partial)?;
+    for s in countries::get(country)?.postcode {
+        let compact: String = s.chars().filter(|c| *c != ' ').collect();
+        if compact.chars().count() == key.chars().count() && countries::shape(&key, &compact) {
+            let mut k = key.chars();
+            return Some(s.chars().map(|p| if p == ' ' { ' ' } else { k.next().unwrap_or(' ') }).collect());
+        }
+    }
+    Some(key)
+}
+
+/// A street's names: `name`, then those in the languages of the country's street names.
+fn street_names(t: &Tags, langs: &[&str]) -> Vec<String> {
+    let mut out: Vec<String> = t.get("name").into_iter().map(str::to_string).collect();
+    for l in langs {
+        if let Some(n) = t.get(&format!("name:{l}")) {
+            if !out.iter().any(|o| o == n) {
+                out.push(n.to_string());
+            }
+        }
+    }
+    out
+}
+
+/// Every name of each place, by the key of each: what a town in an address may also be called.
+pub fn town_names(things: &[Thing], country: &str) -> HashMap<String, Vec<String>> {
+    let langs = places::langs(country);
+    let mut out: HashMap<String, Vec<String>> = HashMap::new();
+    for t in things.iter().filter(|t| t.tags.has("place")) {
+        let Some(name) = t.tags.get("name") else { continue };
+        let names: Vec<String> = std::iter::once(name.to_string()).chain(places::other_names(&t.tags, &langs)).collect();
+        for n in &names {
+            let e = out.entry(name_key(n)).or_default();
+            for o in &names {
+                if !e.contains(o) {
+                    e.push(o.clone());
+                }
+            }
+        }
+    }
+    out
 }
 
 /// The numbers an address is filed under: each of "12;14", and a Czech or Slovak "846/1" also as 846 and 1.
@@ -94,6 +152,26 @@ pub fn rows(things: &[Thing], region: &str, areas: &Admin, places: &[String]) ->
             *uses.entry(c.to_string()).or_default() += 1;
         }
     }
+    // a street's other names, by its town and name, and by its name alone for an address across a town's edge
+    let langs = countries::get(regions::country(region)).map(|c| c.langs).unwrap_or(&[]);
+    let mut by_town: HashMap<(String, String), Vec<String>> = HashMap::new();
+    let mut by_name: HashMap<String, Vec<String>> = HashMap::new();
+    for t in things.iter().filter(|t| t.kind == Kind::Way && t.tags.has("highway")) {
+        let names = street_names(&t.tags, langs);
+        if names.len() < 2 {
+            continue;
+        }
+        let town = areas.town_at(t.point.0, t.point.1).unwrap_or("").to_string();
+        for n in &names {
+            for e in [by_town.entry((town.clone(), n.clone())).or_default(), by_name.entry(n.clone()).or_default()] {
+                for o in names.iter().filter(|o| *o != n) {
+                    if !e.contains(o) {
+                        e.push(o.clone());
+                    }
+                }
+            }
+        }
+    }
     let mut out: Vec<Row> = Vec::new();
     let mut seen: HashMap<(String, String, String, String), Vec<(f64, f64)>> = HashMap::new();
     let mut sorted: Vec<&Thing> = things.iter().collect();
@@ -116,22 +194,27 @@ pub fn rows(things: &[Thing], region: &str, areas: &Admin, places: &[String]) ->
         };
         let Some(street) = t.tags.get("addr:street").or(t.tags.get("addr:place")) else { continue };
         let city = town(t.tags.get("addr:city"), &uses, &known, areas, lon, lat);
-        let postcode = t.tags.get("addr:postcode").unwrap_or("").to_string();
+        let code = t.tags.get("addr:postcode").and_then(|p| postcode(p, &country)).unwrap_or_default();
+        let here = areas.town_at(lon, lat).unwrap_or("").to_string();
+        let others = by_town.get(&(here, street.to_string())).or_else(|| by_name.get(street)).cloned().unwrap_or_default();
         for num in numbers(&t.tags, &country) {
-            let key = (country.clone(), street.to_string(), num.clone(), city.clone());
-            let near = seen.entry(key).or_default();
-            if near.iter().any(|&(x, y)| (x - lon).abs() < 0.002 && (y - lat).abs() < 0.0015) {
-                continue;
+            for (i, name) in std::iter::once(street.to_string()).chain(others.iter().cloned()).enumerate() {
+                let near = seen.entry((country.clone(), name.clone(), num.clone(), city.clone())).or_default();
+                if near.iter().any(|&(x, y)| (x - lon).abs() < 0.002 && (y - lat).abs() < 0.0015) {
+                    continue;
+                }
+                near.push((lon, lat));
+                out.push(Row { num: num.clone(), street: name, city: city.clone(), postcode: code.clone(), country: country.clone(), lat, lon, alias: i > 0 });
             }
-            near.push((lon, lat));
-            out.push(Row { num, street: street.to_string(), city: city.clone(), postcode: postcode.clone(), country: country.clone(), lat, lon });
         }
     }
     out
 }
 
-/// Writes the index: the engine's tables, every row with its keys, the indexes and `area`, and `meta`.
-pub fn write(path: &Path, region: &str, rows: &[Row], source: &str) -> rusqlite::Result<usize> {
+/// Writes the index: the engine's tables, every row with its keys, the indexes and `area`, and `meta`. `towns` gives a
+/// town's other names (`town_names`): their keys join its `citykey`, which the search reads word by word. Returns the
+/// number of addresses, the rows under a street's other names not counted.
+pub fn write(path: &Path, region: &str, rows: &[Row], source: &str, towns: &HashMap<String, Vec<String>>) -> rusqlite::Result<usize> {
     let _ = std::fs::remove_file(path);
     if let Some(dir) = path.parent() {
         let _ = std::fs::create_dir_all(dir);
@@ -143,12 +226,28 @@ pub fn write(path: &Path, region: &str, rows: &[Row], source: &str) -> rusqlite:
     for r in rows {
         Address { num: &r.num, street: &r.street, city: &r.city, state: "", postcode: &r.postcode, country: &r.country, lat: r.lat, lon: r.lon }.insert(&c)?;
     }
+    let mut cities: Vec<&str> = rows.iter().map(|r| r.city.as_str()).collect();
+    cities.sort_unstable();
+    cities.dedup();
+    for city in cities {
+        let own = name_key(city);
+        let mut key = own.clone();
+        for k in towns.get(&own).into_iter().flatten().map(|n| name_key(n)) {
+            if !k.is_empty() && !format!(" {key} ").contains(&format!(" {k} ")) {
+                key = format!("{key} {k}");
+            }
+        }
+        if key != own {
+            c.execute("UPDATE addr SET citykey = ?1 WHERE city = ?2", params![key, city])?;
+        }
+    }
     c.execute_batch("COMMIT")?;
     c.execute_batch(address::FINISH)?;
-    // a postcode offered with a town only a stray address or two gives it (a postcode typed for the wrong town) is left out
-    // of the postcode list; those addresses are still found
-    c.execute_batch("DELETE FROM area WHERE zip != '' AND n < 3
-        AND n * 50 < (SELECT MAX(b.n) FROM area b WHERE b.country = area.country AND b.zip = area.zip);")?;
+    // a postcode offered with a town only a stray address or few give it (a postcode typed for the wrong town, the state's
+    // name for Bremerhaven's) is left out of the postcode list; those addresses are still found
+    c.execute_batch("DELETE FROM area WHERE zip != '' AND n <= 5
+        AND n * 100 < (SELECT MAX(b.n) FROM area b WHERE b.country = area.country AND b.zip = area.zip);")?;
+    let count = rows.iter().filter(|r| !r.alias).count();
     let mut countries: Vec<&str> = rows.iter().map(|r| r.country.as_str()).collect();
     countries.sort_unstable();
     countries.dedup();
@@ -158,11 +257,11 @@ pub fn write(path: &Path, region: &str, rows: &[Row], source: &str) -> rusqlite:
         countries.insert(0, own); // the region's own country first
     }
     for (k, v) in [("schema", "2".to_string()), ("region", region.to_string()), ("countries", countries.join(",")), ("publisher", "OpenStreetMap".into()),
-                   ("source", source.to_string()), ("count", rows.len().to_string())] {
+                   ("source", source.to_string()), ("count", count.to_string())] {
         c.execute("INSERT INTO meta VALUES (?1,?2)", [k, &v])?;
     }
     c.execute_batch("VACUUM")?;
-    Ok(rows.len())
+    Ok(count)
 }
 
 #[cfg(test)]
@@ -201,7 +300,7 @@ mod tests {
                    "one row per number; Städtle 12 mapped twice once; an address abroad without a country left to its own country's index; \
                     the town from the municipality when none is given, or when the one given is a rare unknown name; a known name in its own spelling");
         let index = dir.join("LI.sqlite");
-        assert_eq!(write(&index, "LI", &rows, "OpenStreetMap contributors (ODbL 1.0)").unwrap(), 7);
+        assert_eq!(write(&index, "LI", &rows, "OpenStreetMap contributors (ODbL 1.0)", &HashMap::new()).unwrap(), 7);
         let c = Connection::open(&index).unwrap();
         let meta: String = c.query_row("SELECT value FROM meta WHERE key='countries'", [], |r| r.get(0)).unwrap();
         assert_eq!(meta, "LI,AT");
@@ -225,17 +324,99 @@ mod tests {
     fn a_stray_postcode_town_is_left_out_of_the_postcode_list() {
         let dir = std::env::temp_dir().join(format!("lb-tools-addr-stray-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
-        let row = |n: usize, city: &str| Row { num: n.to_string(), street: "Feldstrasse".into(), city: city.into(), postcode: "9490".into(), country: "LI".into(),
-                                              lat: 47.14 + n as f64 * 1e-5, lon: 9.52 };
-        let mut rows: Vec<Row> = (1..=60).map(|n| row(n, "Vaduz")).collect();
-        rows.push(row(61, "Schaan"));
-        let index = dir.join("LI.sqlite");
-        write(&index, "LI", &rows, "test").unwrap();
+        let row = |n: usize, pc: &str, city: &str| Row { num: n.to_string(), street: "Feldstrasse".into(), city: city.into(), postcode: pc.into(),
+                                                        country: "DE".into(), lat: 53.54 + n as f64 * 1e-5, lon: 8.58, alias: false };
+        // Bremerhaven's 27568, five of them written with the state's name; a village's own six beside a town's 600
+        let mut rows: Vec<Row> = (1..=600).map(|n| row(n, "27568", "Bremerhaven")).collect();
+        rows.extend((601..=605).map(|n| row(n, "27568", "Bremen")));
+        rows.extend((1..=600).map(|n| row(n, "27619", "Schiffdorf")));
+        rows.extend((601..=606).map(|n| row(n, "27619", "Spaden")));
+        let index = dir.join("DE-HB.sqlite");
+        write(&index, "DE-HB", &rows, "test", &HashMap::new()).unwrap();
         let c = Connection::open(&index).unwrap();
-        let towns: Vec<String> = c.prepare("SELECT city FROM area WHERE zip='9490'").unwrap().query_map([], |r| r.get(0)).unwrap().flatten().collect();
-        assert_eq!(towns, vec!["Vaduz"]);
-        assert_eq!(c.query_row("SELECT count(*) FROM addr WHERE city='Schaan'", [], |r| r.get::<_, i64>(0)).unwrap(), 1, "the address itself stays");
+        let towns = |zip: &str| -> Vec<String> {
+            c.prepare("SELECT city FROM area WHERE zip=?1 ORDER BY n DESC").unwrap().query_map([zip], |r| r.get(0)).unwrap().flatten().collect()
+        };
+        assert_eq!(towns("27568"), vec!["Bremerhaven"]);
+        assert_eq!(towns("27619"), vec!["Schiffdorf", "Spaden"], "six addresses are a place of the postcode's own");
+        assert_eq!(c.query_row("SELECT count(*) FROM addr WHERE city='Bremen'", [], |r| r.get::<_, i64>(0)).unwrap(), 5, "the addresses themselves stay");
         drop(c);
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn postcodes_in_their_countrys_form() {
+        for (written, country, want) in [("VLT 1117", "MT", Some("VLT 1117")), ("VLT1117", "MT", Some("VLT 1117")), ("vlt 1117", "MT", Some("VLT 1117")),
+                                         ("ŻTN 3000", "MT", Some("ZTN 3000")), ("MLĦ 2777", "MT", Some("MLH 2777")), ("1210", "MT", None),
+                                         ("L-1648", "LU", Some("1648")), ("1648", "LU", Some("1648")), ("28195", "DE", Some("28195")), ("2819", "DE", None),
+                                         ("FL-9490", "LI", Some("9490")), ("1012ab", "NL", Some("1012 AB")), ("D02X285", "IE", Some("D02 X285"))] {
+            assert_eq!(postcode(written, country).as_deref(), want, "{written} in {country}");
+        }
+    }
+
+    #[test]
+    fn two_languages_in_malta() {
+        let dir = std::env::temp_dir().join(format!("lb-tools-addr-mt-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let src = dir.join("mt.osm.pbf");
+        std::fs::write(&src, pbf(&[
+            El::Node(1, 35.8975, 14.5125, &[]), El::Node(2, 35.8995, 14.5145, &[]),
+            El::Way(10, &[1, 2], &[("highway", "pedestrian"), ("name", "Triq ir-Repubblika"), ("name:en", "Republic Street"), ("name:mt", "Triq ir-Repubblika")]),
+            El::Node(3, 35.8985, 14.5135, &[("addr:housenumber", "74"), ("addr:street", "Triq ir-Repubblika"), ("addr:city", "Il-Belt Valletta"), ("addr:postcode", "VLT1117")]),
+            El::Node(4, 35.8900, 14.5000, &[("addr:housenumber", "2"), ("addr:street", "Triq San Anton"), ("addr:postcode", "1210")]),
+            El::Node(5, 35.8905, 14.5005, &[("place", "town"), ("name", "Il-Furjana"), ("name:en", "Floriana"), ("name:ja", "フロリアーナ")]),
+        ])).unwrap();
+        let things = crate::map::osm::read(&src, &|k, t| wanted(k, t) || street_wanted(k, t) || places::wanted(k, t)).unwrap();
+        let sq = |x: f64, y: f64| vec![vec![(x, y), (x + 0.01, y), (x + 0.01, y + 0.01), (x, y + 0.01), (x, y)]];
+        let malta = vec![vec![(14.1, 35.7), (14.7, 35.7), (14.7, 36.1), (14.1, 36.1), (14.1, 35.7)]];
+        let areas = Admin { country: Some(("MT".into(), malta)), towns: vec![("Il-Belt Valletta".into(), sq(14.505, 35.894)), ("Il-Furjana".into(), sq(14.495, 35.885))],
+                            districts: Vec::new(), cities: Vec::new() };
+        let rows = rows(&things, "MT", &areas, &[]);
+        let shown: Vec<String> = rows.iter().map(|r| format!("{} {} | {} | {} | {}", r.num, r.street, r.city, r.postcode, r.alias)).collect();
+        assert_eq!(shown, vec!["74 Triq ir-Repubblika | Il-Belt Valletta | VLT 1117 | false", "74 Republic Street | Il-Belt Valletta | VLT 1117 | true",
+                               "2 Triq San Anton | Il-Furjana |  | false"], "the street under both its names; a postcode of no Maltese shape left out");
+        let towns = town_names(&things, "MT");
+        assert_eq!(towns["floriana"], vec!["Il-Furjana", "Floriana"], "names in the country's and the app's languages, not every language");
+        let data = dir.join("data");
+        std::fs::create_dir_all(data.join("derived/geo/addresses")).unwrap();
+        assert_eq!(write(&data.join("derived/geo/addresses/MT.sqlite"), "MT", &rows, "test", &towns).unwrap(), 2, "two addresses, three rows");
+        let map = lastbook_engine::map::Map::new(lastbook_engine::paths::Paths::new(dir.clone(), Some(data)));
+        let found = |q: &str| map.find_addresses(q, 8, None).first().map(|a| format!("{} | {}", a["name"].as_str().unwrap_or(""), a["detail"].as_str().unwrap_or("")));
+        assert_eq!(found("74 Republic Street, Valletta VLT 1117").as_deref(), Some("74 Republic Street | Il-Belt Valletta VLT 1117, Malta"));
+        assert_eq!(found("Triq ir-Repubblika 74, Il-Belt Valletta").as_deref(), Some("74 Triq ir-Repubblika | Il-Belt Valletta VLT 1117, Malta"));
+        assert_eq!(found("2 Triq San Anton, Floriana").as_deref(), Some("2 Triq San Anton | Il-Furjana, Malta"), "the town by its English name");
+        assert_eq!(map.places("VLT1117", 5, None)[0]["name"], "VLT 1117");
+        lastbook_engine::db::close_all();
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn bremen_and_its_exclave() {
+        let dir = std::env::temp_dir().join(format!("lb-tools-addr-hb-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let src = dir.join("hb.osm.pbf");
+        std::fs::write(&src, pbf(&[
+            El::Node(1, 53.0760, 8.8070, &[("addr:housenumber", "21"), ("addr:street", "Am Markt"), ("addr:postcode", "28195"), ("addr:city", "Bremen")]),
+            El::Node(2, 53.5460, 8.5770, &[("addr:housenumber", "10"), ("addr:street", "Bürgermeister-Smidt-Straße"), ("addr:postcode", "27568")]),
+            El::Node(3, 53.3000, 8.7000, &[("addr:housenumber", "1"), ("addr:street", "Dorfstraße")]),
+            El::Node(4, 53.2500, 8.7500, &[("addr:housenumber", "5"), ("addr:street", "Hauptstraße"), ("addr:city", "Ritterhude"), ("addr:country", "DE")]),
+        ])).unwrap();
+        let things = crate::map::osm::read(&src, &wanted).unwrap();
+        // the state is two pieces, each a city that is its own district, with Lower Saxony between them
+        let bremen = vec![(8.48, 53.01), (8.99, 53.01), (8.99, 53.23), (8.48, 53.23), (8.48, 53.01)];
+        let bremerhaven = vec![(8.48, 53.46), (8.65, 53.46), (8.65, 53.60), (8.48, 53.60), (8.48, 53.46)];
+        let g = Connection::open_in_memory().unwrap();
+        crate::map::gpkg::write::table(&g, "gis_osm_adminareas_a_free", &["fclass", "name"]);
+        let poly = crate::map::gpkg::Kind::Polygon;
+        crate::map::gpkg::write::row(&g, "gis_osm_adminareas_a_free", poly, &[bremerhaven.clone(), bremen.clone()], &[("fclass", "admin_level4"), ("name", "Bremen")]);
+        crate::map::gpkg::write::row(&g, "gis_osm_adminareas_a_free", poly, &[bremen], &[("fclass", "admin_level6"), ("name", "Bremen")]);
+        crate::map::gpkg::write::row(&g, "gis_osm_adminareas_a_free", poly, &[bremerhaven], &[("fclass", "admin_level6"), ("name", "Bremerhaven")]);
+        let areas = Admin::load(&g, "DE");
+        assert_eq!((areas.towns.len(), areas.cities.len()), (0, 2), "no level-8 municipality: the two districts are the towns");
+        let rows = rows(&things, "DE-HB", &areas, &[]);
+        let shown: Vec<String> = rows.iter().map(|r| format!("{} {}, {} {}", r.street, r.num, r.postcode, r.city)).collect();
+        assert_eq!(shown, vec!["Am Markt 21, 28195 Bremen", "Bürgermeister-Smidt-Straße 10, 27568 Bremerhaven", "Hauptstraße 5,  Ritterhude"],
+                   "the exclave's address with its own town; Lower Saxony's between them only when it says its country");
         std::fs::remove_dir_all(&dir).unwrap();
     }
 

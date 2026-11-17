@@ -22,6 +22,8 @@ pub mod mapset;
 pub mod osm;
 pub mod pack;
 pub mod places;
+#[cfg(test)]
+mod real;
 pub mod shp;
 pub mod terrain;
 pub mod water;

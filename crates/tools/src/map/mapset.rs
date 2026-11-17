@@ -60,7 +60,8 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     let admin = Admin::load(&g, country);
     say(&format!("{} municipalities", admin.towns.len()));
     let keep = |k: Kind, t: &[(&str, &str)]| {
-        addresses::wanted(k, t) || buildings::wanted(k, t) || places::wanted(k, t) || water::wanted(k, t) || coast::wanted(k, t)
+        addresses::wanted(k, t) || addresses::street_wanted(k, t) || buildings::wanted(k, t) || places::wanted(k, t) || water::wanted(k, t)
+            || coast::wanted(k, t)
     };
     let things = osm::read(&src.pbf, &keep)?;
     say(&format!("{} elements from the PBF", things.len()));
@@ -97,8 +98,8 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     let names: Vec<String> = gpkg::layer(&g, "gis_osm_places_free", &["name"]).iter().filter_map(|r| r.col(0).map(str::to_string)).collect();
     let rows = addresses::rows(&things, region, &admin, &names);
     let index = out.join("addresses").join(format!("{region}.sqlite"));
-    addresses::write(&index, region, &rows, &osm_source).map_err(db)?;
-    say(&format!("{} addresses", rows.len()));
+    let count = addresses::write(&index, region, &rows, &osm_source, &addresses::town_names(&things, country)).map_err(db)?;
+    say(&format!("{count} addresses, and {} rows under a street's other names", rows.len() - count));
     let ps = places::collect(&g, &things, &admin, &rows, region);
     places::write(&geo.join("places.sqlite"), &ps, &osm_source).map_err(db)?;
     say(&format!("{} places", ps.len()));
@@ -129,7 +130,8 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     say("done");
     Ok(json!({
         "region": region, "title": r.name, "files": files, "bytes": bytes,
-        "address_index": {"path": index.to_string_lossy(), "bytes": std::fs::metadata(&index).map(|m| m.len()).unwrap_or(0), "addresses": rows.len()},
+        "address_index": {"path": index.to_string_lossy(), "bytes": std::fs::metadata(&index).map(|m| m.len()).unwrap_or(0), "addresses": count,
+                          "rows": rows.len()},
         "features": features, "detail_features": detail.features, "help_points": pois, "places": ps.len(), "water_records": recs.len(),
         "buildings": outlines, "buildings_with_heights": tall,
         "coast": {"islands": islands.len(), "seas": seas.len(), "open": shore.open},
