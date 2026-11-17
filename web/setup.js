@@ -447,7 +447,7 @@
     const b = $('#start');
     b.disabled = !need || !!short || mapMissing();
     const newPack = c && packNeedsInstall(packById(choice.pack)), newAi = c && choice.ai && !c.model, newMap = c && mapAdds(), newAddresses = c && addressAdds();
-    const parts = [newPack && packTitle(packById(choice.pack)), newAi && t('setup.go.part_ai'), newMap && t('setup.go.part_map', { name: mapName(newMap.id) }), newAddresses && !newMap && t('setup.go.part_addresses')].filter(Boolean);
+    const parts = [newPack && packTitle(packById(choice.pack)), newAi && t('setup.go.part_ai'), newMap && (newMap.id === 'europe' ? t('setup.go.part_map_europe') : t('setup.go.part_map', { name: mapName(newMap.id) })), newAddresses && !newMap && t('setup.go.part_addresses')].filter(Boolean);
     // with nothing to download (every file found on this computer), the button says only that it installs
     b.textContent = mapMissing() ? t('setup.go.choose_region') : !c ? t(dl ? 'setup.go.install' : 'setup.go.install_found')
       : parts.length ? t(dl ? 'setup.go.get' : 'setup.go.install_list', { list: I18N.list(parts) }) : t('setup.go.nothing');
@@ -614,7 +614,7 @@
     </div>`;
   }
   // an item's name: the local AI, a region's map or address search, a library (by the pack's name; the engine's title for a library of the person's own)
-  const itemTitle = it => it.kind === 'model' ? t('setup.ai.title') : it.kind === 'map' ? t('setup.item.map', { name: mapById(it.id) ? mapName(it.id) : it.title || it.id })
+  const itemTitle = it => it.kind === 'model' ? t('setup.ai.title') : it.kind === 'map' ? (it.id === 'europe' ? t('setup.item.map_europe') : t('setup.item.map', { name: mapById(it.id) ? mapName(it.id) : it.title || it.id }))
     : it.kind === 'addresses' ? (mapById(it.id) ? t('setup.item.addresses', { name: mapName(it.id) }) : it.title) : it.id === 'library' || it.id === 'repair' ? it.title
     : packItem(packById(it.id) || { id: it.id, title: it.title });
   /* an item that needs nothing from the internet: the person's own file, or one stopped after its download was complete.

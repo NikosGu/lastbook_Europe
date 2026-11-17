@@ -956,7 +956,7 @@ const MapView = (() => {
       box.classList.remove('busy');
       if (!Array.isArray(r) || !r.length) { box.innerHTML = `<p class="muted small">${th('map.near.nothing')}</p>`; return }
       const list = r.sort((a, b) => a.km - b.km).slice(0, 14);
-      box.innerHTML = list.map((p, i) => { const line = summaryOf(p.detail_parts, p.detail); return `<button data-i="${i}">${sym(layerOf(p.cls), 24)}<span><b>${escH(unnamed(p))}</b><small>${th('map.near.line', { kind: lname(layerOf(p.cls)), dist: dist(p.km), dir: DIR[p.dir] ? t(DIR[p.dir]) : p.dir || '' })}</small>${line ? `<small>${escH(line)}</small>` : ''}</span></button>` }).join('');
+      box.innerHTML = list.map((p, i) => { const line = summaryOf(p.detail_parts, p.detail); return `<button data-i="${i}">${sym(layerOf(p.cls), 24)}<span><b>${escH(unnamed(p))}</b><small>${th('map.near.line', { kind: kindKey(p.cls) ? t(kindKey(p.cls)) : lname(layerOf(p.cls)),   /* one place: its own kind, not the layer's plural */ dist: dist(p.km), dir: DIR[p.dir] ? t(DIR[p.dir]) : p.dir || '' })}</small>${line ? `<small>${escH(line)}</small>` : ''}</span></button>` }).join('');
       box.querySelectorAll('button').forEach(b => b.onclick = () => {
         const p = list[+b.dataset.i]; box.querySelectorAll('button.on').forEach(x => x.classList.remove('on')); b.classList.add('on');
         st.z = Math.max(st.z, 16); st.lat = p.lat; st.lon = p.lon; st.listAt = 1; showDetail({ ...p, summary: p.detail, summary_parts: p.detail_parts, detail: {} }); settle(true); b.classList.add('on');
