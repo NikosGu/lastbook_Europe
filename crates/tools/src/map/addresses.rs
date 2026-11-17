@@ -15,7 +15,7 @@ use lastbook_engine::map::address::{self, countries, Address};
 use lastbook_engine::map::text::{fold, name_key};
 use lastbook_engine::regions;
 use rusqlite::{params, Connection};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::path::Path;
 
 /// The elements an address comes from.
@@ -152,12 +152,25 @@ pub fn rows(things: &[Thing], region: &str, areas: &Admin, places: &[String]) ->
             *uses.entry(c.to_string()).or_default() += 1;
         }
     }
-    // a street's other names, by its town and name, and by its name alone for an address across a town's edge
-    let langs = countries::get(regions::country(region)).map(|c| c.langs).unwrap_or(&[]);
+    // a street's other names, in the languages the region's addresses are seen written in: some of Malta's in English,
+    // Luxembourg's in each street's own name only (its Luxembourgish and German renderings would more than double the
+    // index for nothing). A language counts when at least 2% of the streets named in it have an address written so.
+    let used: HashSet<&str> = things.iter().filter_map(|t| t.tags.get("addr:street")).collect();
+    let streets: Vec<&Thing> = things.iter().filter(|t| t.kind == Kind::Way && t.tags.has("highway")).collect();
+    let langs: Vec<&str> = countries::get(regions::country(region)).map(|c| c.langs).unwrap_or(&[]).iter().copied().filter(|l| {
+        let key = format!("name:{l}");
+        let named: Vec<&str> = streets.iter().filter_map(|t| t.tags.get(&key).filter(|n| Some(*n) != t.tags.get("name"))).collect();
+        let seen = named.iter().filter(|n| used.contains(*n)).count();
+        if !named.is_empty() {
+            eprintln!("{region}: {} streets named in {l} besides their name, {seen} of those names on addresses", named.len());
+        }
+        seen > 0 && seen * 50 >= named.len()
+    }).collect();
+    // by the street's town and name, and by its name alone for an address across a town's edge
     let mut by_town: HashMap<(String, String), Vec<String>> = HashMap::new();
     let mut by_name: HashMap<String, Vec<String>> = HashMap::new();
-    for t in things.iter().filter(|t| t.kind == Kind::Way && t.tags.has("highway")) {
-        let names = street_names(&t.tags, langs);
+    for t in streets {
+        let names = street_names(&t.tags, &langs);
         if names.len() < 2 {
             continue;
         }
@@ -212,7 +225,9 @@ pub fn rows(things: &[Thing], region: &str, areas: &Admin, places: &[String]) ->
 }
 
 /// Writes the index: the engine's tables, every row with its keys, the indexes and `area`, and `meta`. `towns` gives a
-/// town's other names (`town_names`): their keys join its `citykey`, which the search reads word by word. Returns the
+/// town's other names (`town_names`): their keys join its `citykey`, which the search reads word by word. A town with a
+/// name the search reads as a street (St Julian's: the street "St" in a town "Julian's…") keeps its own name only, or
+/// that name typed alone would find streets of San Ġiljan instead of the town the place finder knows it as. Returns the
 /// number of addresses, the rows under a street's other names not counted.
 pub fn write(path: &Path, region: &str, rows: &[Row], source: &str, towns: &HashMap<String, Vec<String>>) -> rusqlite::Result<usize> {
     let _ = std::fs::remove_file(path);
@@ -232,7 +247,12 @@ pub fn write(path: &Path, region: &str, rows: &[Row], source: &str, towns: &Hash
     for city in cities {
         let own = name_key(city);
         let mut key = own.clone();
-        for k in towns.get(&own).into_iter().flatten().map(|n| name_key(n)) {
+        let names: Vec<&String> = towns.get(&own).into_iter().flatten().collect();
+        let street = |n: &str| address::parse(n).kind == address::Kind::Address || address::parse(&name_key(n)).kind == address::Kind::Address;
+        if names.iter().any(|n| street(n)) {
+            continue;
+        }
+        for k in names.into_iter().map(|n| name_key(n)) {
             if !k.is_empty() && !format!(" {key} ").contains(&format!(" {k} ")) {
                 key = format!("{key} {k}");
             }
@@ -365,6 +385,12 @@ mod tests {
             El::Node(3, 35.8985, 14.5135, &[("addr:housenumber", "74"), ("addr:street", "Triq ir-Repubblika"), ("addr:city", "Il-Belt Valletta"), ("addr:postcode", "VLT1117")]),
             El::Node(4, 35.8900, 14.5000, &[("addr:housenumber", "2"), ("addr:street", "Triq San Anton"), ("addr:postcode", "1210")]),
             El::Node(5, 35.8905, 14.5005, &[("place", "town"), ("name", "Il-Furjana"), ("name:en", "Floriana"), ("name:ja", "フロリアーナ")]),
+            El::Node(6, 35.8960, 14.5100, &[]), El::Node(7, 35.8970, 14.5110, &[]),
+            El::Way(11, &[6, 7], &[("highway", "residential"), ("name", "Triq il-Merkanti"), ("name:en", "Merchants Street")]),
+            // written in English, as some of Malta's addresses are: the reason English names are used at all
+            El::Node(8, 35.8965, 14.5105, &[("addr:housenumber", "5"), ("addr:street", "Merchants Street"), ("addr:city", "Valletta")]),
+            El::Node(9, 35.9185, 14.4895, &[("place", "town"), ("name", "San Ġiljan"), ("name:en", "St. Julian's"), ("name:it", "San Giuliano")]),
+            El::Node(12, 35.9180, 14.4890, &[("addr:housenumber", "1"), ("addr:street", "Triq San Ġorġ"), ("addr:city", "San Ġiljan")]),
         ])).unwrap();
         let things = crate::map::osm::read(&src, &|k, t| wanted(k, t) || street_wanted(k, t) || places::wanted(k, t)).unwrap();
         let sq = |x: f64, y: f64| vec![vec![(x, y), (x + 0.01, y), (x + 0.01, y + 0.01), (x, y + 0.01), (x, y)]];
@@ -374,19 +400,45 @@ mod tests {
         let rows = rows(&things, "MT", &areas, &[]);
         let shown: Vec<String> = rows.iter().map(|r| format!("{} {} | {} | {} | {}", r.num, r.street, r.city, r.postcode, r.alias)).collect();
         assert_eq!(shown, vec!["74 Triq ir-Repubblika | Il-Belt Valletta | VLT 1117 | false", "74 Republic Street | Il-Belt Valletta | VLT 1117 | true",
-                               "2 Triq San Anton | Il-Furjana |  | false"], "the street under both its names; a postcode of no Maltese shape left out");
+                               "2 Triq San Anton | Il-Furjana |  | false", "5 Merchants Street | Il-Belt Valletta |  | false",
+                               "5 Triq il-Merkanti | Il-Belt Valletta |  | true", "1 Triq San Ġorġ | San Ġiljan |  | false"],
+                   "a street under both its names; a postcode of no Maltese shape left out; a rare unknown town name (Valletta) the municipality's");
         let towns = town_names(&things, "MT");
         assert_eq!(towns["floriana"], vec!["Il-Furjana", "Floriana"], "names in the country's and the app's languages, not every language");
         let data = dir.join("data");
         std::fs::create_dir_all(data.join("derived/geo/addresses")).unwrap();
-        assert_eq!(write(&data.join("derived/geo/addresses/MT.sqlite"), "MT", &rows, "test", &towns).unwrap(), 2, "two addresses, three rows");
+        let index = data.join("derived/geo/addresses/MT.sqlite");
+        assert_eq!(write(&index, "MT", &rows, "test", &towns).unwrap(), 4, "four addresses, six rows");
+        let c = Connection::open(&index).unwrap();
+        let key = |city: &str| -> String { c.query_row("SELECT DISTINCT citykey FROM addr WHERE city=?1", [city], |r| r.get(0)).unwrap() };
+        assert_eq!(key("Il-Furjana"), "il furjana floriana");
+        assert_eq!(key("San Ġiljan"), "san giljan", "St Julian's alone reads as the street St in a town Julian's: left to the place finder");
+        drop(c);
         let map = lastbook_engine::map::Map::new(lastbook_engine::paths::Paths::new(dir.clone(), Some(data)));
         let found = |q: &str| map.find_addresses(q, 8, None).first().map(|a| format!("{} | {}", a["name"].as_str().unwrap_or(""), a["detail"].as_str().unwrap_or("")));
         assert_eq!(found("74 Republic Street, Valletta VLT 1117").as_deref(), Some("74 Republic Street | Il-Belt Valletta VLT 1117, Malta"));
         assert_eq!(found("Triq ir-Repubblika 74, Il-Belt Valletta").as_deref(), Some("74 Triq ir-Repubblika | Il-Belt Valletta VLT 1117, Malta"));
+        assert_eq!(found("5 Triq il-Merkanti, Valletta").as_deref(), Some("5 Triq il-Merkanti | Il-Belt Valletta, Malta"));
         assert_eq!(found("2 Triq San Anton, Floriana").as_deref(), Some("2 Triq San Anton | Il-Furjana, Malta"), "the town by its English name");
         assert_eq!(map.places("VLT1117", 5, None)[0]["name"], "VLT 1117");
         lastbook_engine::db::close_all();
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn a_streets_renderings_no_address_uses_are_left_out() {
+        // Luxembourg's streets carry Luxembourgish and German renderings of their names, its addresses only the name itself
+        let dir = std::env::temp_dir().join(format!("lb-tools-addr-lu-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let src = dir.join("lu.osm.pbf");
+        std::fs::write(&src, pbf(&[
+            El::Node(1, 49.6000, 6.1330, &[]), El::Node(2, 49.6010, 6.1340, &[]),
+            El::Way(10, &[1, 2], &[("highway", "primary"), ("name", "Avenue de la Gare"), ("name:lb", "Garewee"), ("name:de", "Bahnhofsallee")]),
+            El::Node(3, 49.6005, 6.1335, &[("addr:housenumber", "12"), ("addr:street", "Avenue de la Gare"), ("addr:city", "Luxembourg"), ("addr:postcode", "1611")]),
+        ])).unwrap();
+        let things = crate::map::osm::read(&src, &|k, t| wanted(k, t) || street_wanted(k, t)).unwrap();
+        let rows = rows(&things, "LU", &Admin::default(), &[]);
+        assert_eq!(rows.iter().map(|r| r.street.as_str()).collect::<Vec<_>>(), vec!["Avenue de la Gare"]);
         std::fs::remove_dir_all(&dir).unwrap();
     }
 
