@@ -22,7 +22,7 @@
       "hint": "Heridos, daños, gas, réplicas",
       "read": [
         {"doc": "dpc-io-non-rischio", "page": 13, "label": "Después de un terremoto",
-         "note": "En italiano. Primeros auxilios, cerrar el gas, el agua y la luz, ponerse zapatos, nada de ascensor, la costa, el teléfono y el coche, las zonas de espera del municipio."}
+         "note": "En italiano. Primeros auxilios, cerrar el gas, el agua y la luz, ponerse zapatos, nada de ascensor, la costa, el teléfono y el coche, los puntos de encuentro del municipio."}
       ]
     },
     {
@@ -78,7 +78,7 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 26, "label": "Fuego en casa: seis pasos",
          "note": "En alemán. Apágalo solo si no hay peligro, sal y cierra la puerta, avisa a los demás, nunca atravieses el humo, llama al 112."},
-        {"doc": "zsv-steiermark-notfallratgeber", "page": 10, "label": "Salir, o esperar en la ventana",
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 10, "label": "Salir o esperar en la ventana",
          "note": "En alemán. Si hay una salida sin humo, sal; si hay humo, cierra las puertas, tapa las rendijas con trapos mojados y espera en una ventana abierta."},
         {"doc": "zsv-steiermark-notfallratgeber", "page": 8, "label": "Apagar un fuego pequeño",
          "note": "En alemán. Extintores y mantas ignífugas, nunca agua sobre grasa o aceite ardiendo, y una persona con la ropa en llamas."}

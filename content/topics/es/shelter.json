@@ -13,11 +13,11 @@
       "hint": "Invierno, un corte de luz, no pasar frío por la noche",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Cuando falla la calefacción",
-         "note": "En alemán. Estufas aprobadas para interiores, ropa de abrigo, mantas y sacos de dormir; ventanas cerradas, pero ventila las habitaciones un rato."},
+         "note": "En alemán. Estufas aptas para interiores, ropa de abrigo, mantas y sacos de dormir; ventanas cerradas, pero ventila las habitaciones un rato."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 24, "label": "Abrígate bien y bebe agua",
          "note": "De la guía de Protección Civil sobre fenómenos meteorológicos: ante el frío, ropa gruesa y calzado cerrado que cubran el cuerpo, beber mucha agua y taparse boca y nariz."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Calentarse sin luz",
-         "note": "En alemán. Incluso la calefacción de gasóleo y la de gas se paran en un corte de luz; hornillos de camping o estufas de parafina, previstos con ventilación y salida de humos."}
+         "note": "En alemán. Incluso la calefacción de gasóleo y la de gas se paran en un corte de luz; hornillos de camping o estufas de parafina, teniendo en cuenta la ventilación y la salida de humos."}
       ]
     },
     {
@@ -26,7 +26,7 @@
       "hint": "Monóxido de carbono de estufas, hornillos, barbacoas, generadores o velas",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Monóxido de carbono: qué es seguro dentro de casa",
-         "note": "En alemán. Solo aparatos aprobados para interiores; un fuego abierto dentro de casa puede producir monóxido de carbono; instala un detector de CO."},
+         "note": "En alemán. Solo aparatos aptos para interiores; un fuego abierto dentro de casa puede producir monóxido de carbono; instala un detector de CO."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Ni generadores ni estufas de exterior dentro de casa",
          "note": "En inglés. No uses dentro de casa un generador, ni estufas u hornillos pensados para el exterior."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Braseros y estufas en sitios cerrados",
@@ -40,17 +40,17 @@
       "read": [
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Prepara la casa para el frío y la nieve",
          "note": "De la guía de Protección Civil sobre fenómenos meteorológicos: estufa, reserva de comida y medicinas, radio portátil, revisar tejado y calefacción, y un grifo algo abierto si hiela mucho."},
-        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Tuberías congeladas, y peligros después del temporal",
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Tuberías congeladas y peligros después del temporal",
          "note": "En inglés. Dejar correr un hilo de agua, revisar las tuberías, cortes de luz, inundaciones por el deshielo, caminos helados."}
       ]
     },
     {
       "id": "outside",
-      "label": "Fuera con frío, o atrapado en el coche",
+      "label": "A la intemperie o atrapado en el coche",
       "hint": "Nieve en la carretera, hielo en un lago, quitar nieve con la pala",
       "read": [
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Si te quedas atrapado en el coche, quédate dentro",
-         "note": "En inglés. Evita conducir, quédate en el vehículo atrapado, conduce despacio sobre la nieve; cómo juzgar el hielo de estanques y lagos."},
+         "note": "En inglés. Evita conducir, quédate en el vehículo atrapado, conduce despacio sobre la nieve; cómo valorar el hielo de estanques y lagos."},
         {"doc": "ifrc-extreme-cold", "page": 3, "label": "Un kit de invierno para el coche",
          "note": "En inglés. Neumáticos, pinzas de batería, un botiquín, un cargador, ropa de abrigo, una pala, el depósito lleno."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 25, "label": "Quitar nieve sin hacer demasiado esfuerzo",
@@ -85,11 +85,11 @@
       "id": "indoors-link",
       "goto": "disaster/indoors",
       "label": "Te dicen que no salgas de casa: gas, humo o radiación",
-      "hint": "En la guía «Terremoto, fuego, riada»"
+      "hint": "En la guía «Terremoto, incendio, riada»"
     }
   ],
   "limits": [
-    {"text": "Dentro de casa, usa solo estufas y hornillos aprobados para interiores.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Dentro de casa, usa solo estufas y hornillos aptos para interiores.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "La intoxicación por monóxido de carbono puede matar, y un fuego abierto dentro de casa también puede causarla. Un detector de CO comprobado te avisa.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "No uses dentro de casa un generador, ni estufas u hornillos pensados para el exterior.", "doc": "ifrc-extreme-cold", "page": 5},
     {"text": "Busca ayuda médica si aparecen signos de hipotermia o de congelación.", "doc": "ifrc-extreme-cold", "page": 4},

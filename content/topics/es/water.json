@@ -2,20 +2,20 @@
   "_review": "machine-assisted, needs native-speaker review",
   "id": "water",
   "mode": "now",
-  "title": "Conseguir agua segura para beber",
+  "title": "Conseguir agua potable",
   "short": "Guárdala, hazla más segura, mantenla limpia",
-  "intro": "Lecturas para cuando el agua del grifo se corta o puede no ser segura: cuánta guardar, cómo hacer que sea más segura para beber y cómo mantenerla limpia. Las páginas son de la OMS y de la protección civil suiza, alemana, austriaca, italiana y española.",
+  "intro": "Lecturas para cuando se corta el agua del grifo o puede que no sea segura: cuánta guardar, cómo hacer que sea más segura para beber y cómo mantenerla limpia. Las páginas son de la OMS y de la protección civil suiza, alemana, austriaca, italiana y española.",
   "keywords": ["agua", "agua potable", "agua del grifo", "hervir", "hervir el agua", "ebullición", "cloro", "lejía", "pastillas", "pastillas potabilizadoras", "comprimidos", "potabilizar", "purificar", "depurar", "desinfectar", "filtro", "filtrar", "filtro de arena", "SODIS", "sol", "luz del sol", "agua embotellada", "agua mineral", "almacenar", "guardar agua", "reserva de agua", "recipientes", "garrafas", "bidones", "bañera", "cuánta agua", "litros", "sed", "agua sucia", "inundación", "riada", "tubería rota", "contaminada", "contaminado", "apagón"],
   "choices": [
     {
       "id": "unsafe",
-      "label": "No sale agua del grifo o puede no ser segura",
+      "label": "No sale agua del grifo o puede que no sea potable",
       "hint": "Una inundación, una tubería rota, un aviso de no beberla",
       "read": [
-        {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Por qué cada casa necesita una reserva de agua",
+        {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Por qué toda casa necesita una reserva de agua",
          "note": "En alemán. Una tormenta puede dañar una tubería o hacer que el agua del grifo no sea segura; ten una reserva hasta que vuelva el suministro."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Lo que puede y lo que no puede hacer el tratamiento del agua en casa",
-         "note": "En inglés. Solo hay que tratar el agua para beber y para la comida, unos 5 litros por persona y día. Estos métodos no eliminan los productos químicos."},
+         "note": "En inglés. Solo hay que tratar el agua para beber y para preparar la comida, unos 5 litros por persona y día. Estos métodos no eliminan los productos químicos."},
         {"doc": "dgpce-guia-inundaciones", "page": 19, "label": "Inundaciones: no bebas agua que no sea potable",
          "note": "De la guía de Protección Civil sobre inundaciones: pueden causar brotes de enfermedades contagiosas; no bebas agua que no sea potable y, antes de beberla, hiérvela o fíltrala."}
       ]
@@ -52,7 +52,7 @@
         {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Déjala reposar y luego fíltrala",
          "note": "En inglés. Agitarla para airearla, dejar que la suciedad se asiente y filtros domésticos. El agua reposada sigue necesitando un tratamiento probado."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Desinfección solar en botellas transparentes (SODIS)",
-         "note": "En inglés. Botellas transparentes de uno o dos litros con agua clara, al sol directo; cuánto tiempo depende del sol y de la botella."},
+         "note": "En inglés. Botellas transparentes de uno o dos litros con agua clara, al sol directo; el tiempo depende del sol y de la botella."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "La desinfección solar, según una guía austriaca",
          "note": "En alemán. El tamaño de la botella, cuánto tiempo dejarla al sol y cuántos gérmenes mata."}
       ]
@@ -63,9 +63,9 @@
       "hint": "Por persona, por día, para cuántos días",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Unos 2 litros por persona y día",
-         "note": "En alemán. Medio litro de ellos para cocinar; cuánta necesita una familia de tres para 3, 5 o 10 días; agua para las mascotas."},
+         "note": "En alemán. Medio litro de ellos para cocinar; cuánta necesita una familia de tres personas para 3, 5 o 10 días; agua para las mascotas."},
         {"doc": "who-tn09-how-much-water", "page": 2, "label": "Lo mínimo para sobrevivir, y para la higiene",
-         "note": "En inglés. Escrita para quienes planifican la ayuda humanitaria: litros al día para beber y comer, para lavarse y para cocinar; un váter de cisterna gasta hasta 7 litros cada vez."},
+         "note": "En inglés. Escrita para quienes planifican la ayuda humanitaria: litros al día para beber y comer, para lavarse y para cocinar; cada descarga de la cisterna gasta hasta 7 litros."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Siete botellas por persona para una semana",
          "note": "En alemán. La regla austriaca de una semana sin compras ni luz, y una revisión anual de las provisiones."}
       ]
@@ -75,7 +75,7 @@
       "label": "Guardar agua y mantenerla limpia",
       "hint": "Botellas, garrafas, cubos, cuánto tiempo se conserva",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 20, "label": "Agua embotellada, y guardar agua del grifo durante meses",
+        {"doc": "zsv-steiermark-blackout", "page": 20, "label": "Agua embotellada y cómo guardar agua del grifo durante meses",
          "note": "En alemán. Por qué el agua va primero, qué agua embotellada se conserva mejor, y cómo guardar agua del grifo en recipientes muy limpios, a oscuras y en un lugar fresco."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Mantener limpia el agua tratada",
          "note": "En inglés. Recipientes limpios y tapados en un lugar fresco y oscuro, manos limpias, y un grifo en el recipiente para que nadie meta nada en él."}
@@ -89,7 +89,7 @@
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 6, "label": "El suministro de agua necesita electricidad",
          "note": "En alemán. Sin luz, el suministro de agua puede pararse; qué más puede fallar en un corte largo."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Primeros pasos en un apagón: llena recipientes",
-         "note": "En alemán. Revisa las provisiones, llena ollas, cubos y botellas mientras aún sale agua, y gástala con cuidado."}
+         "note": "En alemán. Revisa las provisiones, llena ollas, cubos y botellas mientras aún sale agua, y úsala con moderación."}
       ]
     }
   ],
@@ -106,7 +106,7 @@
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Cuánta agua guardar para 3, 5 o 10 días", "note": "En alemán."},
     {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Al menos 9 litros por persona: un paquete de seis botellas", "note": "En alemán. Fácil de llevar y se conserva durante meses."},
     {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Provisiones para una semana, revisadas una vez al año", "note": "En alemán."},
-    {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Averigua dónde se cierra el agua y pregunta en tu ayuntamiento", "note": "En alemán. También agua para lavarse y para la cisterna, no solo para beber."},
+    {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Averigua dónde está la llave de paso y pregunta en tu ayuntamiento", "note": "En alemán. También agua para lavarse y para la cisterna, no solo para beber."},
     {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Recipientes que mantienen limpia el agua", "note": "En inglés."}
   ],
   "learn": [
@@ -119,7 +119,7 @@
     "missing": [
       "Ninguna guía para el agua que pueda contener combustible, productos químicos o aguas residuales, aparte de la nota de la OMS de que tratar el agua en casa no elimina los productos químicos.",
       "Nada sobre cómo encontrar agua al aire libre (manantiales, arroyos, lluvia) ni sobre si es seguro beber de un río o de un lago.",
-      "Ningún aviso de hervir el agua de una compañía de aguas, y nada sobre cuánto tiempo sigue saliendo agua de los grifos en un edificio alto durante un apagón.",
+      "Ningún aviso de una compañía de aguas para hervir el agua, y nada sobre cuánto tiempo sigue saliendo agua de los grifos en un edificio alto durante un apagón.",
       "Ninguna fuente compara pastillas potabilizadoras o filtros; una guía austriaca nombra una sola marca."
     ],
     "disagree": [

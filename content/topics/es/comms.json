@@ -46,7 +46,7 @@
     },
     {
       "id": "rescuers",
-      "label": "Alguien no puede oír o hablar bien",
+      "label": "Alguien tiene dificultades para oír o para hablar",
       "hint": "Comunicarse con los equipos de rescate, una tarjeta de emergencia",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Planifica cómo te comunicarás con los equipos de rescate",

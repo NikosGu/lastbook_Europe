@@ -17,7 +17,7 @@
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Primeros pasos en casa",
          "note": "En alemán. La familia, los aparatos, la radio, el agua, la luz, el ascensor, el congelador, los medicamentos vitales, la basura y un váter de emergencia."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Cómo actuar durante un apagón",
-         "note": "En italiano. Apaga los electrodomésticos, mantén la nevera cerrada, escucha la radio, evita los ascensores, y la seguridad con los generadores."}
+         "note": "En italiano. Apaga los electrodomésticos, mantén la nevera cerrada, escucha la radio, evita los ascensores, y cómo usar los generadores sin peligro."}
       ]
     },
     {
@@ -62,7 +62,7 @@
       "hint": "Un generador portátil, el combustible, dónde ponerlo",
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 18, "label": "Generadores: dónde usarlos, combustible, riesgo de incendio",
-         "note": "En alemán. Nunca en habitaciones cerradas; alrededor de un litro de combustible por hora; el combustible almacenado es un riesgo de incendio. Y por qué las placas solares suelen pararse también."},
+         "note": "En alemán. Nunca en habitaciones cerradas; alrededor de un litro de combustible por hora; el combustible almacenado es un riesgo de incendio. Y por qué las placas solares también suelen dejar de funcionar."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Enchufa los aparatos al generador, no a la instalación de casa",
          "note": "En italiano. No lo conectes a la instalación eléctrica de la casa, y nunca lo pongas en marcha dentro de casa ni en el garaje."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Ni generadores ni estufas de exterior dentro de casa",
@@ -104,10 +104,10 @@
     {"text": "Cuando vuelva la luz, comprueba que la cocina y la plancha estén de verdad apagadas: pueden provocar un incendio.", "doc": "zsv-steiermark-blackout", "page": 27}
   ],
   "prepare": [
-    {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "Qué tener en casa para un apagón", "note": "En alemán. Agua, comida, una radio de pilas o de manivela, luces, medicamentos, algo para cocinar, efectivo en billetes pequeños; planifica para 10 a 14 días."},
+    {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "Qué tener en casa para un apagón", "note": "En alemán. Agua, comida, una radio de pilas o de manivela, luces, medicamentos, algo para cocinar, efectivo en billetes pequeños; prepárate para 10 a 14 días."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Prepárate como para ir de acampada", "note": "En alemán. Las llaves de paso, lo que ha previsto tu ayuntamiento, comida y agua para una o dos semanas."},
     {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Listas de comprobación: luz, radio, higiene, medicamentos, una bolsa lista para salir", "note": "En alemán."},
-    {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Preguntas para hablar antes de que pase", "note": "En alemán. Cómo volver a casa del trabajo o del colegio, con quién contactar, quién necesita ayuda, los vecinos, rutinas para los niños."},
+    {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Lo que conviene hablar antes de que pase", "note": "En alemán. Cómo volver a casa del trabajo o del colegio, con quién contactar, quién necesita ayuda, los vecinos, rutinas para los niños."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Números en papel y una batería externa", "note": "En alemán."},
     {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Radio, linterna, velas y algo de efectivo", "note": "En alemán. La lista del folleto suizo de lo que debería tener cada hogar."}
   ],

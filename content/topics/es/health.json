@@ -4,7 +4,7 @@
   "mode": "learn",
   "title": "Cuidar la salud cuando la ayuda está lejos",
   "short": "Medicamentos, botiquín, estrés, niños, personas que necesitan cuidados",
-  "intro": "Lecturas para cuidar la salud cuando es difícil llegar a médicos y farmacias: medicamentos y botiquín de casa, miedo y estrés después de una catástrofe, niños en una crisis y personas que necesitan cuidados especiales. Para heridas y enfermedades repentinas, consulta la guía «Heridas y enfermedad».",
+  "intro": "Lecturas para cuidar la salud cuando es difícil llegar a médicos y farmacias: medicamentos y botiquín de casa, miedo y estrés después de una catástrofe, niños en una crisis y personas que necesitan cuidados especiales. Para heridas y enfermedades repentinas, consulta la guía «Heridas y enfermedades».",
   "keywords": ["salud", "medicamentos", "medicinas", "botiquín", "botiquín de casa", "armario de las medicinas", "receta", "recetas", "insulina", "botiquín de primeros auxilios", "curso de primeros auxilios", "estrés", "miedo", "ansiedad", "pánico", "angustia", "preocupación", "duelo", "trauma", "dormir", "insomnio", "niños", "niñas", "hijos", "discapacidad", "personas mayores", "ancianos", "cuidados", "cuidador", "cuidadora", "primeros auxilios psicológicos", "suicidio", "salud mental"],
   "choices": [
     {
@@ -28,7 +28,7 @@
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 18, "label": "Qué ayuda con el miedo y la preocupación",
          "note": "En alemán. Mantener el contacto, rutinas diarias, salir al aire libre, descansar, y solo las noticias que necesites. Teléfonos de ayuda alemanes."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 116, "label": "Primeros auxilios psicológicos: observar, escuchar, conectar",
-         "note": "En inglés. Cómo acercarte a alguien que lo está pasando mal y escucharle, y qué no decir."},
+         "note": "En inglés. Cómo acercarte a alguien que lo está pasando mal y escucharlo, y qué no decir."},
         {"doc": "zsv-steiermark-blackout", "page": 16, "label": "Formas de calmarte",
          "note": "En alemán. Respirar despacio, pequeñas tareas, una manta, moverse, escribir un diario."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 118, "label": "Cuándo buscar ayuda especializada",
@@ -38,7 +38,7 @@
     {
       "id": "children",
       "label": "Los niños tienen miedo",
-      "hint": "Preguntas, pesadillas, se comportan de otra manera",
+      "hint": "Preguntas, pesadillas, cambios de comportamiento",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 20, "label": "Cómo pueden reaccionar los niños",
          "note": "En alemán. Cada niño reacciona a su manera; dibujar y jugar; cuándo pedir consejo."},
@@ -49,7 +49,7 @@
     {
       "id": "care",
       "label": "Alguien necesita cuidados especiales",
-      "hint": "Una discapacidad, pérdida de oído o de vista, una persona mayor que vive sola",
+      "hint": "Una discapacidad, pérdida de audición o de vista, una persona mayor que vive sola",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Prepararse si tienes una discapacidad",
          "note": "En alemán. Ayudas técnicas, pilas de repuesto y cargadores, un plan de medicamentos, un animal de asistencia, contactos."},
@@ -96,7 +96,7 @@
     {"title": "Paso 2: Aprende primeros auxilios", "goal": "Saber lo que hace quien presta primeros auxilios antes de necesitarlo",
      "read": [
        {"doc": "zsv-steiermark-notfallratgeber", "page": 16, "label": "Las tareas de quien presta primeros auxilios", "note": "En alemán."},
-       {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Revisar a una persona, por orden", "note": "En inglés."}
+       {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Comprobar cómo está una persona, por orden", "note": "En inglés."}
      ]},
     {"title": "Paso 3: Conoce lo que ayuda con el miedo y el estrés", "goal": "Notar el estrés en ti y en los demás, y saber qué lo alivia",
      "read": [

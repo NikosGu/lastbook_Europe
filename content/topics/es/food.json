@@ -39,7 +39,7 @@
       "hint": "Sin cocina eléctrica: gas, hornillo de camping, barbacoa, fondue",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Con qué se puede cocinar dentro de casa, y con qué solo fuera",
-         "note": "En alemán. Calientaplatos de velitas y fondues dentro de casa; hornillos de camping y barbacoas solo al aire libre; el peligro del monóxido de carbono."},
+         "note": "En alemán. Calientaplatos de vela y fondues dentro de casa; hornillos de camping y barbacoas solo al aire libre; el peligro del monóxido de carbono."},
         {"doc": "zsv-steiermark-blackout", "page": 28, "label": "Cocinar en un apagón",
          "note": "En alemán. Por qué dejan de funcionar las cocinas eléctricas, dietas especiales, aprovechar la comida de la nevera y del congelador, y tener gas, leña o carbón vegetal."}
       ]
@@ -53,7 +53,7 @@
          "note": "En alemán. Come o cocina pronto los alimentos perecederos y vigila si el congelador suelta agua del deshielo; los frigoríficos combi se descongelan antes."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Abre la nevera y el congelador lo menos posible",
          "note": "En italiano. Forma parte de los consejos para un apagón."},
-        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Gasta primero los alimentos perecederos, recoge la basura en bolsas",
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Consume primero los perecederos y recoge la basura en bolsas",
          "note": "En alemán."}
       ]
     },
@@ -83,7 +83,7 @@
     }
   ],
   "limits": [
-    {"text": "Dentro de casa, cocina solo con aparatos aprobados para interiores; los hornillos de camping y las barbacoas son para el exterior.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Dentro de casa, cocina solo con aparatos aptos para interiores; los hornillos de camping y las barbacoas son para el exterior.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "La intoxicación por monóxido de carbono puede matar, y un fuego abierto dentro de casa también puede causarla.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "Tira una lata si la tapa está abombada hacia fuera.", "doc": "oezsv-bevorratungsratgeber", "page": 10},
     {"text": "Tira los frutos secos que sepan raro o tengan moho, y la carne que esté viscosa o huela fuerte.", "doc": "oezsv-bevorratungsratgeber", "page": 11},

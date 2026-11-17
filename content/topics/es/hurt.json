@@ -4,15 +4,15 @@
   "mode": "now",
   "title": "Alguien está herido o se ha puesto enfermo de repente",
   "short": "Primeros auxilios: hemorragias, quemaduras, respiración, lesiones, enfermedad repentina",
-  "intro": "Lecturas de primeros auxilios hasta que llegue la ayuda: revisar a la persona, pedir ayuda, hemorragias, quemaduras, respiración y RCP, lesiones y enfermedades repentinas. La mayoría de las páginas son de las directrices internacionales de primeros auxilios de la FICR (2020), escritas para formadores de primeros auxilios; algunas, de guías de protección civil austriacas y alemanas.",
-  "keywords": ["primeros auxilios", "heridas", "herido", "herida", "lesiones", "corte", "sangrado", "sangre", "hemorragia", "torniquete", "vendaje compresivo", "quemaduras", "escaldadura", "hueso roto", "fractura", "esguince", "torcedura", "férula", "entablillar", "golpe en la cabeza", "traumatismo craneal", "conmoción cerebral", "columna", "cuello", "RCP", "reanimación", "masaje cardiaco", "no respira", "inconsciente", "no responde", "posición lateral de seguridad", "desfibrilador", "DEA", "atragantamiento", "atragantado", "shock", "golpe de calor", "deshidratación", "diarrea", "vómitos", "hipotermia", "congelación", "reacción alérgica", "alergia", "anafilaxia", "adrenalina", "epinefrina", "asma", "infarto", "ataque al corazón", "dolor en el pecho", "ictus", "derrame cerebral", "convulsiones", "ataque epiléptico", "bajada de azúcar", "hipoglucemia", "diabetes", "intoxicación", "envenenamiento", "veneno", "monóxido de carbono", "mordedura", "picadura", "garrapata", "serpiente", "víbora", "112", "911", "999", "ambulancia", "emergencia", "urgencias"],
+  "intro": "Lecturas de primeros auxilios hasta que llegue la ayuda: comprobar cómo está la persona, pedir ayuda, hemorragias, quemaduras, respiración y RCP, lesiones y enfermedades repentinas. La mayoría de las páginas son de las directrices internacionales de primeros auxilios de la FICR (2020), escritas para formadores de primeros auxilios; algunas, de guías de protección civil austriacas y alemanas.",
+  "keywords": ["primeros auxilios", "heridas", "herido", "herida", "lesiones", "corte", "sangrado", "sangre", "hemorragia", "torniquete", "vendaje compresivo", "quemaduras", "escaldadura", "hueso roto", "fractura", "esguince", "torcedura", "férula", "entablillar", "golpe en la cabeza", "traumatismo craneal", "conmoción cerebral", "columna", "cuello", "RCP", "reanimación", "masaje cardiaco", "no respira", "inconsciente", "no responde", "posición lateral de seguridad", "PLS", "desfibrilador", "DEA", "DESA", "atragantamiento", "atragantado", "shock", "golpe de calor", "deshidratación", "diarrea", "vómitos", "hipotermia", "congelación", "reacción alérgica", "alergia", "anafilaxia", "adrenalina", "epinefrina", "asma", "infarto", "ataque al corazón", "dolor en el pecho", "ictus", "derrame cerebral", "convulsiones", "ataque epiléptico", "bajada de azúcar", "hipoglucemia", "diabetes", "intoxicación", "envenenamiento", "veneno", "monóxido de carbono", "mordedura", "picadura", "garrapata", "serpiente", "víbora", "112", "911", "999", "ambulancia", "emergencia", "urgencias"],
   "choices": [
     {
       "id": "check",
-      "label": "No sé qué le pasa: ¿cómo reviso a la persona?",
+      "label": "No sé qué le pasa: ¿cómo compruebo su estado?",
       "hint": "Un accidente, alguien que se desploma, varios heridos",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Revisa a la persona, por orden",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Comprueba cómo está la persona, por orden",
          "note": "En inglés. ¿Es seguro el lugar? ¿Responde la persona, tiene la vía aérea abierta, respira con normalidad, sangra mucho?"},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Protégete, llama pronto, atiende primero a los más graves",
          "note": "En inglés. Cuándo mantenerse lejos y avisar a las autoridades, llamar con el altavoz del móvil puesto, y qué hacer si hay varios heridos."},
@@ -28,13 +28,13 @@
       "hint": "Sangre que lo empapa todo, un corte profundo, un rasguño sucio",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 187, "label": "Detener una hemorragia grave",
-         "note": "En inglés. Aprieta fuerte sobre la herida; un torniquete solo en un brazo o una pierna, y solo si la presión no basta; lo que no hay que hacer."},
+         "note": "En inglés. Presiona con fuerza sobre la herida; un torniquete solo en un brazo o una pierna, y solo si la presión no basta; lo que no hay que hacer."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 188, "label": "Paso a paso, y lo que no hay que tocar",
-         "note": "En inglés. Apretar, que la persona se tumbe, pedir ayuda, un segundo apósito encima; un objeto clavado en la herida se deja donde está."},
+         "note": "En inglés. Presionar, que la persona se tumbe, pedir ayuda, un segundo apósito encima; un objeto clavado en la herida se deja donde está."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 23, "label": "Un vendaje compresivo en cuatro pasos",
          "note": "En alemán. Para una herida profunda que sangra mucho."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 202, "label": "Limpiar un corte o un rasguño",
-         "note": "En inglés. Enjuágalo con agua limpia del grifo y tápalo; signos de infección; el tétanos."}
+         "note": "En inglés. Lávalo con agua limpia del grifo y cúbrelo; signos de infección; el tétanos."}
       ]
     },
     {
@@ -45,7 +45,7 @@
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 213, "label": "Enfría la quemadura con agua corriente",
          "note": "En inglés. Al menos diez minutos, mejor veinte; después, un apósito húmedo que no se pegue; lo que no hay que hacer."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 214, "label": "Nada de hielo, y cuándo pedir ayuda",
-         "note": "En inglés. Por qué no usar hielo ni agua helada, y qué quemaduras necesitan a los servicios de emergencia."},
+         "note": "En inglés. Por qué no usar hielo ni agua helada, y ante qué quemaduras hay que llamar a los servicios de emergencia."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 215, "label": "Productos químicos en el ojo; quemaduras en bebés",
          "note": "En inglés. Lava el ojo enseguida con agua limpia; pide consejo médico si se quema un bebé o una persona frágil."}
       ]
@@ -55,27 +55,27 @@
       "label": "Hueso roto, esguince o luxación",
       "hint": "Una caída, un tobillo torcido, un brazo o una pierna con una forma rara",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 223, "label": "Trátalo como una fractura y no lo muevas",
-         "note": "En inglés. Sujeta la extremidad tal como la encuentras, enfríala hasta 20 minutos, entablíllala si el trayecto va a tener baches."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 223, "label": "Trátalo como una fractura e inmovilízalo",
+         "note": "En inglés. Sujeta la extremidad tal como la encuentres, aplica frío hasta 20 minutos, entablíllala si el trayecto va a tener baches."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 224, "label": "Cuándo pedir ayuda",
          "note": "En inglés. Mucho dolor o hinchazón, una extremidad en una posición extraña; envuelve siempre la bolsa de hielo en un paño."},
         {"doc": "zsv-steiermark-notfallratgeber", "page": 20, "label": "Lesiones de huesos y articulaciones",
-         "note": "En alemán. No moverla, tapar las heridas, quitar pronto anillos y relojes, enfriar contra la hinchazón."}
+         "note": "En alemán. Inmovilizar la zona, cubrir las heridas, quitar pronto anillos y relojes, aplicar frío contra la hinchazón."}
       ]
     },
     {
       "id": "breathing",
       "label": "No responde, no respira con normalidad o se está atragantando",
-      "hint": "Se ha desplomado, boquea, comida atascada en la garganta, sacado del agua",
+      "hint": "Se ha desplomado, boquea, tiene comida atascada en la garganta, lo han sacado del agua",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 128, "label": "No responde pero respira: la posición lateral de seguridad",
-         "note": "En inglés. Llámala en voz alta, sacúdela con suavidad, abre la vía aérea, comprueba la respiración durante diez segundos como máximo, pon a la persona de lado."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 128, "label": "No responde, pero respira: la posición lateral de seguridad",
+         "note": "En inglés. Háblale en voz alta, sacúdela con suavidad, abre la vía aérea, comprueba la respiración durante diez segundos como máximo y ponla de lado."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 134, "label": "No respira con normalidad: empieza la RCP",
-         "note": "En inglés. Da por hecho que el corazón se ha parado; aprieta fuerte y rápido, de 100 a 120 veces por minuto, unos 5 cm de profundidad, 30 compresiones y 2 ventilaciones."},
+         "note": "En inglés. Actúa como si el corazón se hubiera parado; comprime fuerte y rápido, de 100 a 120 veces por minuto, unos 5 cm de profundidad, 30 compresiones por cada 2 ventilaciones."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 171, "label": "Atragantamiento: golpes en la espalda y compresiones abdominales",
          "note": "En inglés. Hasta cinco golpes entre los omóplatos y luego hasta cinco compresiones abdominales, alternando."},
-        {"doc": "zsv-steiermark-notfallratgeber", "page": 17, "label": "Inconsciente, o no respira",
-         "note": "En alemán. Cómo comprobarlo, la posición lateral de seguridad, RCP con 30 compresiones y 2 ventilaciones, y un desfibrilador."}
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 17, "label": "Inconsciente o no respira",
+         "note": "En alemán. Cómo comprobarlo, la posición lateral de seguridad, la RCP 30:2 y el desfibrilador (DEA)."}
       ]
     },
     {
@@ -105,10 +105,10 @@
     {
       "id": "heat-cold",
       "label": "Demasiado calor o demasiado frío",
-      "hint": "Golpe de calor, una ola de calor, tiritar de frío, dedos blancos y dormidos",
+      "hint": "Golpe de calor, una ola de calor, tiritar de frío, dedos blancos y entumecidos",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 332, "label": "Demasiado calor: enfría a la persona",
-         "note": "En inglés. Parar e ir a un sitio fresco; enfriar con agua fría a un adulto que se ha recalentado por el esfuerzo; cuándo pedir ayuda."},
+         "note": "En inglés. Parar e ir a un sitio fresco; enfriar con agua fría a un adulto sobrecalentado por el esfuerzo; cuándo pedir ayuda."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 333, "label": "Agotamiento por calor y golpe de calor",
          "note": "En inglés. Los signos de cada uno, y enfriar en agua fría durante unos 15 minutos."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 343, "label": "Hipotermia",
@@ -123,9 +123,9 @@
       "hint": "Hinchazón, dificultad para respirar tras una picadura, un alimento o un medicamento",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 279, "label": "Adrenalina para la anafilaxia",
-         "note": "En inglés. El autoinyector de la propia persona; una segunda dosis a los 5 a 10 minutos si no hay respuesta y la ayuda aún no ha llegado."},
+         "note": "En inglés. El autoinyector de la propia persona; una segunda dosis a los 5–10 minutos si no mejora y la ayuda aún no ha llegado."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 281, "label": "Cómo usar un autoinyector, paso a paso",
-         "note": "En inglés. Pide ayuda, tumba a la persona, inyecta en la parte exterior del muslo, a través de la ropa si es fina."}
+         "note": "En inglés. Pide ayuda, tumba a la persona, inyecta en la cara externa del muslo, a través de la ropa si es fina."}
       ]
     },
     {
@@ -141,14 +141,14 @@
     },
     {
       "id": "poison",
-      "label": "Intoxicación: se ha tragado algo, o ha respirado humos",
+      "label": "Intoxicación: se ha tragado algo o ha respirado humos",
       "hint": "Productos de limpieza, demasiadas pastillas, una pila de botón, monóxido de carbono",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 258, "label": "Veneno tragado, o gas tóxico",
-         "note": "En inglés. Corta la exposición; no provocar el vómito, ni dar leche, agua o carbón activado salvo que lo diga el centro de toxicología; rescatar de un gas solo si es seguro."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 259, "label": "Llama al centro de toxicología o a los servicios de emergencia",
-         "note": "En inglés. Y cómo prevenir intoxicaciones en casa, también con un detector de monóxido de carbono."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 263, "label": "Monóxido de carbono, y pilas de botón",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 258, "label": "Veneno ingerido o gas tóxico",
+         "note": "En inglés. Cortar la exposición al tóxico; no provocar el vómito ni dar leche, agua ni carbón activado salvo que lo indique el servicio de información toxicológica; rescatar a alguien de un gas solo si es seguro."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 259, "label": "Llama al servicio de información toxicológica o a emergencias",
+         "note": "En inglés. Y cómo prevenir intoxicaciones en casa, incluido un detector de monóxido de carbono."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 263, "label": "Monóxido de carbono y pilas de botón",
          "note": "En inglés. El monóxido de carbono no tiene color ni olor; qué hacer si alguien se traga una pila de botón."}
       ]
     },
@@ -157,9 +157,9 @@
       "label": "Diarrea, vómitos o deshidratación",
       "hint": "Una gastroenteritis, agua en mal estado, un bebé o una persona mayor que se deshidrata",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Beber, o sales de rehidratación oral",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Beber o tomar sales de rehidratación oral",
          "note": "En inglés. Deshidratación leve: beber lo suficiente; grave: sales de rehidratación oral; seguir con la lactancia; cuándo buscar ayuda."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 339, "label": "Una bebida de rehidratación casera",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 339, "label": "Un suero casero de rehidratación",
          "note": "En inglés. Sal, azúcar y agua potable, en las cantidades que da la página."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 308, "label": "Dolor de estómago, diarrea y vómitos: cuándo buscar atención médica",
          "note": "En inglés. Diarrea grave, vómitos repetidos, fiebre de más de 38 °C, sangre en el vómito o en las heces."}
@@ -168,7 +168,7 @@
     {
       "id": "sudden",
       "label": "Dolor en el pecho, signos de ictus, una convulsión o una bajada de azúcar",
-      "hint": "Dolor opresivo en el pecho, la cara caída, un ataque, una persona diabética que está confusa",
+      "hint": "Dolor opresivo en el pecho, un lado de la cara caído, convulsiones, una persona diabética que está confusa",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 264, "label": "Dolor en el pecho: un posible infarto",
          "note": "En inglés. Llama aunque el dolor haya durado solo unos minutos; aspirina mientras esperas, salvo que la persona no deba tomarla."},
@@ -186,11 +186,11 @@
       "hint": "Una mordedura de perro, una picadura de abeja, una garrapata, una serpiente",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 242, "label": "Mordeduras de animales",
-         "note": "En inglés. Limpia la herida con agua limpia y jabón, contra la infección y la rabia."},
+         "note": "En inglés. Lava la herida con agua limpia y jabón, contra la infección y la rabia."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 245, "label": "Garrapatas",
          "note": "En inglés. Cómo quitar una garrapata, y los signos tras una picadura que requieren ir al médico."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 254, "label": "Mordedura de serpiente",
-         "note": "En inglés. Que la persona se mueva lo menos posible, y pide ayuda; nada de torniquetes, cortes ni succionar."}
+         "note": "En inglés. Que la persona se mueva lo menos posible, y pide ayuda; nada de torniquetes, cortes ni succión."}
       ]
     },
     {
@@ -201,7 +201,7 @@
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Cuando la ayuda puede tardar días",
          "note": "En inglés. En una catástrofe, los servicios de emergencia pueden tardar horas, días o semanas: céntrate en las hemorragias, la vía aérea y el shock."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Varios heridos",
-         "note": "En inglés. Llama pronto, vuelve a llamar con detalles, y atiende primero a quienes corren más peligro de muerte."},
+         "note": "En inglés. Llama pronto, vuelve a llamar con detalles, y atiende primero a quienes tienen la vida en mayor peligro."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Si el 112 no funciona",
          "note": "En alemán. Ve a la comisaría o al hospital más cercano, si puedes."}
       ]
@@ -210,11 +210,11 @@
   "limits": [
     {"text": "No te acerques al lugar si no es seguro.", "doc": "ifrc-first-aid-guidelines-2020", "page": 102},
     {"text": "Llama a los servicios de emergencia ante cualquier hemorragia grave.", "doc": "ifrc-first-aid-guidelines-2020", "page": 187},
-    {"text": "No saques un objeto clavado en una herida. Una vez puesto un torniquete, déjalo hasta que llegue la ayuda.", "doc": "ifrc-first-aid-guidelines-2020", "page": 188},
-    {"text": "Nunca tapes una herida infectada: busca ayuda médica.", "doc": "ifrc-first-aid-guidelines-2020", "page": 203},
+    {"text": "No saques un objeto clavado en una herida. Una vez puesto un torniquete, no lo quites hasta que llegue la ayuda.", "doc": "ifrc-first-aid-guidelines-2020", "page": 188},
+    {"text": "No cubras nunca una herida infectada: busca ayuda médica.", "doc": "ifrc-first-aid-guidelines-2020", "page": 203},
     {"text": "No pongas hielo ni agua helada sobre una quemadura.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
     {"text": "Pide ayuda si las quemaduras son grandes o profundas, si están cerca de la cara, la garganta o los genitales, o si las han causado productos químicos, la electricidad o las llamas.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
-    {"text": "Si la respiración no es normal (boqueos, irregular o ninguna), empieza la RCP enseguida.", "doc": "ifrc-first-aid-guidelines-2020", "page": 130},
+    {"text": "Si no respira con normalidad (boquea, respira de forma irregular o no respira), empieza la RCP enseguida.", "doc": "ifrc-first-aid-guidelines-2020", "page": 130},
     {"text": "No toques a la persona mientras el desfibrilador da una descarga.", "doc": "ifrc-first-aid-guidelines-2020", "page": 158},
     {"text": "No hagas un barrido a ciegas con el dedo en la boca de una persona que se atraganta.", "doc": "ifrc-first-aid-guidelines-2020", "page": 170},
     {"text": "No hagas compresiones abdominales a un bebé.", "doc": "ifrc-first-aid-guidelines-2020", "page": 173},
@@ -222,8 +222,8 @@
     {"text": "Tras un golpe en la cabeza, llama enseguida si la persona pierde el conocimiento aunque sea un momento, vomita más de una vez, tiene una convulsión o sangra por la nariz o los oídos.", "doc": "ifrc-first-aid-guidelines-2020", "page": 233},
     {"text": "No muevas a alguien que pueda tener una lesión de columna, salvo que esté en peligro.", "doc": "ifrc-first-aid-guidelines-2020", "page": 230},
     {"text": "Pide ayuda en todos los casos de hipotermia, y no frotes la piel de la persona.", "doc": "ifrc-first-aid-guidelines-2020", "page": 343},
-    {"text": "Busca siempre atención médica para una congelación.", "doc": "ifrc-first-aid-guidelines-2020", "page": 350},
-    {"text": "Si alguien se ha tragado un veneno, no le hagas vomitar, y no le des leche, agua ni carbón activado salvo que lo diga el centro de toxicología.", "doc": "ifrc-first-aid-guidelines-2020", "page": 258},
+    {"text": "Ante una congelación, busca siempre atención médica.", "doc": "ifrc-first-aid-guidelines-2020", "page": 350},
+    {"text": "Si alguien se ha tragado un veneno, no le provoques el vómito ni le des leche, agua ni carbón activado salvo que lo indique el servicio de información toxicológica.", "doc": "ifrc-first-aid-guidelines-2020", "page": 258},
     {"text": "Ante un dolor en el pecho, llama a los servicios de emergencia aunque haya durado solo un par de minutos.", "doc": "ifrc-first-aid-guidelines-2020", "page": 264},
     {"text": "Si sospechas un ictus, llama enseguida a los servicios de emergencia y apunta la hora en que empezó.", "doc": "ifrc-first-aid-guidelines-2020", "page": 272},
     {"text": "Durante una convulsión, no sujetes a la persona.", "doc": "ifrc-first-aid-guidelines-2020", "page": 296},
@@ -232,7 +232,7 @@
   "prepare": [
     {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Lo que lleva un botiquín de primeros auxilios para casa", "note": "En alemán. Una lista estándar austriaca."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Lista de comprobación del botiquín de casa", "note": "En alemán."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Medicamentos para 10 días, y un curso de primeros auxilios", "note": "En alemán."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Medicamentos para 10 días y un curso de primeros auxilios", "note": "En alemán."},
     {"doc": "ifrc-first-aid-guidelines-2020", "page": 106, "label": "Guarda los números de emergencia en el móvil", "note": "En inglés."},
     {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Prepárate por si la ayuda tarda en llegar", "note": "En inglés. Un kit para los tres primeros días."}
   ],
