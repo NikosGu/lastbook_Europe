@@ -164,12 +164,12 @@ pub fn write(path: &Path, dems: &[Dem], boxes: &[[f64; 4]], zooms: std::ops::Ran
 }
 
 #[cfg(test)]
-mod tests {
+pub mod write {
     use super::*;
     use tiff::encoder::{colortype, TiffEncoder};
 
     /// A small GeoTIFF: heights rising 1 m a pixel eastward from 400 m, in WGS 84.
-    fn geotiff(path: &Path, west: f64, north: f64, d: f64, w: u32, h: u32, point: bool) {
+    pub fn geotiff(path: &Path, west: f64, north: f64, d: f64, w: u32, h: u32, point: bool) {
         let mut f = std::fs::File::create(path).unwrap();
         let mut enc = TiffEncoder::new(&mut f).unwrap();
         let mut img = enc.new_image::<colortype::Gray32Float>(w, h).unwrap();
@@ -179,6 +179,12 @@ mod tests {
         let data: Vec<f32> = (0..w * h).map(|i| 400.0 + (i % w) as f32).collect();
         img.write_data(&data).unwrap();
     }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::write::geotiff;
+    use super::*;
 
     #[test]
     fn tiles_where_the_dem_covers_them_and_heights_the_engine_reads() {
