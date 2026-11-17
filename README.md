@@ -65,6 +65,23 @@ three answers:
   Metal must hold all of its share in memory.
 - **Too big.** Setup says so in plain words, and why.
 
+**How answers stay with the library.** The model has no internet: it sees only the rules, the conversation and the
+library's pages the app gives it, and it may ask for more through four tools (search the library, read whole pages,
+read a video's transcript, look up a place and the nearest help), twice at most. What the app makes sure of, whatever
+the model does:
+
+- Every sentence must end with the key of its source (`[S2]`). Each key is checked against the pages the tools really
+  returned in that answer, with a page number that exists; a key the model made up is removed.
+- Every number in a cited sentence (doses, times, temperatures, quantities) must appear in the pages that sentence cites,
+  as figures or as words in any of the six languages; a sentence whose number is not there is marked.
+- Sentences without a source are marked, and what the library does not cover, where sources disagree and the model's own
+  reasoning are shown apart.
+- A document's text can never act as an instruction or start a turn: it reaches the model as plain text only.
+
+What is not guaranteed: that a sentence says exactly what its page says. A model also knows what it learned in training,
+and can mistranslate a source written in another language. That is why every answer links the exact pages, and says
+it can be wrong.
+
 **The runner.** `lastbook-llm` (`crates/llm`) is a small Rust program on [llama.cpp](https://github.com/ggml-org/llama.cpp),
 through the `llama-cpp-2` crate (`third_party/llama-cpp-2` adds one setting to it, see its `PROVENANCE.md`). It runs one
 model, talks to the app only through its standard input and output (one JSON object per line), opens no socket and
