@@ -6,6 +6,7 @@
 
 pub mod addresses;
 pub mod admin;
+pub mod base;
 pub mod buildings;
 pub mod detail;
 pub mod geo;
@@ -13,5 +14,6 @@ pub mod gpkg;
 pub mod library;
 pub mod osm;
 pub mod places;
+pub mod shp;
 pub mod terrain;
 pub mod water;

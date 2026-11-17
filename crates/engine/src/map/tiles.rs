@@ -170,8 +170,9 @@ impl Map {
         };
         type Feature = (String, Option<String>, Option<String>, Vec<u8>); // layer, class, name, geometry
         let mut rows: Vec<Feature> = Vec::new();
+        // a feature shows from its minz to its maxz: the zoomed-out base gives way to the region's detail
         let sql = "SELECT f.layer,f.cls,f.name,f.geom FROM feat_idx i JOIN feat f ON f.id=i.id \
-                   WHERE i.maxx>=?1 AND i.minx<=?2 AND i.maxy>=?3 AND i.miny<=?4 AND i.minz<=?5";
+                   WHERE i.maxx>=?1 AND i.minx<=?2 AND i.maxy>=?3 AND i.miny<=?4 AND i.minz<=?5 AND i.maxz>=?5";
         let water = self.db(WATER);
         for (c, ordered) in [(map, true), (national, true), (water, false)] {
             let Some(c) = c else { continue };
