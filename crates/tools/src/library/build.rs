@@ -1,7 +1,11 @@
 //! build-library: a LastbookData folder from documents and their sources list.
 //!
 //!   lastbook-tools build-library --sources content/library/starter.json --docs derived/sources/library \
-//!       --out derived/packs/starter-li/LastbookData [--replace] [--built 2026-11-17]
+//!       --out derived/packs/starter-li/LastbookData [--replace] [--built 2026-11-17] [--redistributable-only]
+//!
+//! With --redistributable-only it is the pack that may be published: only the documents whose terms let them be passed
+//! on (the list's "redistribute": "yes"); nothing of the others is written, not their files, texts, records or index
+//! rows.
 //!
 //! Everything it writes is what the engine reads:
 //!   library-data/catalog.json         one record per document, and the Sources page's
@@ -35,11 +39,15 @@ pub const SOURCES_PATH: &str = "documents/lastbook/sources-and-permissions.html"
 pub const INDEX_SCHEMA: &str = "CREATE VIRTUAL TABLE pages USING fts5(doc_id UNINDEXED,title,collection,category,path UNINDEXED,page UNINDEXED,body,tokenize=\"unicode61\")";
 
 const HELP: &str = "lastbook-tools build-library --sources LIST.json --docs FOLDER --out LastbookData [--replace] [--built YYYY-MM-DD]
+                             [--redistributable-only]
 
   --sources   the sources list (content/library/*.json): the pack, and each document's file, address and terms
   --docs      the folder the documents were downloaded into
   --out       the LastbookData folder to make; --replace makes it again if it is there
   --built     the date to write into the records and pack.json (default: today)
+  --redistributable-only
+              only the documents the list marks \"redistribute\": \"yes\", whose terms let them be passed on: the pack
+              that may be published, with the summary and revision of the list's pack.redistributable
 PDF text needs PDFium: beside this program, or its folder in LASTBOOK_PDFIUM.";
 
 pub fn main(args: &[String]) -> i32 {
@@ -48,8 +56,9 @@ pub fn main(args: &[String]) -> i32 {
         return 0;
     }
     let run = || -> Result<Value, String> {
-        let a = Args::parse(args, &["replace"])?;
+        let a = Args::parse(args, &["replace", "redistributable-only"])?;
         let list = sources::load(Path::new(a.need("sources")?))?;
+        let list = if a.flag("redistributable-only") { list.redistributable()? } else { list };
         let built = a.get("built").map(str::to_string).unwrap_or_else(today);
         build(&list, Path::new(a.need("docs")?), Path::new(a.need("out")?), a.flag("replace"), &built)
     };
@@ -135,8 +144,18 @@ fn sources_page(docs: &[Doc]) -> (String, String) {
         text.push(format!("{name}: {what}; terms: {terms}"));
         for d in list {
             let year = d.year.as_deref().map(|y| format!(" ({y})")).unwrap_or_default();
-            page.push_str(&format!("<li>{}{year} · {} · source: {}</li>", esc(&d.title), esc(&d.lang), esc(&d.source)));
-            text.push(format!("{}{year}, source {}", d.title, d.source));
+            // where the terms are stated, and whether they let the document be passed on (on what conditions)
+            let mut terms = Vec::new();
+            if let Some(u) = &d.licence_url {
+                terms.push(format!("terms: {u}"));
+            }
+            if let Some(r) = d.redistribute {
+                terms.push(format!("may be passed on: {r}{}", d.conditions.as_deref().map(|c| format!(" ({c})")).unwrap_or_default()));
+            }
+            let terms = terms.join(" · ");
+            let small = if terms.is_empty() { String::new() } else { format!("<br><small>{}</small>", esc(&terms)) };
+            page.push_str(&format!("<li>{}{year} · {} · source: {}{small}</li>", esc(&d.title), esc(&d.lang), esc(&d.source)));
+            text.push(format!("{}{year}, source {}{}", d.title, d.source, if terms.is_empty() { String::new() } else { format!("; {terms}") }));
         }
         page.push_str("</ul></details>");
     }

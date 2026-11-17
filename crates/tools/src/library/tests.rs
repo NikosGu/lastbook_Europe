@@ -149,10 +149,22 @@ fn the_sources_list_is_checked() {
         ("lang", json!("ita"), "two-letter"),
         ("sha256", json!("abc"), "64 hex"),
         ("licence", json!(""), "\"licence\" is missing"),
+        ("redistribute", json!("maybe"), "yes, no or unclear"),
+        ("redistribute", json!("yes"), "\"terms_quote\""),
     ] {
         let e = sources::parse(&with(k, v)).unwrap_err();
         assert!(e.contains(says), "{k}: {e}");
     }
+    // a decision about passing a document on carries the address of its terms and the sentence that decides
+    let mut decided = ok.clone();
+    for (k, v) in [("redistribute", "yes"), ("licence_url", "https://example.org/terms"), ("terms_quote", "Reuse is allowed.")] {
+        decided[k] = json!(v);
+    }
+    let one = sources::parse(&json!({"pack": {"id": "p", "title": "P", "revision": "r1"}, "documents": [decided.clone()]})).unwrap();
+    assert_eq!((one.docs[0].redistribute, one.docs[0].terms_quote.as_deref()), (Some("yes"), Some("Reuse is allowed.")));
+    assert!(one.redistributable().unwrap_err().contains("\"redistributable\""), "the pack of what may be passed on needs its own summary and revision");
+    let same = json!({"pack": {"id": "p", "title": "P", "revision": "r1", "redistributable": {"summary": "S", "revision": "r1"}}, "documents": [decided.clone()]});
+    assert!(sources::parse(&same).unwrap_err().contains("must not share"));
     let twice = json!({"pack": {"id": "p", "title": "P"}, "documents": [ok.clone(), ok.clone()]});
     assert!(sources::parse(&twice).unwrap_err().contains("used twice"));
     assert!(sources::parse(&json!({"pack": {"id": "p", "title": "P"}, "documents": []})).is_err());
@@ -164,6 +176,55 @@ fn the_sources_list_is_checked() {
     let langs: std::collections::BTreeSet<&str> = starter.docs.iter().map(|d| d.lang.as_str()).collect();
     assert_eq!(langs.into_iter().collect::<Vec<_>>(), ["de", "en", "es", "fr", "it", "pl"]);
     assert!(starter.docs.iter().map(|d| d.bytes.unwrap()).sum::<u64>() <= 100_000_000);
+    // each document's terms are settled: whether it may be passed on, where its publisher says so, and in what words
+    for d in &starter.docs {
+        assert!(d.redistribute.is_some() && d.terms_quote.is_some() && d.licence_url.as_deref().is_some_and(|u| u.starts_with("https://")), "{}", d.id);
+    }
+    let open = starter.redistributable().unwrap();
+    assert!(!open.docs.is_empty() && open.docs.len() < starter.docs.len());
+    assert_ne!(open.pack.revision, starter.pack.revision);
+    assert_eq!(open.pack.id, starter.pack.id, "the same pack, made of what may be published");
+}
+
+#[test]
+fn a_pack_of_what_may_be_passed_on_has_nothing_of_the_rest() {
+    let dir = temp("open");
+    let docs = dir.join("docs");
+    std::fs::create_dir_all(&docs).unwrap();
+    std::fs::write(docs.join("acqua.html"), PAGE).unwrap();
+    std::fs::write(docs.join("chiuso.html"), "<!doctype html><title>Chiuso</title><p>Riserva segreta: parole che non escono mai</p>").unwrap();
+    let doc = |id: &str, file: &str, redistribute: &str, quote: &str| {
+        json!({"id": id, "file": file, "title": id, "publisher": "Protezione Civile", "lang": "it", "licence": "CC BY 4.0", "licence_url": "https://example.org/note-legali",
+               "redistribute": redistribute, "terms_quote": quote, "conditions": "name the source", "source": "https://example.org", "collection": "Italia", "category": "water"})
+    };
+    let list = sources::parse(&json!({"pack": {"id": "test-pack", "title": "Test pack", "summary": "Everything", "revision": "2026-11-17-test",
+                                                "redistributable": {"summary": "Only what may be passed on", "revision": "2026-11-17-test-open"}},
+                                       "documents": [doc("acqua-casa", "acqua.html", "yes", "Contents are under CC BY 4.0."),
+                                                     doc("riserva", "chiuso.html", "no", "All rights reserved.")]}))
+    .unwrap();
+    let open = list.redistributable().unwrap();
+    assert_eq!(open.docs.iter().map(|d| d.id.as_str()).collect::<Vec<_>>(), ["acqua-casa"]);
+    let data = dir.join("LastbookData");
+    build(&open, &docs, &data, false, "2026-11-17").unwrap();
+    // nothing of the document that may not be passed on: no file, no text, no record, no index row, no word
+    let lib = data.join("library-data");
+    assert!(lib.join("pages/acqua.html").is_file() && !lib.join("pages/chiuso.html").exists() && !lib.join("text/riserva.txt").exists());
+    let manifest = std::fs::read_to_string(data.join("pack-manifest.tsv")).unwrap();
+    assert!(!manifest.contains("chiuso") && !manifest.contains("riserva"), "{manifest}");
+    for f in ["catalog.json", "search.sqlite", SOURCES_PATH] {
+        let bytes = std::fs::read(lib.join(f)).unwrap();
+        let s = String::from_utf8_lossy(&bytes);
+        assert!(!s.contains("riserva") && !s.contains("Riserva") && !s.contains("chiuso"), "{f}");
+    }
+    let pack: Value = serde_json::from_slice(&std::fs::read(data.join("pack.json")).unwrap()).unwrap();
+    assert_eq!((pack["content_revision"].as_str(), pack["summary"].as_str()), (Some("2026-11-17-test-open"), Some("Only what may be passed on")));
+    // its Sources page says on what terms each document may be passed on
+    let sources = std::fs::read_to_string(lib.join(SOURCES_PATH)).unwrap();
+    assert!(sources.contains("terms: https://example.org/note-legali · may be passed on: yes (name the source)"), "{sources}");
+    let l = library(&data);
+    assert_eq!(get(&l, "/api/library")["resources"], 2, "the document and the Sources page");
+    drop(l);
+    cleanup(&dir);
 }
 
 /// The release workflow builds the check library in packaging/rust/check-library: its list names the PDF beside it.
