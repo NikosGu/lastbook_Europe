@@ -180,6 +180,12 @@ cargo run --release -p lastbook-tools -- build-library --sources content/library
 cargo run --release -p lastbook-tools -- build-pack --data derived/packs/starter/LastbookData --out derived/packs
 ```
 
+That library is for this computer: several of its documents may not be passed on. The pack that may be published holds
+only the documents whose terms let them be passed on (`"redistribute": "yes"` in the list, with the terms' address and
+the sentence that decides): `build-library --redistributable-only`. The library workflow
+([.github/workflows/library.yml](.github/workflows/library.yml), run by hand) builds it on GitHub's machines and uploads
+it to the data release.
+
 The packers (`pack-map`, `pack-addresses`, `build-pack`) print the manifest entry setup needs. Setup also installs
 packs it finds on the computer, so a region and a library built here can be tried without a download site.
 
