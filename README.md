@@ -130,12 +130,12 @@ streaming work do.
 | `crates/engine` | The engine: the request router, setup (manifest, downloader, installer, hardware), the European regions, the map, the library, the local AI and the assistant. |
 | `crates/app` | The desktop window and the app's start: which library opens, setup when there is none, the system's file picker. |
 | `crates/llm` | `lastbook-llm`, the local AI runner. |
-| `crates/tools` | Data tools, such as `region-boxes`, which makes the regions' boxes from Eurostat's NUTS boundaries. |
+| `crates/tools` | The data tools, one command, `lastbook-tools`: a region's map and address index (`build-map`, `pack-map`, `pack-addresses`, `build-terrain`), a library and its pack (`build-library`, `build-pack`), and the regions' boxes from Eurostat's NUTS boundaries (`region-boxes`). |
 | `third_party/llama-cpp-2` | The `llama-cpp-2` crate with one addition (see `PROVENANCE.md`). |
 | `web/` | The interface, in plain HTML, CSS and JavaScript, with no build step and nothing loaded from the web. |
-| `content/` | The guides (`topics/*.json`) and what curators looked for and did not find (`gaps.json`). |
+| `content/` | The guides (`topics/`), what curators looked for and did not find (`gaps.json`), the words search uses in each language (`search/`), and the lists of documents libraries are built from (`library/`). |
 | `packaging/rust/` | The installers for macOS, Windows and Linux. |
-| `docs/` | The setup contract (`SETUP-API.md`) and the state of the work (`EUROPE-STATUS.md`). |
+| `docs/` | How a region's map is built (`MAPS.md`), how addresses are searched (`ADDRESSES.md`), the setup contract (`SETUP-API.md`) and the state of the work (`EUROPE-STATUS.md`). |
 
 ## Build and run from source
 
@@ -153,6 +153,28 @@ cargo run --release -p lastbook-app -- --data /path/to/LastbookData   # opens th
 
 Without `--data`, the app opens the library named by `LASTBOOK_DATA`, else the one chosen last time, else its own; with
 none, it opens setup. The runner is built as `target/release/lastbook-llm`, beside the app, where the app looks for it.
+
+A region's map and address index, from public data (OpenStreetMap through Geofabrik, Copernicus DEM, Natural Earth;
+[docs/MAPS.md](docs/MAPS.md) says which files and where they come from):
+
+```bash
+cargo run --release -p lastbook-tools -- build-map --region LI --gpkg <geofabrik .gpkg.zip> --pbf <geofabrik .osm.pbf> \
+    --dem <Copernicus DEM tile>... --ne <Natural Earth folder> --out derived/maps/LI
+cargo run --release -p lastbook-tools -- pack-map --map derived/maps/LI/map --out derived/packs
+cargo run --release -p lastbook-tools -- pack-addresses --index derived/maps/LI/addresses/LI.sqlite --out derived/packs
+```
+
+A library, from a list of documents with their sizes and SHA-256 (`content/library/starter.json`); PDFium reads the
+pages (`LASTBOOK_PDFIUM` names its folder):
+
+```bash
+cargo run --release -p lastbook-tools -- build-library --sources content/library/starter.json --docs <folder of the documents> \
+    --out derived/packs/starter/LastbookData
+cargo run --release -p lastbook-tools -- build-pack --data derived/packs/starter/LastbookData --out derived/packs
+```
+
+The packers (`pack-map`, `pack-addresses`, `build-pack`) print the manifest entry setup needs. Setup also installs
+packs it finds on the computer, so a region and a library built here can be tried without a download site.
 
 The installers:
 
@@ -174,7 +196,7 @@ library and no model. GitHub Actions runs them on macOS, Windows and Ubuntu at e
 ([.github/workflows/tests.yml](.github/workflows/tests.yml)).
 
 What a person sees is also checked in the running app: `lastbook --snapshot shot.png [--eval JS]...` drives the page and
-saves a picture of it (macOS for now).
+saves a picture of it, on macOS, Windows and Linux; CI photographs the app on each.
 
 ## What is not in this repository
 
