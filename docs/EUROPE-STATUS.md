@@ -25,7 +25,6 @@ None of these blocks the work: each has a placeholder.
 | Project name and domain | `Lastbook Europe`, no domain | `crates/engine/src/dist.rs` (`NAME`, `WEBSITE`), the window's title, the installers |
 | Where the library packs, region maps, address indexes, models and manifest are hosted (GitHub release assets, up to 2 GB a file, are one option) | `downloads.lastbook-europe.invalid`, which never resolves | `crates/engine/src/dist.rs`, the pinned roots |
 | Contact address for removal requests | none | each pack's Sources page |
-| Signing certificates (Apple Developer ID, Windows Authenticode) | builds signed ad hoc on a Mac, unsigned on Windows | `packaging/rust/` |
 | Native-speaker review of the Italian, German, French, Spanish and Polish text | translations marked for review | `web/locales/`, `content/` |
 | Publishing the first release | each push makes a **draft** release | GitHub's Releases page |
 | How all 110 regions are built: Geofabrik, free and shared, refused GitHub's machines' connections for Finland and Lombardy, even after eight tries over several minutes (the four test regions and Bavaria got their extracts) | the regions workflow, one region at a time | a schedule kind to Geofabrik (extracts kept between runs, regions spread over days), a machine of the project's own, or another source of the same extracts |
@@ -35,6 +34,7 @@ None of these blocks the work: each has a placeholder.
 
 | When | Decision | Why |
 |---|---|---|
+| 17 Nov 2026 | No paid signing certificates (the maintainer's decision): the Mac app is signed ad hoc and the Windows installer is unsigned; the README says how to open each the first time | the release works without them; they would only spare people one warning |
 | 17 Nov 2026 | The app opens on "What do you need?" (the search and the guides), with Home first in the sidebar; videos keep their page | the original opened on its videos; the starter library has none |
 | 17 Nov 2026 | Setup suggests the smallest available library, whatever its name, and leaves 5% of the disk free in all (between 1 and 5 GB) | it looked for a pack named "small", and two margins added together turned down a 43 MB library on a disk with 7 GB free |
 | 17 Nov 2026 | Vulkan on Windows and Linux in the installers, built with Ninja in a short folder on Windows, llama.cpp's libraries copied beside the runner; local package builds keep the processor unless LASTBOOK_VULKAN=1 | Cargo's newer folder layout, Visual Studio's generator and Windows' 260-character paths each broke the first builds; the release now checks that the packaged runner finds the processor's backend |
