@@ -4,18 +4,18 @@
   "mode": "learn",
   "title": "Prendersi cura della salute quando l'aiuto è lontano",
   "short": "Medicinali, cassetta di pronto soccorso, stress, bambini, persone da assistere",
-  "intro": "Letture per prendersi cura della salute quando medici e farmacie sono difficili da raggiungere: medicinali e farmacia di casa, paura e stress dopo una calamità, bambini in una crisi, e persone che hanno bisogno di più assistenza. Per ferite e malori improvvisi, vedi la guida “Ferite e malattie”.",
+  "intro": "Letture per prendersi cura della salute quando medici e farmacie sono difficili da raggiungere: medicinali e farmacia di casa, paura e stress dopo una calamità, bambini durante una crisi e persone che hanno bisogno di più assistenza. Per ferite e malori improvvisi, vedi la guida “Ferite e malattie”.",
   "keywords": ["salute", "medicina", "medicine", "medicinale", "medicinali", "farmaci", "farmacia di casa", "armadietto dei medicinali", "ricetta", "insulina", "cassetta di pronto soccorso", "kit di pronto soccorso", "corso di primo soccorso", "stress", "paura", "ansia", "panico", "preoccupazione", "lutto", "trauma", "sonno", "non riesco a dormire", "bambini", "bambino", "figli", "disabilità", "anziani", "assistenza", "cure", "badante", "caregiver", "primo soccorso psicologico", "suicidio", "salute mentale"],
   "choices": [
     {
       "id": "medicines",
-      "label": "Abbastanza medicinali, e una farmacia di casa",
+      "label": "Scorte di medicinali e farmacia di casa",
       "hint": "Medicinali abituali, ricette, conservarli in modo sicuro",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Una farmacia di casa e medicinali per dieci giorni",
          "note": "In tedesco. Medici e farmacie potrebbero essere irraggiungibili; cosa tenere in casa, e perché un corso di primo soccorso è utile."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 13, "label": "Dove e come conservare i medicinali",
-         "note": "In tedesco. Al fresco, all'asciutto, al buio e sotto chiave lontano dai bambini, non in bagno; un controllo ogni anno; i medicinali vecchi si riportano in farmacia."},
+         "note": "In tedesco. Al fresco, all'asciutto, al buio e sotto chiave, fuori dalla portata dei bambini, non in bagno; un controllo ogni anno; i medicinali vecchi si riportano in farmacia."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Lista di controllo: farmacia di casa",
          "note": "In tedesco."}
       ]
@@ -73,7 +73,7 @@
     {"text": "Non tenere i medicinali in bagno, e non buttare i medicinali vecchi nel WC.", "doc": "oezsv-bevorratungsratgeber", "page": 13},
     {"text": "Se qualcuno non vuole aiuto, non imporglielo.", "doc": "ifrc-first-aid-guidelines-2020", "page": 117},
     {"text": "Chiedi l'aiuto di uno specialista se una persona non dorme da una settimana, non riesce ad affrontare la vita di tutti i giorni o minaccia di fare del male a sé o agli altri.", "doc": "ifrc-first-aid-guidelines-2020", "page": 118},
-    {"text": "Un unico colloquio di debriefing dopo un evento traumatico può fare danni.", "doc": "ifrc-first-aid-guidelines-2020", "page": 366},
+    {"text": "Un unico colloquio di debriefing dopo un evento traumatico può essere dannoso.", "doc": "ifrc-first-aid-guidelines-2020", "page": 366},
     {"text": "Non spingere un bambino a parlare della crisi.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 21},
     {"text": "Se sei molto in pensiero per un bambino, rivolgiti a un pediatra, a un servizio di consulenza o a uno psicoterapeuta infantile.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 20}
   ],
@@ -88,27 +88,27 @@
     {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Prepararsi a crisi e catastrofi", "note": "In tedesco. Medicinali, paura e preoccupazione, bambini, e persone con disabilità."}
   ],
   "route": [
-    {"title": "Passo 1: Tieni in casa una farmacia e i tuoi medicinali", "goal": "Abbastanza medicinali abituali per i giorni senza farmacia, conservati in modo sicuro",
+    {"title": "Prepara la farmacia di casa e i tuoi medicinali", "goal": "Scorte sufficienti dei tuoi medicinali abituali per i giorni senza farmacia, conservate in modo sicuro",
      "read": [
        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Medicinali per dieci giorni", "note": "In tedesco."},
        {"doc": "oezsv-bevorratungsratgeber", "page": 13, "label": "Come conservarli e controllarli", "note": "In tedesco."}
      ]},
-    {"title": "Passo 2: Impara il primo soccorso", "goal": "Sapere cosa fa chi presta soccorso, prima che serva",
+    {"title": "Impara il primo soccorso", "goal": "Sapere cosa fa chi presta soccorso, prima che serva",
      "read": [
        {"doc": "zsv-steiermark-notfallratgeber", "page": 16, "label": "I compiti di chi presta soccorso", "note": "In tedesco."},
        {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Controllare una persona, in ordine", "note": "In inglese."}
      ]},
-    {"title": "Passo 3: Scopri cosa aiuta contro paura e stress", "goal": "Riconoscere lo stress in te e negli altri, e cosa lo allevia",
+    {"title": "Scopri cosa aiuta contro paura e stress", "goal": "Riconoscere lo stress in te e negli altri, e cosa lo allevia",
      "read": [
        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 18, "label": "Cosa aiuta", "note": "In tedesco."},
        {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Segnali di stress, e cosa protegge", "note": "In tedesco."}
      ]},
-    {"title": "Passo 4: Aiuta una persona in difficoltà", "goal": "Ascoltare, e mettere le persone in contatto con un aiuto senza forzarle",
+    {"title": "Aiuta una persona in difficoltà", "goal": "Ascoltare, e mettere le persone in contatto con un aiuto senza forzarle",
      "read": [
        {"doc": "ifrc-first-aid-guidelines-2020", "page": 116, "label": "Primo soccorso psicologico", "note": "In inglese."},
        {"doc": "ifrc-first-aid-guidelines-2020", "page": 118, "label": "Quando chiedere l'aiuto di uno specialista", "note": "In inglese."}
      ]},
-    {"title": "Passo 5: Aiuta i bambini ad attraversare una crisi", "goal": "Capire come reagiscono i bambini e come rassicurarli",
+    {"title": "Aiuta i bambini ad attraversare una crisi", "goal": "Capire come reagiscono i bambini e come rassicurarli",
      "read": [
        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 21, "label": "Sostenere un bambino", "note": "In tedesco."}
      ]}
@@ -117,7 +117,7 @@
   "gaps": {
     "missing": [
       "Nessuna guida per assistere a casa una persona malata per giorni o settimane.",
-      "Nulla sulle malattie croniche senza un medico (diabete, pressione alta, malattie del cuore), su gravidanza e parto, o sui denti.",
+      "Nulla sulle malattie croniche in assenza di un medico (diabete, pressione alta, malattie del cuore), su gravidanza e parto, o sui denti.",
       "Nessuna guida ai medicinali: cosa prendere e per cosa, le dosi, o quanto durano i medicinali.",
       "Le linee di ascolto sono indicate solo per la Germania, per la Stiria in Austria e per la Polonia."
     ]

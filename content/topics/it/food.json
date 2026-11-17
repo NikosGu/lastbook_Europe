@@ -4,12 +4,12 @@
   "mode": "now",
   "title": "Cibo: scorte, cucina e sicurezza",
   "short": "Scorte, cucinare senza corrente, cosa buttare",
-  "intro": "Letture su come tenere in casa cibo per una settimana o più, come cucinare quando la cucina elettrica non funziona e come capire quando un cibo non è più sicuro da mangiare.",
+  "intro": "Letture su come tenere in casa cibo per una settimana o più, come cucinare quando i fornelli elettrici non funzionano e come capire quando un cibo non è più sicuro da mangiare.",
   "keywords": ["cibo", "alimenti", "viveri", "scorte", "scorte alimentari", "provviste", "dispensa", "cibo di emergenza", "conservare il cibo", "scatolette", "cibo in scatola", "a lunga conservazione", "lunga conservazione", "scadenza", "data di scadenza", "preferibilmente entro", "frigo", "frigorifero", "congelatore", "freezer", "andato a male", "avariato", "buttare", "muffa", "cucinare", "cucinare senza corrente", "fornelletto da campeggio", "fornello a gas", "griglia", "barbecue", "fondue", "fonduta", "monossido di carbonio", "omogeneizzati", "pappe", "cibo per bambini", "cibo per animali", "fame", "alluvione"],
   "choices": [
     {
       "id": "stock",
-      "label": "Che cibo dovremmo tenere in casa?",
+      "label": "Quali cibi dovremmo tenere in casa?",
       "hint": "Cibo a lunga conservazione per una settimana o più",
       "read": [
         {"doc": "bwl-scorte-d-emergenza", "page": 4, "label": "Una lista di controllo per sette giorni",
@@ -36,12 +36,12 @@
     {
       "id": "cook",
       "label": "Cucinare senza corrente",
-      "hint": "Niente cucina elettrica: gas, fornelletto da campeggio, griglia, set per fondue",
+      "hint": "Niente fornelli elettrici: gas, fornelletto da campeggio, griglia, set per fondue",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Con cosa puoi cucinare in casa, e con cosa solo all'aperto",
          "note": "In tedesco. Scaldavivande a lumini e set per fondue in casa; fornelletti da campeggio e griglie solo all'aperto; il pericolo del monossido di carbonio."},
-        {"doc": "zsv-steiermark-blackout", "page": 28, "label": "Cucinare in un blackout",
-         "note": "In tedesco. Perché le cucine elettriche si fermano, diete speciali, consumare il cibo di frigo e congelatore, e tenere una scorta di gas, legna o carbonella."}
+        {"doc": "zsv-steiermark-blackout", "page": 28, "label": "Cucinare durante un blackout",
+         "note": "In tedesco. Perché i fornelli elettrici smettono di funzionare, diete speciali, consumare il cibo di frigo e congelatore, e tenere una scorta di gas, legna o carbonella."}
       ]
     },
     {
@@ -65,7 +65,7 @@
         {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Scatolette gonfie e formaggio ammuffito",
          "note": "In tedesco. Quando una scatoletta va buttata, e quando la muffa sul formaggio duro si può tagliare via."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Frutta secca, olio e carne andati a male",
-         "note": "In tedesco. I segni che vanno buttati."},
+         "note": "In tedesco. I segni che indicano quando vanno buttati."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Cibo toccato dall'acqua dell'alluvione",
          "note": "Tra le cose da fare dopo un'alluvione."}
       ]
@@ -83,7 +83,7 @@
     }
   ],
   "limits": [
-    {"text": "In casa cucina solo con apparecchi omologati per l'uso al chiuso; fornelletti da campeggio e griglie vanno usati all'aperto.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "In casa, cucina solo con apparecchi omologati per l'uso al chiuso; fornelletti da campeggio e griglie vanno usati all'aperto.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "L'intossicazione da monossido di carbonio può uccidere, e anche un fuoco aperto in casa può provocarla.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "Butta via una scatoletta con il coperchio gonfio verso l'esterno.", "doc": "oezsv-bevorratungsratgeber", "page": 10},
     {"text": "Butta via la frutta secca che ha un sapore strano o mostra muffa, e la carne viscida o dall'odore forte.", "doc": "oezsv-bevorratungsratgeber", "page": 11},
@@ -110,7 +110,7 @@
     "disagree": [
       "Per quanto tempo organizzarsi: 72 ore (la guida nazionale francese), almeno 3 giorni (la guida del governo polacco), circa una settimana (gli opuscoli svizzeri, la guida austriaca alle scorte e la guida polacca dell'RCB), 10 giorni se possibile e almeno 3 (la guida tedesca), da una a due settimane (la guida stiriana sul blackout), almeno da 10 a 14 giorni (la lista di controllo austriaca per il blackout).",
       "Cucinare alla griglia in un blackout: le guide austriache suggeriscono un barbecue da giardino senza dire dove usarlo; la guida tedesca dice che griglie e fornelletti da campeggio sono solo per l'aperto.",
-      "Ogni quanto controllare le scorte: una volta all'anno (la guida austriaca alle scorte e la guida francese in versione facile da leggere), due volte all'anno (la guida nazionale francese), ogni pochi mesi (la guida del governo polacco)."
+      "Ogni quanto controllare le scorte: una volta all'anno (la guida austriaca alle scorte e la guida francese in versione facile da leggere), due volte all'anno (la guida nazionale francese), ogni qualche mese (la guida del governo polacco)."
     ]
   }
 }

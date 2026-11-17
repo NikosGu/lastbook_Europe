@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Manca la corrente",
   "short": "Prime cose da fare, luce, medicinali, ascensori, generatori",
-  "intro": "Letture per un'interruzione di corrente che può durare ore o giorni: le prime cose da fare in casa, come avere notizie, i medicinali che dipendono dalla corrente o dal freddo, gli ascensori, i generatori e cosa fare quando la corrente torna.",
+  "intro": "Letture per un'interruzione di corrente che può durare ore o giorni: le prime cose da fare in casa, come restare informati, i medicinali che dipendono dalla corrente o dal freddo, gli ascensori, i generatori e cosa fare quando la corrente torna.",
   "keywords": ["interruzione di corrente", "mancanza di corrente", "manca la corrente", "senza corrente", "è saltata la corrente", "è andata via la luce", "blackout", "black out", "corrente", "elettricità", "senza luce", "niente luce", "buio", "torcia", "pila", "candele", "batterie", "pile", "power bank", "radio", "generatore", "gruppo elettrogeno", "ascensore", "bloccato in ascensore", "insulina", "apparecchio medico", "dispositivo medico", "ossigeno", "frigo", "frigorifero", "congelatore", "contanti", "fusibile", "salvavita", "è tornata la corrente", "vicini", "vicini di casa"],
   "choices": [
     {
@@ -48,7 +48,7 @@
     {
       "id": "lift",
       "label": "Un ascensore si è fermato, o abito ai piani alti",
-      "hint": "Qualcuno potrebbe essere bloccato dentro, solo le scale",
+      "hint": "Qualcuno potrebbe essere bloccato dentro, restano solo le scale",
       "read": [
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Controlla che nessuno sia bloccato in ascensore",
          "note": "In tedesco. Tra le cose da fare per il palazzo e la via: l'ascensore, i vicini e le persone che hanno bisogno di aiuto."},
@@ -62,7 +62,7 @@
       "hint": "Un generatore portatile, il carburante, dove metterlo",
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 18, "label": "Generatori: dove farli funzionare, carburante, rischio di incendio",
-         "note": "In tedesco. Mai in locali chiusi; circa un litro di carburante all'ora; il carburante tenuto di scorta è un rischio di incendio. Spiega anche perché di solito si fermano anche i pannelli solari."},
+         "note": "In tedesco. Mai in locali chiusi; circa un litro di carburante all'ora; il carburante tenuto di scorta è un rischio di incendio. Spiega inoltre perché di solito si fermano anche i pannelli solari."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Collega gli apparecchi al generatore, non all'impianto di casa",
          "note": "Non collegarlo all'impianto elettrico di casa, e non accenderlo mai in casa o in garage."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Niente generatori né stufe da esterno dentro casa",
@@ -118,8 +118,8 @@
   "related": ["food", "shelter", "comms", "water"],
   "gaps": {
     "missing": [
-      "Nessun manuale per generatori o stazioni di energia portatili: solo le avvertenze di questa guida.",
-      "Nulla per chi vive in edifici alti, oltre a controllare l'ascensore: la pressione dell'acqua, le lunghe scale, i vicini che non riescono a scendere.",
+      "Nessun manuale per generatori o power station portatili: solo le avvertenze di questa guida.",
+      "Nulla per chi vive in edifici alti, oltre a controllare l'ascensore: la pressione dell'acqua, le lunghe rampe di scale, i vicini che non riescono a scendere.",
       "Nessuna guida agli apparecchi medici che funzionano a corrente, come quelli per l'ossigeno o i respiratori, oltre a chiedere aiuto per tempo."
     ],
     "disagree": [

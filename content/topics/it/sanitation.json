@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Bagno, rifiuti e igiene quando manca l'acqua",
   "short": "Un WC senza acqua, mani pulite, rifiuti",
-  "intro": "Letture per quando non si può tirare lo sciacquone o manca l'acqua: un WC di fortuna, mani pulite e rifiuti. La biblioteca ha solo brevi passaggi su questo; cosa manca è elencato qui sotto.",
+  "intro": "Letture per quando non si può tirare lo sciacquone o manca l'acqua: un WC di fortuna, mani pulite e rifiuti. La biblioteca ha solo brevi brani su questo; ciò che manca è elencato qui sotto.",
   "keywords": ["bagno", "WC", "gabinetto", "water", "toilette", "sciacquone", "lo sciacquone non va", "non scarica", "liquami", "fogna", "fognature", "scarichi", "WC a secchio", "secchio", "WC da campeggio", "WC chimico", "sacchetti per WC", "sacchi della spazzatura", "rifiuti", "spazzatura", "immondizia", "pattumiera", "igiene", "lavarsi", "lavarsi le mani", "mani", "sapone", "gel igienizzante", "igienizzante per le mani", "disinfettante", "pannolini", "assorbenti", "mosche"],
   "choices": [
     {
@@ -27,7 +27,7 @@
       "label": "Tenere le mani pulite con poca acqua",
       "hint": "Niente acqua corrente, il sapone sta finendo",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "Quando tutti dovrebbero lavarsi le mani",
+        {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "Quando bisogna lavarsi le mani",
          "note": "In inglese. Dopo aver usato il WC, prima di preparare il cibo, prima di mangiare o di dare da mangiare a un bambino, e dopo aver pulito un bambino."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Mani pulite prima di toccare l'acqua da bere",
          "note": "In inglese. Lavarsi le mani prima di maneggiare l'acqua conservata, e un rubinetto sul contenitore."},

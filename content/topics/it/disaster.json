@@ -40,7 +40,7 @@
     },
     {
       "id": "flood-warning",
-      "label": "È stata data l'allerta per alluvione",
+      "label": "È scattata l'allerta alluvione",
       "hint": "Piogge forti, un fiume che si ingrossa, un'allerta per la mia zona",
       "read": [
         {"doc": "dpc-io-non-rischio", "page": 28, "label": "Quando viene diramata un'allerta",
@@ -76,7 +76,7 @@
       "label": "Fuoco o fumo in casa",
       "hint": "Il rilevatore di fumo suona, un incendio in una stanza, fumo sulle scale",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 26, "label": "Incendio in casa: sei passi",
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 26, "label": "Incendio in casa: sei passaggi",
          "note": "In tedesco. Spegnilo solo se puoi farlo senza rischi, esci e chiudi la porta, avvisa gli altri, non attraversare mai il fumo, chiama il 112."},
         {"doc": "zsv-steiermark-notfallratgeber", "page": 10, "label": "Uscire, o aspettare alla finestra",
          "note": "In tedesco. Se la via d'uscita è libera dal fumo, esci; se c'è fumo, chiudi le porte, tappa le fessure con panni bagnati e aspetta a una finestra aperta."},
@@ -92,7 +92,7 @@
         {"doc": "dpc-io-non-rischio", "page": 39, "label": "Se vedi un incendio boschivo, o se le fiamme ti raggiungono",
          "note": "Chiama subito; come allontanarsi, dove sdraiarsi e quando passare sulla zona già bruciata."},
         {"doc": "dpc-io-non-rischio", "page": 37, "label": "Segnala un incendio, o anche solo del fumo",
-         "note": "Indica il luogo esatto e il Comune. Con i numeri italiani."}
+         "note": "Indica il luogo esatto e il Comune. Con i numeri da chiamare in Italia."}
       ]
     },
     {
@@ -168,10 +168,10 @@
       "Nessuna guida alle frane, né alle valanghe oltre al soccorso tra alpinisti.",
       "Nessuna guida per pulire e asciugare una casa dopo un'alluvione.",
       "Sugli incidenti chimici e nucleari, solo dove ripararsi, l'avvertenza sullo iodio e, nella guida polacca dell'RCB, quanto tempo restare al chiuso (almeno 24 ore): nulla su come fare pulizia.",
-      "Le pagine su ogni rischio sono scritte per un solo paese (Italia, Germania, Austria, Francia, Spagna o Polonia), con i numeri e le allerte di quel paese; sirene e sistemi di allerta sono spiegati per Italia, Germania, Austria, Francia e Polonia."
+      "Le pagine su ogni rischio sono scritte per un solo Paese (Italia, Germania, Austria, Francia, Spagna o Polonia), con i numeri e le allerte di quel Paese; sirene e sistemi di allerta sono spiegati per Italia, Germania, Austria, Francia e Polonia."
     ],
     "disagree": [
-      "Fuggire attraverso il fumo: la guida tedesca dice di non farlo mai; la guida spagnola sull'autoprotezione dice di respirare attraverso un panno umido e di procedere carponi, se devi uscire attraverso il fumo."
+      "Fuggire attraverso il fumo: la guida tedesca dice di non farlo mai; la guida spagnola sull'autoprotezione dice che, se si deve uscire attraverso il fumo, bisogna respirare attraverso un panno umido e procedere carponi."
     ]
   }
 }

@@ -41,7 +41,7 @@
         {"doc": "zsv-steiermark-notfallratgeber", "page": 3, "label": "Cosa dire in ogni chiamata di emergenza",
          "note": "In tedesco. Dove, cosa è successo, quanti feriti, chi chiama; con il 112 e i numeri propri dell'Austria."},
         {"doc": "vvf-acqua-e-vita", "page": 2, "label": "Chiamare i soccorsi durante un'alluvione",
-         "note": "Cosa dire all'operatore, e restare in linea finché non è lui a chiudere la chiamata. Con i numeri italiani."}
+         "note": "Cosa dire a chi risponde, e restare in linea finché non è l'operatore a chiudere la chiamata. Con i numeri da chiamare in Italia."}
       ]
     },
     {
@@ -86,7 +86,7 @@
   "related": ["power", "disaster"],
   "gaps": {
     "missing": [
-      "Nessuna guida alle radio per parlarsi a distanza, come i walkie-talkie PMR, la CB o le radio dei radioamatori; la guida del governo polacco le cita solo tra le cose da avere.",
+      "Nessuna guida alle radio per parlarsi a distanza, come i walkie-talkie PMR, le radio CB o quelle dei radioamatori; la guida del governo polacco le cita solo tra le cose da avere.",
       "Un piano familiare per le crisi c'è solo nella guida del governo polacco; la guida nazionale francese dice di concordare con i familiari come restare in contatto.",
       "I sistemi di allerta sono spiegati solo per Germania, Austria, Italia, Francia e Polonia.",
       "Nessuna guida per leggere una carta o usare una bussola."

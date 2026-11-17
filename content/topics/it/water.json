@@ -2,7 +2,7 @@
   "_review": "machine-assisted, needs native-speaker review",
   "id": "water",
   "mode": "now",
-  "title": "Procurarsi acqua sicura da bere",
+  "title": "Procurarsi acqua potabile",
   "short": "Conservarla, renderla più sicura, tenerla pulita",
   "intro": "Letture per quando l'acqua del rubinetto non arriva più o potrebbe non essere sicura: quanta tenerne di scorta, come renderla più sicura da bere e come mantenerla pulita. Le pagine vengono dall'OMS e dalla protezione civile svizzera, tedesca, austriaca e italiana.",
   "keywords": ["acqua", "acqua potabile", "acqua da bere", "acqua del rubinetto", "bollire", "far bollire", "bollire l'acqua", "bollitura", "cloro", "pastiglie", "compresse", "pastiglie per l'acqua", "potabilizzare", "purificare", "disinfettare", "filtro", "filtrare", "filtro a sabbia", "SODIS", "luce del sole", "acqua in bottiglia", "acqua minerale", "scorta d'acqua", "conservare l'acqua", "contenitore", "tanica", "vasca da bagno", "quanta acqua", "litri", "sete", "acqua sporca", "acqua torbida", "alluvione", "tubo rotto", "conduttura rotta", "acqua contaminata", "blackout"],
@@ -10,7 +10,7 @@
     {
       "id": "unsafe",
       "label": "L'acqua del rubinetto non arriva o potrebbe non essere sicura",
-      "hint": "Un'alluvione, un tubo rotto, un avviso di non berla",
+      "hint": "Un'alluvione, un tubo rotto, un avviso che dice di non berla",
       "read": [
         {"doc": "bwl-scorte-d-emergenza", "page": 3, "label": "Perché ogni casa ha bisogno di una scorta d'acqua",
          "note": "Il maltempo può danneggiare una conduttura o rendere l'acqua del rubinetto non sicura; tieni una scorta che basti finché l'acqua non torna."},
@@ -26,7 +26,7 @@
       "hint": "Un fornello a gas, un fornelletto da campeggio, un fuoco",
       "read": [
         {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Bollitura, cloro e luce del sole",
-         "note": "In inglese. Porta l'acqua a un bollore vivace; è efficace ma consuma molto combustibile. La pagina parla anche del cloro e della disinfezione con il sole."},
+         "note": "In inglese. Porta l'acqua a piena ebollizione; è efficace ma consuma molto combustibile. La pagina parla anche del cloro e della disinfezione con il sole."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "Un semplice filtro, poi fai bollire l'acqua",
          "note": "In tedesco. Un filtro a sabbia improvvisato per l'acqua torbida, dopo il quale l'acqua viene fatta bollire per circa un minuto."}
       ]
@@ -34,10 +34,10 @@
     {
       "id": "tablets",
       "label": "Ho pastiglie per l'acqua o cloro",
-      "hint": "Pastiglie o gocce comprate in farmacia o in un negozio per il campeggio",
+      "hint": "Pastiglie o gocce comprate in farmacia o in un negozio di articoli da campeggio",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Usare le pastiglie di cloro, passo per passo",
-         "note": "In inglese. Una guida per immagini per l'acqua limpida e per quella sporca, poi un'attesa di 30 minuti. La dose dipende dal prodotto: segui le sue istruzioni."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Usare le pastiglie di cloro, passo dopo passo",
+         "note": "In inglese. Una guida illustrata per l'acqua limpida e per quella sporca, poi un'attesa di 30 minuti. La dose dipende dal prodotto: segui le sue istruzioni."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Cosa fa il cloro, e cosa non fa",
          "note": "In inglese. Il cloro uccide la maggior parte dei germi, ma non tutti; i prodotti hanno concentrazioni diverse, quindi segui sempre le istruzioni del produttore."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Pastiglie, vasca da bagno e sole",
@@ -49,7 +49,7 @@
       "label": "Niente combustibile e niente pastiglie",
       "hint": "Solo bottiglie trasparenti, luce del sole, stoffa o sabbia",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Lasciala riposare, poi filtrala",
+        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Lasciala decantare, poi filtrala",
          "note": "In inglese. Come agitare l'acqua perché prenda aria, come far depositare lo sporco, e i filtri domestici. L'acqua lasciata decantare ha comunque bisogno di un trattamento di provata efficacia."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Disinfezione con il sole in bottiglie trasparenti (SODIS)",
          "note": "In inglese. Bottiglie trasparenti da uno o due litri, piene di acqua limpida, al sole diretto; quanto tempo serve dipende dal sole e dalla bottiglia."},

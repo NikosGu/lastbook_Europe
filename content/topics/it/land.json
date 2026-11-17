@@ -14,7 +14,7 @@
   "related": ["disaster", "water"],
   "gaps": {
     "missing": [
-      "Nessuna mappa dei rischi (alluvioni, terremoti, frane) per alcuna zona.",
+      "Nessuna mappa dei rischi (alluvioni, terremoti, frane) per nessuna zona.",
       "Nulla su come trovare acqua in natura (sorgenti, pozzi, pioggia), né su piante selvatiche e funghi.",
       "Nulla su come leggere una carta o usare una bussola."
     ]

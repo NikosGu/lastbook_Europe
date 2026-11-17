@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Stare al caldo, al fresco e al riparo",
   "short": "Freddo senza riscaldamento, monossido di carbonio, tempeste invernali, caldo",
-  "intro": "Letture per stare al caldo quando il riscaldamento non funziona, scaldarsi senza il pericolo del monossido di carbonio, superare un'ondata di freddo in casa e per strada, e aiutare chi soffre di più il freddo o il caldo.",
+  "intro": "Letture per stare al caldo quando il riscaldamento non funziona, scaldarsi senza il pericolo del monossido di carbonio, superare un'ondata di freddo in casa e in viaggio, e aiutare chi soffre di più il freddo o il caldo.",
   "keywords": ["freddo", "gelo", "si gela", "inverno", "neve", "ondata di freddo", "ondata di gelo", "riscaldamento", "riscaldamento guasto", "caldaia rotta", "senza riscaldamento", "scaldarsi", "stare al caldo", "tenersi al caldo", "coperte", "sacco a pelo", "vestirsi a strati", "ipotermia", "congelamento", "stufa", "stufetta", "stufa a gas", "stufa a petrolio", "stufa a legna", "camino", "caminetto", "monossido di carbonio", "rilevatore di monossido", "rilevatore di CO", "generatore", "tubi gelati", "tubature congelate", "auto bloccata nella neve", "ghiaccio", "caldo", "ondata di calore", "ondata di caldo", "afa", "canicola", "riparo"],
   "choices": [
     {
@@ -89,7 +89,7 @@
     }
   ],
   "limits": [
-    {"text": "In casa usa solo stufe e fornelli omologati per l'uso al chiuso.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "In casa, usa solo stufe e fornelli omologati per l'uso al chiuso.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "L'intossicazione da monossido di carbonio può uccidere, e anche un fuoco aperto in casa può provocarla. Un rilevatore di CO certificato ti avvisa.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "Non usare in casa un generatore, né stufe e fornelli pensati per l'esterno.", "doc": "ifrc-extreme-cold", "page": 5},
     {"text": "Cerca aiuto medico se compaiono segni di ipotermia o di congelamento.", "doc": "ifrc-extreme-cold", "page": 4},
