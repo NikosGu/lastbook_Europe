@@ -20,6 +20,21 @@ const Chat = (() => {
   const STAGES = ['chat.stage.search', 'chat.stage.read', 'chat.stage.write'], STAGE_AT = { starting: -1, thinking: 0, searching: 0, reading: 1, writing: 2 };
   // the kinds search_library may be limited to (the engine's assistant, crates/engine/src/ai/assistant.rs); another kind shows as the model sent it
   const KIND = { manual: 'chat.kind.manual', video: 'chat.kind.video' };
+  // What the local AI and the chat say, as codes with params (crates/engine/src/ai/local.rs and ai/chat.rs, CODES there), each
+  // beside the engine's English sentence, which shows only for a code this page does not know. measured_fits and from_disk_ssd
+  // are setup's (its measure of a model file).
+  const CODE = {
+    no_runtime: 'chat.code.no_runtime', unfinished: 'chat.code.unfinished', wrong_size: 'chat.code.wrong_size', wrong_contents: 'chat.code.wrong_contents',
+    cannot_read: 'chat.code.cannot_read', unknown_model: 'chat.code.unknown_model', cannot_measure: 'chat.code.cannot_measure', not_set_up: 'chat.code.not_set_up',
+    cannot_start: 'chat.code.cannot_start', did_not_start: 'chat.code.did_not_start', start_timeout: 'chat.code.start_timeout', start_failed: 'chat.code.start_failed',
+    not_running: 'chat.code.not_running', busy: 'chat.code.busy', stopped_unexpectedly: 'chat.code.stopped_unexpectedly',
+    too_long: 'chat.code.too_long', load: 'chat.code.load', context: 'chat.code.context', model_file: 'chat.code.model_file', failed: 'chat.code.failed',
+    from_disk: 'chat.code.from_disk', too_big: 'chat.code.too_big', too_big_graphics: 'chat.code.too_big_graphics', disk_too_slow: 'chat.code.disk_too_slow',
+    disk_speed_unknown: 'chat.code.disk_speed_unknown', measured_fits: 'chat.code.measured_fits', from_disk_ssd: 'chat.code.from_disk_ssd',
+    no_local_ai: 'chat.code.no_local_ai', too_many: 'chat.code.too_many', model_unavailable: 'chat.code.model_unavailable', empty: 'chat.code.empty' };
+  const said = (msg, english) => I18N.said(CODE, msg, english);
+  // Why the model fits this computer or not (l.why, with why_code and why_params)
+  const why = l => said({ code: l.why_code, params: l.why_params }, l.why || '');
   function progress(m) {
     const at = STAGE_AT[m.state] ?? 0, pct = m.state === 'starting' && m.pct ? Math.max(0, Math.min(100, +m.pct || 0)) : null;
     const stages = STAGES.map((k, i) => `<li class="${i < at ? 'done' : i === at ? 'now' : ''}">${th(k)}</li>`).join('');
@@ -108,22 +123,26 @@ const Chat = (() => {
   const escStop = e => { if (e.key === 'Escape' && busy()) stop() };
   function autosize() { const ta = $('#chatIn'); if (!ta) return; ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 180) + 'px' }
   const busy = () => cur && live[cur.id] && live[cur.id].running;
-  // The optional local AI (desktop app): [ready?, the line to show, as plain text]. The server version has no s.local.
-  // l.message is the engine's own sentence (English), shown as it comes.
+  // The optional local AI (desktop app): [ready?, a short line for the top of the chat, the whole sentence], as plain text.
+  // The server version has no s.local. What the engine says (l.message, l.why) comes as codes with params: said(), why().
+  // The short line shares one line with "search and reading still work", which is cut short if both are long: keep it short.
   function localLine(l) {
-    const gb = n => I18N.unit(Math.round(n / 1e9), 'gigabyte');
-    return ({
-      ready: () => [true, t('chat.local.ready')],
-      stopped: () => [true, t('chat.local.stopped')],
+    const disk = l.verdict === 'from_disk' && l.from_disk_chosen;
+    const whole = english => said(l, l.message || english);
+    const [ok, line, all] = ({
+      ready: () => [true, t(disk ? 'chat.local.disk_ready' : 'chat.local.ready')],
+      stopped: () => [true, t(disk ? 'chat.local.disk_ready' : 'chat.local.stopped')],
       loading: () => [true, l.pct ? t('chat.local.loading_pct', { pct: l.pct }) : t('chat.local.loading')],
       checking: () => [false, l.pct != null ? t('chat.local.checking_pct', { pct: l.pct }) : t('chat.local.checking')],
       measuring: () => [false, t('chat.local.measuring')],
       absent: () => [false, t('chat.local.absent')],
-      wrong: () => [false, l.message || t('chat.local.wrong')],
-      too_big: () => [false, l.message || t('chat.local.too_big', { size: gb(l.needs_bytes || 0) })],
+      wrong: () => [false, t('chat.local.wrong'), whole(t('chat.local.wrong'))],
+      too_big: () => [false, t('chat.local.too_big'), whole('')],
+      from_disk: () => [false, t('chat.local.from_disk'), why(l)],
       off: () => [false, t('chat.local.off')],
-      error: () => [false, l.message || t('chat.local.error')],
-    }[l.state] || (() => [false, l.message || t('chat.local.unavailable')]))();
+      error: () => [false, t('chat.local.unavailable'), whole(t('chat.local.error'))],
+    }[l.state] || (() => [false, t('chat.local.unavailable'), whole('')]))();
+    return [ok, line, all || line];
   }
   let polling = null;
   async function statusLine() {
@@ -142,23 +161,45 @@ const Chat = (() => {
     clearTimeout(polling);
     if (l && /checking|measuring|loading/.test(l.state) && $('#chatStatus')) polling = setTimeout(statusLine, 1000);
   }
-  // How to add the local AI, on a new chat when it is missing, wrong or off. The file comes from the website, outside the app.
+  // On a new chat: how to add or fix the local AI while it cannot answer (missing, wrong, off, too large, or larger than the
+  // memory and waiting for the person's choice to run it from the disk), or how to stop running it from the disk once chosen;
+  // and the models found here, when there are several. The file comes from the website, outside the app.
   function setupCard(s) {
     const box = $('#aiSetup'), l = s.local; if (!box) return;
-    const show = !!l && !s.online && /absent|wrong|off|error/.test(l.state) && !(cur && cur.messages.length);
-    box.hidden = !show;
-    if (!show) return;
-    box.innerHTML = l.state === 'off'
-      ? `<p>${th('chat.setup.off')}</p><div class="row"><button class="btn" data-ai="on">${th('chat.setup.turn_on')}</button></div>`
-      : l.state === 'error' ? `<p>${esc(l.message || t('chat.local.error'))}</p><div class="row"><button class="btn" data-ai="rescan">${th('chat.setup.look_again')}</button></div>`
-      : `<p><b>${th('chat.setup.add_title')}</b> ${th('chat.setup.add_size', { size: I18N.unit(17, 'gigabyte') })}</p>
-         <div class="row"><a class="btn" href="/ui/setup.html#manage">${th('chat.setup.add')}</a><button class="btn plain" data-ai="rescan">${th('chat.setup.look_again')}</button></div>
-         <p class="small">${th('chat.setup.have_file', { file: I18N.raw(`<code>${esc(l.file)}</code>`), folder: I18N.raw('<b>LastbookData</b>'), again: t('chat.setup.look_again') })}</p>`;
+    const html = l && !(cur && cur.messages.length) ? card(l, s.online) : '';
+    box.hidden = !html;
+    if (!html) return;
+    box.innerHTML = html;
     $$('[data-ai]', box).forEach(b => b.onclick = async () => {
       b.disabled = true;
       try { await fetch('/api/assistant/local', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: b.dataset.ai }) }) } catch { }
       setTimeout(statusLine, 300);
     });
+  }
+  function card(l, online) {
+    const btn = (action, label, plain) => `<button class="btn${plain ? ' plain' : ''}" data-ai="${esc(action)}">${label}</button>`;
+    const row = (...b) => `<div class="row" style="flex-wrap:wrap">${b.join('')}</div>`;
+    const again = plain => btn('rescan', th('chat.setup.look_again'), plain), models = modelList(l, (a, label) => btn(a, label, true));
+    if (l.state === 'from_disk') return `<p>${esc(why(l))}</p><p>${diskWarning(l)}</p>${row(btn('from_disk_on', th('chat.setup.disk_on')), again(true))}${models}`;
+    if (l.verdict === 'from_disk' && l.from_disk_chosen && /ready|stopped|loading/.test(l.state)) return `<p>${th('chat.setup.disk_chosen')}</p>${row(btn('from_disk_off', th('chat.setup.disk_off'), true))}${models}`;
+    if (online) return '';
+    if (l.state === 'off') return `<p>${th('chat.setup.off')}</p>${row(btn('on', th('chat.setup.turn_on')))}`;
+    if (l.state === 'error' || l.state === 'too_big') return `<p>${esc(localLine(l)[2])}</p>${row(again(false))}${models}`;
+    if (l.state !== 'absent' && l.state !== 'wrong') return '';
+    const where = { folder: I18N.raw('<b>LastbookData</b>'), again: t('chat.setup.look_again') };
+    return `${l.state === 'wrong' ? `<p>${esc(localLine(l)[2])}</p>` : ''}<p><b>${th('chat.setup.add_title')}</b> ${th('chat.setup.add_size', { size: I18N.unit(17, 'gigabyte') })}</p>
+       ${row(`<a class="btn" href="/ui/setup.html#manage">${th('chat.setup.add')}</a>`, again(true))}
+       <p class="small">${l.file ? th('chat.setup.have_file', { file: I18N.raw(`<code>${esc(l.file)}</code>`), ...where }) : th('chat.setup.have_any', where)}</p>${models}`;
+  }
+  // Before choosing to run the model from the disk: its answers will be slow (as HTML)
+  const diskWarning = l => th('chat.setup.disk_warn') + (l.disk_mb_s ? ' ' + th('chat.setup.disk_speed', { speed: I18N.unit(l.disk_mb_s, 'megabyte-per-second') }) : '');
+  // The models found here, when there are several: each with its size, the one in use marked, each other one a button
+  // (btn(action, label)) that chooses it. As HTML, for the chat's card and for About.
+  function modelList(l, btn) {
+    const ms = Array.isArray(l.models) ? l.models : [];
+    if (ms.length < 2) return '';
+    return `<span style="display:block;margin-top:14px">${th('chat.model.title')}</span>` + ms.map(m => `<span class="row" style="flex-wrap:wrap">
+      <span style="flex:1;min-width:10em">${esc(m.title)} · ${esc(I18N.size(m.size))}</span>${m.id === l.model ? `<span class="muted">${th('chat.model.in_use')}</span>` : btn('use:' + m.id, th('chat.model.use'))}</span>`).join('');
   }
   async function describe(about) {
     const [kind, id, n] = about.split(':');
@@ -379,12 +420,12 @@ const Chat = (() => {
     c.updated = Date.now(); persist();
     const ta = $('#chatIn'); if (ta) { ta.value = ''; autosize() }
     renderSide(); renderCtx(); renderLog(); setBusy(true); scrollEnd(true);
-    const idx = c.messages.length - 1, ctl = new AbortController();
+    const idx = c.messages.length - 1, ctl = new AbortController(), later = [];   // later: what an event still looks up
     live[c.id] = { running: true, abort: () => ctl.abort() };
     const redraw = throttle(() => { if (cur === c) { updateBot(idx); scrollEnd() } }, 80);
     try {
       const st = await getStatus();
-      if (!st.online) throw Object.assign(new Error('offline'), { offline: true, why: st.local && localLine(st.local)[1] });
+      if (!st.online) throw Object.assign(new Error('offline'), { offline: true, why: st.local && localLine(st.local)[2] });
       const r = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history_(c).slice(0, -1).concat([{ role: 'user', content: text }]), about: c.about }), signal: ctl.signal });
       if (!r.ok || !r.body) throw new Error(t('chat.err.refused', { status: String(r.status) }));
       const rd = r.body.getReader(), dec = new TextDecoder();
@@ -398,7 +439,7 @@ const Chat = (() => {
           const chunk = buf.slice(0, k); buf = buf.slice(k + 2);
           if (!chunk.startsWith('data:')) continue;
           let ev; try { ev = JSON.parse(chunk.slice(5)) } catch { continue }
-          onEvent(m, ev);
+          onEvent(m, ev, text, later);
           redraw();
         }
       }
@@ -408,13 +449,15 @@ const Chat = (() => {
       else if (e.offline || /model_unavailable/.test(e.message)) { m.offline = true; m.error = e.why || t('chat.err.model_off'); await fallback(m, text) }
       else m.error = e.message || t('chat.err.failed');
     }
+    await Promise.all(later).catch(() => { });
     m.running = false; delete m.state;
     if (m.stopped && m.content) m.content += '\n\n' + t('chat.stopped_note');
     live[c.id].running = false;
     c.updated = Date.now(); persist();
     if (cur === c) { updateBot(idx); setBusy(false); scrollEnd(); const box = $('#chatIn'); if (box && matchMedia('(hover:hover)').matches) box.focus({ preventScroll: true }) }
   }
-  function onEvent(m, ev) {
+  // One event of the answer to question q. Looking things up for it (an error's state line, search results) goes in later.
+  function onEvent(m, ev, q, later) {
     if (ev.type === 'state') { m.state = ev.state; m.pct = ev.pct }
     else if (ev.type === 'found') m.steps.push({ name: 'found', count: ev.count });
     else if (ev.type === 'tool') { if (ev.phase === 'start') m.steps.push({ name: ev.name, args: ev.args }); else { const s = [...m.steps].reverse().find(x => x.name === ev.name && !x.summary); if (s) s.summary = ev.summary } m.state = 'searching' }
@@ -422,9 +465,19 @@ const Chat = (() => {
     else if (ev.type === 'delta') m.content += ev.text;
     else if (ev.type === 'reset') m.content = '';
     else if (ev.type === 'done') { m.content = ev.answer; m.cited = ev.sources; m.consulted = ev.consulted; m.invalid = ev.invalid; m.latency = ev.latency; m.content = m.content.replace(/\[([SM]\d+)\]/g, (x, k) => (ev.invalid || []).includes(k) ? '' : x) }
-    else if (ev.type === 'error') {   // ev.text is the engine's own sentence
-      if (ev.error === 'model_unavailable') { m.offline = true; m.error = ev.text; fallback(m, (cur.messages[cur.messages.length - 2] || {}).content || '') }
-      else { m.error = ev.text; if (ev.sources) m.fallback = ev.sources.slice(0, 8) }
+    else if (ev.type === 'error') {   // said by its code, else by its kind (ev.error); ev.text is the engine's English
+      m.error = said(ev.code ? ev : { code: ev.error }, ev.text);
+      if (ev.error === 'model_unavailable') {
+        m.offline = true;
+        // no code of the local AI's own: its state says why, unless it is ready (then it simply could not answer this time)
+        const vague = !Object.hasOwn(CODE, ev.code) || ev.code === 'model_unavailable';
+        later.push((async () => {
+          const l = vague ? (await getStatus()).local : null;
+          if (l && !/ready|stopped|loading/.test(l.state)) m.error = localLine(l)[2];
+          await fallback(m, q);
+        })());
+      }
+      else if (ev.sources) m.fallback = ev.sources.slice(0, 8);
     }
     else if (ev.type === 'stopped') m.stopped = true;
   }
@@ -445,5 +498,6 @@ const Chat = (() => {
   }
   function throttle(f, ms) { let last = 0, p = null; return () => { const n = Date.now(); if (n - last > ms) { last = n; f() } else { clearTimeout(p); p = setTimeout(() => { last = Date.now(); f() }, ms) } } }
 
-  return { page, count };
+  // said, why, localLine and models also word the local AI in About (web/app.js)
+  return { page, count, said, why, localLine, models: modelList, diskWarning };
 })();

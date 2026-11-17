@@ -1167,17 +1167,25 @@ function blind(c) {
   const all = I18N.list(parts);
   return esc(all[0].toUpperCase() + all.slice(1) + '. ');
 }
-// The optional local AI in the desktop app: what it is, where it runs, and its controls. '' in the server version.
+// The optional local AI in the desktop app: what it is, where it runs, and its controls; the models found here, when there are
+// several. '' in the server version. What the engine says comes as codes with params, worded by web/chat.js (Chat.said and
+// the others), as on the chat page.
 function localAbout(st) {
   const l = st.local; if (!l) return '';
-  const where = I18N.list((l.placement || []).filter(p => p.bytes > 2e8).map(p => t('app.ai.on_device', { size: I18N.unit(p.bytes / 1e9, 'gigabyte', 1), device: p.device })));
+  // placement: where each part runs ([{device, bytes}]); the runner of this engine names only how ("fit", "disk_cpu"), not shown
+  const where = I18N.list((Array.isArray(l.placement) ? l.placement : []).filter(p => p.bytes > 2e8).map(p => t('app.ai.on_device', { size: I18N.unit(p.bytes / 1e9, 'gigabyte', 1), device: p.device })));
   const line = { ready: 'app.ai.running', stopped: 'app.ai.stopped', loading: 'app.ai.starting' }[l.state];
-  const status = { absent: 'app.ai.absent', checking: 'app.ai.checking', measuring: 'app.ai.measuring' }[l.state];
-  const btn = (a, label) => `<button class="btn plain" onclick="localAI('${a}')">${label}</button>`;
-  return line ? `${th('app.ai.line', { name: l.name, state: t(line) })}${where ? ' ' + th('app.ai.uses', { where }) : ''} ${th('app.ai.text_only')}
-      <span class="row">${l.state === 'ready' ? btn('stop', th('app.ai.stop')) : ''}${btn('off', th('app.ai.off'))}</span>`
-    : l.state === 'off' ? `${th('app.ai.is_off')} ${btn('on', th('app.ai.on'))}`
-    : `${th('app.ai.status', { status: l.message || (status ? t(status, { size: I18N.unit(17, 'gigabyte') }) : l.state) })} ${l.state === 'absent' ? `<a class="btn plain" href="/ui/setup.html#manage">${th('app.ai.add')}</a>` : ''}${btn('rescan', th('app.ai.rescan'))}`;
+  const btn = (a, label) => `<button class="btn plain" onclick="localAI(${esc(JSON.stringify(a))})">${label}</button>`;
+  const row = (...b) => `<span class="row" style="flex-wrap:wrap">${b.join('')}</span>`;
+  const disk = l.verdict === 'from_disk' && l.from_disk_chosen, models = Chat.models(l, btn);
+  if (line) return `${th('app.ai.line', { name: l.name, state: t(line) })}${where ? ' ' + th('app.ai.uses', { where }) : ''} ${disk ? th('app.ai.disk') + ' ' : ''}${th('app.ai.text_only')}
+      ${row(l.state === 'ready' ? btn('stop', th('app.ai.stop')) : '', btn('off', th('app.ai.off')), disk ? btn('from_disk_off', th('chat.setup.disk_off')) : '')}${models}`;
+  if (l.state === 'off') return `${th('app.ai.is_off')} ${btn('on', th('app.ai.on'))}`;
+  if (l.state === 'from_disk') return `${th('app.ai.status', { status: Chat.why(l) })} ${Chat.diskWarning(l)}
+      ${row(btn('from_disk_on', th('chat.setup.disk_on')), btn('rescan', th('app.ai.rescan')))}${models}`;
+  const status = l.state === 'absent' ? t('app.ai.absent', { size: I18N.unit(17, 'gigabyte') }) : l.state === 'measuring' ? t('app.ai.measuring')
+    : l.state === 'checking' ? (l.pct != null ? t('app.ai.checking_pct', { pct: l.pct }) : t('app.ai.checking')) : Chat.localLine(l)[2];
+  return `${th('app.ai.status', { status })} ${l.state === 'absent' ? `<a class="btn plain" href="/ui/setup.html#manage">${th('app.ai.add')}</a>` : ''}${btn('rescan', th('app.ai.rescan'))}${models}`;
 }
 async function localAI(action) {
   try { await fetch('/api/assistant/local', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) }) } catch { }
