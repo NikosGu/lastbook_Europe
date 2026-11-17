@@ -211,7 +211,15 @@ mod tests {
         let packs = dir.join("packs");
         let base = lastbook_engine::dist::download_base();
         let m = crate::map::pack::map(&out.join("map"), &packs, &base).unwrap();
-        crate::map::pack::addresses(&out.join("addresses/LI.sqlite"), &packs, &base).unwrap();
+        let a = crate::map::pack::addresses(&out.join("addresses/LI.sqlite"), &packs, &base).unwrap();
+        // the check the workflow runs after a build: setup's checks, then the town, the addresses and the boxes
+        std::fs::write(packs.join("map-entry-LI.json"), m.to_string()).unwrap();
+        std::fs::write(packs.join("addresses-entry-LI.json"), a.to_string()).unwrap();
+        let report = crate::map::check::check("LI", &packs, &dir.join("check"), "Vaduz", 2).unwrap();
+        assert_eq!(report["ok"], true, "{report:#}");
+        assert_eq!(report["checks"].as_array().unwrap().len(), 8);
+        let fewer = crate::map::check::check("LI", &packs, &dir.join("check"), "Vaduz", 3).unwrap();
+        assert_eq!(fewer["ok"], false, "two addresses are not three");
         let lib = install::unpack(&packs.join("Lastbook-Map-LI.zip"), &dir.join("unpack"), m["installed_bytes"].as_u64(), &Control::new(), &mut |_, _| {},
                                   Some(&install::map_member), None).unwrap();
         std::fs::create_dir_all(lib.join("derived/geo/addresses")).unwrap();

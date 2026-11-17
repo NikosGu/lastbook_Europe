@@ -13,6 +13,7 @@ pub mod addresses;
 pub mod admin;
 pub mod base;
 pub mod buildings;
+pub mod check;
 pub mod cli;
 pub mod coast;
 pub mod detail;
@@ -25,5 +26,6 @@ pub mod places;
 #[cfg(test)]
 mod real;
 pub mod shp;
+pub mod sources;
 pub mod terrain;
 pub mod water;

@@ -14,6 +14,8 @@ const USAGE: &str = "lastbook-tools <subcommand> [options]
   pack-map        a region's map files as Lastbook-Map-<region>.zip, with its manifest entry
   pack-addresses  a region's address index as Lastbook-Addresses-<region>.zip, with its manifest entry
   build-terrain   a region's elevation tiles alone, from Copernicus DEM
+  region-sources  what to download for a region: its extracts, its neighbours', the DEM tiles, Natural Earth
+  check-map       a region's zips checked as setup takes them and as a person uses them
 
 Run a subcommand with --help for its options.";
 
@@ -27,6 +29,8 @@ fn main() {
         Some("pack-map") => map::cli::pack_map(rest),
         Some("pack-addresses") => map::cli::pack_addresses(rest),
         Some("build-terrain") => map::cli::build_terrain(rest),
+        Some("region-sources") => map::cli::region_sources(rest),
+        Some("check-map") => map::cli::check_map(rest),
         _ => {
             eprintln!("{USAGE}");
             2

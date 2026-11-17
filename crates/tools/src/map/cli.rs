@@ -9,7 +9,7 @@
 //!   lastbook-tools pack-addresses --index derived/maps/LI/addresses/LI.sqlite --out derived/packs
 //!   lastbook-tools build-terrain --region LI --dem FILE [--dem FILE]... --out terrain.sqlite
 
-use super::{mapset, pack, terrain};
+use super::{check, mapset, pack, sources, terrain};
 use lastbook_engine::{dist, regions};
 use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
@@ -45,6 +45,23 @@ const BUILD_TERRAIN: &str = "lastbook-tools build-terrain --region REGION --dem 
   --dem     a Copernicus DEM GLO-30 GeoTIFF; give each one the region's boxes touch
   --out     the terrain.sqlite to write
 Prints the number of tiles written, and of those left out because the DEM does not cover them whole.";
+
+const REGION_SOURCES: &str = "lastbook-tools region-sources --region REGION [--neighbours yes]
+
+  --region      the region's code
+  --neighbours  yes: also the extracts of the regions next to it, which build-map reads only inside its boxes
+Prints what to download for the region (crates/tools/data/region-sources.json): its Geofabrik extracts, its
+neighbours', the Copernicus DEM tiles and Natural Earth's zips, with the town and the address count its check expects.";
+
+const CHECK_MAP: &str = "lastbook-tools check-map --region REGION --packs FOLDER [--town NAME] [--min-addresses N] [--work FOLDER]
+
+  --region         the region's code
+  --packs          the folder holding Lastbook-Map-<REGION>.zip and Lastbook-Addresses-<REGION>.zip, with their entries
+                   saved as map-entry-<REGION>.json and addresses-entry-<REGION>.json
+  --town           the town the place search must find inside the region's boxes (default: the sources' table's)
+  --min-addresses  the least the address index may hold (default: the table's, else 100)
+  --work           where to unpack them (default: <packs>/check, removed after)
+Prints every check, passed or not; fails if one does.";
 
 /// A subcommand's options: `--name value` pairs, a name given once or, as --dem, more than once.
 struct Opts(Vec<(String, String)>);
@@ -124,6 +141,32 @@ pub fn build_terrain(args: &[String]) -> i32 {
         let n = terrain::write(Path::new(o.need("out")?), &dems, boxes, terrain::ZOOMS, mapset::TERRAIN_SOURCE, mapset::TERRAIN_LICENCE)
             .map_err(|e| e.to_string())?;
         Ok(json!({"tiles": n.tiles, "not_covered": n.skipped}))
+    })
+}
+
+pub fn region_sources(args: &[String]) -> i32 {
+    run("region-sources", REGION_SOURCES, args, |o| sources::sources(o.need("region")?, o.get("neighbours") == Some("yes")))
+}
+
+pub fn check_map(args: &[String]) -> i32 {
+    run("check-map", CHECK_MAP, args, |o| {
+        let region = o.need("region")?;
+        let entry = sources::table().remove(region);
+        let town = o.get("town").map(str::to_string).or_else(|| entry.as_ref().map(|e| e.capital.clone())).ok_or("--town is needed for a region not in the table")?;
+        let least = match o.get("min-addresses") {
+            Some(n) => n.parse().map_err(|_| format!("--min-addresses {n}: not a number"))?,
+            None => entry.map(|e| e.min_addresses).unwrap_or(sources::MIN_ADDRESSES),
+        };
+        let packs = Path::new(o.need("packs")?);
+        let work = o.get("work").map(PathBuf::from).unwrap_or_else(|| packs.join("check"));
+        let report = check::check(region, packs, &work, &town, least);
+        let _ = std::fs::remove_dir_all(&work);
+        let report = report?;
+        if report["ok"] != true {
+            println!("{}", serde_json::to_string_pretty(&report).unwrap_or_default());
+            return Err("a check failed".into());
+        }
+        Ok(report)
     })
 }
 
