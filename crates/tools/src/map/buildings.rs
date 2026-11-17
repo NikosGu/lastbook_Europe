@@ -75,6 +75,10 @@ pub fn write(path: &Path, things: &[Thing], boxes: &[[f64; 4]], source: &str) ->
     let (mut n, mut measured) = (0, 0);
     for t in things {
         let (lon, lat) = t.point;
+        let tags: Vec<(&str, &str)> = t.tags.0.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
+        if !wanted(t.kind, &tags) {
+            continue; // read for another builder: a town's boundary, a school's grounds with an address, are no buildings
+        }
         if !boxes.iter().any(|b| b[0] <= lon && lon <= b[2] && b[1] <= lat && lat <= b[3]) {
             continue;
         }
@@ -166,8 +170,13 @@ mod tests {
         els.push(El::Way(100, &[10, 11, 12, 13, 10], &[("building", "yes")]));
         els.push(El::Way(101, &[20, 21, 22, 23, 20], &[("building", "church"), ("building:levels", "4")]));
         els.push(El::Way(102, &[30, 31, 32, 33, 30], &[("building:part", "yes"), ("height", "30"), ("min_height", "10")]));
+        // read, as a region is, for the other builders too: grounds with an address and a suburb's outline are no buildings
+        els.extend(sq(40, 9.5230, 47.1410));
+        els.push(El::Way(103, &[40, 41, 42, 43, 40], &[("amenity", "school"), ("addr:housenumber", "3"), ("addr:street", "Schulweg")]));
+        els.push(El::Way(104, &[10, 21, 32, 43, 10], &[("place", "suburb"), ("name", "Mitte")]));
         std::fs::write(&src, pbf(&els)).unwrap();
-        let things = crate::map::osm::read(&src, &wanted).unwrap();
+        let things = crate::map::osm::read(&src, &|k, t| wanted(k, t) || crate::map::addresses::wanted(k, t) || crate::map::places::wanted(k, t)).unwrap();
+        assert_eq!(things.len(), 5);
         let path = dir.join("buildings.sqlite");
         let li = lastbook_engine::regions::boxes("LI").unwrap();
         assert_eq!(write(&path, &things, li, "OpenStreetMap").unwrap(), (2, 2), "two outlines; the church and the part have heights");

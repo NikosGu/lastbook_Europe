@@ -2,8 +2,9 @@
 //!
 //! The page paints the sea first, then a coarse outline of the world's land (Natural Earth 1:110m, which has no Malta),
 //! then the tiles, where an `island` is drawn in the land's colour and an `ocean` ring in the sea's: so a coast is where
-//! OpenStreetMap has it, at every zoom. A coast the extract cuts (it runs on past the extract's edge, as along a river
-//! mouth) cannot be closed from the extract alone; it is counted and left to the world outline.
+//! OpenStreetMap has it, at every zoom. A coast the extract cuts (it runs on past the extract's edge, as up the Weser to
+//! Bremerhaven) is closed by a straight line between its two cut ends: what lies between the coast and that line is land
+//! or water by the side the coast gives it, so an estuary the world outline fills with land is water again.
 
 use crate::map::geo::{self, Part};
 use crate::map::osm::{Kind, Thing};
@@ -19,7 +20,7 @@ pub struct Coast {
     pub islands: Vec<Part>,
     /// Rings with water inside.
     pub seas: Vec<Part>,
-    /// Pieces of coast that close nothing within the extract.
+    /// Pieces of coast the extract cuts, closed across their ends (and among the rings above).
     pub open: usize,
 }
 
@@ -55,8 +56,16 @@ pub fn coast(things: &[Thing]) -> Coast {
             used[j] = true;
             ring.extend_from_slice(&pieces[j][1..]);
         }
-        if ring.len() < 4 || ring.first() != ring.last() {
+        if ring.first() != ring.last() {
+            // cut by the extract: closed across its ends
             out.open += 1;
+            if ring.len() < 3 {
+                continue;
+            }
+            ring.push(ring[0]);
+        }
+        if ring.len() < 4 || turning(&ring).abs() < 1e-12 {
+            continue;
         } else if turning(&ring) > 0.0 {
             out.islands.push(ring);
         } else {
@@ -83,15 +92,17 @@ mod tests {
 
     #[test]
     fn islands_seas_and_open_coast() {
-        // an island in two pieces, counter-clockwise (land on the left); a lagoon, clockwise; a coast the extract cuts
+        // an island in two pieces, counter-clockwise (land on the left); a lagoon, clockwise; and an estuary the extract
+        // cuts: down the east bank, across the river's limit, up the west bank, cut at both ends
         let island = [(14.20, 36.00), (14.30, 36.00), (14.30, 36.08)];
         let island_back = [(14.30, 36.08), (14.20, 36.08), (14.20, 36.00)];
         let lagoon = [(14.40, 35.90), (14.40, 35.95), (14.45, 35.95), (14.45, 35.90), (14.40, 35.90)];
-        let cut = [(8.50, 53.55), (8.55, 53.56), (8.57, 53.60)];
-        let c = coast(&[way(1, &island_back), way(2, &lagoon), way(3, &cut), way(4, &island)]);
-        assert_eq!((c.islands.len(), c.seas.len(), c.open), (1, 1, 1));
+        let estuary = [(8.58, 53.60), (8.58, 53.55), (8.52, 53.55), (8.52, 53.60)];
+        let c = coast(&[way(1, &island_back), way(2, &lagoon), way(3, &estuary), way(4, &island)]);
+        assert_eq!((c.islands.len(), c.seas.len(), c.open), (1, 2, 1));
         assert_eq!(c.islands[0].len(), 5, "two pieces joined end to start, closed");
         assert!(geo::contains(&c.islands, 14.25, 36.04));
+        assert!(geo::contains(&c.seas, 8.55, 53.58) && !geo::contains(&c.seas, 8.60, 53.58), "the estuary is water, its east bank land");
         // reversed, the same ring has the water inside
         let mut reversed: Vec<(f64, f64)> = c.islands[0].clone();
         reversed.reverse();

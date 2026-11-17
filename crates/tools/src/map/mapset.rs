@@ -82,7 +82,7 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     for r in &seas {
         w.add("ocean", "ocean", None, 0, 30, std::slice::from_ref(r)).map_err(db)?;
     }
-    say(&format!("coast: {} islands, {} seas, {} pieces open", islands.len(), seas.len(), shore.open));
+    say(&format!("coast: {} islands, {} seas ({} cut by the extract, closed across their ends)", islands.len(), seas.len(), shore.open));
     let b = regions::bounds(region).unwrap_or([0.0; 4]);
     for (k, v) in [("source", osm_source.clone()), ("data_as_of", as_of.clone()), ("region", region.to_string()),
                    ("bounds", format!("{:.2},{:.2},{:.2},{:.2}", b[0], b[1], b[2], b[3])), ("built", now())] {
