@@ -1,0 +1,9 @@
+# PDFium, which the app loads at run time to draw PDF pages and read their text, and which the installers put beside
+# the program: one build of pdfium-binaries (https://github.com/bblanchon/pdfium-binaries), the build that
+# pdfium-render's "pdfium_latest" feature is made for. The packaging scripts download the archive for their system
+# from that release and use it only if its SHA-256 is the one below. To move to another build, change the release, the
+# three sums and pdfium-render's feature together.
+release	chromium/8125
+pdfium-mac-arm64.tgz	4939bd935ac83ddc09a3a4f038bc43a19cea1660316a3667f26cb07a070e139d
+pdfium-linux-x64.tgz	e1c3ce6e270cb5e0c20816b379ad9f2c1309972697c505f508de92bf5e7d6659
+pdfium-win-x64.tgz	9a964261760cff52570aabf038ab346d3a5034dd8b30d0d5fe8861235d356b8b

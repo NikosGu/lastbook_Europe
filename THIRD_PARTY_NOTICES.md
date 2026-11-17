@@ -339,6 +339,12 @@ as `Cargo.lock` pins them. Each crate's licence is the one it declares; the full
 | zmij | 1.0.23 | MIT | https://github.com/dtolnay/zmij |
 | zopfli | 0.8.4 | Apache-2.0 | https://github.com/zopfli-rs/zopfli |
 
+## Shipped beside the program
+
+| Component | Licence | Source |
+|---|---|---|
+| PDFium, which draws PDF pages and reads their text: the chromium/8125 build of pdfium-binaries, as `libpdfium.dylib` (in the Mac app's Frameworks), `libpdfium.so` (Linux) or `pdfium.dll` (Windows), pinned by its SHA-256 in `packaging/rust/pdfium.txt` | BSD-3-Clause (The PDFium Authors), with the licences of the libraries built into it (FreeType, HarfBuzz, ICU, libjpeg-turbo, OpenJPEG, libpng, zlib, Little CMS, Abseil and others) and MIT for the build (Benoit Blanchon); the texts are installed in `licenses/pdfium` | https://pdfium.googlesource.com/pdfium, https://github.com/bblanchon/pdfium-binaries |
+
 ## Used from the system, not included
 
 The window shows the interface in the system's own web view: WebKit (WKWebView) on macOS, Microsoft Edge WebView2 on

@@ -1,8 +1,8 @@
 #!/bin/bash
 # Lastbook Europe for Linux: a .deb (Debian, Ubuntu and their family) and a .tar.gz to unpack anywhere, for x86-64.
 #   packaging/rust/package_linux.sh [OUT_DIR]          (default dist/)
-# The .deb installs /opt/lastbook-europe/ (lastbook, lastbook-llm and the program's files), the command
-# /usr/bin/lastbook-europe and a menu entry. The window is the system's GTK 3 and WebKitGTK 4.1.
+# The .deb installs /opt/lastbook-europe/ (lastbook, lastbook-llm, libpdfium.so, which draws PDF pages, and the
+# program's files), the command /usr/bin/lastbook-europe and a menu entry. The window is the system's GTK 3 and WebKitGTK 4.1.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 OUT="${1:-$ROOT/dist}"
@@ -19,6 +19,8 @@ cp -P target/release/libllama*.so* target/release/libggml*.so* "$OPT/" 2>/dev/nu
 BACKENDS="$(find target/release/build -type d -path '*llama-cpp-sys-2-*/out/backends' | head -1)"
 if [ -n "$BACKENDS" ]; then cp -P "$BACKENDS"/* "$OPT/"; fi
 "$ROOT/packaging/rust/stage.sh" "$OPT"
+if [ "$ARCH" != amd64 ]; then echo "PDFium is pinned for x86-64 only (packaging/rust/pdfium.txt), not $ARCH" >&2; exit 1; fi
+"$ROOT/packaging/rust/pdfium.sh" pdfium-linux-x64.tgz "$OPT" "$OPT/licenses/pdfium"
 ln -s /opt/lastbook-europe/lastbook "$STAGE/usr/bin/lastbook-europe"
 cp packaging/icon/tile-1024.png "$STAGE/usr/share/pixmaps/lastbook-europe.png"
 cat > "$STAGE/usr/share/applications/lastbook-europe.desktop" <<'DESK'

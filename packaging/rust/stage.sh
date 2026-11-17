@@ -8,5 +8,6 @@ mkdir -p "$DEST"
 rm -rf "$DEST/web" "$DEST/content"
 cp -R "$ROOT/web" "$DEST/web"
 cp -R "$ROOT/content" "$DEST/content"
+rm -rf "$DEST/content/library" # the libraries' sources lists: what lastbook-tools builds packs from, not read by the app
 cp "$ROOT/LICENSE" "$DEST/LICENSE.txt"
 find "$DEST" -name .DS_Store -delete

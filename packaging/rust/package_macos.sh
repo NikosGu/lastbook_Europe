@@ -2,7 +2,8 @@
 # Lastbook Europe for macOS: "Lastbook Europe.app" in a disk image, for Apple silicon.
 #   packaging/rust/package_macos.sh [OUT_DIR]          (default dist/)
 # The app: Contents/MacOS/lastbook (the window and the engine) and lastbook-llm (the local AI runner), Contents/Resources/
-# with the interface, the guides and setup's certificate roots. Not signed with a Developer ID yet (the maintainer's
+# with the interface, the guides and setup's certificate roots, and Contents/Frameworks/libpdfium.dylib (PDFium, which
+# draws PDF pages; its licence texts in Contents/Resources/licenses/pdfium). Not signed with a Developer ID yet (the maintainer's
 # decision): it is signed ad hoc, which Apple silicon requires, and the person opens it the first time with Control-click → Open.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -13,9 +14,10 @@ cd "$ROOT"
 cargo build --release --locked -p lastbook-app -p lastbook-llm
 STAGE="$(mktemp -d)"
 APP="$STAGE/$NAME.app"
-mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Frameworks"
 cp target/release/lastbook target/release/lastbook-llm "$APP/Contents/MacOS/"
 "$ROOT/packaging/rust/stage.sh" "$APP/Contents/Resources"
+"$ROOT/packaging/rust/pdfium.sh" pdfium-mac-arm64.tgz "$APP/Contents/Frameworks" "$APP/Contents/Resources/licenses/pdfium"
 cp packaging/Lastbook.icns "$APP/Contents/Resources/Lastbook.icns"
 cat > "$APP/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
