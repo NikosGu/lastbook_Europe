@@ -85,9 +85,13 @@ None of these blocks the work: each has a placeholder.
 ## Left, in order
 
 1. All 110 regions run through the regions workflow, their packs published where the maintainer chooses to host them.
-2. "From the disk" faster: about a word a second is slow for long answers. Next, the same model at 4 bits (about 21 GB,
-   closer to a 16 GB Mac's memory), the graphics processor for the layers that fit, and a cache of experts kept by use,
-   as BigMoeOnEdge does; each measured as above.
+2. "From the disk" faster: about a word a second is slow for long answers. On a Mac the graphics processor cannot take
+   the shared layers yet: llama.cpp wraps the mapped file from the first to the last of the graphics processor's
+   tensors as one Metal buffer (llama-model.cpp, buffer_from_host_ptr, which Metal always offers), and since those
+   tensors alternate with the experts layer by layer, that buffer spans nearly the whole 37.8 GB and exhausts the memory.
+   The fix is in llama.cpp itself: copy the graphics processor's tensors into buffers of their own when the experts stay
+   in the mapped file. Then the same model at 4 bits (about 21 GB) and a cache of experts kept by use, as BigMoeOnEdge
+   does; each measured as above.
 3. Native-speaker review of the five translations of the interface and the guides.
 4. Pictures with no alt text: of the ten Spanish readings on infographic pages, seven now have the infographics' alt
    text; the three on the weather guide (Fenómenos meteorológicos, pages 17 and 20), a PDF with no tags, need OCR.
