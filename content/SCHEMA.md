@@ -63,6 +63,11 @@ Rules
 - Favour fewer, better items: 1–4 readings per choice, 3–8 in prepare, 4–10 in learn.
 - A guide the library cannot support yet keeps its title, a short honest intro, its keywords (so a search still finds
   it) and no readings; `content/gaps.json` says what is missing. Never fill it with documents from elsewhere.
+- A pack may hold fewer documents than the guides name: the pack that may be published holds only those whose terms let
+  them be passed on (`"redistribute": "yes"` in `content/library/starter.json`). A reading, warning, preparing or
+  learning item whose document is not in the library is not shown, and a step left with nothing to open goes. A guide
+  left with none of its documents says so in place of its short line and intro, in the words of
+  `content/uncovered.json` (one entry for each interface language).
 
 Other languages (`content/topics/<lang>/<id>.json`)
 - The app asks for the guides in the interface's language (`/api/topics?lang=it`) and takes each guide from

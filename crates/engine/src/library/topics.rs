@@ -39,12 +39,18 @@ impl Library {
     }
 
     /// The guides in `lang` with each item's source filled in, as server.py topics_resolved: an item that opens nothing
-    /// here is left out, a warning keeps its words without its source, and a step left with nothing to open goes. What
-    /// the library lacks comes from `content/gaps.json`, unless a guide in another language carries it in its own words.
+    /// here is left out, and a step left with nothing to open goes. A warning whose document is not in this library is
+    /// left out too, as a reading is (a pack may leave out the documents that may not be passed on); only with no
+    /// library in reach (not set up yet, or on a drive that is away) does it keep its words without its source, as the
+    /// original did. A guide that reads from documents of which this library holds none says so, in place of its short
+    /// line and intro, in the words of `content/uncovered.json`. What the library lacks comes from `content/gaps.json`,
+    /// unless a guide in another language carries it in its own words.
     pub fn topics_resolved_in(&self, lang: &str) -> Vec<Value> {
         let cat = self.catalog();
         let lib = self.lib().unwrap_or_default();
+        let present = !cat.records.is_empty();
         let gaps: Value = std::fs::read(self.paths.content().join("gaps.json")).ok().and_then(|b| serde_json::from_slice(&b).ok()).unwrap_or(json!({}));
+        let none_here = if present { self.uncovered_words(lang) } else { None };
         let zims = self.zim_names();
         let here = |items: &Value| -> Vec<Value> {
             items.as_array().into_iter().flatten().filter(|i| item_here(i, &zims, &cat)).map(|i| resolve_item(i, &cat, &lib)).collect()
@@ -53,6 +59,7 @@ impl Library {
         for t in self.topics_in(lang) {
             let Value::Object(mut t) = t else { continue };
             let id = t.get("id").and_then(Value::as_str).unwrap_or("").to_string();
+            let reads_from = openers(&t);
             if !t.get("gaps").is_some_and(Value::is_object) {
                 t.insert("gaps".into(), gaps.get(&id).cloned().unwrap_or(json!({})));
             }
@@ -65,7 +72,11 @@ impl Library {
                 .and_then(Value::as_array)
                 .into_iter()
                 .flatten()
-                .map(|i| if item_here(i, &zims, &cat) { resolve_item(i, &cat, &lib) } else { json!({"text": i.get("text")}) })
+                .filter_map(|i| match item_here(i, &zims, &cat) {
+                    true => Some(resolve_item(i, &cat, &lib)),
+                    false if !present => Some(json!({"text": i.get("text")})),
+                    false => None,
+                })
                 .collect();
             t.insert("limits".into(), Value::Array(limits));
             for k in ["choices", "route"] {
@@ -85,9 +96,22 @@ impl Library {
                     .collect();
                 t.insert(k.into(), Value::Array(steps));
             }
+            if let Some((short, intro)) = none_here.as_ref().filter(|_| reads_from > 0 && openers(&t) == 0) {
+                t.insert("short".into(), json!(short));
+                t.insert("intro".into(), json!(intro));
+                t.insert("uncovered".into(), json!(true));
+            }
             res.push(Value::Object(t));
         }
         res
+    }
+
+    /// What a guide says when this library holds none of the documents it reads from: the short line and intro of
+    /// `content/uncovered.json` in `lang`, else in English. None when the file is not there.
+    fn uncovered_words(&self, lang: &str) -> Option<(String, String)> {
+        let v: Value = serde_json::from_slice(&std::fs::read(self.paths.content().join("uncovered.json")).ok()?).ok()?;
+        let words = |l: &str| Some((v[l]["short"].as_str()?.to_string(), v[l]["intro"].as_str()?.to_string()));
+        words(lang).or_else(|| words("en"))
     }
 
     /// Every item a guide names, in the order server.py's guide_videos and prewarm_previews take them.
@@ -128,6 +152,18 @@ pub fn zim_names(lib: &Path) -> Vec<String> {
     let mut v: Vec<String> = std::fs::read_dir(lib.join("collections")).into_iter().flatten().flatten().filter_map(|e| e.file_name().into_string().ok()).filter(|n| n.ends_with(".zim")).collect();
     v.sort();
     v
+}
+
+/// How many of a guide's items open a document or an encyclopedia article: its readings, warnings, preparing and
+/// learning items.
+fn openers(t: &Map<String, Value>) -> usize {
+    let opens = |i: &&Value| truthy(i.get("doc").unwrap_or(&Value::Null)) || truthy(i.get("zim").unwrap_or(&Value::Null));
+    let list = |k: &str| t.get(k).and_then(Value::as_array).map_or(0, |a| a.iter().filter(opens).count());
+    let reads = |k: &str| {
+        let steps = t.get(k).and_then(Value::as_array).map(|a| a.as_slice()).unwrap_or_default();
+        steps.iter().map(|c| c.get("read").and_then(Value::as_array).map_or(0, |r| r.iter().filter(opens).count())).sum::<usize>()
+    };
+    list("prepare") + list("learn") + list("limits") + reads("choices") + reads("route")
 }
 
 /// Is what this guide item opens in this library? An item that opens nothing is hidden, not sent Home with no message.
@@ -322,5 +358,71 @@ mod tests {
                 assert!(gaps[id]["missing"].as_array().is_some_and(|m| !m.is_empty()), "{id}: no readings, and gaps.json does not say what is missing");
             }
         }
+    }
+
+    /// A library whose catalog holds these documents (and no file), in a folder of its own.
+    fn holding(held: &[&str]) -> (PathBuf, Library) {
+        let data = super::super::tests::temp("held");
+        std::fs::create_dir_all(data.join("library-data")).unwrap();
+        let recs: Vec<Value> =
+            held.iter().map(|id| json!({"id": id, "kind": "pdf", "path": format!("documents/{id}.pdf"), "title": id, "collection": "Test", "category": "test", "publisher": "Test", "pages": 500})).collect();
+        std::fs::write(data.join("library-data/catalog.json"), serde_json::to_vec(&recs).unwrap()).unwrap();
+        let l = Library::new(crate::paths::Paths::new(repo(), Some(data.clone())));
+        (data, l)
+    }
+
+    #[test]
+    fn a_library_without_some_documents_shows_only_what_it_holds() {
+        // the starter documents that may be passed on, as the published pack holds them
+        let starter = read(&repo().join("content/library/starter.json"));
+        let open: Vec<&str> = starter["documents"].as_array().unwrap().iter().filter(|d| d["redistribute"] == "yes").filter_map(|d| d["id"].as_str()).collect();
+        assert!(!open.is_empty() && open.len() < starter["documents"].as_array().unwrap().len());
+        let (data, l) = holding(&open);
+        guides_show_only(&l, &open);
+        // with no library in reach (a drive that is away), a warning keeps its words and no guide is said to be empty
+        let away = Library::new(crate::paths::Paths::new(repo(), Some(data.join("away"))));
+        for t in away.topics_resolved_in("it") {
+            let file = l.topics_in("it").into_iter().find(|f| f["id"] == t["id"]).unwrap();
+            assert_eq!(t["limits"].as_array().map_or(0, Vec::len), file["limits"].as_array().map_or(0, Vec::len), "{}", t["id"]);
+            assert!(t.get("uncovered").is_none() && t["intro"] == file["intro"], "{}", t["id"]);
+        }
+        let _ = std::fs::remove_dir_all(&data);
+        // one document only: the guides that read from none of it say so
+        let (data, l) = holding(&["ravenna-rischio-blackout"]);
+        assert!(guides_show_only(&l, &["ravenna-rischio-blackout"]) > 0, "some guide reads only from documents this library leaves out");
+        let _ = std::fs::remove_dir_all(&data);
+    }
+
+    /// Checks that each guide, in each language, opens only the documents held, shows no warning whose document is not
+    /// held, and says so where none of its documents is held; how many guides said so.
+    fn guides_show_only(l: &Library, held: &[&str]) -> usize {
+        let words = read(&repo().join("content/uncovered.json"));
+        let mut said_empty = 0;
+        for lang in ["en", "it", "de", "fr", "es", "pl"] {
+            let files: HashMap<String, Value> = l.topics_in(lang).into_iter().map(|t| (t["id"].as_str().unwrap_or("").to_string(), t)).collect();
+            let resolved = l.topics_resolved_in(lang);
+            assert_eq!(resolved.len(), files.len(), "{lang}: every guide is there, emptied or not");
+            for t in &resolved {
+                let id = t["id"].as_str().unwrap();
+                let file = &files[id];
+                // every reading, warning, preparing and learning item left opens a document this library holds
+                for (at, i) in items(t) {
+                    let d = i["doc"].as_str().unwrap_or("");
+                    assert!(held.contains(&d) && !i["src"].is_null(), "{lang} {id} {at}: {d} is not in this library");
+                }
+                // a warning whose document is not here is not shown, words and all
+                let warnings_here = file["limits"].as_array().into_iter().flatten().filter(|i| held.contains(&i["doc"].as_str().unwrap_or(""))).count();
+                assert_eq!(t["limits"].as_array().map_or(0, Vec::len), warnings_here, "{lang} {id}");
+                // a guide that reads from documents this library has none of says so; the others keep their words
+                if !items(file).is_empty() && items(t).is_empty() {
+                    let w = if words[lang].is_object() { &words[lang] } else { &words["en"] };
+                    assert_eq!((&t["short"], &t["intro"], &t["uncovered"]), (&w["short"], &w["intro"], &json!(true)), "{lang} {id}");
+                    said_empty += 1;
+                } else {
+                    assert_eq!((&t["short"], &t["intro"], t.get("uncovered")), (&file["short"], &file["intro"], None), "{lang} {id}");
+                }
+            }
+        }
+        said_empty
     }
 }
