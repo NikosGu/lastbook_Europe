@@ -14,6 +14,7 @@ pub mod admin;
 pub mod base;
 pub mod buildings;
 pub mod cli;
+pub mod coast;
 pub mod detail;
 pub mod geo;
 pub mod gpkg;

@@ -14,7 +14,7 @@
 use crate::map::admin::Admin;
 use crate::map::detail::{self, MapWriter};
 use crate::map::osm::{self, Kind};
-use crate::map::{addresses, base, buildings, gpkg, places, terrain, water};
+use crate::map::{addresses, base, buildings, coast, gpkg, places, terrain, water};
 use lastbook_engine::regions;
 use rusqlite::{Connection, OpenFlags};
 use serde_json::{json, Map, Value};
@@ -59,7 +59,9 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     let osm_source = format!("OpenStreetMap contributors (ODbL 1.0), Geofabrik extract{}", if as_of.is_empty() { String::new() } else { format!(" as of {as_of}") });
     let admin = Admin::load(&g, country);
     say(&format!("{} municipalities", admin.towns.len()));
-    let keep = |k: Kind, t: &[(&str, &str)]| addresses::wanted(k, t) || buildings::wanted(k, t) || places::wanted(k, t) || water::wanted(k, t);
+    let keep = |k: Kind, t: &[(&str, &str)]| {
+        addresses::wanted(k, t) || buildings::wanted(k, t) || places::wanted(k, t) || water::wanted(k, t) || coast::wanted(k, t)
+    };
     let things = osm::read(&src.pbf, &keep)?;
     say(&format!("{} elements from the PBF", things.len()));
     let db = |e: rusqlite::Error| e.to_string();
@@ -70,6 +72,16 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
         None => None,
     };
     let detail = detail::detail(&mut w, &g, boxes).map_err(db)?;
+    // the coast at every zoom: land the world outline lacks, sea it covers
+    let shore = coast::coast(&things);
+    let (islands, seas) = (coast::kept(&shore.islands, boxes), coast::kept(&shore.seas, boxes));
+    for r in &islands {
+        w.add("island", "island", None, 0, 30, std::slice::from_ref(r)).map_err(db)?;
+    }
+    for r in &seas {
+        w.add("ocean", "ocean", None, 0, 30, std::slice::from_ref(r)).map_err(db)?;
+    }
+    say(&format!("coast: {} islands, {} seas, {} pieces open", islands.len(), seas.len(), shore.open));
     let b = regions::bounds(region).unwrap_or([0.0; 4]);
     for (k, v) in [("source", osm_source.clone()), ("data_as_of", as_of.clone()), ("region", region.to_string()),
                    ("bounds", format!("{:.2},{:.2},{:.2},{:.2}", b[0], b[1], b[2], b[3])), ("built", now())] {
@@ -120,6 +132,7 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
         "address_index": {"path": index.to_string_lossy(), "bytes": std::fs::metadata(&index).map(|m| m.len()).unwrap_or(0), "addresses": rows.len()},
         "features": features, "detail_features": detail.features, "help_points": pois, "places": ps.len(), "water_records": recs.len(),
         "buildings": outlines, "buildings_with_heights": tall,
+        "coast": {"islands": islands.len(), "seas": seas.len(), "open": shore.open},
         "base": base_counts.map(|c| json!({"roads": c.roads, "places": c.places, "water": c.water})),
         "terrain": terrain_counts.map(|c| json!({"tiles": c.tiles, "not_covered": c.skipped})),
         "seconds": started.elapsed().as_secs(),

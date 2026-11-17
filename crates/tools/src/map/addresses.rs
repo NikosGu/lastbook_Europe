@@ -84,7 +84,7 @@ fn town(tagged: Option<&str>, uses: &HashMap<String, usize>, known: &HashMap<Str
 /// The addresses of the region, one row per number, the same address mapped twice (on a node and on its building) once.
 /// `places` are the names the region knows for its towns and villages.
 pub fn rows(things: &[Thing], region: &str, areas: &Admin, places: &[String]) -> Vec<Row> {
-    let mut known: HashMap<String, String> = areas.towns.iter().map(|(n, _)| (name_key(n), n.clone())).collect();
+    let mut known: HashMap<String, String> = areas.towns.iter().chain(&areas.cities).map(|(n, _)| (name_key(n), n.clone())).collect();
     for p in places {
         known.entry(name_key(p)).or_insert_with(|| p.clone());
     }
@@ -192,7 +192,7 @@ mod tests {
         let things = crate::map::osm::read(&src, &wanted).unwrap();
         let li = vec![vec![(9.47, 47.04), (9.64, 47.04), (9.64, 47.28), (9.47, 47.28), (9.47, 47.04)]];
         let vaduz = vec![vec![(9.50, 47.12), (9.54, 47.12), (9.54, 47.15), (9.50, 47.15), (9.50, 47.12)]];
-        let areas = Admin { country: Some(("LI".into(), li)), towns: vec![("Vaduz".into(), vaduz)], districts: Vec::new() };
+        let areas = Admin { country: Some(("LI".into(), li)), towns: vec![("Vaduz".into(), vaduz)], districts: Vec::new(), cities: Vec::new() };
         let rows = rows(&things, "LI", &areas, &[]);
         let mut shown: Vec<String> = rows.iter().map(|r| format!("{} {} {} {} {}", r.street, r.num, r.postcode, r.city, r.country)).collect();
         shown.sort();
