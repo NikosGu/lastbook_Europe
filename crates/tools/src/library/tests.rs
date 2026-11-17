@@ -37,10 +37,48 @@ fn text_pdf(pages: &[&str]) -> Vec<u8> {
         let n = objs.len() + 1;
         kids.push(format!("{n} 0 R"));
         objs.push(format!("<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Resources<</Font<</F1 3 0 R>>>>/Contents {} 0 R>>", n + 1));
-        let stream = format!("BT /F1 18 Tf 60 700 Td ({text}) Tj ET");
-        objs.push(format!("<</Length {}>>\nstream\n{stream}\nendstream", stream.len()));
+        objs.push(stream(&format!("BT /F1 18 Tf 60 700 Td ({text}) Tj ET")));
     }
     objs[1] = format!("<</Type/Pages/Count {}/Kids[{}]>>", pages.len(), kids.join(" "));
+    pdf_of(&objs)
+}
+
+/// A tagged PDF, as accessible PDFs are made: page 1 a heading and an infographic whose alt text (written in UTF-16, as
+/// a PDF writes words with accents) says what it shows; page 2 a page of text with a tagged photo; page 3 a picture
+/// with no tags.
+fn tagged_pdf(alt: &str, lines: &[&str]) -> Vec<u8> {
+    let utf16 = |s: &str| format!("<FEFF{}>", s.encode_utf16().map(|u| format!("{u:04X}")).collect::<String>());
+    let picture = "q 200 0 0 200 100 300 cm /Im1 Do Q";
+    let page = |contents: usize, tags: &str| {
+        format!("<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Resources<</Font<</F1 3 0 R>>/XObject<</Im1 10 0 R>>>>/Contents {contents} 0 R{tags}>>")
+    };
+    let text: String = lines.iter().map(|l| format!("({l}) Tj T* ")).collect();
+    pdf_of(&[
+        "<</Type/Catalog/Pages 2 0 R/MarkInfo<</Marked true>>/StructTreeRoot 11 0 R>>".into(),
+        "<</Type/Pages/Count 3/Kids[4 0 R 6 0 R 8 0 R]>>".into(),
+        "<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>".into(),
+        page(5, "/StructParents 0"),
+        stream(&format!("BT /F1 18 Tf 60 700 Td (Agua) Tj ET /Figure <</MCID 0>> BDC {picture} EMC")),
+        page(7, "/StructParents 1"),
+        stream(&format!("BT /F1 11 Tf 60 740 Td 14 TL {text}ET /Figure <</MCID 0>> BDC {picture} EMC")),
+        page(9, ""),
+        stream(picture),
+        "<</Type/XObject/Subtype/Image/Width 2/Height 2/ColorSpace/DeviceGray/BitsPerComponent 8/Length 4>>\nstream\n@~~@\nendstream".into(),
+        "<</Type/StructTreeRoot/K 12 0 R/ParentTree 15 0 R/ParentTreeNextKey 2>>".into(),
+        "<</Type/StructElem/S/Document/P 11 0 R/K[13 0 R 14 0 R]>>".into(),
+        format!("<</Type/StructElem/S/Figure/P 12 0 R/Pg 4 0 R/K 0/Alt{}>>", utf16(alt)),
+        "<</Type/StructElem/S/Figure/P 12 0 R/Pg 6 0 R/K 0/Alt(Una foto del puente sobre el rio crecido)>>".into(),
+        "<</Nums[0[13 0 R] 1[14 0 R]]>>".into(),
+    ])
+}
+
+/// A stream object of the content given.
+fn stream(content: &str) -> String {
+    format!("<</Length {}>>\nstream\n{content}\nendstream", content.len())
+}
+
+/// A PDF of the objects given, numbered from 1 (the first is the catalog), with the cross-reference table PDFium reads.
+fn pdf_of(objs: &[String]) -> Vec<u8> {
     let mut out = b"%PDF-1.4\n".to_vec();
     let mut at = Vec::new();
     for (i, o) in objs.iter().enumerate() {
@@ -291,4 +329,53 @@ fn page_text_is_cleaned_as_the_library_keeps_it() {
     assert_eq!(clean("l’approvvi\u{2}\r\ngionamento\r\nè garantito"), "l’approvvigionamento\nè garantito");
     assert_eq!(clean("Wasser\u{2}vorrat\u{c}x\0y\u{1b}z  \n\n"), "Wasservorrat\nx y z");
     assert_eq!(clean("a\tb\rc"), "a\tb\nc");
+}
+
+#[test]
+fn a_page_with_few_words_has_what_its_tagged_pdf_says_its_pictures_show() {
+    use super::extract::{letters, pdf_pages, Page, FEW_LETTERS};
+    if !pdfium_here() {
+        eprintln!("no PDFium here (set LASTBOOK_PDFIUM to its folder): alt text is not checked");
+        return;
+    }
+    let dir = temp("alt");
+    let docs = dir.join("docs");
+    std::fs::create_dir_all(&docs).unwrap();
+    let alt = "Infografía: llena garrafas con cuatro litros de agua por persona y día";
+    let lines = ["Antes de una inundacion, prepara una mochila con agua, comida y linterna.",
+                 "Sube a los pisos de arriba y no cruces nunca una calle inundada a pie o en coche.",
+                 "Desconecta la electricidad y el gas, y sigue los avisos de las autoridades.",
+                 "Ten a mano una radio con pilas para escuchar las noticias de la emergencia."];
+    std::fs::write(docs.join("inundaciones.pdf"), tagged_pdf(alt, &lines)).unwrap();
+    let pages = pdf_pages(&docs.join("inundaciones.pdf")).unwrap();
+    assert_eq!(pages.len(), 3);
+    assert_eq!(pages[0], Page { text: "Agua".into(), alt: vec![alt.into()] }, "a page of few words: its picture's alt text, accents and all");
+    assert_eq!(pages[0].kept(), format!("Agua\n[Alt text: {alt}]"));
+    assert_eq!(pages[0].words(), format!("Agua\n{alt}"));
+    assert!(letters(&pages[1].text) >= FEW_LETTERS && pages[1].text.contains("prepara una mochila"), "{:?}", pages[1]);
+    assert!(pages[1].alt.is_empty(), "a page of text keeps its own words, not its photo's description: {:?}", pages[1]);
+    assert_eq!(pages[2], Page::default(), "a picture with no tags has no words");
+    // built into a library: the page texts keep the mark, the index has the words without it
+    let list = sources::parse(&json!({"pack": {"id": "test-pack", "title": "Test pack", "revision": "2026-11-17-test", "map": "base"}, "documents": [
+        {"id": "inundaciones-es", "file": "inundaciones.pdf", "title": "Inundaciones", "publisher": "Protección Civil", "year": 2023, "lang": "es",
+         "licence": "No licence stated.", "source": "https://example.org/inundaciones", "collection": "España", "category": "preparedness"}]}))
+    .unwrap();
+    let data = dir.join("LastbookData");
+    build(&list, &docs, &data, false, "2026-11-17").unwrap();
+    let kept = std::fs::read_to_string(data.join("library-data/text/inundaciones-es.txt")).unwrap();
+    assert_eq!(kept.split("\n\u{c}\n").map(str::to_string).collect::<Vec<_>>(), pages.iter().map(Page::kept).collect::<Vec<_>>());
+    let l = library(&data);
+    let p = get(&l, "/api/page/inundaciones-es/1");
+    assert_eq!(p["text"], format!("Agua\n[Alt text: {alt}]"), "the reading page's text view shows it as alt text");
+    let hit = get(&l, "/api/find?q=garrafas&lang=es");
+    assert_eq!(hit["results"][0]["id"], "inundaciones-es");
+    assert_eq!(hit["results"][0]["hits"][0]["page"], 1);
+    let snippet = hit["results"][0]["hits"][0]["snippet"].as_str().unwrap();
+    assert!(snippet.contains("<mark>garrafas</mark>") && !snippet.contains("Alt text"), "{snippet}");
+    for q in ["alt", "text"] {
+        let found = get(&l, &format!("/api/find?q={q}&lang=es"));
+        assert!(!found["results"].as_array().unwrap().iter().any(|r| r["id"] == "inundaciones-es"), "{q}: {found}");
+    }
+    drop(l);
+    cleanup(&dir);
 }

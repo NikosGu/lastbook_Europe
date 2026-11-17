@@ -7,8 +7,11 @@
 //!   library-data/catalog.json         one record per document, and the Sources page's
 //!   library-data/documents/<file>     the PDFs, as they came (checked against the list's SHA-256 and size)
 //!   library-data/pages/<file>         the saved web pages
-//!   library-data/text/<id>.txt        each document's text, its pages separated by "\n\f\n"
+//!   library-data/text/<id>.txt        each document's text, its pages separated by "\n\f\n"; on a page with few words
+//!                                     of its own, what a tagged PDF says its pictures show follows them, each on a line
+//!                                     of its own as "[Alt text: …]"
 //!   library-data/search.sqlite        the full-text index: FTS5 table `pages`, a row for each page that has words
+//!                                     (alt text among them, without its mark)
 //!   library-data/summary.json         the counts /api/library gives
 //!   library-data/documents/lastbook/sources-and-permissions.html
 //!                                     every item with its publisher and terms
@@ -209,11 +212,12 @@ pub fn build(list: &Sources, docs: &Path, out: &Path, replace: bool, built: &str
         std::fs::copy(&src, &dest).map_err(io(&dest))?; // a copy (a clone where the disk can), never a hard link: the engine refuses those
         let pages = match d.kind {
             "pdf" => extract::pdf_pages(&dest)?,
-            _ => vec![extract::html_text(&std::fs::read(&dest).map_err(io(&dest))?)],
+            _ => vec![extract::Page::of(extract::html_text(&std::fs::read(&dest).map_err(io(&dest))?))],
         };
         let text_rel = format!("text/{}.txt", d.id);
-        write(&lib.join(&text_rel), pages.join("\n\u{c}\n").as_bytes())?;
-        for (i, body) in pages.iter().enumerate() {
+        write(&lib.join(&text_rel), pages.iter().map(extract::Page::kept).collect::<Vec<_>>().join("\n\u{c}\n").as_bytes())?;
+        let words: Vec<String> = pages.iter().map(extract::Page::words).collect();
+        for (i, body) in words.iter().enumerate() {
             if !body.trim().is_empty() {
                 rows.push((d.id.clone(), d.title.clone(), d.collection.clone(), d.category.clone(), rel.clone(), i as i64 + 1, body.clone()));
             }
@@ -233,7 +237,7 @@ pub fn build(list: &Sources, docs: &Path, out: &Path, replace: bool, built: &str
         if d.kind == "pdf" {
             pdf_pages += pages.len() as u64;
             r.insert("pages".into(), json!(pages.len()));
-            let words: usize = pages.iter().map(|p| p.trim().len()).sum();
+            let words: usize = words.iter().map(|p| p.trim().len()).sum();
             r.insert("searchability".into(), json!(if words > 100 { "text" } else { "image-only: needs OCR" }));
         }
         r.insert("bytes".into(), json!(bytes));
