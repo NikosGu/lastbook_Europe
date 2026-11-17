@@ -30,6 +30,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
+        with:
+          key: no-download-1   # a new key when llama.cpp's build changes (crates/llm/llama/), as the cache keeps it
       - name: Linux webview libraries, and libclang for llama.cpp's bindings
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libclang-dev cmake
@@ -71,7 +73,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with:
-          key: vulkan
+          key: vulkan-no-download-1   # a new key when llama.cpp's build changes (crates/llm/llama/), as the cache keeps it
       - name: Vulkan (Linux)
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libclang-dev cmake ninja-build libvulkan-dev glslc spirv-headers
