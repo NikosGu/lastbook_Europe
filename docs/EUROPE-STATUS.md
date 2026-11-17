@@ -56,7 +56,7 @@ None of these blocks the work: each has a placeholder.
 | Prompt formats | Qwen 3.5/3.6 (ChatML, XML tool calls) and Gemma 4, chosen by the model file's header | tests against the chat templates |
 | Installers and releases | `.dmg` (6.5 MB), Inno Setup installer and `.zip`, `.deb` and `.tar.gz`; a draft release on each push | the `.dmg` opened and photographed here; the release workflow on GitHub |
 | Windows | downloads, paths and file locks fixed after the first run on GitHub's Windows machines | CI |
-| The map | vector tiles, terrain, buildings, help pins, the nearest help in metres, place and lake search with both spellings of a name, and address search for the 31 countries (word order, postcodes, street words, house numbers) ([ADDRESSES.md](ADDRESSES.md)) | 62 tests, one per country; the app photographed on a small Vaduz data folder ("Aeulestr. 10, 9490 Vaduz" found) |
+| The map | vector tiles, terrain, buildings, help pins, the nearest help in metres, place and lake search with both spellings of a name, and address search for the 31 countries (word order, postcodes, street words, house numbers) ([ADDRESSES.md](ADDRESSES.md)); drugstores apart from pharmacies, which keep the green cross; the date of the data and the credits taken from the installed map | 62 tests, one per country; the app photographed on a small Vaduz data folder ("Aeulestr. 10, 9490 Vaduz" found) |
 | The library | catalog, guides, search with the interface's language preferred (words for six languages in `content/search/`), shelves and videos, PDF pages through PDFium, saved pages and encyclopedias (ZIM) cleaned, the library's files with their checks | 47 tests; the app photographed on a small library (search, a PDF page, an article) |
 | The local AI in the engine | the model files the catalogue offers, their SHA-256, the three-way fit with a disk speed test, the runner started on a question and stopped when unused | tests, among them a whole cycle with a small real model |
 | The assistant and the chat | the question searched at once, tools (search, read pages, transcripts, places and nearest help), every citation checked against what the tools returned, the answer in the person's language; the chat streamed to the page by polls | tests with a scripted model |
@@ -76,9 +76,6 @@ None of these blocks the work: each has a placeholder.
 - The place search: an exact other name first ("Gozo" finds Għawdex first), and no lakes for a postcode ("L-1648").
 - Regions built on GitHub's machines, one job each, on demand, with the region's checks; the neighbours' extracts for
   the strip around a region where the tools can take them.
-- Drugstores (OpenStreetMap's shop=chemist) apart from pharmacies, which keep the green cross.
-- The last small things on screen: the map's facts quoted in the chat's sources in the person's language, "Install" when
-  nothing is to be downloaded, plural forms in About.
 - Documents in French, Spanish and Polish for the starter library, so the guides in those languages open pages in
   their own language.
 
