@@ -42,6 +42,7 @@ None of these blocks the work: each has a placeholder.
 | 17 Nov 2026 | No Liechtenstein document in the starter library yet | llv.li refuses automated downloads, and that refusal is respected |
 | 17 Nov 2026 | First aid in the starter library comes from the IFRC guidelines, in English | no Italian first-aid document from a public body was found |
 | 17 Nov 2026 | Spain's Interior Ministry and Education Ministry sites, which refuse automated downloads, are left alone: the Spanish guides come from proteccioncivil.es | as with llv.li |
+| 17 Nov 2026 | A picture's description from an accessible PDF is kept in the page texts as "[Alt text: …]", for the tools and the chat's model, and the reader shows it under "Picture description" in the person's language | one fixed mark is easy to recognise in the data; people read their own language |
 | 17 Nov 2026 | Guides the starter library cannot support (growing food, preserving, repairs, home energy, land) keep an honest intro and their search words, with no readings; what is missing is in `content/gaps.json` | a guide gives only what its documents say: nothing from memory, nothing from the old US library |
 
 ## Done and checked
