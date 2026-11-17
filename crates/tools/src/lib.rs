@@ -13,4 +13,5 @@ pub mod gpkg;
 pub mod library;
 pub mod osm;
 pub mod places;
+pub mod terrain;
 pub mod water;
