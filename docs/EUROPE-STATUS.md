@@ -64,26 +64,27 @@ None of these blocks the work: each has a placeholder.
 | Storage anywhere | a library and its models on this computer, an external disk, a USB stick or a NAS (SMB, NFS, mapped drives, UNC paths); disk kinds shown in setup; SQLite read immutable; a library out of reach said plainly at start and while running; models beside the library or on this computer | tests on each system, and a library read through a network path on Windows in CI |
 | The map's data tools | `lastbook-tools build-map`, `pack-map`, `pack-addresses`, `build-terrain`: the detailed map from Geofabrik's GeoPackage, addresses and buildings from OpenStreetMap's PBF, places and water, elevation from Copernicus DEM GLO-30, the zoomed-out base from Natural Earth ([MAPS.md](MAPS.md)); Liechtenstein built in 3 seconds: 32,191 map features, 441 help points, 12,499 addresses, 12 MB to download | 23 tools tests; packs checked by setup's own zip check; the map, an address and a postcode photographed |
 | The library's tools | `lastbook-tools build-library` and `build-pack`: each document checked against its size and SHA-256, page texts through PDFium (words split at a line end joined again), the search index, a Sources page; the starter library: 14 public documents in Italian, German and English (BWL, Protezione Civile, BBK, Zivilschutz, IFRC, WHO), 707 pages, 39 MB to download; PDFium in each installer, pinned by SHA-256 | tests with and without PDFium; the release photographs each packaged app drawing a PDF page |
-| The path in Italian with Liechtenstein | setup finds the three packs on this computer, suggests the starter library, Liechtenstein chosen, installed and opened; the map of Vaduz with relief, help points and the nearest help in metres; "Städtle 11, Vaduz" and "9490" found | photographed in the app on this Mac |
+| The whole path in Italian with Liechtenstein | setup finds the three packs on this computer, suggests the starter library, Liechtenstein chosen, installed and opened; the map of Vaduz with relief, help points and the nearest help in metres; "Städtle 11, Vaduz" and "9490" found; the chat with Qwen3.6-35B-A3B Q8_0 (37.8 GB) from the disk on a 16 GB Mac, offered after its file was checked and chosen by a click: "how much water per person" answered in Italian with each point cited to the Swiss federal leaflet's pages (9 litres a person, for 3 days), and "the nearest pharmacy to Städtle 11" through the offline map (Schloss Apotheke, 0.27 km south) | photographed in the app on this Mac |
+| "From the disk", measured | Qwen3.6-35B-A3B Q8_0 on a 16 GB Mac, processor only, experts read ahead: a question read at about 20 words a second (3,558 in 174 s), an answer written at 0.9 to 1.4 words a second; an answer with a map look-up took about 6 minutes in all; the model loads in 4 seconds, and its 37.8 GB file is checked once, in about 2 minutes | the runner's own numbers in the log |
 | The guides for Europe | fourteen guides rewritten on the starter library: water, food, power cuts, heat and cold, disasters, first aid, health, toilets and hygiene, warnings and calls; 316 readings and warnings, each on a real page of a document the library holds; in the six languages (the five translations marked for review), each guide in the interface's language where it is translated; what the library lacks, and where its sources disagree, in `content/gaps.json` | engine tests (every reading on a page of a listed document, every translation opening the same pages); the app photographed in Italian |
 
 ## Being done now
 
 - The other test regions: Malta, Luxembourg, Bremen.
-- The engine's remaining English sentences become codes the interface translates; setup's disk kinds, the "library
-  cannot be reached" card and banner, and the choice of where an AI model goes, in the six languages.
+- The last English words on screen: the details of lakes and dams, a few of the engine's messages, the map's facts
+  quoted in the chat's sources; the map page's date of the data and credits from the installed map; setup's found files
+  by name.
 
 ## Left, in order
 
-1. The chat in the Liechtenstein path, with Qwen3.6-35B-A3B from the disk, when the computer's memory is free (it is
-   shared with other work now, and a model read from the disk needs the room for the pages it reads).
-2. All regions built by the tools on GitHub's machines. A region's box reaches into its neighbours, whose country
+1. All regions built by the tools on GitHub's machines. A region's box reaches into its neighbours, whose country
    extracts are separate: the strip around a region stays empty until the build takes the neighbours' extracts too.
-3. The map page's date of the data and its credits from the installed map, not fixed words.
-4. The release checks: the pinned roots cover the download hosts, nothing ships that must not.
-5. Vulkan for graphics cards on Windows and Linux, once it builds on GitHub's machines.
-6. Measure "from the disk" with Qwen3.6-35B-A3B on a 16 GB Mac; if it is too slow, a cache of experts of its own, kept by
-   use, as BigMoeOnEdge does.
+2. The release checks: the pinned roots cover the download hosts, nothing ships that must not.
+3. Vulkan for graphics cards on Windows and Linux, once it builds on GitHub's machines.
+4. "From the disk" faster: about a word a second is slow for long answers. Next, the same model at 4 bits (about 21 GB,
+   closer to a 16 GB Mac's memory), the graphics processor for the layers that fit, and a cache of experts kept by use,
+   as BigMoeOnEdge does; each measured as above.
+5. Native-speaker review of the five translations of the interface and the guides.
 
 ## Test models
 
