@@ -65,7 +65,7 @@
   "setup.rec.other_disk": "This computer’s own disk has {free_bytes} free, not enough for any library, so {pack} goes on {disk}. Keep that disk connected: Lastbook reads the library from it.",
   "setup.rec.ai_no_room": "The local AI fits this computer’s memory, but not on the disk as well.",
   "setup.rec.none_ready": "No library is ready to download yet.",
-  "setup.rec.none_fits": "The smallest library, {pack}, needs {need_bytes} free, and this computer has {free_bytes} free.",
+  "setup.rec.none_fits": "The smallest library, {pack}, needs {need_bytes} free, with room left for the system, and this computer has {free_bytes} free.",
   "setup.rec.other_disk_network": "This computer’s own disk has {free_bytes} free, not enough for any library, so {pack} goes on {disk}, a network share. Keep this computer on that network: Lastbook reads the library from it.",
   "setup.rec.start_small": "{pack} is selected to get started. You can choose a larger library.",
   "setup.rec.default_folder": "Saves to {folder} because your user folder’s path is too long for the library’s longest file names.",

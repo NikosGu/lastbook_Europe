@@ -523,7 +523,7 @@ fn recommend_says_why_as_codes() {
     let env = Env::new("why-small");
     let s = env.setup(Mode::FirstRun, None, None);
     let r = s.recommend(&json!({}));
-    assert_eq!(r["why"], "Small is selected to get started. You can choose a larger library.");
+    assert_eq!(r["why"], "small is selected to get started. You can choose a larger library."); // the pack's title
     assert_eq!(r["why_codes"], json!([{"code": "start_small", "params": {"pack": "small"}}]));
     assert_eq!(r["model_place"], "library");
     let need = r["need_bytes"]["small"].as_u64().unwrap();
@@ -531,7 +531,8 @@ fn recommend_says_why_as_codes() {
     let s = env.setup_on_disk(Mode::FirstRun, None, 1_000_000, 100_000_000_000);
     let r = s.recommend(&json!({"disks": []}));
     assert_eq!(r["pack"], Value::Null);
-    assert_eq!(r["why_codes"], json!([{"code": "none_fits", "params": {"pack": "small", "need_bytes": need, "free_bytes": 1_000_000}}]));
+    // what it needs, with room left for the system: 5% of the 100 GB disk in all, 2 GB of it already in the install's need
+    assert_eq!(r["why_codes"], json!([{"code": "none_fits", "params": {"pack": "small", "need_bytes": need + 3_000_000_000, "free_bytes": 1_000_000}}]));
     assert!(r["why"].as_str().unwrap().starts_with("The smallest library, small, needs "));
     // room on another disk (/dev is on another device than the temporary folder on every system the tests run on)
     let stick = json!({"path": "/dev", "name": "STICK", "free_bytes": 900_000_000_000u64, "total_bytes": 1_000_000_000_000u64, "kind": "removable"});
@@ -555,7 +556,8 @@ fn recommend_says_why_as_codes() {
     let mut env = Env::new("why-ai");
     env.add_model("gemma-small", 300_000, 1);
     let need = env.setup(Mode::FirstRun, None, None).recommend(&json!({}))["need_bytes"]["small"].as_u64().unwrap();
-    let s = env.setup_on_disk(Mode::FirstRun, None, need + 5_000_000_000 + 100_000, 100_000_000_000);
+    // room for the library and what is left free (3 GB more on a 100 GB disk), not for the model as well
+    let s = env.setup_on_disk(Mode::FirstRun, None, need + 3_000_000_000 + 100_000, 100_000_000_000);
     let r = s.recommend(&json!({"ai_models": {"gemma-small": {"fits": true}}}));
     assert_eq!((r["pack"].as_str(), r["ai"].as_bool()), (Some("small"), Some(false)));
     assert_eq!(r["why_codes"], json!([{"code": "start_small", "params": {"pack": "small"}}, {"code": "ai_no_room", "params": {}}]));
