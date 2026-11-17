@@ -16,8 +16,8 @@
          "note": "Po niemiecku. Do lekarzy i aptek może nie dać się dotrzeć; co trzymać w domu i dlaczego warto zrobić kurs pierwszej pomocy."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 13, "label": "Gdzie i jak przechowywać leki",
          "note": "Po niemiecku. W chłodnym, suchym i ciemnym miejscu, zamknięte przed dziećmi, nie w łazience; przegląd raz w roku; stare leki z powrotem do apteki."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Lista kontrolna domowej apteczki",
-         "note": "Po niemiecku."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Lista kontrolna domowej apteczki",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: leki przyjmowane na stałe, przeciwbólowe i przeciwbiegunkowe, opatrunki, rękawiczki, środki antyseptyczne, opaska do tamowania krwotoków, termometr, maseczki FFP3."}
       ]
     },
     {
@@ -42,8 +42,8 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 20, "label": "Jak mogą reagować dzieci",
          "note": "Po niemiecku. Reakcje bywają różne; rysowanie i zabawa; kiedy poprosić o radę."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 21, "label": "Jak wspierać dziecko",
-         "note": "Po niemiecku. Słuchaj, odpowiadaj szczerze i prosto, nie zmuszaj do rozmowy, uspokajaj."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 13, "label": "Jak rozmawiać z dzieckiem o zagrożeniach",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: mów stosownie do wieku, odpowiadaj szczerze, ale bez drastycznych szczegółów, reaguj na emocje dziecka, przećwiczcie razem jego zadania i bądź blisko."}
       ]
     },
     {
@@ -51,12 +51,12 @@
       "label": "Ktoś potrzebuje szczególnej opieki",
       "hint": "Niepełnosprawność, utrata słuchu lub wzroku, starsza osoba mieszkająca samotnie",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Przygotowania, gdy żyjesz z niepełnosprawnością",
-         "note": "Po niemiecku. Sprzęt pomocniczy, zapasowe baterie i ładowarki, plan przyjmowania leków, zwierzę asystujące, kontakty."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 12, "label": "Przygotowania z osobą, która potrzebuje szczególnej pomocy",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: ustal z nią plan na kryzys, spakuj jej plecak ewakuacyjny, zadbaj o zapas leków i baterii do aparatu słuchowego czy sensora do pomiaru cukru."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Porozumiewanie się z ratownikami",
          "note": "Po niemiecku. Karta ratunkowa, długopis i kartka oraz sąsiedzi, którzy wiedzą, jak pomóc."},
-        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Sąsiedzi, którzy potrzebują pomocy",
-         "note": "Po niemiecku. Osoby, do których podczas blackoutu nie docierają już opiekunowie ani dostawcy posiłków."}
+        {"doc": "rcb-badz-gotowy", "page": 12, "label": "Sąsiedzi, którzy mogą potrzebować pomocy",
+         "note": "Z poradnika RCB „Bądź gotowy!”: powiadom o zagrożeniu sąsiadów, zwłaszcza starszych, chorych i niesamodzielnych; zaproponuj transport przy ewakuacji i schronienie ewakuowanym."}
       ]
     },
     {
@@ -64,8 +64,8 @@
       "label": "Co powinno być w apteczce",
       "hint": "Do domu i do samochodu",
       "read": [
-        {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Domowa apteczka",
-         "note": "Po niemiecku. Co zawiera apteczka według austriackiej normy."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Domowa apteczka",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: co ma być w apteczce w domowych zapasach, od leków, gazy i bandaży po opaskę do tamowania krwotoków, termometr i folię termiczną."}
       ]
     }
   ],
@@ -78,14 +78,14 @@
     {"text": "Jeśli bardzo martwisz się o dziecko, zwróć się do pediatry, poradni lub psychoterapeuty dziecięcego.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 20}
   ],
   "prepare": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Lista kontrolna domowej apteczki", "note": "Po niemiecku."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Lista kontrolna domowej apteczki", "note": "Z rządowego „Poradnika bezpieczeństwa”."},
     {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Zawartość apteczki", "note": "Po niemiecku."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Jeśli żyjesz z niepełnosprawnością", "note": "Po niemiecku."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 12, "label": "Osoby, które potrzebują szczególnej pomocy", "note": "Z rządowego „Poradnika bezpieczeństwa”: plan na kryzys, zapas leków i baterii do urządzeń wspomagających, plecak ewakuacyjny."},
     {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Kto potrzebuje ciebie, a kogo ty potrzebujesz", "note": "Po niemiecku. Pytania o rodzinę, sąsiadów, osoby zależne od pomocy innych i codzienny rytm dzieci."}
   ],
   "learn": [
     {"doc": "ifrc-first-aid-guidelines-2020", "label": "Międzynarodowe wytyczne dotyczące pierwszej pomocy, resuscytacji i edukacji 2020", "note": "Po angielsku. IFRC, napisane dla osób, które projektują kursy pierwszej pomocy. Wśród tematów są pierwsza pomoc psychologiczna, traumatyczne zdarzenia, ryzyko samobójstwa i żałoba."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Przygotowanie na kryzysy i katastrofy", "note": "Po niemiecku. Leki, strach i zmartwienia, dzieci oraz osoby z niepełnosprawnościami."}
+    {"doc": "pl-poradnik-bezpieczenstwa", "label": "Poradnik bezpieczeństwa", "note": "Poradnik polskiego rządu (2025): zdrowie i leki, zdrowie psychiczne, rozmowa z dziećmi, osoby potrzebujące szczególnej pomocy, domowa apteczka, pierwsza pomoc i telefony wsparcia."}
   ],
   "route": [
     {"title": "Krok 1: Miej domową apteczkę i zapas swoich leków", "goal": "Wystarczający zapas leków, które przyjmujesz na stałe, na dni bez apteki, bezpiecznie przechowywany",
@@ -95,7 +95,7 @@
      ]},
     {"title": "Krok 2: Naucz się pierwszej pomocy", "goal": "Wiedz, co robi osoba udzielająca pierwszej pomocy, zanim będzie to potrzebne",
      "read": [
-       {"doc": "zsv-steiermark-notfallratgeber", "page": 16, "label": "Zadania osoby udzielającej pierwszej pomocy", "note": "Po niemiecku."},
+       {"doc": "pl-poradnik-bezpieczenstwa", "page": 41, "label": "Zadania osoby udzielającej pierwszej pomocy", "note": "Z rządowego „Poradnika bezpieczeństwa”: pomoc to twój obowiązek, a za nieumyślne błędy nie odpowiadasz; zadbaj o bezpieczeństwo, sprawdź, czy poszkodowany reaguje, i zadzwoń pod 112."},
        {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Sprawdzanie stanu poszkodowanego po kolei", "note": "Po angielsku."}
      ]},
     {"title": "Krok 3: Dowiedz się, co pomaga na strach i stres", "goal": "Zauważaj stres u siebie i innych i dowiedz się, co go łagodzi",
@@ -110,7 +110,7 @@
      ]},
     {"title": "Krok 5: Pomóż dzieciom przejść przez kryzys", "goal": "Zrozum, jak reagują dzieci i jak je uspokoić",
      "read": [
-       {"doc": "bbk-vorsorgen-fuer-krisen", "page": 21, "label": "Jak wspierać dziecko", "note": "Po niemiecku."}
+       {"doc": "pl-poradnik-bezpieczenstwa", "page": 13, "label": "Jak rozmawiać z dzieckiem o zagrożeniach", "note": "Z rządowego „Poradnika bezpieczeństwa”."}
      ]}
   ],
   "related": ["hurt", "food", "water"],
@@ -119,7 +119,7 @@
       "Brak poradnika o opiece nad chorym w domu przez wiele dni lub tygodni.",
       "Nic o chorobach przewlekłych bez dostępu do lekarza (cukrzyca, nadciśnienie, choroby serca), o ciąży i porodzie ani o zębach.",
       "Brak poradnika o lekach: co brać na co, dawki ani jak długo leki zachowują ważność.",
-      "Telefony zaufania są podane tylko dla Niemiec i dla austriackiej Styrii."
+      "Telefony zaufania są podane tylko dla Niemiec, dla austriackiej Styrii i dla Polski."
     ]
   }
 }

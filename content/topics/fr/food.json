@@ -12,8 +12,8 @@
       "label": "Quelle nourriture garder à la maison ?",
       "hint": "Des aliments de longue conservation pour une semaine ou plus",
       "read": [
-        {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Une liste de contrôle pour sept jours",
-         "note": "En allemand. Boissons, plats prêts à manger, denrées sèches, articles médicaux et d’hygiène, éclairage, un moyen de cuisiner, argent liquide."},
+        {"doc": "bwl-provisions-providentielles", "page": 8, "label": "Une liste de contrôle pour une bonne semaine",
+         "note": "Du dépliant fédéral suisse. Boissons, aliments, articles d’hygiène et médicaments, radio à piles, lampe de poche, bougies, un réchaud et un peu d’argent liquide."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Ce qui fait de bonnes provisions d’urgence",
          "note": "En allemand. 10 jours si possible, au moins 3 : des aliments qui se passent de réfrigérateur, se mangent sans cuisson ou cuisent vite ; allergies, enfants, animaux domestiques."},
         {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Une liste de courses par groupe d’aliments",
@@ -29,8 +29,8 @@
          "note": "En allemand. Combien de temps ils se conservent, à quelle température, et une fois la boîte ouverte."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Légumineuses, fruits à coque, huile, viande et le congélateur",
          "note": "En allemand. Les températures de stockage, et combien de mois les aliments se conservent au congélateur."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Consommer et remplacer, ou une réserve à part vérifiée chaque année",
-         "note": "En allemand."}
+        {"doc": "bwl-provisions-providentielles", "page": 6, "label": "Consommer et remplacer, dans un endroit frais, sec et sombre",
+         "note": "Du dépliant fédéral suisse. Utiliser les provisions au quotidien et vérifier les dates ; après une panne de courant, manger vite les aliments du congélateur, sans les recongeler."}
       ]
     },
     {
@@ -77,8 +77,8 @@
       "read": [
         {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Si vous avez un bébé, un animal ou une voiture",
          "note": "En allemand. Aliments pour bébé et couches, nourriture et litière pour animaux, et ce qu’il faut prévoir pour chacun dans les provisions."},
-        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Les bébés et les animaux dans les provisions",
-         "note": "En allemand. À la fin de la liste des aliments."}
+        {"doc": "bwl-provisions-providentielles", "page": 8, "label": "Les bébés et les animaux dans les provisions",
+         "note": "Du dépliant fédéral suisse, à la fin de la liste des aliments : une nourriture spéciale pour les bébés ou les estomacs délicats, et de la nourriture pour les animaux."}
       ]
     }
   ],
@@ -90,15 +90,15 @@
     {"text": "Ne mangez pas d’aliments touchés par l’eau d’inondation : ils peuvent être contaminés.", "doc": "dpc-io-non-rischio", "page": 31}
   ],
   "prepare": [
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Une liste de contrôle pour sept jours", "note": "En allemand."},
+    {"doc": "bwl-provisions-providentielles", "page": 8, "label": "Une liste de contrôle pour une bonne semaine", "note": "Du dépliant fédéral suisse."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Liste de contrôle : nourriture et eau pour 3, 5, 7 ou 10 jours", "note": "En allemand."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Constituer ses provisions petit à petit", "note": "En allemand."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Vérifier les provisions une fois par an", "note": "En allemand."},
+    {"doc": "sgdsn-agissons-falc", "page": 13, "label": "Vérifier le kit d’urgence chaque année", "note": "Du guide de l’État français, en version facile à lire : vérifier par exemple que la nourriture et les médicaments sont encore bons."},
     {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Une liste par groupe d’aliments", "note": "En allemand."}
   ],
   "learn": [
     {"doc": "oezsv-bevorratungsratgeber", "label": "Guide des provisions", "note": "En allemand. Protection civile autrichienne : besoins, stockage et durée de conservation, eau, médicaments, ce que les ménages oublient. Ses pages sur la consommation de plantes sauvages sont des conseils de survie qu’aucune autre source ici ne vérifie."},
-    {"doc": "bwl-kluger-rat-notvorrat", "label": "Le bon conseil : provisions d’urgence", "note": "En allemand. Le dépliant fédéral suisse, quatre pages."}
+    {"doc": "bwl-provisions-providentielles", "label": "Des provisions… providentielles", "note": "Le dépliant fédéral suisse sur les provisions de la maison, en huit pages : eau, nourriture, rangement, et quelques notions de nutrition."}
   ],
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {
@@ -108,8 +108,9 @@
       "Aucun guide pour cuisiner sur un feu ou sur un gril, en dehors de la mise en garde : les grils et les réchauds de camping s’utilisent dehors."
     ],
     "disagree": [
-      "Pour combien de temps prévoir : environ une semaine (le dépliant suisse et le guide autrichien des provisions), 10 jours si possible et au moins 3 (le guide allemand), une à deux semaines (le guide styrien sur le black-out), au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out).",
-      "Cuisiner sur un gril pendant un black-out : les guides autrichiens proposent un gril de jardin sans dire où l’utiliser ; le guide allemand dit que les grils et les réchauds de camping ne s’utilisent que dehors."
+      "Pour combien de temps prévoir : 72 heures (le guide national français), au moins 3 jours (le guide du gouvernement polonais), environ une semaine (les dépliants suisses, le guide autrichien des provisions et le guide polonais du RCB), 10 jours si possible et au moins 3 (le guide allemand), une à deux semaines (le guide styrien sur le black-out), au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out).",
+      "Cuisiner sur un gril pendant un black-out : les guides autrichiens proposent un gril de jardin sans dire où l’utiliser ; le guide allemand dit que les grils et les réchauds de camping ne s’utilisent que dehors.",
+      "À quelle fréquence vérifier les provisions : une fois par an (le guide autrichien des provisions et la version facile à lire du guide national français), deux fois par an (le guide national français), à intervalles de quelques mois (le guide du gouvernement polonais)."
     ]
   }
 }

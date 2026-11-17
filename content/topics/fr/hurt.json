@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Quelqu’un est blessé ou soudainement malade",
   "short": "Premiers secours : saignements, brûlures, respiration, blessures, malaises soudains",
-  "intro": "Des lectures pour porter les premiers secours en attendant l’arrivée de l’aide : examiner la personne, appeler les secours, saignements, brûlures, respiration et réanimation cardio-pulmonaire, blessures et malaises soudains. La plupart des pages viennent des lignes directrices internationales de premiers secours de la FICR (2020), écrites pour les formateurs en premiers secours ; d’autres viennent de guides de protection civile autrichiens et allemands.",
+  "intro": "Des lectures pour porter les premiers secours en attendant l’arrivée de l’aide : examiner la personne, appeler les secours, saignements, brûlures, respiration et réanimation cardio-pulmonaire, blessures et malaises soudains. La plupart des pages viennent des lignes directrices internationales de premiers secours de la FICR (2020), écrites pour les formateurs en premiers secours ; d’autres viennent de guides de protection civile autrichiens et allemands, et du guide national français.",
   "keywords": ["premiers secours", "secourisme", "gestes qui sauvent", "blessure", "blessé", "blessée", "plaie", "coupure", "saignement", "hémorragie", "sang", "garrot", "pansement compressif", "brûlure", "brûlé", "os cassé", "fracture", "entorse", "foulure", "luxation", "attelle", "traumatisme crânien", "commotion cérébrale", "colonne vertébrale", "dos", "nuque", "cou", "RCP", "massage cardiaque", "réanimation", "ne respire plus", "inconscient", "évanoui", "ne réagit pas", "position latérale de sécurité", "PLS", "défibrillateur", "DAE", "étouffement", "s’étouffe", "fausse route", "état de choc", "choc", "coup de chaleur", "insolation", "déshydratation", "diarrhée", "vomissements", "vomir", "hypothermie", "gelures", "réaction allergique", "allergie", "anaphylaxie", "choc anaphylactique", "adrénaline", "épinéphrine", "stylo d’adrénaline", "asthme", "crise d’asthme", "crise cardiaque", "infarctus", "douleur thoracique", "douleur dans la poitrine", "AVC", "accident vasculaire cérébral", "crise d’épilepsie", "convulsions", "hypoglycémie", "diabète", "intoxication", "empoisonnement", "poison", "monoxyde de carbone", "morsure", "piqûre", "tique", "serpent", "vipère", "112", "911", "999", "ambulance", "SAMU", "urgence", "urgences"],
   "choices": [
     {
@@ -234,7 +234,7 @@
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Liste de contrôle de la pharmacie de la maison", "note": "En allemand."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Des médicaments pour 10 jours, et une formation aux premiers secours", "note": "En allemand."},
     {"doc": "ifrc-first-aid-guidelines-2020", "page": 106, "label": "Enregistrer les numéros d’urgence dans votre téléphone", "note": "En anglais."},
-    {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Prévoir que les secours tardent", "note": "En anglais. Un kit pour les trois premiers jours."}
+    {"doc": "sgdsn-tous-responsables", "page": 4, "label": "Un kit d’urgence pour les 72 premières heures", "note": "Du guide de l’État français : en vous préparant, vous laissez les secours se concentrer sur les personnes en grande difficulté ; où ranger le kit, et ce qu’il contient."}
   ],
   "learn": [
     {"doc": "ifrc-first-aid-guidelines-2020", "label": "Lignes directrices internationales 2020 sur les premiers secours, la réanimation et la formation", "note": "En anglais. FICR, 476 pages, rédigé pour ceux qui conçoivent les formations aux premiers secours : les données scientifiques et les recommandations, sujet par sujet. Ce n’est pas un manuel pour le grand public."},
@@ -243,8 +243,8 @@
   "related": ["health", "shelter", "water", "sanitation"],
   "gaps": {
     "missing": [
-      "Aucun manuel de premiers secours écrit pour le grand public : les lignes directrices de la FICR sont écrites pour les formateurs, et les guides autrichien et allemand n’ont que quelques pages de premiers secours.",
-      "Les lignes directrices de la FICR ne citent aucun numéro d’urgence ; le 112 et les numéros nationaux viennent des guides autrichiens, allemands et italiens.",
+      "Aucun manuel de premiers secours écrit pour le grand public : les lignes directrices de la FICR sont écrites pour les formateurs, et les guides nationaux n’ont chacun que quelques pages de premiers secours.",
+      "Les lignes directrices de la FICR ne citent aucun numéro d’urgence ; le 112 et les numéros nationaux viennent des guides nationaux de protection civile.",
       "Aucune méthode simple, écrite pour le grand public, pour trier de nombreux blessés (triage).",
       "Certains médicaments que citent les lignes directrices de la FICR, comme l’aspirine, l’adrénaline ou un inhalateur, ne peuvent être donnés que là où les règles locales le permettent ; aucune source ici ne donne ces règles, pour aucun pays."
     ],

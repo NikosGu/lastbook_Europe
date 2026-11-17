@@ -101,8 +101,8 @@
   "prepare": [
     {"doc": "ifrc-extreme-cold", "page": 3, "label": "Zapasy, źródło ciepła i zestaw samochodowy na śnieżyce", "note": "Po angielsku."},
     {"doc": "ifrc-extreme-cold", "page": 2, "label": "Poznaj zagrożenia w swojej okolicy i najbliższą pomoc medyczną", "note": "Po angielsku."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista kontrolna: światło i ciepło", "note": "Po niemiecku. Latarka, świece, ciepłe ubrania i koce, śpiwory, grzejnik niewymagający prądu z sieci i paliwo."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Czujnik dymu, gaśnica, czujnik czadu", "note": "Po niemiecku. Na końcu listy kontrolnej."}
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 22, "label": "Lista: światło i ciepło", "note": "Z rządowego „Poradnika bezpieczeństwa”: latarka, świeczki i zapalniczka, koce, śpiwory i ciepła odzież oraz źródło ogrzewania, które nie działa na prąd."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 18, "label": "Czujki dymu, czadu i gazu, gaśnica", "note": "Z rządowego „Poradnika bezpieczeństwa”: także koc gaśniczy, przeglądy instalacji kominowej, gazowej i elektrycznej oraz oznaczenie miejsc, gdzie odcina się gaz, prąd i wodę."}
   ],
   "learn": [
     {"doc": "ifrc-extreme-cold", "label": "Silne mrozy i śnieżyce: najważniejsze komunikaty", "note": "Po angielsku. Komunikaty edukacyjne IFRC dla ludności: plan, przygotowanie domu i samochodu, utrzymanie ciepła, po śnieżycy."}
@@ -110,9 +110,9 @@
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {
     "missing": [
-      "Brak poradnika o upałach w domu: chłodzenie pomieszczeń, schładzanie ludzi, pomoc dla samotnie mieszkających osób starszych.",
+      "Niewiele o upałach w domu: hiszpański poradnik o niebezpiecznych zjawiskach pogodowych daje ogólne rady, a wytyczne IFRC omawiają schładzanie poszkodowanego; nic o chłodzeniu pomieszczeń.",
       "Brak poradnika o tym, jak ocenić, czy budynek uszkodzony przez trzęsienie ziemi, nawałnicę lub pożar jest bezpieczny do przebywania.",
-      "Nic o schronieniach prowadzonych przez władze ani o schronieniu pod gołym niebem."
+      "Niewiele o publicznych miejscach schronienia (fragment rządowego „Poradnika bezpieczeństwa”) i nic o schronieniu pod gołym niebem."
     ]
   }
 }

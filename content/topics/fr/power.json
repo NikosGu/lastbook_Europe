@@ -106,10 +106,10 @@
   "prepare": [
     {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "Ce qu’il faut garder à la maison en prévision d’un black-out", "note": "En allemand. Eau, nourriture, une radio à piles ou à manivelle, éclairage, médicaments, un moyen de cuisiner, de l’argent liquide en petites coupures ; prévoir pour 10 à 14 jours."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Se préparer comme pour partir en camping", "note": "En allemand. Les robinets d’arrêt, ce que votre commune a prévu, une à deux semaines de nourriture et d’eau."},
-    {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Listes de contrôle : éclairage, radio, hygiène, médicaments, un sac à emporter", "note": "En allemand."},
-    {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Les questions à aborder avant que cela arrive", "note": "En allemand. Rentrer du travail ou de l’école, qui contacter, qui a besoin d’aide, les voisins, des habitudes pour les enfants."},
+    {"doc": "sgdsn-tous-responsables", "page": 5, "label": "La liste de contrôle du kit pour 72 heures", "note": "Du guide de l’État français : eau et nourriture, médicaments et trousse de secours, radio et piles, éclairage, vêtements chauds, papiers et clés."},
+    {"doc": "sgdsn-tous-responsables", "page": 6, "label": "En parler avec ses proches avant une crise", "note": "Du guide de l’État français : qui pourrait avoir besoin d’aide, comment rester en contact, de préférence par messages, les risques à envisager en famille, et l’entraide entre voisins."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Les numéros sur papier et une batterie externe", "note": "En allemand."},
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Radio, lampe de poche, bougies et un peu d’argent liquide", "note": "En allemand. La liste du dépliant suisse de ce qu’un ménage devrait avoir."}
+    {"doc": "bwl-provisions-providentielles", "page": 4, "label": "Radio, lampe de poche, bougies et un peu d’argent liquide", "note": "Du dépliant fédéral suisse : ce qu’il faut sous la main pendant une panne de courant, et de l’argent liquide en petites coupures, car les cartes peuvent ne plus fonctionner."}
   ],
   "learn": [
     {"doc": "zsv-steiermark-blackout", "label": "Black-out : que faire quand il n’y a plus de courant", "note": "En allemand. Protection civile de Styrie : ce qu’est un black-out, se préparer, les premiers gestes, cuisiner, quand le courant revient. Certaines pages sont des publicités."},
@@ -123,7 +123,7 @@
       "Aucun guide sur les appareils médicaux qui ont besoin d’électricité, comme l’oxygène ou les appareils respiratoires, en dehors du conseil de demander de l’aide tôt."
     ],
     "disagree": [
-      "Pour combien de temps se préparer à un black-out : au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out), une à deux semaines (le guide styrien sur le black-out), 10 jours (le guide allemand), environ une semaine (le dépliant suisse)."
+      "Pour combien de temps se préparer à un black-out : au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out), une à deux semaines (le guide styrien sur le black-out), 10 jours (le guide allemand), environ une semaine (le dépliant suisse) ; pour toute crise, 72 heures (le guide national français) ou au moins 3 jours (le guide du gouvernement polonais)."
     ]
   }
 }

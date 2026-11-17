@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Zdobądź bezpieczną wodę pitną",
   "short": "Przechowuj ją, uzdatniaj i chroń przed zabrudzeniem",
-  "intro": "Materiały na czas, gdy woda z kranu przestaje płynąć albo może nie być bezpieczna: ile wody trzymać w zapasie, jak sprawić, by była bezpieczniejsza do picia, i jak utrzymać ją w czystości. Strony pochodzą od WHO oraz od szwajcarskich, niemieckich, austriackich i włoskich służb ochrony ludności.",
+  "intro": "Materiały na czas, gdy woda z kranu przestaje płynąć albo może nie być bezpieczna: ile wody trzymać w zapasie, jak sprawić, by była bezpieczniejsza do picia, i jak utrzymać ją w czystości. Strony pochodzą z polskich poradników rządowych, od WHO oraz od szwajcarskich, austriackich i włoskich służb ochrony ludności.",
   "keywords": ["woda", "woda pitna", "woda z kranu", "kranówka", "gotowanie", "zagotować", "przegotować", "przegotowana woda", "gotowanie wody", "chlor", "tabletki", "tabletki do uzdatniania wody", "oczyszczanie wody", "uzdatnianie wody", "uzdatnić", "dezynfekcja", "odkażanie", "filtr", "filtr piaskowy", "SODIS", "słońce", "światło słoneczne", "woda butelkowana", "woda mineralna", "przechowywanie", "przechowywanie wody", "zapas wody", "pojemnik", "kanister", "baniak", "wanna", "ile wody", "litry", "pragnienie", "brudna woda", "powódź", "pęknięta rura", "awaria wodociągu", "skażona woda", "zanieczyszczona woda", "blackout", "brak prądu"],
   "choices": [
     {
@@ -12,8 +12,8 @@
       "label": "Woda z kranu nie leci albo może nie być bezpieczna",
       "hint": "Powódź, pęknięta rura, ostrzeżenie, żeby jej nie pić",
       "read": [
-        {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Dlaczego każdy dom potrzebuje zapasu wody",
-         "note": "Po niemiecku. Nawałnica może uszkodzić rurę albo sprawić, że woda z kranu nie będzie bezpieczna; miej zapas na czas do przywrócenia dostaw."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "Dlaczego każdy dom potrzebuje zapasu wody",
+         "note": "Z poradnika RCB „Bądź gotowy!”: w czasie kryzysu i wojny dostęp do wody może być utrudniony; 14 litrów na każdego domownika pozwoli przetrwać tydzień bez bieżącego źródła wody."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Co daje, a czego nie daje uzdatnianie wody w domu",
          "note": "Po angielsku. Uzdatniać trzeba tylko wodę do picia i do przygotowania jedzenia, około 5 litrów na osobę dziennie. Te metody nie usuwają chemikaliów."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Po powodzi: zanim napijesz się wody z kranu",
@@ -62,12 +62,12 @@
       "label": "Ile wody potrzebujemy?",
       "hint": "Na osobę, na dzień, na ile dni",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Około 2 litrów na osobę dziennie",
-         "note": "Po niemiecku. Z tego pół litra do gotowania; ile potrzebuje trzyosobowa rodzina na 3, 5 lub 10 dni; woda dla zwierząt domowych."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Co najmniej 3 litry na osobę na dobę",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: woda i gotowa żywność w domowych zapasach na co najmniej 3 dni, obok apteczki i środków higieny."},
         {"doc": "who-tn09-how-much-water", "page": 2, "label": "Minimum potrzebne do przeżycia i do higieny",
          "note": "Po angielsku. Napisane dla planujących pomoc humanitarną: ile litrów dziennie do picia i jedzenia, do mycia i do gotowania; toaleta ze spłukiwaniem zużywa do 7 litrów za każdym razem."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Siedem butelek na osobę na tydzień",
-         "note": "Po niemiecku. Austriacka zasada tygodnia bez zakupów i bez prądu oraz coroczne sprawdzanie zapasów."}
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litrów na osobę na tydzień",
+         "note": "Z poradnika RCB „Bądź gotowy!”: tyle wody na każdego domownika pozwoli przetrwać tydzień bez bieżącego źródła; obok rady, jak przechowywać zapas jedzenia."}
       ]
     },
     {
@@ -86,8 +86,8 @@
       "label": "Nie ma prądu: czy woda nadal będzie płynąć?",
       "hint": "Długa przerwa w dostawie prądu, wodociągi, kanalizacja",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 6, "label": "Wodociągi potrzebują prądu",
-         "note": "Po niemiecku. Bez prądu dostawy wody mogą ustać; co jeszcze może zakłócić długa awaria."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Bez prądu możesz stracić dostęp do wody",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: brak prądu może potrwać nawet kilka dni; tracisz wtedy dostęp do wody, ogrzewania, internetu i telefonu oraz możliwość płacenia kartą."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Pierwsze kroki podczas blackoutu: napełnij pojemniki",
          "note": "Po niemiecku. Sprawdź zapasy, napełnij garnki, wiadra i butelki, póki woda jeszcze leci, i oszczędzaj ją."}
       ]
@@ -103,9 +103,9 @@
     {"text": "9 litrów na osobę wystarcza do picia i gotowania na trzy dni, ale nie do mycia ani spłukiwania toalety.", "doc": "bwl-kluger-rat-notvorrat", "page": 3}
   ],
   "prepare": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Ile wody trzymać na 3, 5 lub 10 dni", "note": "Po niemiecku."},
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Co najmniej 9 litrów na osobę: jedna zgrzewka sześciu butelek", "note": "Po niemiecku. Łatwo ją przenieść i można ją przechowywać miesiącami."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Zapas na tydzień, sprawdzany raz w roku", "note": "Po niemiecku."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Ile wody trzymać: co najmniej 3 litry na osobę na dobę", "note": "Z rządowego „Poradnika bezpieczeństwa”, ze spisu domowych zapasów na co najmniej 3 dni."},
+    {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litrów wody na każdego domownika", "note": "Z poradnika RCB „Bądź gotowy!”: tyle wystarczy, by przetrwać tydzień bez bieżącego źródła wody."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Zapasy na co najmniej 3 dni, przeglądane co kilka miesięcy", "note": "Z rządowego „Poradnika bezpieczeństwa”: zapasy trwałe i takie, które zużywasz i regularnie uzupełniasz; sprawdzaj terminy przydatności."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Wiedz, gdzie zakręca się wodę, i zapytaj w swojej gminie", "note": "Po niemiecku. Także woda do mycia i spłukiwania, nie tylko do picia."},
     {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Pojemniki, w których woda pozostaje czysta", "note": "Po angielsku."}
   ],
@@ -123,7 +123,7 @@
       "Żadne źródło nie porównuje tabletek do uzdatniania wody ani filtrów; jeden austriacki poradnik podaje jedną markę."
     ],
     "disagree": [
-      "Ile wody trzymać: niemiecki poradnik podaje 2 litry na osobę dziennie (z tego pół litra do gotowania); szwajcarska ulotka co najmniej 9 litrów na osobę, czyli tyle, by przez trzy dni pić i gotować; austriacki poradnik o zapasach 1,5 litra do picia i 3,5 litra do mycia dziennie oraz siedem butelek 1,5-litrowych na osobę; nota WHO 2,5 do 3 litrów dziennie do picia i jedzenia, a łącznie 7,5 do 15. Każda strona podaje własną liczbę.",
+      "Ile wody trzymać: niemiecki poradnik podaje 2 litry na osobę dziennie (z tego pół litra do gotowania); szwajcarskie ulotki co najmniej 9 litrów na osobę, czyli tyle, by przez trzy dni pić i gotować; austriacki poradnik o zapasach 1,5 litra do picia i 3,5 litra do mycia dziennie oraz siedem butelek 1,5-litrowych na osobę; francuski poradnik państwowy 6 litrów na osobę do swojego zestawu na 72 godziny; rządowy „Poradnik bezpieczeństwa” co najmniej 3 litry na osobę dziennie, a poradnik RCB „Bądź gotowy!” 14 litrów na osobę na tydzień; nota WHO 2,5 do 3 litrów dziennie do picia i jedzenia, a łącznie 7,5 do 15. Każda strona podaje własną liczbę.",
       "Dezynfekcja słońcem (SODIS): nota WHO mówi o około jednym dniu słońca w pobliżu równika i o dwóch dniach, gdy jest pochmurno; austriacki poradnik o zapasach mówi o około 6 godzinach pełnego słońca, około trzech dniach przy zachmurzeniu i o tym, że zabija ona od 30 do 80 procent zarazków."
     ]
   }

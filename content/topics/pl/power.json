@@ -16,8 +16,8 @@
          "note": "Po niemiecku. Zachowaj spokój, sprawdź, czy prądu nie ma tylko na twojej ulicy, włącz radio, daj znać rodzinie, wyłącz urządzenia z gniazdek, zostaw włączoną jedną lampę."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Pierwsze kroki w domu",
          "note": "Po niemiecku. Rodzina, urządzenia, radio, woda, światło, winda, zamrażarka, leki niezbędne do życia, odpady i toaleta zastępcza."},
-        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Jak się zachować podczas blackoutu",
-         "note": "Po włosku. Wyłącz urządzenia, nie otwieraj lodówki, słuchaj radia, unikaj wind, a także bezpieczne korzystanie z agregatu."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Jak się zachować podczas długiego braku prądu",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: oszczędzaj ciepło i zbierz domowników w jednym pokoju, rzadko otwieraj lodówkę, odłącz urządzenia; wcześniej przygotuj latarki, radio, powerbanki i gotówkę."}
       ]
     },
     {
@@ -41,8 +41,8 @@
          "note": "Po niemiecku. Sprawdź, na jak długo wystarczą; insulinę trzeba trzymać w chłodzie; komu dać znać, jeśli nie wystarczą na tydzień."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Urządzenia podtrzymujące życie, które potrzebują prądu",
          "note": "Po włosku. Poproś o pomoc wcześnie: we Włoszech strona podaje numer 118 i pomoc społeczną."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Zapasowe baterie i ładowarki do sprzętu pomocniczego",
-         "note": "Po niemiecku. Sprzęt pomocniczy zasilany prądem, plan przyjmowania leków i ich zapas oraz kto pomoże ci opuścić dom, jeśli będzie trzeba."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 12, "label": "Zapas leków i baterii do urządzeń wspomagających",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”, o osobach potrzebujących szczególnej pomocy: zapas leków i baterii, np. do aparatu słuchowego czy sensora do pomiaru cukru, plan na kryzys i pomoc przy ewakuacji."}
       ]
     },
     {
@@ -76,8 +76,8 @@
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Co oznacza długi blackout",
          "note": "Po niemiecku. Sklepy się zamykają, z każdą godziną trudniej o pomoc medyczną, mieszkania się wychładzają, nie działają windy ani telefony, piętrzą się śmieci."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 7, "label": "Co przestaje działać bez prądu",
-         "note": "Po niemiecku. Telefony i internet, płatności kartą i bankomaty, lodówka, kuchenka, woda z kranu, światło, ogrzewanie."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Co przestaje działać bez prądu",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: brak prądu może potrwać nawet kilka dni; tracisz wtedy dostęp do wody, ogrzewania, internetu i telefonu oraz możliwość płacenia kartą."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Zostać w domu i wspierać się nawzajem",
          "note": "Po niemiecku. Zostań w domu, chyba że cię potrzebują, oszczędzaj paliwo, rozmawiaj z sąsiadami, sprawdź, kto potrzebuje pomocy."}
       ]
@@ -104,12 +104,12 @@
     {"text": "Gdy prąd wróci, sprawdź, czy kuchenka i żelazko na pewno są wyłączone: mogą wywołać pożar.", "doc": "zsv-steiermark-blackout", "page": 27}
   ],
   "prepare": [
-    {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "Co mieć w domu na wypadek blackoutu", "note": "Po niemiecku. Woda, jedzenie, radio na baterie lub na korbkę, oświetlenie, leki, możliwość gotowania, gotówka w drobnych banknotach; zaplanuj na 10 do 14 dni."},
+    {"doc": "rcb-badz-gotowy", "page": 29, "label": "Co przygotować na wypadek braku prądu", "note": "Z poradnika RCB „Bądź gotowy!”: agregat i zapas paliwa, powerbank, baterie, radio na baterie, latarka, świece, apteczka, jedzenie, które nie wymaga prądu, i gotówka, bo bankomaty mogą nie działać."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Przygotuj się jak na biwak", "note": "Po niemiecku. Zawory odcinające, co zaplanowała twoja gmina, jedzenie i woda na jeden do dwóch tygodni."},
     {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Listy kontrolne: światło, radio, higiena, leki, torba do zabrania w pośpiechu", "note": "Po niemiecku."},
     {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Pytania do omówienia, zanim to się stanie", "note": "Po niemiecku. Powrót do domu z pracy lub ze szkoły, z kim się kontaktować, kto potrzebuje pomocy, sąsiedzi, codzienny rytm dzieci."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Numery na papierze i powerbank", "note": "Po niemiecku."},
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Radio, latarka, świece i trochę gotówki", "note": "Po niemiecku. Lista ze szwajcarskiej ulotki: co powinno być w każdym domu."}
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 22, "label": "Radio, latarka, świeczki i gotówka", "note": "Z rządowego „Poradnika bezpieczeństwa”: dalsza część listy domowych zapasów, także powerbank, koce, śpiwory i źródło ogrzewania, które nie działa na prąd."}
   ],
   "learn": [
     {"doc": "zsv-steiermark-blackout", "label": "Blackout: co robić, gdy nie ma prądu", "note": "Po niemiecku. Ochrona ludności Styrii: czym jest blackout, przygotowanie, pierwsze kroki, gotowanie, gdy prąd wraca. Niektóre strony to reklamy."},
@@ -123,7 +123,7 @@
       "Brak poradnika o urządzeniach medycznych zasilanych prądem, takich jak koncentratory tlenu czy aparaty do oddychania, poza radą, by wcześnie poprosić o pomoc."
     ],
     "disagree": [
-      "Na jak długo przygotować się na blackout: co najmniej 10 do 14 dni (austriacka lista kontrolna na blackout), tydzień do dwóch tygodni (styryjski poradnik o blackoucie), 10 dni (niemiecki poradnik), około tygodnia (szwajcarska ulotka)."
+      "Na jak długo przygotować się na blackout: co najmniej 10 do 14 dni (austriacka lista kontrolna na blackout), tydzień do dwóch tygodni (styryjski poradnik o blackoucie), 10 dni (niemiecki poradnik), około tygodnia (szwajcarska ulotka); na każdy rodzaj kryzysu 72 godziny (francuski poradnik państwowy) lub co najmniej 3 dni (rządowy „Poradnik bezpieczeństwa”)."
     ]
   }
 }

@@ -164,11 +164,14 @@
   "related": ["comms", "shelter", "hurt", "water"],
   "gaps": {
     "missing": [
-      "Nessuna guida a tempeste, grandine o vento forte, a parte una pagina austriaca sui temporali in montagna.",
+      "Tempeste, grandine e vento forte: solo la guida spagnola sui fenomeni meteorologici avversi, poche righe nella guida nazionale francese e una pagina austriaca sui temporali in montagna.",
       "Nessuna guida alle frane, né alle valanghe oltre al soccorso tra alpinisti.",
       "Nessuna guida per pulire e asciugare una casa dopo un'alluvione.",
-      "Sugli incidenti chimici e nucleari, solo dove ripararsi e l'avvertenza sullo iodio: nulla su quanto tempo restare al chiuso o su come fare pulizia.",
-      "Le pagine su terremoto, maremoto, alluvione e incendi boschivi sono scritte per l'Italia; allerte e sirene sono spiegate solo per Italia, Germania e Austria."
+      "Sugli incidenti chimici e nucleari, solo dove ripararsi, l'avvertenza sullo iodio e, nella guida polacca dell'RCB, quanto tempo restare al chiuso (almeno 24 ore): nulla su come fare pulizia.",
+      "Le pagine su ogni rischio sono scritte per un solo paese (Italia, Germania, Austria, Francia, Spagna o Polonia), con i numeri e le allerte di quel paese; sirene e sistemi di allerta sono spiegati per Italia, Germania, Austria, Francia e Polonia."
+    ],
+    "disagree": [
+      "Fuggire attraverso il fumo: la guida tedesca dice di non farlo mai; la guida spagnola sull'autoprotezione dice di respirare attraverso un panno umido e di procedere carponi, se devi uscire attraverso il fumo."
     ]
   }
 }

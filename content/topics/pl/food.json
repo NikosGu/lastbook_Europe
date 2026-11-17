@@ -12,10 +12,10 @@
       "label": "Jakie jedzenie trzymać w domu?",
       "hint": "Żywność o długim terminie przydatności na tydzień lub dłużej",
       "read": [
-        {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Lista kontrolna na siedem dni",
-         "note": "Po niemiecku. Napoje, żywność gotowa do jedzenia, produkty sypkie, artykuły medyczne i higieniczne, światło, możliwość gotowania, gotówka."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Jaka żywność dobrze nadaje się na zapas",
-         "note": "Po niemiecku. Na 10 dni, jeśli możesz, a co najmniej na 3: żywność, która nie wymaga lodówki, nie trzeba jej gotować albo szybko się gotuje; alergie, dzieci, zwierzęta domowe."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Lista domowych zapasów na co najmniej 3 dni",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: woda, żywność gotowa do spożycia, apteczka, środki czystości i higieny; dalsza część listy na następnej stronie."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "Jaka żywność dobrze nadaje się na zapas",
+         "note": "Z poradnika RCB „Bądź gotowy!”: trwałe produkty do zjedzenia na zimno, bez chłodzenia i gotowania, np. konserwy i batony; trzymaj je w chłodnym, suchym i ciemnym miejscu."},
         {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Lista zakupów według grup żywności",
          "note": "Po niemiecku. Napoje, produkty zbożowe, konserwy, rośliny strączkowe, mleko UHT i inne; sprawdzaj daty i uzupełniaj to, co zużyjesz."}
       ]
@@ -29,8 +29,8 @@
          "note": "Po niemiecku. Jak długo można je przechowywać, w jakiej temperaturze i co po otwarciu puszki."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Rośliny strączkowe, orzechy, olej, mięso i zamrażarka",
          "note": "Po niemiecku. Temperatury przechowywania i ile miesięcy żywność wytrzymuje w zamrażarce."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Zużywaj i uzupełniaj albo trzymaj osobny zapas sprawdzany co roku",
-         "note": "Po niemiecku."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Zapasy trwałe i te zużywane na bieżąco, przeglądane co kilka miesięcy",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: sprawdzaj też terminy przydatności."}
       ]
     },
     {
@@ -51,8 +51,8 @@
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Łatwo psująca się żywność i zamrażarka",
          "note": "Po niemiecku. Szybko zjedz lub ugotuj łatwo psującą się żywność i pilnuj, czy w zamrażarce nie pojawia się woda z topniejącego lodu; lodówki z zamrażarką rozmrażają się szybciej."},
-        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Otwieraj lodówkę i zamrażarkę jak najrzadziej",
-         "note": "Po włosku. Część zaleceń na czas blackoutu."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Otwieraj lodówkę i zamrażarkę jak najrzadziej",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”, wśród rad na czas przerwy w dostawie prądu: dzięki temu dłużej utrzymają niską temperaturę."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Zużyj łatwo psującą się żywność, zbieraj odpady do worków",
          "note": "Po niemiecku."}
       ]
@@ -90,10 +90,10 @@
     {"text": "Nie jedz żywności, która miała kontakt z wodą powodziową: może być skażona.", "doc": "dpc-io-non-rischio", "page": 31}
   ],
   "prepare": [
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Lista kontrolna na siedem dni", "note": "Po niemiecku."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Lista domowych zapasów na co najmniej 3 dni", "note": "Z rządowego „Poradnika bezpieczeństwa”."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista kontrolna: jedzenie i woda na 3, 5, 7 lub 10 dni", "note": "Po niemiecku."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Gromadź zapasy krok po kroku", "note": "Po niemiecku."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Sprawdzaj zapasy raz w roku", "note": "Po niemiecku."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Przeglądaj zapasy co kilka miesięcy", "note": "Z rządowego „Poradnika bezpieczeństwa”: sprawdzaj terminy przydatności."},
     {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Lista według grup żywności", "note": "Po niemiecku."}
   ],
   "learn": [
@@ -108,8 +108,9 @@
       "Brak poradnika o gotowaniu na ogniu lub na grillu poza ostrzeżeniem, że grille i kuchenki turystyczne są do używania na zewnątrz."
     ],
     "disagree": [
-      "Na jak długo planować: około tygodnia (szwajcarska ulotka i austriacki poradnik o zapasach), 10 dni, jeśli to możliwe, a co najmniej 3 (niemiecki poradnik), tydzień do dwóch tygodni (styryjski poradnik o blackoucie), co najmniej 10 do 14 dni (austriacka lista kontrolna na blackout).",
-      "Gotowanie na grillu podczas blackoutu: austriackie poradniki proponują grill ogrodowy, nie mówiąc, gdzie go używać; niemiecki poradnik mówi, że grille i kuchenki turystyczne są tylko do użytku na zewnątrz."
+      "Na jak długo planować: 72 godziny (francuski poradnik państwowy), co najmniej 3 dni (rządowy „Poradnik bezpieczeństwa”), około tygodnia (szwajcarskie ulotki, austriacki poradnik o zapasach i poradnik RCB „Bądź gotowy!”), 10 dni, jeśli to możliwe, a co najmniej 3 (niemiecki poradnik), tydzień do dwóch tygodni (styryjski poradnik o blackoucie), co najmniej 10 do 14 dni (austriacka lista kontrolna na blackout).",
+      "Gotowanie na grillu podczas blackoutu: austriackie poradniki proponują grill ogrodowy, nie mówiąc, gdzie go używać; niemiecki poradnik mówi, że grille i kuchenki turystyczne są tylko do użytku na zewnątrz.",
+      "Jak często sprawdzać zapasy: raz w roku (austriacki poradnik o zapasach i francuski poradnik w wersji łatwej do czytania), dwa razy w roku (francuski poradnik państwowy), co kilka miesięcy (rządowy „Poradnik bezpieczeństwa”)."
     ]
   }
 }

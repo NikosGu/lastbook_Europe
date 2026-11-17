@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Séisme, inondation, incendie et autres catastrophes",
   "short": "Séisme, tsunami, inondation, incendie, rester à l’intérieur, quitter son domicile",
-  "intro": "Des lectures pour les risques les plus fréquents en Europe : séismes, tsunamis sur les côtes, inondations, incendies à la maison et en forêt, et accidents qui obligent à rester à l’intérieur ou à quitter son domicile. La plupart des pages viennent des protections civiles italienne, allemande et autrichienne.",
+  "intro": "Des lectures pour les risques les plus fréquents en Europe : séismes, tsunamis sur les côtes, inondations, incendies à la maison et en forêt, et accidents qui obligent à rester à l’intérieur ou à quitter son domicile. La plupart des pages viennent des protections civiles italienne, allemande et autrichienne, et du guide national français.",
   "keywords": ["séisme", "tremblement de terre", "réplique", "secousse", "tsunami", "raz-de-marée", "inondation", "inondations", "crue", "crue soudaine", "crue éclair", "fortes pluies", "pluies diluviennes", "rivière", "fleuve", "tempête", "orage", "foudre", "éclairs", "incendie", "feu", "incendie domestique", "feu de maison", "fumée", "détecteur de fumée", "feu de forêt", "incendie de forêt", "feux de forêt", "évacuer", "évacuation", "sac d’urgence", "kit d’urgence", "sac d’évacuation", "documents", "papiers", "se mettre à l’abri", "mise à l’abri", "confinement", "rester à l’intérieur", "chimique", "accident chimique", "radioactivité", "radiation", "nucléaire", "iode", "comprimés d’iode", "explosion", "sirène"],
   "choices": [
     {
@@ -12,8 +12,8 @@
       "label": "La terre tremble",
       "hint": "Un séisme, à l’intérieur ou dehors",
       "read": [
-        {"doc": "dpc-io-non-rischio", "page": 12, "label": "Pendant un séisme",
-         "note": "En italien. À l’intérieur : près d’un mur porteur ou sous une table solide, et ne pas se précipiter dehors. Dehors : loin des bâtiments, des arbres, des lampadaires et des lignes électriques."}
+        {"doc": "sgdsn-agissons-falc", "page": 18, "label": "Pendant un séisme",
+         "note": "À l’intérieur : près d’un mur ou sous un meuble solide, loin des fenêtres. Dehors : loin des bâtiments et des lignes électriques. En voiture : s’arrêter loin des bâtiments et y rester."}
       ]
     },
     {
@@ -32,8 +32,8 @@
       "read": [
         {"doc": "dpc-io-non-rischio", "page": 18, "label": "Les signes d’un tsunami",
          "note": "En italien. Il n’y a pas toujours d’alerte officielle : un fort séisme, la mer qui se retire soudainement, un grondement venant de la mer."},
-        {"doc": "dpc-io-non-rischio", "page": 20, "label": "Monter en hauteur, vite, à pied",
-         "note": "En italien. Après une alerte ou un seul de ces signes : la hauteur la plus proche ou les étages supérieurs, prévenir les autres, laisser la voiture ; les bateaux."},
+        {"doc": "sgdsn-tous-responsables", "page": 8, "label": "Monter en hauteur dès l’alerte, sans la voiture",
+         "note": "Du guide de l’État français : dès l’alerte, gagner un point haut ou s’éloigner des côtes, ne pas prendre la voiture, et rester dans les sites refuges jusqu’à l’autorisation des autorités."},
         {"doc": "dpc-io-non-rischio", "page": 21, "label": "Après un tsunami",
          "note": "En italien. D’autres vagues peuvent suivre ; rester en hauteur jusqu’à ce que les autorités disent le contraire ; l’eau du robinet et la nourriture."}
       ]
@@ -135,17 +135,17 @@
     {"text": "Pendant un séisme, ne vous précipitez pas dehors : attendez que les secousses s’arrêtent.", "doc": "dpc-io-non-rischio", "page": 12},
     {"text": "Après un séisme, ne prenez pas l’ascenseur, et faites attention dans les escaliers.", "doc": "dpc-io-non-rischio", "page": 13},
     {"text": "Il n’y a pas toujours d’alerte officielle au tsunami : un fort séisme ou la mer qui se retire soudainement est le signal pour gagner les hauteurs.", "doc": "dpc-io-non-rischio", "page": 18},
-    {"text": "Ne prenez pas la voiture pour fuir un tsunami : elle peut devenir un piège.", "doc": "dpc-io-non-rischio", "page": 20},
+    {"text": "En cas de tsunami, ne prenez pas votre voiture.", "doc": "sgdsn-tous-responsables", "page": 8},
     {"text": "D’autres vagues dangereuses peuvent suivre la première : ne revenez pas tant que vous n’y êtes pas autorisé.", "doc": "dpc-io-non-rischio", "page": 21},
-    {"text": "Pendant une inondation, ne descendez jamais dans les caves, les sous-sols ou les garages pour sauver des objets : vous risquez votre vie.", "doc": "dpc-io-non-rischio", "page": 29},
+    {"text": "Pendant une inondation, ne descendez pas dans les sous-sols ni dans les parkings souterrains.", "doc": "sgdsn-tous-responsables", "page": 7},
     {"text": "Dans un sous-sol inondé, vous risquez de ne plus pouvoir ouvrir la porte, et il y a un risque d’électrocution mortelle.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 31},
-    {"text": "Même quelques centimètres d’eau rapide peuvent vous renverser ou arrêter une voiture : tenez-vous loin des passages souterrains, des berges et des ponts.", "doc": "dpc-io-non-rischio", "page": 30},
+    {"text": "Quelques centimètres d’eau suffisent à emporter une voiture : ne prenez pas la vôtre, et éloignez-vous des cours d’eau, des berges et des ponts.", "doc": "sgdsn-tous-responsables", "page": 7},
     {"text": "Ne fuyez jamais à travers la fumée : quelques inspirations peuvent tuer. Si vous êtes bloqué, faites-vous entendre à une fenêtre.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
     {"text": "Ne versez jamais d’eau sur de la graisse ou de l’huile en feu.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
     {"text": "En cas d’incendie, ne prenez pas l’ascenseur et ne sautez pas par la fenêtre.", "doc": "zsv-steiermark-notfallratgeber", "page": 10},
     {"text": "Si vous voyez un feu de forêt, appelez tout de suite : ne supposez pas que quelqu’un l’a déjà fait.", "doc": "dpc-io-non-rischio", "page": 39},
     {"text": "Si du gaz ou des liquides dangereux s’échappent à l’intérieur d’un bâtiment, quittez le bâtiment.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 30},
-    {"text": "Ne prenez des comprimés d’iode que lorsque les autorités vous le demandent : ils peuvent avoir des effets secondaires graves.", "doc": "oezsv-bevorratungsratgeber", "page": 17}
+    {"text": "Lors d’un accident nucléaire, ne prenez un comprimé d’iode que sur instruction des autorités : en France, du préfet.", "doc": "sgdsn-tous-responsables", "page": 8}
   ],
   "prepare": [
     {"doc": "dpc-io-non-rischio", "page": 11, "label": "Rendre la maison plus sûre avant un séisme", "note": "En italien. Fixer les meubles hauts, garder les objets lourds en bas, apprendre à couper le gaz, l’eau et l’électricité, connaître les endroits sûrs."},
@@ -158,17 +158,20 @@
   ],
   "learn": [
     {"doc": "dpc-io-non-rischio", "label": "Io non rischio : séisme, tsunami, inondation", "note": "En italien. Le guide du Département de la protection civile italienne (2025) : avant, pendant et après, plus les feux de forêt, les volcans et IT-alert. Écrit pour l’Italie."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Se préparer aux crises et aux catastrophes", "note": "En allemand. Le guide fédéral allemand (2025)."},
+    {"doc": "sgdsn-tous-responsables", "label": "Tous responsables : face aux risques, agissons", "note": "Le guide de l’État français (2025) : le kit d’urgence, les risques naturels et technologiques, les alertes et les numéros d’urgence en France, et comment s’engager."},
     {"doc": "zsv-steiermark-notfallratgeber", "label": "Guide d’urgence : bien réagir dans les situations d’urgence", "note": "En allemand. Guide autrichien (2024) : numéros, sirènes, incendie, premiers secours, accidents, montagne et eau."}
   ],
   "related": ["comms", "shelter", "hurt", "water"],
   "gaps": {
     "missing": [
-      "Aucun guide sur les tempêtes, la grêle ou les vents violents, à part une page autrichienne sur les orages en montagne.",
+      "Tempêtes, grêle et vents violents : seulement le guide espagnol sur les phénomènes météorologiques dangereux, quelques lignes dans le guide national français et une page autrichienne sur les orages en montagne.",
       "Aucun guide sur les glissements de terrain, ni sur les avalanches au-delà du sauvetage entre alpinistes.",
       "Aucun guide pour nettoyer et sécher un logement après une inondation.",
-      "Sur les accidents chimiques et nucléaires, seulement où se mettre à l’abri et la mise en garde sur l’iode : rien sur combien de temps rester à l’intérieur, ni sur le nettoyage.",
-      "Les pages sur les séismes, les tsunamis, les inondations et les feux de forêt sont écrites pour l’Italie ; les alertes et les sirènes ne sont expliquées que pour l’Italie, l’Allemagne et l’Autriche."
+      "Sur les accidents chimiques et nucléaires, seulement où se mettre à l’abri, la mise en garde sur l’iode et, dans le guide polonais du RCB, combien de temps rester à l’intérieur (au moins 24 heures) : rien sur le nettoyage.",
+      "Les pages sur chaque risque sont écrites pour un seul pays (Italie, Allemagne, Autriche, France, Espagne ou Pologne), avec ses propres numéros et alertes ; les sirènes et les systèmes d’alerte sont expliqués pour l’Italie, l’Allemagne, l’Autriche, la France et la Pologne."
+    ],
+    "disagree": [
+      "Fuir à travers la fumée : le guide allemand dit de ne jamais le faire ; le guide espagnol d’autoprotection dit de respirer à travers un linge humide et d’avancer à quatre pattes si vous devez sortir à travers la fumée."
     ]
   }
 }

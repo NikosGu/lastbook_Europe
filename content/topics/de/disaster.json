@@ -164,11 +164,14 @@
   "related": ["comms", "shelter", "hurt", "water"],
   "gaps": {
     "missing": [
-      "Kein Ratgeber zu Stürmen, Hagel oder starkem Wind, außer einer österreichischen Seite zu Gewittern in den Bergen.",
+      "Stürme, Hagel und starker Wind: nur der spanische Ratgeber zu extremen Wetterlagen, ein paar Zeilen im nationalen französischen Ratgeber und eine österreichische Seite zu Gewittern in den Bergen.",
       "Kein Ratgeber zu Erdrutschen, und zu Lawinen nichts außer der Kameradenrettung unter Bergsteigern.",
       "Kein Ratgeber zum Aufräumen und Trocknen einer Wohnung nach einem Hochwasser.",
-      "Zu Chemie- und Atomunfällen nur, wo man Schutz sucht, und die Warnung zu Jod: nichts dazu, wie lange man drinnen bleiben muss, oder zum Aufräumen danach.",
-      "Die Seiten zu Erdbeben, Tsunami, Hochwasser und Waldbrand sind für Italien geschrieben; Warnungen und Sirenen werden nur für Italien, Deutschland und Österreich erklärt."
+      "Zu Chemie- und Atomunfällen nur, wo man Schutz sucht, die Warnung zu Jod und im polnischen RCB-Ratgeber, wie lange man drinnen bleiben muss (mindestens 24 Stunden): nichts zum Aufräumen danach.",
+      "Die Seiten zu jeder Gefahr sind für ein einziges Land geschrieben (Italien, Deutschland, Österreich, Frankreich, Spanien oder Polen), mit dessen eigenen Nummern und Warnungen; Sirenen und Warnsysteme werden für Italien, Deutschland, Österreich, Frankreich und Polen erklärt."
+    ],
+    "disagree": [
+      "Flucht durch Rauch: Der deutsche Ratgeber sagt, nie durch Rauch zu fliehen; der spanische Ratgeber zum Selbstschutz sagt, durch ein feuchtes Tuch zu atmen und zu kriechen, wenn Sie durch Rauch hinausmüssen."
     ]
   }
 }

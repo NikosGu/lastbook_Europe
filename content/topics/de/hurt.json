@@ -243,8 +243,8 @@
   "related": ["health", "shelter", "water", "sanitation"],
   "gaps": {
     "missing": [
-      "Kein Erste-Hilfe-Handbuch für die Allgemeinheit: Die Leitlinien der IFRC sind für Ausbilder geschrieben, und die österreichischen und deutschen Ratgeber haben nur wenige Seiten zur Ersten Hilfe.",
-      "Die Leitlinien der IFRC nennen keine Notrufnummer; die 112 und die nationalen Nummern stammen aus den österreichischen, deutschen und italienischen Ratgebern.",
+      "Kein Erste-Hilfe-Handbuch für die Allgemeinheit: Die Leitlinien der IFRC sind für Ausbilder geschrieben, und die nationalen Ratgeber haben jeweils nur wenige Seiten zur Ersten Hilfe.",
+      "Die Leitlinien der IFRC nennen keine Notrufnummer; die 112 und die nationalen Nummern stammen aus den nationalen Ratgebern des Zivilschutzes.",
       "Keine einfache Methode für die Allgemeinheit, um viele Verletzte einzuteilen (Triage).",
       "Manche Medikamente, die die Leitlinien der IFRC nennen, etwa Aspirin, Adrenalin oder ein Asthmaspray, dürfen nur gegeben werden, wo örtliche Regeln es erlauben; keine Quelle hier nennt diese Regeln für irgendein Land."
     ],

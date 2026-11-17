@@ -81,7 +81,7 @@
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Liste de contrôle de la pharmacie de la maison", "note": "En allemand."},
     {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Le contenu d’une trousse de secours", "note": "En allemand."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Si vous vivez avec un handicap", "note": "En allemand."},
-    {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Qui a besoin de vous, et de qui vous avez besoin", "note": "En allemand. Des questions sur la famille, les voisins, les personnes qui dépendent d’une aide, et les habitudes des enfants."}
+    {"doc": "sgdsn-tous-responsables", "page": 6, "label": "Qui a besoin de vous, et de qui vous avez besoin", "note": "Du guide de l’État français : repérer les proches qui pourraient avoir besoin d’aide et les personnes isolées autour de vous, prévoir comment rester en contact, et trouver du soutien auprès des voisins et des collègues."}
   ],
   "learn": [
     {"doc": "ifrc-first-aid-guidelines-2020", "label": "Lignes directrices internationales 2020 sur les premiers secours, la réanimation et la formation", "note": "En anglais. FICR, rédigé pour ceux qui conçoivent les formations aux premiers secours. Les premiers secours psychologiques, les événements traumatisants, le risque de suicide et le deuil font partie de ses sujets."},
@@ -119,7 +119,7 @@
       "Aucun guide pour soigner une personne malade à la maison pendant des jours ou des semaines.",
       "Rien sur les maladies chroniques sans médecin (diabète, hypertension, maladies cardiaques), sur la grossesse et l’accouchement, ni sur les dents.",
       "Aucun guide sur les médicaments : quoi prendre pour quoi, les doses, ou combien de temps les médicaments se conservent.",
-      "Les lignes d’écoute ne sont indiquées que pour l’Allemagne et pour la Styrie, en Autriche."
+      "Les lignes d’écoute ne sont indiquées que pour l’Allemagne, pour la Styrie en Autriche et pour la Pologne."
     ]
   }
 }

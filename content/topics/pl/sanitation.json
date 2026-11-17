@@ -12,8 +12,8 @@
       "label": "Nie da się spłukać toalety",
       "hint": "Brak wody, długi blackout, uszkodzona kanalizacja",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 21, "label": "Worki do toalety, wiadro lub toaleta turystyczna",
-         "note": "Po niemiecku. Dlaczego podczas długiego blackoutu toaleta staje się problemem i co mieć w zapasie: szczelnie zamykane worki, wiadra, toaletę turystyczną."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 45, "label": "Prowizoryczna toaleta: worek na wiadrze",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: gdy brakuje bieżącej wody, nałóż plastikową torbę na wiadro, po użyciu wyrzuć ją do osobnego pojemnika, a zapach zneutralizuj ziemią, trocinami lub żwirkiem."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Mocne worki do zawieszenia w toalecie",
          "note": "Po niemiecku. Lista kontrolna higieny: duże, wytrzymałe worki na śmieci do toalety, toaleta turystyczna i inne środki higieny."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Toaleta zastępcza, gdy zawiedzie woda lub kanalizacja",
@@ -64,7 +64,7 @@
     {"text": "Podczas długiego blackoutu mycie schodzi na drugi plan: trzeba oszczędzać wodę pitną.", "doc": "zsv-steiermark-blackout", "page": 21}
   ],
   "prepare": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Lista kontrolna higieny", "note": "Po niemiecku."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Lista: środki czystości i higieny", "note": "Z rządowego „Poradnika bezpieczeństwa”: papier toaletowy, chusteczki nawilżane, podpaski, pieluchy, środki dezynfekujące, worki na śmieci i wiadro z pokrywą."},
     {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Listy: higiena i zdrowie", "note": "Po niemiecku."},
     {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "O czym zapominają gospodarstwa domowe: papier toaletowy, worki, rękawiczki", "note": "Po niemiecku."}
   ],
@@ -72,7 +72,7 @@
   "related": ["water", "hurt", "food"],
   "gaps": {
     "missing": [
-      "Brak instrukcji krok po kroku dotyczącej toalety awaryjnej: jak przygotować toaletę z worka lub wiadra i bezpiecznie pozbyć się nieczystości.",
+      "Niewiele o toalecie awaryjnej: rządowy „Poradnik bezpieczeństwa” opisuje plastikową torbę nałożoną na wiadro, którą potem wyrzuca się do osobnego pojemnika; nic o tym, jak bezpiecznie pozbyć się nieczystości.",
       "Nic o utrzymaniu czystości przy bardzo małej ilości wody, poza tym, kiedy myć ręce.",
       "Brak poradnika o sprzątaniu domu, do którego dostały się ścieki lub woda powodziowa.",
       "Nic o tym, jak zapobiec rozprzestrzenianiu się w domu choroby, na przykład biegunki."

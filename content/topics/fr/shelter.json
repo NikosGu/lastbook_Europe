@@ -110,9 +110,9 @@
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {
     "missing": [
-      "Aucun guide sur les canicules à la maison : garder les pièces au frais, rafraîchir les personnes, aider les personnes âgées qui vivent seules.",
+      "Peu de choses sur les canicules à la maison : le guide espagnol sur les phénomènes météorologiques dangereux donne des conseils généraux et les lignes directrices de la FICR expliquent comment rafraîchir une personne ; rien sur la façon de garder les pièces au frais.",
       "Aucun guide pour juger si un bâtiment endommagé par un séisme, une tempête ou un incendie peut être occupé sans danger.",
-      "Rien sur les abris gérés par les autorités, ni sur la façon de s’abriter en plein air."
+      "Peu de choses sur les abris publics (une partie du guide du gouvernement polonais) et rien sur la façon de s’abriter en plein air."
     ]
   }
 }

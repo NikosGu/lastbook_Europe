@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Conseguir agua segura para beber",
   "short": "Guárdala, hazla más segura, mantenla limpia",
-  "intro": "Lecturas para cuando el agua del grifo se corta o puede no ser segura: cuánta guardar, cómo hacer que sea más segura para beber y cómo mantenerla limpia. Las páginas son de la OMS y de la protección civil suiza, alemana, austriaca e italiana.",
+  "intro": "Lecturas para cuando el agua del grifo se corta o puede no ser segura: cuánta guardar, cómo hacer que sea más segura para beber y cómo mantenerla limpia. Las páginas son de la OMS y de la protección civil suiza, alemana, austriaca, italiana y española.",
   "keywords": ["agua", "agua potable", "agua del grifo", "hervir", "hervir el agua", "ebullición", "cloro", "lejía", "pastillas", "pastillas potabilizadoras", "comprimidos", "potabilizar", "purificar", "depurar", "desinfectar", "filtro", "filtrar", "filtro de arena", "SODIS", "sol", "luz del sol", "agua embotellada", "agua mineral", "almacenar", "guardar agua", "reserva de agua", "recipientes", "garrafas", "bidones", "bañera", "cuánta agua", "litros", "sed", "agua sucia", "inundación", "riada", "tubería rota", "contaminada", "contaminado", "apagón"],
   "choices": [
     {
@@ -16,8 +16,8 @@
          "note": "En alemán. Una tormenta puede dañar una tubería o hacer que el agua del grifo no sea segura; ten una reserva hasta que vuelva el suministro."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Lo que puede y lo que no puede hacer el tratamiento del agua en casa",
          "note": "En inglés. Solo hay que tratar el agua para beber y para la comida, unos 5 litros por persona y día. Estos métodos no eliminan los productos químicos."},
-        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Después de una inundación: antes de beber del grifo",
-         "note": "En italiano. Entre los pasos después de una inundación: comprueba que ningún aviso local prohíba beber el agua del grifo, y no comas alimentos que haya tocado el agua."}
+        {"doc": "dgpce-guia-inundaciones", "page": 19, "label": "Inundaciones: no bebas agua que no sea potable",
+         "note": "De la guía de Protección Civil sobre inundaciones: pueden causar brotes de enfermedades contagiosas; no bebas agua que no sea potable y, antes de beberla, hiérvela o fíltrala."}
       ]
     },
     {
@@ -123,7 +123,7 @@
       "Ninguna fuente compara pastillas potabilizadoras o filtros; una guía austriaca nombra una sola marca."
     ],
     "disagree": [
-      "Cuánta agua guardar: la guía alemana dice 2 litros por persona y día (medio litro para cocinar); el folleto suizo, al menos 9 litros por persona, suficiente para beber y cocinar durante tres días; la guía austriaca de provisiones, 1,5 litros para beber más 3,5 para lavarse al día, y siete botellas de 1,5 litros por persona; la nota de la OMS, de 2,5 a 3 litros al día para beber y comer, y de 7,5 a 15 en total. Cada página da su propia cifra.",
+      "Cuánta agua guardar: la guía alemana dice 2 litros por persona y día (medio litro para cocinar); los folletos suizos, al menos 9 litros por persona, suficiente para beber y cocinar durante tres días; la guía austriaca de provisiones, 1,5 litros para beber más 3,5 para lavarse al día, y siete botellas de 1,5 litros por persona; la guía nacional francesa, 6 litros por persona para su kit de 72 horas; la guía del Gobierno polaco, al menos 3 litros por persona y día, y la guía polaca del RCB, 14 litros por persona para una semana; la nota de la OMS, de 2,5 a 3 litros al día para beber y comer, y de 7,5 a 15 en total. Cada página da su propia cifra.",
       "Desinfección solar (SODIS): la nota de la OMS dice que hace falta alrededor de un día de sol cerca del ecuador, y dos si está nublado; la guía austriaca de provisiones dice unas 6 horas a pleno sol, unos tres días con nubes, y que mata entre el 30 y el 80 % de los gérmenes."
     ]
   }

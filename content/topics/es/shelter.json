@@ -14,8 +14,8 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Cuando falla la calefacción",
          "note": "En alemán. Estufas aprobadas para interiores, ropa de abrigo, mantas y sacos de dormir; ventanas cerradas, pero ventila las habitaciones un rato."},
-        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Vístete por capas, toma algo caliente",
-         "note": "En inglés. Ropa para el frío, bebidas calientes y nada de alcohol, quitarse la ropa mojada, y cuándo buscar ayuda médica."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 24, "label": "Abrígate bien y bebe agua",
+         "note": "De la guía de Protección Civil sobre fenómenos meteorológicos: ante el frío, ropa gruesa y calzado cerrado que cubran el cuerpo, beber mucha agua y taparse boca y nariz."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Calentarse sin luz",
          "note": "En alemán. Incluso la calefacción de gasóleo y la de gas se paran en un corte de luz; hornillos de camping o estufas de parafina, previstos con ventilación y salida de humos."}
       ]
@@ -29,8 +29,8 @@
          "note": "En alemán. Solo aparatos aprobados para interiores; un fuego abierto dentro de casa puede producir monóxido de carbono; instala un detector de CO."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Ni generadores ni estufas de exterior dentro de casa",
          "note": "En inglés. No uses dentro de casa un generador, ni estufas u hornillos pensados para el exterior."},
-        {"doc": "ifrc-extreme-cold", "page": 1, "label": "Por qué las estufas y las chimeneas aumentan el riesgo",
-         "note": "En inglés. En una ola de frío, las estufas y las chimeneas dentro de casa hacen más probables las intoxicaciones por monóxido de carbono y los incendios en casa."}
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Braseros y estufas en sitios cerrados",
+         "note": "De la guía de Protección Civil sobre fenómenos meteorológicos: con frío y nieve, braseros y estufas de leña, carbón o gas en sitios cerrados sin ventilación pueden causar intoxicaciones."}
       ]
     },
     {
@@ -38,8 +38,8 @@
       "label": "Que la casa aguante una ola de frío",
       "hint": "Tuberías congeladas, provisiones, una forma segura de calentarse",
       "read": [
-        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Prepara la casa para un temporal de invierno",
-         "note": "En inglés. Agua por si se congelan las tuberías, comida para varios días, una linterna y una radio, una fuente de calor bien ventilada."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Prepara la casa para el frío y la nieve",
+         "note": "De la guía de Protección Civil sobre fenómenos meteorológicos: estufa, reserva de comida y medicinas, radio portátil, revisar tejado y calefacción, y un grifo algo abierto si hiela mucho."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Tuberías congeladas, y peligros después del temporal",
          "note": "En inglés. Dejar correr un hilo de agua, revisar las tuberías, cortes de luz, inundaciones por el deshielo, caminos helados."}
       ]
@@ -53,8 +53,8 @@
          "note": "En inglés. Evita conducir, quédate en el vehículo atrapado, conduce despacio sobre la nieve; cómo juzgar el hielo de estanques y lagos."},
         {"doc": "ifrc-extreme-cold", "page": 3, "label": "Un kit de invierno para el coche",
          "note": "En inglés. Neumáticos, pinzas de batería, un botiquín, un cargador, ropa de abrigo, una pala, el depósito lleno."},
-        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Quitar nieve con la pala y otros esfuerzos con frío",
-         "note": "En inglés. Hacer demasiado esfuerzo con frío puede provocar una parada cardiaca."}
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 25, "label": "Quitar nieve sin hacer demasiado esfuerzo",
+         "note": "De la guía de Protección Civil sobre fenómenos meteorológicos, en una nevada: no hacer demasiado esfuerzo al quitar nieve, protegerse cara, cabeza y manos, y evitar salir si hay ventisca."}
       ]
     },
     {
@@ -73,8 +73,8 @@
       "label": "Hace un calor peligroso",
       "hint": "Una ola de calor, nada para refrescarse, personas mayores o bebés en casa",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Bebe lo suficiente y vigila a las personas mayores y a los bebés",
-         "note": "En inglés. De las directrices de primeros auxilios de la FICR, sobre la deshidratación: cuando hace calor, comprueba a menudo cómo están las personas mayores y los bebés."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 17, "label": "Protégete del calor y pregunta por los mayores",
+         "note": "De la guía de Protección Civil sobre fenómenos meteorológicos: protegerse del sol, comida rica en agua, preguntar por los mayores que viven solos y no dejar niños en el coche."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 332, "label": "Una persona con demasiado calor: ayúdala a enfriarse",
          "note": "En inglés. Parar e ir a un sitio fresco, enfriar con agua, y cuándo pedir ayuda."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 333, "label": "¿Agotamiento por calor o golpe de calor?",
@@ -105,14 +105,14 @@
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Detector de humo, extintor, detector de CO", "note": "En alemán. Al final de la lista de comprobación."}
   ],
   "learn": [
-    {"doc": "ifrc-extreme-cold", "label": "Frío extremo y temporales de invierno: mensajes clave", "note": "En inglés. Mensajes de educación pública de la FICR: planificar, preparar la casa y el coche, no pasar frío, después del temporal."}
+    {"doc": "dgpce-guia-fenomenos-meteorologicos", "label": "Guía de información al ciudadano ante fenómenos meteorológicos adversos", "note": "De la Dirección General de Protección Civil y Emergencias: calor, frío y nieve, tormentas, lluvias, viento, oleaje, calima y sequía, con consejos y preguntas frecuentes. Escrita para España."}
   ],
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {
     "missing": [
-      "Ninguna guía sobre las olas de calor en casa: mantener frescas las habitaciones, refrescar a las personas, ayudar a las personas mayores que viven solas.",
+      "Poco sobre las olas de calor en casa: la guía de Protección Civil sobre fenómenos meteorológicos adversos da consejos generales y las directrices de la FICR explican cómo refrescar a una persona; nada sobre cómo mantener frescas las habitaciones.",
       "Ninguna guía para juzgar si es seguro quedarse en un edificio dañado por un terremoto, un temporal o un incendio.",
-      "Nada sobre los albergues que organizan las autoridades, ni sobre cómo refugiarse al aire libre."
+      "Poco sobre los refugios públicos (un apartado de la guía del Gobierno polaco) y nada sobre cómo refugiarse al aire libre."
     ]
   }
 }

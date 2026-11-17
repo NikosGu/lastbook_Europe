@@ -67,8 +67,11 @@ Rules
 Other languages (`content/topics/<lang>/<id>.json`)
 - The app asks for the guides in the interface's language (`/api/topics?lang=it`) and takes each guide from
   `content/topics/<lang>/` where it is there, from English otherwise. The English files decide which guides there are.
-- A translation is the English file with its words translated: the same choices (same ids), the same documents and
-  pages in the same order, the same `related`. Its `note`s say when a document is in another language than the guide.
+- A translation has the English guide's items: the same choices (same ids), the same readings, warnings, preparing and
+  learning items in the same order, and the same `related`. Each item opens the English item's page, or a page of a
+  document in the translation's own language that says the same thing (a warning then paraphrases that page). A
+  document's edition in another language counts as the same pages where its sources list says `same_pages_as`. The
+  `note`s say when a document is in another language than the guide.
 - It starts with `"_review": "machine-assisted, needs native-speaker review"`, as `web/locales/` do, until a native
   speaker has reviewed it.
 - It carries `"gaps"`: the guide's entry of `content/gaps.json` (`missing`, `disagree`) in its own words, item for item.

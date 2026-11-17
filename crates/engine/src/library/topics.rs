@@ -173,14 +173,21 @@ mod tests {
 
     /// The documents the packs list (`content/library/*.json`), each with the one whose pages it repeats in another
     /// language (`same_pages_as`), if any.
-    fn pack_documents() -> HashMap<String, Option<String>> {
-        let mut docs = HashMap::from([("lastbook-sources".to_string(), None)]);
+    fn pack_documents() -> HashMap<String, PackDoc> {
+        let mut docs = HashMap::from([("lastbook-sources".to_string(), PackDoc { lang: "en".into(), same_pages_as: None })]);
         for f in std::fs::read_dir(repo().join("content/library")).unwrap().flatten() {
             for d in read(&f.path())["documents"].as_array().unwrap() {
-                docs.insert(d["id"].as_str().unwrap().to_string(), d["same_pages_as"].as_str().map(str::to_string));
+                let doc = PackDoc { lang: d["lang"].as_str().unwrap_or("").to_string(), same_pages_as: d["same_pages_as"].as_str().map(str::to_string) };
+                docs.insert(d["id"].as_str().unwrap().to_string(), doc);
             }
         }
         docs
+    }
+
+    /// A document a pack lists: its language, and the document whose pages it repeats in another language, if any.
+    struct PackDoc {
+        lang: String,
+        same_pages_as: Option<String>,
     }
 
     /// Every item a guide opens, with where it sits: the choices' and steps' readings, warnings, preparing, learning.
@@ -197,18 +204,24 @@ mod tests {
         v
     }
 
-    /// What a guide is made of, without its words: ids, links, and what each item opens. A document's edition in
-    /// another language counts as the document whose pages it repeats.
-    fn shape(t: &Value, docs: &HashMap<String, Option<String>>) -> Vec<String> {
-        let doc = |i: &Value| {
-            let d = i["doc"].as_str().unwrap_or("");
-            docs.get(d).cloned().flatten().unwrap_or_else(|| d.to_string())
-        };
+    /// What a guide is made of, without its words or what its items open: ids, links, and where each item sits, with
+    /// whether it opens one page or a whole document.
+    fn frame(t: &Value) -> Vec<String> {
         let mut v = vec![format!("{} {} {}", t["id"], t["mode"], t["related"])];
         v.extend(t["choices"].as_array().into_iter().flatten().map(|c| format!("choice {} {}", c["id"], c["goto"])));
         v.push(format!("{} steps", t["route"].as_array().map_or(0, Vec::len)));
-        v.extend(items(t).into_iter().map(|(at, i)| format!("{at} {} {} {}", doc(i), i["page"], i["zim"])));
+        v.extend(items(t).into_iter().map(|(at, i)| format!("{at} {}", if i.get("page").is_some() { "page" } else { "document" })));
         v
+    }
+
+    /// What each item of a guide opens: the document (an edition in another language counts as the document whose
+    /// pages it repeats) and the page.
+    fn opens(t: &Value, docs: &HashMap<String, PackDoc>) -> Vec<(String, Value)> {
+        let doc = |i: &Value| {
+            let d = i["doc"].as_str().unwrap_or("");
+            docs.get(d).and_then(|p| p.same_pages_as.clone()).unwrap_or_else(|| d.to_string())
+        };
+        items(t).into_iter().map(|(_, i)| (doc(i), i["page"].clone())).collect()
     }
 
     /// The words a person reads in a guide, with where they are.
@@ -251,7 +264,9 @@ mod tests {
     }
 
     #[test]
-    fn a_guide_in_another_language_opens_what_the_english_one_opens() {
+    /// A translation has the English guide's items, in the same order; each opens the English item's page, or a page of
+    /// a document in the translation's own language (which must say the same thing: content/SCHEMA.md).
+    fn a_guide_in_another_language_has_the_items_of_the_english_one() {
         let dir = repo().join("content/topics");
         let gaps = read(&repo().join("content/gaps.json"));
         let docs = pack_documents();
@@ -264,7 +279,11 @@ mod tests {
                 let text = std::fs::read_to_string(&own).unwrap();
                 assert!(text.trim_start().trim_start_matches('{').trim_start().starts_with("\"_review\""), "{name}: starts with \"_review\", as web/locales do");
                 assert_eq!(t["_review"], REVIEW, "{name}");
-                assert_eq!(shape(&t, &docs), shape(&e, &docs), "{name}: the same choices and the same pages as the English guide, in the same order");
+                assert_eq!(frame(&t), frame(&e), "{name}: the same choices and the same items as the English guide, in the same order");
+                for (k, (o, eo)) in opens(&t, &docs).into_iter().zip(opens(&e, &docs)).enumerate() {
+                    let own = docs.get(&o.0).is_some_and(|d| d.lang == lang);
+                    assert!(o == eo || own, "{name}: item {k} opens {o:?}; it opens the English item's page, or a page in {lang}");
+                }
                 for ((at, tw), (_, ew)) in texts(&t).iter().zip(texts(&e)) {
                     assert!(ew.is_empty() || !tw.trim().is_empty(), "{name}: {at} has no words");
                 }
@@ -281,8 +300,8 @@ mod tests {
     #[test]
     fn every_guide_opens_a_page_of_a_document_a_pack_lists() {
         let docs = pack_documents();
-        for (d, same) in &docs {
-            assert!(same.as_ref().is_none_or(|s| docs.contains_key(s)), "{d}: same_pages_as names a document no pack lists");
+        for (d, p) in &docs {
+            assert!(p.same_pages_as.as_ref().is_none_or(|s| docs.contains_key(s)), "{d}: same_pages_as names a document no pack lists");
         }
         let gaps = read(&repo().join("content/gaps.json"));
         for (en, _) in guide_files(&repo().join("content/topics"), "en") {

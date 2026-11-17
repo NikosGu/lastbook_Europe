@@ -12,8 +12,8 @@
       "label": "Je veux les alertes et les informations officielles",
       "hint": "Sirènes, alertes sur le téléphone, applications d’alerte, radio",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 12, "label": "Comment les alertes vous parviennent, et ce que signifient les sirènes",
-         "note": "En allemand. Applications, radio, sirènes et alertes sur le téléphone, et les signaux des sirènes allemandes pour le danger et pour la fin de l’alerte."},
+        {"doc": "sgdsn-tous-responsables", "page": 9, "label": "Comment les alertes vous parviennent, et ce que signifient les sirènes",
+         "note": "Du guide de l’État français : radio, télévision et FR-Alert sur le téléphone, et les signaux des sirènes en France pour l’alerte et pour la fin de l’alerte."},
         {"doc": "zsv-steiermark-notfallratgeber", "page": 4, "label": "Les signaux des sirènes en Autriche, et que faire pour chacun",
          "note": "En allemand. Avertissement, alarme et fin de l’alerte en Autriche : allumer la radio, ou aller dans une pièce protégée ou à la cave."},
         {"doc": "dpc-io-non-rischio", "page": 59, "label": "IT-alert : les messages d’urgence sur les téléphones portables en Italie",
@@ -29,8 +29,8 @@
          "note": "En allemand. Où aller si les numéros d’urgence ne fonctionnent pas, et quelles radios marchent encore pendant une coupure de courant."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Les numéros sur papier et une batterie externe chargée",
          "note": "En allemand. Une liste écrite des numéros importants, une batterie externe pour le téléphone, et des cartes enregistrées pour s’en servir hors ligne."},
-        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Laisser les lignes téléphoniques libres pendant un black-out",
-         "note": "En italien. Parmi ses conseils en cas de black-out : écouter la radio et n’utiliser le téléphone qu’en cas d’urgence."}
+        {"doc": "sgdsn-tous-responsables", "page": 10, "label": "Laisser les lignes téléphoniques libres pour les secours",
+         "note": "Du guide de l’État français, parmi les consignes en cas d’alerte : éviter de téléphoner, pour laisser les réseaux aux secours, et suivre la radio et la télévision."}
       ]
     },
     {
@@ -58,37 +58,37 @@
       "label": "Ce message est-il vrai ?",
       "hint": "Rumeurs, messages en chaîne, vidéos alarmantes",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 16, "label": "Pourquoi les fausses informations sont dangereuses en temps de crise",
-         "note": "En allemand. Comment les rumeurs se propagent, et les premières questions à se poser sur l’auteur d’un message."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 17, "label": "Vérifier un message avant de le transmettre",
-         "note": "En allemand. D’autres questions à se poser ; si une réponse est non, ne le partagez pas."}
+        {"doc": "sgdsn-tous-responsables", "page": 9, "label": "Pourquoi les fausses informations sont dangereuses en temps de crise",
+         "note": "Du guide de l’État français : un adversaire peut profiter d’une crise pour aggraver le désordre ; quatre questions à se poser, à commencer par qui a envoyé l’information."},
+        {"doc": "sgdsn-tous-responsables", "page": 8, "label": "Vérifier une information avant de la transmettre",
+         "note": "Du guide de l’État français : vérifier la source, l’auteur et la date avant de rediffuser, et signaler un contenu illicite sur la plateforme Pharos."}
       ]
     }
   ],
   "limits": [
     {"text": "Lors d’une coupure de courant, ou quand le réseau mobile tombe en panne, beaucoup de moyens d’alerte ne fonctionnent plus.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
-    {"text": "Prenez les alertes officielles au sérieux : elles vous disent comment vous protéger et protéger les autres.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
+    {"text": "Si un événement grave survient, écoutez les autorités et respectez leurs consignes : c’est essentiel pour votre sécurité et celle de vos proches.", "doc": "sgdsn-tous-responsables", "page": 9},
     {"text": "Si les numéros d’urgence ne fonctionnent pas, rendez-vous au poste de police ou à l’hôpital le plus proche, si vous le pouvez.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 15},
-    {"text": "Si un message ne passe pas l’une de ces vérifications, ne le transmettez pas.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 17},
-    {"text": "Pendant un black-out, n’encombrez pas les lignes téléphoniques pour chercher des nouvelles : écoutez la radio et n’appelez qu’en cas d’urgence.", "doc": "ravenna-rischio-blackout", "page": 1}
+    {"text": "Ne propagez pas de fausses rumeurs : en situation de crise, ne tenez compte que des annonces des pouvoirs publics sur les canaux officiels.", "doc": "sgdsn-tous-responsables", "page": 9},
+    {"text": "En cas d’alerte, évitez de téléphoner, pour laisser les réseaux libres pour les secours, et suivez les consignes à la radio et à la télévision.", "doc": "sgdsn-tous-responsables", "page": 10}
   ],
   "prepare": [
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Les numéros sur papier, une batterie externe, des cartes hors ligne", "note": "En allemand."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Une radio de voiture, à manivelle ou à piles", "note": "En allemand. La radio fonctionne encore quand Internet et l’électricité sont coupés."},
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Une radio à piles dans les provisions de la maison", "note": "En allemand. La liste du dépliant suisse de ce qu’il faut garder à la maison."},
+    {"doc": "bwl-provisions-providentielles", "page": 4, "label": "Une radio à piles dans les provisions de la maison", "note": "Du dépliant fédéral suisse : une radio à piles, une lampe de poche et des piles de réserve parmi ce qu’il faut avoir à la maison pour une panne de courant."},
     {"doc": "zsv-steiermark-notfallratgeber", "page": 42, "label": "Garder les numéros d’urgence sur soi", "note": "En allemand. Une carte autrichienne, au format portefeuille, avec les numéros d’urgence."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Une carte d’urgence pour communiquer avec les secours", "note": "En allemand."}
   ],
   "learn": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Se préparer aux crises et aux catastrophes", "note": "En allemand. Le guide fédéral allemand : provisions, alertes, s’informer, la peur, premiers secours, incendie, documents, sac d’urgence, mise à l’abri."},
+    {"doc": "sgdsn-tous-responsables", "label": "Tous responsables : face aux risques, agissons", "note": "Le guide de l’État français (2025) : les alertes, les sirènes et FR-Alert, les numéros d’urgence, la désinformation, et rester en contact avec ses proches. Écrit pour la France."},
     {"doc": "zsv-steiermark-notfallratgeber", "label": "Guide d’urgence : bien réagir dans les situations d’urgence", "note": "En allemand. Guide autrichien : numéros, sirènes, incendie, premiers secours, accidents, montagne et eau."}
   ],
   "related": ["power", "disaster"],
   "gaps": {
     "missing": [
-      "Aucun guide sur les radios pour communiquer entre vous, comme les talkies-walkies PMR, la CB ou la radio amateur.",
-      "Aucun guide pour un plan familial : où se retrouver et qui appeler quand les téléphones ne marchent plus.",
-      "Les systèmes d’alerte ne sont expliqués que pour l’Allemagne, l’Autriche et l’Italie.",
+      "Aucun guide sur les radios pour communiquer entre vous, comme les talkies-walkies PMR, la CB ou la radio amateur ; le guide du gouvernement polonais les cite seulement parmi les choses à avoir.",
+      "Un plan familial de crise ne figure que dans le guide du gouvernement polonais ; le guide national français dit de convenir avec ses proches de la façon de rester en contact.",
+      "Les systèmes d’alerte ne sont expliqués que pour l’Allemagne, l’Autriche, l’Italie, la France et la Pologne.",
       "Aucun guide pour lire une carte ou utiliser une boussole."
     ]
   }

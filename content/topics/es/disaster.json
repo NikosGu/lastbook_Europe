@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Terremoto, inundación, incendio y otras catástrofes",
   "short": "Terremoto, tsunami, inundación, incendio, quedarse dentro, salir de casa",
-  "intro": "Lecturas para los peligros más frecuentes en Europa: terremotos, tsunamis en la costa, inundaciones, incendios en casa e incendios forestales, y accidentes que obligan a quedarse dentro o a salir de casa. La mayoría de las páginas son de la protección civil italiana, alemana y austriaca.",
+  "intro": "Lecturas para los peligros más frecuentes en Europa: terremotos, tsunamis en la costa, inundaciones, incendios en casa e incendios forestales, y accidentes que obligan a quedarse dentro o a salir de casa. La mayoría de las páginas son de la protección civil italiana, alemana, austriaca y española.",
   "keywords": ["terremoto", "terremotos", "seísmo", "sismo", "réplicas", "temblor", "temblores", "tsunami", "maremoto", "inundación", "inundaciones", "riada", "riadas", "crecida", "lluvias torrenciales", "DANA", "gota fría", "río", "temporal", "tormenta", "tormentas", "rayos", "relámpagos", "incendio", "incendios", "fuego", "incendio en casa", "humo", "detector de humo", "incendio forestal", "fuego en el monte", "evacuar", "evacuación", "mochila de emergencia", "documentos", "confinamiento", "confinarse", "quedarse en casa", "no salir de casa", "químico", "radiación", "nuclear", "yodo", "pastillas de yodo", "explosión", "explosiones", "sirenas"],
   "choices": [
     {
@@ -43,10 +43,10 @@
       "label": "Han dado un aviso de inundación",
       "hint": "Lluvias intensas, un río que crece, una alerta para mi zona",
       "read": [
-        {"doc": "dpc-io-non-rischio", "page": 28, "label": "Cuando se da una alerta por inundación",
-         "note": "En italiano. Mantente informado, no duermas en sótanos, protege la planta baja, piénsatelo dos veces antes de mover el coche."},
-        {"doc": "vvf-acqua-e-vita", "page": 1, "label": "Protegerte en una inundación",
-         "note": "En italiano. Sube a los pisos altos, no entres en sótanos ni en pasos subterráneos, deja el teléfono para emergencias, una bolsa lista para salir."},
+        {"doc": "dgpce-guia-inundaciones", "page": 14, "label": "Prepara la casa y no cruces zonas inundadas",
+         "note": "De la guía de Protección Civil sobre inundaciones: retirar lo que pueda llevarse el agua, documentos en alto, no aparcar junto a ríos, no cruzar tramos inundados, seguir la radio."},
+        {"doc": "dgpce-guia-inundaciones", "page": 13, "label": "Protegerte en una inundación",
+         "note": "De la guía de Protección Civil sobre inundaciones: mantenerte informado, salir de sótanos y plantas bajas, alejarte de ríos y zonas bajas, y cuándo abandonar el coche."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 31, "label": "Sube, nunca bajes al sótano",
          "note": "En alemán. En inundaciones y lluvias intensas, los pisos altos protegen; los sótanos, los aparcamientos subterráneos y los pasos subterráneos pueden dejarte atrapado."}
       ]
@@ -56,10 +56,10 @@
       "label": "El agua está subiendo a mi alrededor",
       "hint": "En un edificio, fuera o en un coche",
       "read": [
-        {"doc": "dpc-io-non-rischio", "page": 29, "label": "Dentro de un edificio durante una inundación",
-         "note": "En italiano. Sube a los pisos altos, no bajes a los sótanos ni salgas a por el coche; nada de ascensor; cierra el gas y corta la luz; ayuda a los vecinos mayores o con discapacidad."},
-        {"doc": "dpc-io-non-rischio", "page": 30, "label": "Fuera durante una inundación",
-         "note": "En italiano. Sal del agua, ve a un lugar alto lejos de las laderas, no conduzcas, evita los pasos subterráneos, las orillas de los ríos y los puentes."}
+        {"doc": "dgpce-guia-inundaciones", "page": 13, "label": "Si se inunda tu casa",
+         "note": "De la guía de Protección Civil sobre inundaciones: sal cuanto antes de sótanos y plantas bajas, corta la luz y usa una linterna; también, qué hacer si vas en coche."},
+        {"doc": "dgpce-guia-inundaciones", "page": 14, "label": "No cruces tramos inundados; busca un sitio alto",
+         "note": "De la guía de Protección Civil sobre inundaciones, con lluvias intensas: no cruzar tramos inundados a pie ni en coche, porque el agua puede arrastrarte, y buscar las zonas altas."}
       ]
     },
     {
@@ -89,8 +89,8 @@
       "label": "Hay un incendio forestal cerca",
       "hint": "Humo, llamas en el monte, atrapado por el fuego",
       "read": [
-        {"doc": "dpc-io-non-rischio", "page": 39, "label": "Si ves un incendio forestal, o te atrapa uno",
-         "note": "En italiano. Llama enseguida; cómo alejarte, dónde tumbarte, y cuándo pasar a una zona que ya se ha quemado."},
+        {"doc": "dgpce-guia-autoproteccion", "page": 11, "label": "Si estás cerca de un incendio forestal",
+         "note": "De la guía de Protección Civil sobre autoprotección: avisar al 112, cómo alejarte del fuego, cuándo pasar a la zona quemada; y si el fuego se acerca a una casa."},
         {"doc": "dpc-io-non-rischio", "page": 37, "label": "Avisa de un incendio, o incluso de humo",
          "note": "En italiano. Di el lugar exacto y el municipio. Números de Italia."}
       ]
@@ -139,7 +139,7 @@
     {"text": "Después de la primera pueden llegar más olas peligrosas: no vuelvas hasta que te lo permitan.", "doc": "dpc-io-non-rischio", "page": 21},
     {"text": "En una inundación, nunca bajes a sótanos, semisótanos o garajes para salvar cosas: arriesgas la vida.", "doc": "dpc-io-non-rischio", "page": 29},
     {"text": "En un sótano inundado puede que no consigas abrir la puerta, y hay riesgo de una descarga eléctrica mortal.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 31},
-    {"text": "Incluso unos pocos centímetros de agua rápida pueden tirarte al suelo o calar un coche: aléjate de los pasos subterráneos, las orillas de los ríos y los puentes.", "doc": "dpc-io-non-rischio", "page": 30},
+    {"text": "No cruces tramos inundados ni a pie ni en coche: la fuerza del agua puede arrastrarte a ti y a tu vehículo.", "doc": "dgpce-guia-inundaciones", "page": 14},
     {"text": "Nunca huyas a través del humo: unas pocas bocanadas pueden matar. Si estás atrapado, hazte oír desde una ventana.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
     {"text": "Nunca eches agua sobre grasa o aceite ardiendo.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
     {"text": "En un incendio, no uses el ascensor y no saltes por la ventana.", "doc": "zsv-steiermark-notfallratgeber", "page": 10},
@@ -150,7 +150,7 @@
   "prepare": [
     {"doc": "dpc-io-non-rischio", "page": 11, "label": "Haz tu casa más segura antes de un terremoto", "note": "En italiano. Sujeta los muebles altos, pon las cosas pesadas abajo, aprende a cerrar el gas, el agua y la luz, conoce los sitios seguros."},
     {"doc": "dpc-io-non-rischio", "page": 26, "label": "Cómo se comportan las inundaciones y cuáles son los sitios más peligrosos", "note": "En italiano. El agua puede subir uno o dos metros en pocos minutos."},
-    {"doc": "dpc-io-non-rischio", "page": 27, "label": "Antes de una inundación: plan, kit, objetos de valor fuera del sótano", "note": "En italiano. También avisar al ayuntamiento si alguien en casa necesita ayuda."},
+    {"doc": "dgpce-guia-inundaciones", "page": 15, "label": "Si vives en una zona inundable", "note": "De la guía de Protección Civil sobre inundaciones: saber si vives en zona de riesgo y por dónde evacuar, y poner en alto documentos, objetos de valor, comida y agua."},
     {"doc": "dpc-io-non-rischio", "page": 19, "label": "En la costa: un plan familiar para un tsunami", "note": "En italiano."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 36, "label": "Lista de comprobación de la mochila de emergencia", "note": "En alemán."},
     {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Documentos en una carpeta impermeable, y sacos contra inundaciones", "note": "En alemán."},
@@ -164,11 +164,14 @@
   "related": ["comms", "shelter", "hurt", "water"],
   "gaps": {
     "missing": [
-      "Ninguna guía sobre temporales, granizo o vientos fuertes, salvo una página austriaca sobre las tormentas en la montaña.",
+      "Temporales, granizo y vientos fuertes: solo la guía de Protección Civil sobre fenómenos meteorológicos adversos, unas pocas líneas en la guía nacional francesa y una página austriaca sobre las tormentas en la montaña.",
       "Ninguna guía sobre deslizamientos de tierra, ni sobre aludes más allá del rescate entre montañeros.",
       "Ninguna guía para limpiar y secar una casa después de una inundación.",
-      "Sobre accidentes químicos y nucleares, solo dónde refugiarse y la advertencia sobre el yodo: nada sobre cuánto tiempo quedarse dentro ni sobre cómo limpiar.",
-      "Las páginas sobre terremotos, tsunamis, inundaciones e incendios forestales están escritas para Italia; las alertas y las sirenas solo se explican para Italia, Alemania y Austria."
+      "Sobre accidentes químicos y nucleares, solo dónde refugiarse, la advertencia sobre el yodo y, en la guía polaca del RCB, cuánto tiempo quedarse dentro (al menos 24 horas): nada sobre cómo limpiar.",
+      "Las páginas sobre cada riesgo están escritas para un solo país (Italia, Alemania, Austria, Francia, España o Polonia), con sus propios números y alertas; las sirenas y los sistemas de alerta se explican para Italia, Alemania, Austria, Francia y Polonia."
+    ],
+    "disagree": [
+      "Huir a través del humo: la guía alemana dice que no lo hagas nunca; la guía de Protección Civil sobre autoprotección dice que, si tienes que salir a través del humo, respires a través de un paño húmedo y avances a gatas."
     ]
   }
 }

@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Ktoś jest ranny albo nagle zachorował",
   "short": "Pierwsza pomoc: krwawienie, oparzenia, oddech, urazy, nagłe zachorowania",
-  "intro": "Materiały o pierwszej pomocy na czas, zanim dotrą ratownicy: sprawdzanie stanu poszkodowanego, wzywanie pomocy, krwawienie, oparzenia, oddech i resuscytacja krążeniowo-oddechowa (RKO), urazy i nagłe zachorowania. Większość stron pochodzi z międzynarodowych wytycznych pierwszej pomocy IFRC (Międzynarodowej Federacji Czerwonego Krzyża i Czerwonego Półksiężyca) z 2020 roku, napisanych dla instruktorów pierwszej pomocy; część z austriackich i niemieckich poradników ochrony ludności.",
+  "intro": "Materiały o pierwszej pomocy na czas, zanim dotrą ratownicy: sprawdzanie stanu poszkodowanego, wzywanie pomocy, krwawienie, oparzenia, oddech i resuscytacja krążeniowo-oddechowa (RKO), urazy i nagłe zachorowania. Większość stron pochodzi z międzynarodowych wytycznych pierwszej pomocy IFRC (Międzynarodowej Federacji Czerwonego Krzyża i Czerwonego Półksiężyca) z 2020 roku, napisanych dla instruktorów pierwszej pomocy; część z polskich poradników rządowych oraz z austriackich i niemieckich poradników ochrony ludności.",
   "keywords": ["pierwsza pomoc", "uraz", "ranny", "poszkodowany", "rana", "skaleczenie", "rozcięcie", "krwawienie", "krew", "krwotok", "opaska uciskowa", "staza", "opatrunek uciskowy", "oparzenie", "oparzenie wrzątkiem", "poparzenie", "złamanie", "złamana kość", "skręcenie", "zwichnięcie", "szyna", "unieruchomienie", "uraz głowy", "wstrząśnienie mózgu", "kręgosłup", "szyja", "RKO", "resuscytacja", "reanimacja", "nie oddycha", "nieprzytomny", "utrata przytomności", "nie reaguje", "pozycja boczna", "pozycja bezpieczna", "defibrylator", "AED", "zadławienie", "zakrztuszenie", "wstrząs", "udar cieplny", "porażenie słoneczne", "odwodnienie", "biegunka", "wymioty", "hipotermia", "wychłodzenie", "odmrożenie", "reakcja alergiczna", "alergia", "anafilaksja", "wstrząs anafilaktyczny", "adrenalina", "epinefryna", "astma", "zawał serca", "zawał", "ból w klatce piersiowej", "udar", "udar mózgu", "napad padaczkowy", "drgawki", "padaczka", "niski cukier", "hipoglikemia", "cukrzyca", "zatrucie", "trucizna", "tlenek węgla", "czad", "ugryzienie", "pogryzienie", "użądlenie", "kleszcz", "wąż", "żmija", "112", "911", "999", "karetka", "pogotowie", "nagły wypadek"],
   "choices": [
     {
@@ -18,8 +18,8 @@
          "note": "Po angielsku. Kiedy trzymać się z daleka i powiadomić odpowiednie służby, rozmowa przez telefon na głośniku i kilku rannych naraz."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 103, "label": "Co powiedzieć służbom ratunkowym",
          "note": "Po angielsku. Zachowaj spokój i odpowiadaj na pytania; lepiej zadzwonić wcześnie, nawet wiedząc niewiele, niż czekać."},
-        {"doc": "zsv-steiermark-notfallratgeber", "page": 16, "label": "Co robi osoba udzielająca pierwszej pomocy",
-         "note": "Po niemiecku. Zachowaj spokój, zabezpiecz miejsce, czynności ratujące życie, wezwij pomoc, co powiedzieć."}
+        {"doc": "rcb-badz-gotowy", "page": 33, "label": "Co robi osoba udzielająca pierwszej pomocy",
+         "note": "Z poradnika RCB „Bądź gotowy!”: zachowaj spokój, sprawdź, czy jest bezpiecznie, wezwij pomoc i podaj miejsce, liczbę poszkodowanych i rodzaj obrażeń; nie rozłączaj się bez polecenia dyspozytora."}
       ]
     },
     {
@@ -31,8 +31,8 @@
          "note": "Po angielsku. Mocno uciskaj ranę; opaska uciskowa tylko na rękę lub nogę i tylko wtedy, gdy ucisk nie pomaga; czego nie robić."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 188, "label": "Krok po kroku i czego nie ruszać",
          "note": "Po angielsku. Uciskaj, połóż poszkodowanego, wezwij pomoc, drugi opatrunek na wierzch; przedmiot wbity w ranę zostaw tam, gdzie jest."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 23, "label": "Opatrunek uciskowy w czterech krokach",
-         "note": "Po niemiecku. Na głęboką, mocno krwawiącą ranę."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 44, "label": "Obfity krwotok krok po kroku",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: załóż opatrunek uciskowy; gdy krwawienie z kończyny nie ustaje, opaska do tamowania krwotoków powyżej rany (zapisz godzinę); bez nich uciskaj ranę dłonią; okryj poszkodowanego."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 202, "label": "Oczyść skaleczenie lub otarcie",
          "note": "Po angielsku. Przepłucz czystą wodą z kranu i przykryj; objawy zakażenia; tężec."}
       ]
@@ -68,14 +68,14 @@
       "label": "Nie reaguje, nie oddycha prawidłowo albo się dławi",
       "hint": "Zasłabnięcie, chwytanie powietrza, jedzenie utknęło w gardle, ktoś wyciągnięty z wody",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 128, "label": "Nie reaguje, ale oddycha: pozycja boczna bezpieczna",
-         "note": "Po angielsku. Zawołaj, delikatnie potrząśnij, udrożnij drogi oddechowe, sprawdzaj oddech do dziesięciu sekund, ułóż poszkodowanego na boku."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 134, "label": "Nie oddycha prawidłowo: zacznij RKO",
-         "note": "Po angielsku. Załóż, że serce się zatrzymało; uciskaj mocno i szybko, 100 do 120 razy na minutę, na głębokość około 5 cm, 30 uciśnięć na 2 oddechy."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 42, "label": "Nie reaguje, ale oddycha: pozycja boczna ustalona",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: poproś kogoś o defibrylator (AED), sprawdź, czy poszkodowany oddycha; jeśli tak, ułóż go w pozycji bocznej ustalonej i obserwuj oddech do przyjazdu ratowników."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 43, "label": "Nie oddycha: zacznij resuscytację (RKO)",
+         "note": "Z rządowego „Poradnika bezpieczeństwa”: uciskaj środek klatki piersiowej mocno, na 5–6 cm, 2 razy na sekundę; po 30 uciśnięciach 2 wdechy; użyj defibrylatora (AED), gdy ktoś go przyniesie."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 171, "label": "Zadławienie: uderzenia w plecy i uciśnięcia nadbrzusza",
          "note": "Po angielsku. Do pięciu uderzeń między łopatki, potem do pięciu uciśnięć nadbrzusza, na zmianę."},
-        {"doc": "zsv-steiermark-notfallratgeber", "page": 17, "label": "Nieprzytomny albo nie oddycha",
-         "note": "Po niemiecku. Sprawdzanie stanu, pozycja boczna bezpieczna, RKO w rytmie 30:2 i defibrylator."}
+        {"doc": "rcb-badz-gotowy", "page": 34, "label": "Nieprzytomny albo nie oddycha",
+         "note": "Z poradnika RCB „Bądź gotowy!”: sprawdzanie przytomności, udrożnienie dróg oddechowych, pozycja boczna ustalona krok po kroku, a gdy poszkodowany nie oddycha, RKO: 30 uciśnięć i 2 wdechy."}
       ]
     },
     {
@@ -208,7 +208,7 @@
     }
   ],
   "limits": [
-    {"text": "Nie podchodź na miejsce zdarzenia, jeśli nie jest bezpieczne.", "doc": "ifrc-first-aid-guidelines-2020", "page": 102},
+    {"text": "Zanim zaczniesz pomagać, sprawdź, czy jest bezpiecznie, i pamiętaj o własnym bezpieczeństwie.", "doc": "rcb-badz-gotowy", "page": 33},
     {"text": "Przy każdym silnym krwawieniu wezwij służby ratunkowe.", "doc": "ifrc-first-aid-guidelines-2020", "page": 187},
     {"text": "Nie wyciągaj przedmiotu wbitego w ranę. Założonej opaski uciskowej nie zdejmuj, dopóki nie dotrze pomoc.", "doc": "ifrc-first-aid-guidelines-2020", "page": 188},
     {"text": "Nigdy nie zakrywaj zakażonej rany: szukaj pomocy medycznej.", "doc": "ifrc-first-aid-guidelines-2020", "page": 203},
@@ -231,20 +231,20 @@
   ],
   "prepare": [
     {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Co jest w domowej apteczce", "note": "Po niemiecku. Lista zgodna z austriacką normą."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Lista kontrolna domowej apteczki", "note": "Po niemiecku."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Lista kontrolna domowej apteczki", "note": "Z rządowego „Poradnika bezpieczeństwa”."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Leki na 10 dni i kurs pierwszej pomocy", "note": "Po niemiecku."},
     {"doc": "ifrc-first-aid-guidelines-2020", "page": 106, "label": "Zapisz numery alarmowe w telefonie", "note": "Po angielsku."},
     {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Przygotuj się na to, że pomoc może długo nie nadejść", "note": "Po angielsku. Zestaw na pierwsze trzy dni."}
   ],
   "learn": [
     {"doc": "ifrc-first-aid-guidelines-2020", "label": "Międzynarodowe wytyczne dotyczące pierwszej pomocy, resuscytacji i edukacji 2020", "note": "Po angielsku. IFRC, 476 stron, napisane dla osób, które projektują kursy pierwszej pomocy: dowody naukowe i zalecenia, temat po temacie. To nie jest podręcznik dla ogółu."},
-    {"doc": "zsv-steiermark-notfallratgeber", "label": "Poradnik na wypadek zagrożenia: właściwe zachowanie w sytuacjach awaryjnych", "note": "Po niemiecku. Jego strony o pierwszej pomocy są krótkie i praktyczne."}
+    {"doc": "pl-poradnik-bezpieczenstwa", "label": "Poradnik bezpieczeństwa", "note": "Poradnik polskiego rządu (2025). Jego strony o pierwszej pomocy są krótkie i praktyczne: ocena stanu, pozycja boczna ustalona, resuscytacja i defibrylator, obfity krwotok."}
   ],
   "related": ["health", "shelter", "water", "sanitation"],
   "gaps": {
     "missing": [
-      "Brak podręcznika pierwszej pomocy napisanego dla ogółu: wytyczne IFRC są napisane dla instruktorów, a austriackie i niemieckie poradniki mają tylko kilka stron o pierwszej pomocy.",
-      "Wytyczne IFRC nie podają żadnego numeru alarmowego; 112 i numery krajowe pochodzą z poradników austriackich, niemieckich i włoskich.",
+      "Brak podręcznika pierwszej pomocy napisanego dla ogółu: wytyczne IFRC są napisane dla instruktorów, a poradniki krajowe mają tylko po kilka stron o pierwszej pomocy.",
+      "Wytyczne IFRC nie podają żadnego numeru alarmowego; 112 i numery krajowe pochodzą z krajowych poradników ochrony ludności.",
       "Brak prostej metody segregacji wielu rannych (triażu) napisanej dla ogółu.",
       "Niektóre leki wymienione w wytycznych IFRC, takie jak aspiryna, adrenalina czy inhalator, można podawać tylko tam, gdzie pozwalają na to miejscowe przepisy; żadne źródło w tej bibliotece nie podaje tych przepisów dla żadnego kraju."
     ],

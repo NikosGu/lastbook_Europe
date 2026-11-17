@@ -66,8 +66,8 @@
          "note": "En alemán. Cuándo hay que tirar una lata, y cuándo se puede cortar el moho de un queso duro."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Frutos secos, aceite y carne en mal estado",
          "note": "En alemán. Las señales de que hay que tirarlos."},
-        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Comida que ha tocado el agua de la inundación",
-         "note": "En italiano. Entre los pasos después de una inundación."}
+        {"doc": "dgpce-guia-inundaciones", "page": 20, "label": "Comida mojada por el agua de la inundación",
+         "note": "De la guía de Protección Civil sobre inundaciones. Entre lo que hay que hacer después: no comer alimentos mojados por el agua de la inundación."}
       ]
     },
     {
@@ -87,7 +87,7 @@
     {"text": "La intoxicación por monóxido de carbono puede matar, y un fuego abierto dentro de casa también puede causarla.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "Tira una lata si la tapa está abombada hacia fuera.", "doc": "oezsv-bevorratungsratgeber", "page": 10},
     {"text": "Tira los frutos secos que sepan raro o tengan moho, y la carne que esté viscosa o huela fuerte.", "doc": "oezsv-bevorratungsratgeber", "page": 11},
-    {"text": "No comas alimentos que hayan tocado el agua de una inundación: pueden estar contaminados.", "doc": "dpc-io-non-rischio", "page": 31}
+    {"text": "Después de una inundación, no comas alimentos mojados por el agua.", "doc": "dgpce-guia-inundaciones", "page": 20}
   ],
   "prepare": [
     {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Una lista de comprobación para siete días", "note": "En alemán."},
@@ -108,8 +108,9 @@
       "Ninguna guía para cocinar al fuego o en una barbacoa, aparte de la advertencia de que las barbacoas y los hornillos de camping son para el exterior."
     ],
     "disagree": [
-      "Para cuánto tiempo prepararse: una semana, más o menos (el folleto suizo y la guía austriaca de provisiones); 10 días si es posible y al menos 3 (la guía alemana); de una a dos semanas (la guía de Estiria sobre apagones); al menos de 10 a 14 días (la lista austriaca para apagones).",
-      "Cocinar en una barbacoa durante un apagón: las guías austriacas proponen una barbacoa de jardín sin decir dónde usarla; la guía alemana dice que las barbacoas y los hornillos de camping son solo para el exterior."
+      "Para cuánto tiempo prepararse: 72 horas (la guía nacional francesa); al menos 3 días (la guía del Gobierno polaco); una semana, más o menos (los folletos suizos, la guía austriaca de provisiones y la guía polaca del RCB); 10 días si es posible y al menos 3 (la guía alemana); de una a dos semanas (la guía de Estiria sobre apagones); al menos de 10 a 14 días (la lista austriaca para apagones).",
+      "Cocinar en una barbacoa durante un apagón: las guías austriacas proponen una barbacoa de jardín sin decir dónde usarla; la guía alemana dice que las barbacoas y los hornillos de camping son solo para el exterior.",
+      "Cada cuánto revisar las provisiones: una vez al año (la guía austriaca de provisiones y la guía francesa en lectura fácil), dos veces al año (la guía nacional francesa), cada pocos meses (la guía del Gobierno polaco)."
     ]
   }
 }

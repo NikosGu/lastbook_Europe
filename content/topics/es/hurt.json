@@ -243,8 +243,8 @@
   "related": ["health", "shelter", "water", "sanitation"],
   "gaps": {
     "missing": [
-      "Ningún manual de primeros auxilios escrito para el público: las directrices de la FICR están escritas para formadores, y las guías austriaca y alemana solo tienen unas pocas páginas de primeros auxilios.",
-      "Las directrices de la FICR no dan ningún número de emergencia; el 112 y los números nacionales vienen de las guías austriaca, alemana e italiana.",
+      "Ningún manual de primeros auxilios escrito para el público: las directrices de la FICR están escritas para formadores, y las guías nacionales solo tienen unas pocas páginas de primeros auxilios cada una.",
+      "Las directrices de la FICR no dan ningún número de emergencia; el 112 y los números nacionales vienen de las guías nacionales de protección civil.",
       "Ningún método sencillo para clasificar a muchos heridos (triaje) escrito para el público.",
       "Algunos medicamentos que nombran las directrices de la FICR, como la aspirina, la adrenalina o un inhalador, solo se pueden dar donde lo permiten las normas locales; ninguna fuente de aquí da esas normas para ningún país."
     ],
