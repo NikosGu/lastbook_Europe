@@ -98,6 +98,25 @@ None of these blocks the work: each has a placeholder.
 4. Pictures with no alt text: of the ten Spanish readings on infographic pages, seven now have the infographics' alt
    text; the three on the weather guide (Fenómenos meteorológicos, pages 17 and 20), a PDF with no tags, need OCR.
 
+## Downloads on the development machine
+
+The work's limit was 5 GB downloaded to the maintainer's computer (and the 26B model once, which in the end was not
+needed: the AI tests used model files already there). Measured on 17 Nov 2026, about 0.9 GB in all:
+
+| What | Size |
+|---|---|
+| Map sources for Liechtenstein, Malta, Luxembourg and Bremen (Geofabrik extracts) | 233 MB |
+| Copernicus DEM tiles for those four regions | 349 MB |
+| Natural Earth | 15 MB |
+| The starter library's 22 documents | 78 MB |
+| PDFium for the three systems, and a copy for local tests | 22 MB |
+| Liechtenstein's packs built on GitHub's machines, to look at | 36 MB |
+| The draft release's Mac installer, scanned and deleted | 13 MB |
+| Rust crates (the whole local cache, including what was there before) | 127 MB |
+
+Everything larger (whole countries' extracts for the neighbours, the other regions, the installers) is downloaded on
+GitHub's machines, not here.
+
 ## Test models
 
 AI tests use model files already on the maintainer's computer; no model is downloaded for them:
