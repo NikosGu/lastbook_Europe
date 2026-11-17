@@ -57,12 +57,14 @@ struct Args {
     url: Option<String>,
     snapshot: Option<PathBuf>,
     after: f64,
+    /// Seconds to wait after the scripts before the picture; the page can ask for it sooner (a long answer's end).
+    wait: f64,
     size: (f64, f64),
     evals: Vec<String>,
 }
 
 fn parse_args() -> Args {
-    let mut a = Args { data: None, home: None, url: None, snapshot: None, after: 3.0, size: (1280.0, 860.0), evals: Vec::new() };
+    let mut a = Args { data: None, home: None, url: None, snapshot: None, after: 3.0, wait: 0.0, size: (1280.0, 860.0), evals: Vec::new() };
     let mut it = std::env::args().skip(1);
     while let Some(arg) = it.next() {
         match arg.as_str() {
@@ -72,6 +74,7 @@ fn parse_args() -> Args {
             "--snapshot" => a.snapshot = it.next().map(PathBuf::from),
             "--after" => a.after = it.next().and_then(|v| v.parse().ok()).unwrap_or(3.0),
             "--eval" => a.evals.extend(it.next()),
+            "--wait" => a.wait = it.next().and_then(|v| v.parse().ok()).unwrap_or(0.0),
             "--size" => {
                 if let Some((w, h)) = it.next().and_then(|v| v.split_once('x').map(|(w, h)| (w.parse().ok(), h.parse().ok()))) {
                     if let (Some(w), Some(h)) = (w, h) {
@@ -260,12 +263,20 @@ fn main() {
             NewWindowResponse::Deny
         });
     if args.snapshot.is_some() {     // test runs only: the page's errors come back to be printed
+        // (and a script can say what it sees with ipc.postMessage('log: ...'), or ask for the picture with 'snapshot')
+        let ipc_proxy = proxy.clone();
         builder = builder
             .with_initialization_script(
                 "addEventListener('error', e => window.ipc.postMessage('error: ' + e.message + ' at ' + e.filename + ':' + e.lineno));\
                  addEventListener('unhandledrejection', e => window.ipc.postMessage('unhandled rejection: ' + (e.reason && e.reason.message || e.reason)));",
             )
-            .with_ipc_handler(|req| eprintln!("lastbook: page {}", req.body()));
+            .with_ipc_handler(move |req| {
+                if req.body() == "snapshot" {
+                    let _ = ipc_proxy.send_event(UserEvent::Snapshot);
+                } else {
+                    eprintln!("lastbook: page {}", req.body());
+                }
+            });
     }
 
     #[cfg(any(target_os = "macos", target_os = "windows"))]
@@ -279,7 +290,7 @@ fn main() {
 
     if args.snapshot.is_some() {
         let p = proxy.clone();
-        let after = args.after;
+        let (after, wait) = (args.after, args.wait);
         let evals = args.evals.clone();
         std::thread::spawn(move || {
             std::thread::sleep(Duration::from_secs_f64(after));
@@ -287,11 +298,13 @@ fn main() {
                 let _ = p.send_event(UserEvent::Eval(js));
                 std::thread::sleep(Duration::from_secs(1));
             }
+            std::thread::sleep(Duration::from_secs_f64(wait));
             let _ = p.send_event(UserEvent::Snapshot);
         });
     }
 
     let snapshot = args.snapshot.clone();
+    let mut taken = false;
     event_loop.run(move |event, _, control_flow| {
         *control_flow = ControlFlow::Wait;
         match event {
@@ -301,7 +314,8 @@ fn main() {
                     eprintln!("lastbook: script failed: {e}");
                 }
             }
-            Event::UserEvent(UserEvent::Snapshot) => {
+            Event::UserEvent(UserEvent::Snapshot) if !taken => {
+                taken = true; // asked for by the page, and then at the end of the wait: one picture
                 let path = snapshot.clone().expect("snapshot path");
                 let p = proxy.clone();
                 take_snapshot(&webview, path, move |result| {
