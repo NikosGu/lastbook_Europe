@@ -48,6 +48,8 @@ None of these blocks the work: each has a placeholder.
 | The assistant and the chat | the question searched at once, tools (search, read pages, transcripts, places and nearest help), every citation checked against what the tools returned, the answer in the person's language; the chat streamed to the page by polls | tests with a scripted model |
 | Check for updates | only when asked; nothing while the download site is the placeholder | tests against a local HTTPS server |
 | Pictures on all three systems | `--snapshot` with WKWebView, WebView2 and WebKitGTK; CI photographs the app on each | the pictures from GitHub's Windows and Ubuntu machines, looked at |
+| Six languages | the interface in English, Italian, German, French, Spanish and Polish (990 keys each, the five translations marked for review), chosen in setup and the app, kept, changed in place; metric only; Europe on the map; setup's errors translated by code | `tools/check_locales.mjs`; pictures in Italian, German, Spanish and Polish |
+| Storage anywhere | a library and its models on this computer, an external disk, a USB stick or a NAS (SMB, NFS, mapped drives, UNC paths); disk kinds shown in setup; SQLite read immutable; a library out of reach said plainly at start and while running; models beside the library or on this computer | tests on each system, and a library read through a network path on Windows in CI |
 
 ## Being done now
 
@@ -55,7 +57,8 @@ None of these blocks the work: each has a placeholder.
   address index of a region, and the region map and address index as setup installs them; first Liechtenstein.
 - The library's tools: a library and its search index from a list of documents, the pack setup installs; a small
   starter library in Italian, German and English.
-- The interface in six languages (`web/i18n.js`, `web/locales/`), metric only, 112.
+- The engine's remaining English sentences become codes the interface translates; setup's disk kinds, the "library
+  cannot be reached" card and banner, and the choice of where an AI model goes, in the six languages.
 
 ## Left, in order
 

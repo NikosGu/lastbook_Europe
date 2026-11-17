@@ -44,6 +44,20 @@ or taken from files already on the computer.
   largest AI model that fits, and downloads what the person chooses, checking every file. A library or a model file
   already on the computer can be used instead of downloading.
 
+## Where the library can live
+
+On this computer, or anywhere else it can reach: an external disk, a USB stick, or a NAS on the home network (by Wi-Fi
+or cable, through SMB or NFS; a mapped drive or a `\\server\share` folder on Windows). Setup lists the disks it finds,
+says which kind each is, and downloads to the one chosen; the app then reads the library from there.
+
+- Keep that disk or network connected. If it goes away, the app says so plainly and goes on when it is back; at start,
+  it offers to try again or to choose another library.
+- The AI model can stay beside the library or on this computer. When the library is on a network share or a stick, setup
+  suggests this computer: a model of many gigabytes loads slowly over a network, and running a model "from the disk"
+  needs a fast local SSD. The assistant always reads its sources from the open library, wherever it is.
+- The library's databases are read without locks, which network file systems handle badly, and are never written while
+  the app runs.
+
 ## The local AI
 
 The model is never part of the app. The person adds one in setup, or points setup at a GGUF model file already on the
