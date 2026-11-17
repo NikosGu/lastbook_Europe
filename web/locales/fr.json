@@ -1044,7 +1044,7 @@
   "app.ai.off": "Désactiver",
   "app.ai.is_off": "L’IA locale est désactivée.",
   "app.ai.on": "Activer",
-  "app.ai.status": "IA locale : {status}",
+  "app.ai.status": "IA locale : {status}",
   "app.ai.absent": "non ajoutée. Ajoutez-la dans Bibliothèque et IA locale (environ {size}).",
   "app.ai.checking": "vérification du fichier…",
   "app.ai.measuring": "vérification de la mémoire de cet ordinateur…",

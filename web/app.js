@@ -1186,11 +1186,11 @@ function localAbout(st) {
   if (line) return `${th('app.ai.line', { name: l.name, state: t(line) })}${where ? ' ' + th('app.ai.uses', { where }) : ''} ${disk ? th('app.ai.disk') + ' ' : ''}${th('app.ai.text_only')}
       ${row(l.state === 'ready' ? btn('stop', th('app.ai.stop')) : '', btn('off', th('app.ai.off')), disk ? btn('from_disk_off', th('chat.setup.disk_off')) : '')}${models}`;
   if (l.state === 'off') return `${th('app.ai.is_off')} ${btn('on', th('app.ai.on'))}`;
-  if (l.state === 'from_disk') return `${th('app.ai.status', { status: Chat.why(l) })} ${Chat.diskWarning(l)}
+  if (l.state === 'from_disk') return `${esc(Chat.why(l))} ${Chat.diskWarning(l)}
       ${row(btn('from_disk_on', th('chat.setup.disk_on')), btn('rescan', th('app.ai.rescan')))}${models}`;
   const status = l.state === 'absent' ? t('app.ai.absent', { size: I18N.unit(17, 'gigabyte') }) : l.state === 'measuring' ? t('app.ai.measuring')
     : l.state === 'checking' ? (l.pct != null ? t('app.ai.checking_pct', { pct: l.pct }) : t('app.ai.checking')) : Chat.localLine(l)[2];
-  return `${th('app.ai.status', { status })} ${l.state === 'absent' ? `<a class="btn plain" href="/ui/setup.html#manage">${th('app.ai.add')}</a>` : ''}${btn('rescan', th('app.ai.rescan'))}${models}`;
+  return `${(['absent', 'measuring', 'checking'].includes(l.state) ? th('app.ai.status', { status }) : esc(status))} ${l.state === 'absent' ? `<a class="btn plain" href="/ui/setup.html#manage">${th('app.ai.add')}</a>` : ''}${btn('rescan', th('app.ai.rescan'))}${models}`;
 }
 async function localAI(action) {
   let a = null;
