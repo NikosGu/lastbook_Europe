@@ -187,6 +187,15 @@ pub fn judge(fit: &Value, info: Option<&gguf::Info>) -> Value {
     out
 }
 
+/// Whether files can be made in a library's derived/ folder (not on a read-only share or stick).
+fn writable(data: &Path) -> bool {
+    let d = data.join("derived");
+    let probe = d.join(format!(".write-check-{}", std::process::id()));
+    let ok = std::fs::create_dir_all(&d).is_ok() && std::fs::write(&probe, b"").is_ok();
+    let _ = std::fs::remove_file(&probe);
+    ok
+}
+
 /// judge()'s answer once the disk's reading speed is known (MB/s; None if it could not be measured), for a model that can
 /// run only from the disk: on a disk too slow, it is too big.
 pub fn judge_disk(mut judged: Value, speed: Option<f64>) -> Value {
@@ -311,6 +320,8 @@ struct Inner {
     start_wait: Duration,
     /// More folders to look in for model files: the app's own on this computer.
     more_places: Mutex<Vec<PathBuf>>,
+    /// A folder of this computer's own for what the AI writes when the library's folder cannot be written.
+    own: Mutex<Option<PathBuf>>,
 }
 
 /// One model process at a time, for one library.
@@ -336,7 +347,29 @@ impl Local {
             idle_stop: Duration::from_secs(idle),
             start_wait: START_WAIT,
             more_places: Mutex::new(Vec::new()),
+            own: Mutex::new(None),
         }))
+    }
+
+    /// A folder of this computer's own (in the app's data folder) for what the AI writes, its choices and its log, when the
+    /// library's folder cannot be written: a library on a read-only network share or USB stick keeps its local AI.
+    pub fn with_own_folder(self, dir: PathBuf) -> Local {
+        if !writable(&self.0.data) {
+            let state = dir.join("derived").join("llm").join("state.json");
+            if let Some(s) = crate::setup::install::read_json(&state).filter(Value::is_object) {
+                *self.0.saved.lock().unwrap_or_else(|e| e.into_inner()) = s;
+            }
+        }
+        *self.0.own.lock().unwrap_or_else(|e| e.into_inner()) = Some(dir);
+        self
+    }
+
+    /// Where the AI writes: beside the library, or in its own folder when the library's cannot be written.
+    fn write_base(&self) -> PathBuf {
+        match self.0.own.lock().unwrap_or_else(|e| e.into_inner()).clone() {
+            Some(own) if !writable(&self.0.data) => own,
+            _ => self.0.data.clone(),
+        }
     }
 
     fn st(&self) -> std::sync::MutexGuard<'_, St> {
@@ -344,7 +377,7 @@ impl Local {
     }
 
     fn save(&self) {
-        let p = self.0.data.join("derived").join("llm").join("state.json");
+        let p = self.write_base().join("derived").join("llm").join("state.json");
         let _ = std::fs::create_dir_all(p.parent().unwrap());
         if let Err(e) = crate::setup::install::write_json(&p, &self.0.saved.lock().unwrap()) {
             eprintln!("local AI: could not save its state: {e}");
@@ -662,7 +695,7 @@ impl Local {
 
     fn spawn(&self, st: &mut St) -> std::io::Result<()> {
         let path = st.path.clone().expect("path");
-        let logs = self.0.data.join("derived").join("logs");
+        let logs = self.write_base().join("derived").join("logs");
         std::fs::create_dir_all(&logs)?;
         let mut log = std::fs::OpenOptions::new().create(true).append(true).open(logs.join("local-ai.log"))?;
         let _ = writeln!(log, "\n--- {} start", crate::setup::api::now());
@@ -1466,5 +1499,24 @@ mod tests {
         l.stop("test over");
         assert_eq!(l.status()["state"], "stopped");
         let _ = std::fs::remove_dir_all(d);
+    }
+    #[cfg(unix)]
+    #[test]
+    fn a_library_that_cannot_be_written_keeps_its_choices_on_this_computer() {
+        use std::os::unix::fs::PermissionsExt;
+        let lib = tmp("readonly-lib");
+        let own = tmp("readonly-own");
+        std::fs::set_permissions(&lib, std::fs::Permissions::from_mode(0o555)).unwrap(); // as a read-only share or stick
+        let l = Local::new(lib.clone(), Box::new(Vec::new), None).with_own_folder(own.clone());
+        assert_eq!(l.write_base(), own);
+        l.set_saved("enabled", json!(false));
+        assert!(own.join("derived/llm/state.json").exists());
+        assert!(!lib.join("derived").exists(), "nothing written beside the library");
+        // the next start reads its choices back from there
+        let again = Local::new(lib.clone(), Box::new(Vec::new), None).with_own_folder(own.clone());
+        assert!(!again.enabled());
+        // a library that can be written keeps them beside itself
+        std::fs::set_permissions(&lib, std::fs::Permissions::from_mode(0o755)).unwrap();
+        assert_eq!(Local::new(lib.clone(), Box::new(Vec::new), None).with_own_folder(own).write_base(), lib);
     }
 }

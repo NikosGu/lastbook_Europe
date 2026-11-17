@@ -197,7 +197,8 @@ fn main() {
     opts.models_here = Some(models_here.clone());
     let ai = data.as_ref().map(|d| {
         let manifest = opts.manifest.clone();
-        let local = Local::new(d.clone(), Box::new(move || manifest.models()), local::runner_path());
+        // (what it remembers goes beside the library, or in the app's own folder when the library cannot be written)
+        let local = Local::new(d.clone(), Box::new(move || manifest.models()), local::runner_path()).with_own_folder(appdata.join("ai"));
         local.add_place(models_here.clone());
         local
     });
