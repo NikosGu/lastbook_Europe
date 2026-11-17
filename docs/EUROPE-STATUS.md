@@ -28,7 +28,7 @@ None of these blocks the work: each has a placeholder.
 | Signing certificates (Apple Developer ID, Windows Authenticode) | builds signed ad hoc on a Mac, unsigned on Windows | `packaging/rust/` |
 | Native-speaker review of the Italian, German, French, Spanish and Polish text | translations marked for review | `web/locales/`, `content/` |
 | Publishing the first release | each push makes a **draft** release | GitHub's Releases page |
-| Whether the starter library may be published: several documents state no licence (BBK and WHO reserve their rights, BBK allowing quotations; IFRC allows non-commercial copies) | built here, not published | `content/library/starter.json` (`about`, and each document's terms) |
+| Whether the starter library may be published: many documents state no licence, the eight French, Spanish and Polish ones among them (BBK and WHO reserve their rights, BBK allowing quotations; IFRC allows non-commercial copies) | built here, not published | `content/library/starter.json` (`about`, and each document's terms) |
 
 ## Decisions taken along the way
 
@@ -55,7 +55,7 @@ None of these blocks the work: each has a placeholder.
 | Setup's region choice | country, then region for a split country | snapshots: Germany → region list, Bremen → sizes, Liechtenstein → one choice |
 | Local AI runner | `lastbook-llm` on llama.cpp: JSON lines, no sockets; llama.cpp's fit; Metal on a Mac; on Windows and Linux, Vulkan for graphics cards or the best processor variant, as separate libraries beside the runner, each loaded only where it can run (`--devices` lists what it found); "from the disk" for models larger than the memory, with each layer's chosen experts read ahead | protocol tests in CI; a small Qwen 3.5 mixture-of-experts test model on Metal, and from the disk with experts read ahead writing exactly the same; Qwen3.6-35B-A3B Q8_0 (37.8 GB) loads on a 16 GB Mac with its weights read from the disk |
 | Prompt formats | Qwen 3.5/3.6 (ChatML, XML tool calls) and Gemma 4, chosen by the model file's header | tests against the chat templates |
-| Installers and releases | `.dmg` (6.5 MB), Inno Setup installer and `.zip`, `.deb` and `.tar.gz`; a draft release on each push | the `.dmg` opened and photographed here; the release workflow on GitHub |
+| Installers and releases | `.dmg` (12.7 MB), Inno Setup installer (16.2 MB) and `.zip`, `.deb` (16.2 MB) and `.tar.gz`, each with PDFium, and Vulkan's backends on Windows and Linux; a draft release on each push | the `.dmg` opened and photographed here; the release workflow on GitHub |
 | Windows | downloads, paths and file locks fixed after the first run on GitHub's Windows machines | CI |
 | The map | vector tiles, terrain, buildings, help pins, the nearest help in metres, place and lake search with both spellings of a name, and address search for the 31 countries (word order, postcodes, street words, house numbers) ([ADDRESSES.md](ADDRESSES.md)); drugstores apart from pharmacies, which keep the green cross; the date of the data and the credits taken from the installed map | 62 tests, one per country; the app photographed on a small Vaduz data folder ("Aeulestr. 10, 9490 Vaduz" found) |
 | The library | catalog, guides, search with the interface's language preferred (words for six languages in `content/search/`), shelves and videos, PDF pages through PDFium, saved pages and encyclopedias (ZIM) cleaned, the library's files with their checks | 47 tests; the app photographed on a small library (search, a PDF page, an article) |
@@ -63,7 +63,7 @@ None of these blocks the work: each has a placeholder.
 | The assistant and the chat | the question searched at once, tools (search, read pages, transcripts, places and nearest help), every citation checked against what the tools returned, the answer in the person's language; the chat streamed to the page by polls | tests with a scripted model |
 | Check for updates | only when asked; nothing while the download site is the placeholder | tests against a local HTTPS server |
 | Pictures on all three systems | `--snapshot` with WKWebView, WebView2 and WebKitGTK; CI photographs the app on each | the pictures from GitHub's Windows and Ubuntu machines, looked at |
-| Six languages | the interface in English, Italian, German, French, Spanish and Polish (1,175 keys each, the five translations marked for review), chosen in setup and the app, kept, changed in place; metric only; Europe on the map; what the engine says (setup, the map, the library, the local AI, updates) comes as a code with its numbers, which the interface words in the person's language, the English kept for the log | `tools/check_locales.mjs`; a test in each engine module that every code has words; pictures in Italian, German, Spanish and Polish |
+| Six languages | the interface in English, Italian, German, French, Spanish and Polish (1,271 keys each, the five translations marked for review), chosen in setup and the app, kept, changed in place; metric only; Europe on the map; what the engine says (setup, the map, the library, the local AI, updates) comes as a code with its numbers, which the interface words in the person's language, the English kept for the log | `tools/check_locales.mjs`; a test in each engine module that every code has words; pictures in Italian, German, Spanish and Polish |
 | Storage anywhere | a library and its models on this computer, an external disk, a USB stick or a NAS (SMB, NFS, mapped drives, UNC paths); disk kinds shown in setup; SQLite read immutable; a library out of reach said plainly at start and while running; models beside the library or on this computer; a library on a read-only share or stick keeps its local AI, whose choices and log go to the app's own folder | tests on each system, and a library read through a network path on Windows in CI |
 | The map's data tools | `lastbook-tools build-map`, `pack-map`, `pack-addresses`, `build-terrain`: the detailed map from Geofabrik's GeoPackage, addresses and buildings from OpenStreetMap's PBF, places and water, elevation from Copernicus DEM GLO-30, the zoomed-out base from Natural Earth ([MAPS.md](MAPS.md)); Liechtenstein built in 3 seconds: 32,191 map features, 441 help points, 12,499 addresses, 12 MB to download | 23 tools tests; packs checked by setup's own zip check; the map, an address and a postcode photographed |
 | The test regions | Liechtenstein, Malta (36 islands from OpenStreetMap's coastline, postcodes as "VLT 1117", streets found in Maltese and English), Luxembourg ("2, place Guillaume II, L-1648 Luxembourg", streets in French, Luxembourgish and German) and Bremen (two pieces, Bremerhaven's 22,679 addresses in): maps 8 to 66 MB to download, address indexes 0.3 to 15 MB | 30 tools tests, among them 31 real questions asked of the three built regions; each region photographed in Italian |
@@ -77,8 +77,6 @@ None of these blocks the work: each has a placeholder.
 - The place search: an exact other name first ("Gozo" finds Għawdex first), and no lakes for a postcode ("L-1648").
 - Regions built on GitHub's machines, one job each, on demand, with the region's checks; the neighbours' extracts for
   the strip around a region where the tools can take them.
-- Documents in French, Spanish and Polish for the starter library, so the guides in those languages open pages in
-  their own language.
 
 ## Left, in order
 
@@ -88,6 +86,8 @@ None of these blocks the work: each has a placeholder.
    closer to a 16 GB Mac's memory), the graphics processor for the layers that fit, and a cache of experts kept by use,
    as BigMoeOnEdge does; each measured as above.
 4. Native-speaker review of the five translations of the interface and the guides.
+5. Pages with no text layer (ten Spanish infographic pages): `build-library` could read the alt text the accessible PDFs
+   carry, so search and the chat's citations see them too.
 
 ## Test models
 
