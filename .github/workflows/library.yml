@@ -1,8 +1,10 @@
 # The starter library that may be published, built on GitHub's machines only when asked: the documents of
 # content/library/starter.json whose terms let them be passed on ("redistribute": "yes"), each downloaded from its
-# publisher and checked against the size and SHA-256 the list gives, read with the PDFium pinned in
-# packaging/rust/pdfium.txt, packed, and uploaded with its manifest entry to the data release (data-v1), which stays a
-# draft until the maintainer publishes it. No other release is touched, and nothing is published here.
+# publisher (or, where a publisher turns GitHub's machines away, from this repository's copy of it in the draft release
+# sources-v1, made by packaging/data/library-release.sh sources) and checked against the size and SHA-256 the list
+# gives, read with the PDFium pinned in packaging/rust/pdfium.txt, packed, checked, and uploaded with its manifest entry
+# to the data release (data-v1), which stays a draft until the maintainer publishes it. No other release is touched, and
+# nothing is published here.
 name: Library
 
 on:
@@ -22,6 +24,7 @@ jobs:
     timeout-minutes: 60
     env:
       TAG: data-v1   # crates/engine/src/dist.rs DATA_TAG: where setup downloads the data from
+      SOURCES_TAG: sources-v1   # the copies of the documents that may be passed on (packaging/data/library-release.sh)
       LIST: content/library/starter.json
     steps:
       - uses: actions/checkout@v4
@@ -31,16 +34,24 @@ jobs:
         run: cargo build --release --locked -p lastbook-tools
       - name: PDFium, the build pinned in packaging/rust/pdfium.txt
         run: packaging/rust/pdfium.sh pdfium-linux-x64.tgz "$RUNNER_TEMP/pdfium/lib" "$RUNNER_TEMP/pdfium/licences"
-      - name: The documents that may be passed on, from their publishers
+      - name: The documents that may be passed on, from their publishers or this repository's copy
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p "$RUNNER_TEMP/docs"
           jq -r '.documents[] | select(.redistribute == "yes") | [.id, .file, .url] | @tsv' "$LIST" > "$RUNNER_TEMP/wanted.tsv"
           test -s "$RUNNER_TEMP/wanted.tsv"
           while IFS=$'\t' read -r id file url; do
-            echo "$id: $url"
-            if ! curl -fsSL --retry 3 --retry-delay 10 -A "lastbook-tools/0.1 (offline library builder)" -o "$RUNNER_TEMP/docs/$file" "$url"; then
-              echo "$id: $url could not be downloaded (a publisher may turn automated downloads away, and that is respected): nothing is uploaded" >&2
-              exit 1
+            if curl -fsSL --retry 3 --retry-delay 10 -A "lastbook-tools/0.1 (offline library builder)" -o "$RUNNER_TEMP/docs/$file" "$url"; then
+              echo "$id: from its publisher, $url"
+            else
+              # a publisher may turn GitHub's machines away, and that is respected: the document's terms let it be passed
+              # on, so this repository keeps a copy in the draft release sources-v1 (packaging/data/library-release.sh
+              # sources), checked below against the list like any download
+              rm -f "$RUNNER_TEMP/docs/$file"
+              echo "$id: $url turned this machine away; taken from this repository's copy in $SOURCES_TAG"
+              gh release download "$SOURCES_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$file" --dir "$RUNNER_TEMP/docs" \
+                || { echo "$id: not in $SOURCES_TAG either: nothing is uploaded" >&2; exit 1; }
             fi
           done < "$RUNNER_TEMP/wanted.tsv"
           ls -l "$RUNNER_TEMP/docs"
@@ -58,28 +69,13 @@ jobs:
           target/release/lastbook-tools build-pack --data "$RUNNER_TEMP/starter/LastbookData" --out "$RUNNER_TEMP/out" \
             --base "https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG" > "$RUNNER_TEMP/out/starter-entry.json"
           cat "$RUNNER_TEMP/out/starter-entry.json"
-      - name: Nothing of the other documents is in the zip
-        run: |
-          ZIP="$RUNNER_TEMP/out/Lastbook-starter.zip"
-          unzip -Z1 "$ZIP" > "$RUNNER_TEMP/zip-files.txt"
-          jq -r '.documents[] | select(.redistribute != "yes") | "LastbookData/library-data/documents/\(.file)", "LastbookData/library-data/pages/\(.file)", "LastbookData/library-data/text/\(.id).txt"' "$LIST" > "$RUNNER_TEMP/not-here.txt"
-          if grep -xFf "$RUNNER_TEMP/not-here.txt" "$RUNNER_TEMP/zip-files.txt"; then
-            echo "files of documents that may not be passed on are in the zip" >&2; exit 1
-          fi
-          # its catalog lists only the documents marked yes, and the Sources page
-          unzip -p "$ZIP" LastbookData/library-data/catalog.json | jq -r '.[].id' | sort > "$RUNNER_TEMP/listed.txt"
-          { jq -r '.documents[] | select(.redistribute == "yes") | .id' "$LIST"; echo lastbook-sources; } | sort > "$RUNNER_TEMP/allowed.txt"
-          diff "$RUNNER_TEMP/allowed.txt" "$RUNNER_TEMP/listed.txt"
-          echo "$(wc -l < "$RUNNER_TEMP/listed.txt") records, each a document that may be passed on (or the Sources page)"
+      - name: Nothing of the other documents is in the zip, and the entry names it
+        run: packaging/data/library-release.sh check "$RUNNER_TEMP/out/Lastbook-starter.zip" "$RUNNER_TEMP/out/starter-entry.json"
       - name: Upload to the data release (a draft until the maintainer publishes it)
         env:
           GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          TARGET: ${{ github.sha }}
         run: |
-          # drafts are not found by their tag, so the list of releases is read; a failure to read it stops here
-          gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" --paginate --jq '.[].tag_name' > "$RUNNER_TEMP/tags.txt"
-          if ! grep -qxF "$TAG" "$RUNNER_TEMP/tags.txt"; then
-            gh release create "$TAG" --draft --target "$GITHUB_SHA" --title "Lastbook Europe data (v1)" \
-              --notes "The data Lastbook Europe downloads during setup: the library packs, the region maps, the address indexes and their manifest (manifest-v1.json). A draft until the maintainer publishes it: setup downloads only from a published release."
-          fi
-          gh release upload "$TAG" "$RUNNER_TEMP/out/Lastbook-starter.zip" "$RUNNER_TEMP/out/starter-entry.json" --clobber
-          gh release view "$TAG" --json isDraft,assets --jq '"draft: \(.isDraft); files: \([.assets[].name] | join(", "))"'
+          packaging/data/library-release.sh starter "$RUNNER_TEMP/out/Lastbook-starter.zip" "$RUNNER_TEMP/out/starter-entry.json"
+          gh release view "$TAG" --repo "$REPO" --json isDraft,assets --jq '"draft: \(.isDraft); files: \([.assets[].name] | join(", "))"'
