@@ -196,6 +196,8 @@ fn a_library_built_is_what_the_engine_reads() {
         let s = get(&l, "/api/library");
         assert_eq!((s["pdfs"].as_u64(), s["pdf_pages"].as_u64()), (Some(1), Some(2)));
     }
+    // the engine's open files go with it: Windows cannot remove a folder that holds open files, and --replace below does
+    drop(l);
     // pack.json and pack-manifest.tsv: every file, at its size and hash
     let pack: Value = serde_json::from_slice(&std::fs::read(data.join("pack.json")).unwrap()).unwrap();
     assert_eq!((pack["name"].as_str(), pack["content_revision"].as_str(), pack["map"].as_str()), (Some("test-pack"), Some("2026-11-17-test"), Some("base")));
