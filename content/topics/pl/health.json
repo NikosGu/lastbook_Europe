@@ -1,0 +1,125 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "health",
+  "mode": "learn",
+  "title": "Dbaj o zdrowie, gdy pomoc jest daleko",
+  "short": "Leki, apteczka, stres, dzieci, osoby wymagające opieki",
+  "intro": "Materiały o dbaniu o zdrowie, gdy trudno dotrzeć do lekarzy i aptek: leki i domowa apteczka, strach i stres po katastrofie, dzieci w kryzysie oraz osoby, które potrzebują szczególnej opieki. Urazy i nagłe zachorowania znajdziesz w poradniku „Urazy i choroby”.",
+  "keywords": ["zdrowie", "lek", "leki", "lekarstwa", "domowa apteczka", "apteczka", "recepta", "insulina", "zestaw pierwszej pomocy", "kurs pierwszej pomocy", "stres", "strach", "lęk", "niepokój", "panika", "zamartwianie się", "żałoba", "smutek", "trauma", "sen", "bezsenność", "dzieci", "dziecko", "niepełnosprawność", "osoby starsze", "seniorzy", "opieka", "opiekun", "pierwsza pomoc psychologiczna", "samobójstwo", "myśli samobójcze", "zdrowie psychiczne"],
+  "choices": [
+    {
+      "id": "medicines",
+      "label": "Zapas leków i domowa apteczka",
+      "hint": "Leki przyjmowane na stałe, recepty, bezpieczne przechowywanie",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Domowa apteczka i leki na dziesięć dni",
+         "note": "Po niemiecku. Do lekarzy i aptek może nie dać się dotrzeć; co trzymać w domu i dlaczego warto zrobić kurs pierwszej pomocy."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 13, "label": "Gdzie i jak przechowywać leki",
+         "note": "Po niemiecku. W chłodnym, suchym i ciemnym miejscu, zamknięte przed dziećmi, nie w łazience; przegląd raz w roku; stare leki z powrotem do apteki."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Lista kontrolna domowej apteczki",
+         "note": "Po niemiecku."}
+      ]
+    },
+    {
+      "id": "mind",
+      "label": "Strach, stres lub żałoba po katastrofie",
+      "hint": "Nie możesz spać, ciągle się martwisz, ktoś jest w szoku lub w rozpaczy",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 18, "label": "Co pomaga na strach i zmartwienia",
+         "note": "Po niemiecku. Utrzymywanie kontaktów, codzienny rytm, wychodzenie na zewnątrz, odpoczynek i tylko tyle wiadomości, ile potrzebujesz. Niemieckie telefony zaufania."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 116, "label": "Pierwsza pomoc psychologiczna: patrz, słuchaj, łącz z pomocą",
+         "note": "Po angielsku. Jak podejść do osoby w kryzysie i jej wysłuchać oraz czego nie mówić."},
+        {"doc": "zsv-steiermark-blackout", "page": 16, "label": "Sposoby, by się uspokoić",
+         "note": "Po niemiecku. Powolne oddychanie, drobne zadania, koc, ruch, prowadzenie dziennika."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 118, "label": "Kiedy szukać pomocy specjalisty",
+         "note": "Po angielsku. Brak snu przez tydzień, niemożność radzenia sobie z codziennym życiem albo grożenie, że zrobi się krzywdę sobie lub innym."}
+      ]
+    },
+    {
+      "id": "children",
+      "label": "Dzieci się boją",
+      "hint": "Pytania, koszmary, zmiany w zachowaniu",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 20, "label": "Jak mogą reagować dzieci",
+         "note": "Po niemiecku. Reakcje bywają różne; rysowanie i zabawa; kiedy poprosić o radę."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 21, "label": "Jak wspierać dziecko",
+         "note": "Po niemiecku. Słuchaj, odpowiadaj szczerze i prosto, nie zmuszaj do rozmowy, uspokajaj."}
+      ]
+    },
+    {
+      "id": "care",
+      "label": "Ktoś potrzebuje szczególnej opieki",
+      "hint": "Niepełnosprawność, utrata słuchu lub wzroku, starsza osoba mieszkająca samotnie",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Przygotowania, gdy żyjesz z niepełnosprawnością",
+         "note": "Po niemiecku. Sprzęt pomocniczy, zapasowe baterie i ładowarki, plan przyjmowania leków, zwierzę asystujące, kontakty."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Porozumiewanie się z ratownikami",
+         "note": "Po niemiecku. Karta ratunkowa, długopis i kartka oraz sąsiedzi, którzy wiedzą, jak pomóc."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Sąsiedzi, którzy potrzebują pomocy",
+         "note": "Po niemiecku. Osoby, do których podczas blackoutu nie docierają już opiekunowie ani dostawcy posiłków."}
+      ]
+    },
+    {
+      "id": "kit",
+      "label": "Co powinno być w apteczce",
+      "hint": "Do domu i do samochodu",
+      "read": [
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Domowa apteczka",
+         "note": "Po niemiecku. Co zawiera apteczka według austriackiej normy."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Nie trzymaj leków w łazience i nie spłukuj starych leków w toalecie.", "doc": "oezsv-bevorratungsratgeber", "page": 13},
+    {"text": "Jeśli ktoś nie chce pomocy, nie narzucaj mu jej.", "doc": "ifrc-first-aid-guidelines-2020", "page": 117},
+    {"text": "Szukaj pomocy specjalisty, jeśli ktoś nie śpi od tygodnia, nie radzi sobie z codziennym życiem albo grozi, że zrobi krzywdę sobie lub innym.", "doc": "ifrc-first-aid-guidelines-2020", "page": 118},
+    {"text": "Jednorazowa sesja omówienia (debriefingu) po traumatycznym zdarzeniu może zaszkodzić.", "doc": "ifrc-first-aid-guidelines-2020", "page": 366},
+    {"text": "Nie zmuszaj dziecka do rozmowy o kryzysie.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 21},
+    {"text": "Jeśli bardzo martwisz się o dziecko, zwróć się do pediatry, poradni lub psychoterapeuty dziecięcego.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 20}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Lista kontrolna domowej apteczki", "note": "Po niemiecku."},
+    {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Zawartość apteczki", "note": "Po niemiecku."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Jeśli żyjesz z niepełnosprawnością", "note": "Po niemiecku."},
+    {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Kto potrzebuje ciebie, a kogo ty potrzebujesz", "note": "Po niemiecku. Pytania o rodzinę, sąsiadów, osoby zależne od pomocy innych i codzienny rytm dzieci."}
+  ],
+  "learn": [
+    {"doc": "ifrc-first-aid-guidelines-2020", "label": "Międzynarodowe wytyczne dotyczące pierwszej pomocy, resuscytacji i edukacji 2020", "note": "Po angielsku. IFRC, napisane dla osób, które projektują kursy pierwszej pomocy. Wśród tematów są pierwsza pomoc psychologiczna, traumatyczne zdarzenia, ryzyko samobójstwa i żałoba."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Przygotowanie na kryzysy i katastrofy", "note": "Po niemiecku. Leki, strach i zmartwienia, dzieci oraz osoby z niepełnosprawnościami."}
+  ],
+  "route": [
+    {"title": "Krok 1: Miej domową apteczkę i zapas swoich leków", "goal": "Wystarczający zapas leków, które przyjmujesz na stałe, na dni bez apteki, bezpiecznie przechowywany",
+     "read": [
+       {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Leki na dziesięć dni", "note": "Po niemiecku."},
+       {"doc": "oezsv-bevorratungsratgeber", "page": 13, "label": "Przechowywanie i sprawdzanie leków", "note": "Po niemiecku."}
+     ]},
+    {"title": "Krok 2: Naucz się pierwszej pomocy", "goal": "Wiedz, co robi osoba udzielająca pierwszej pomocy, zanim będzie to potrzebne",
+     "read": [
+       {"doc": "zsv-steiermark-notfallratgeber", "page": 16, "label": "Zadania osoby udzielającej pierwszej pomocy", "note": "Po niemiecku."},
+       {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Sprawdzanie stanu poszkodowanego po kolei", "note": "Po angielsku."}
+     ]},
+    {"title": "Krok 3: Dowiedz się, co pomaga na strach i stres", "goal": "Zauważaj stres u siebie i innych i dowiedz się, co go łagodzi",
+     "read": [
+       {"doc": "bbk-vorsorgen-fuer-krisen", "page": 18, "label": "Co pomaga", "note": "Po niemiecku."},
+       {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Oznaki stresu i co chroni", "note": "Po niemiecku."}
+     ]},
+    {"title": "Krok 4: Pomóż osobie w kryzysie", "goal": "Słuchaj i kieruj ludzi do pomocy, niczego nie narzucając",
+     "read": [
+       {"doc": "ifrc-first-aid-guidelines-2020", "page": 116, "label": "Pierwsza pomoc psychologiczna", "note": "Po angielsku."},
+       {"doc": "ifrc-first-aid-guidelines-2020", "page": 118, "label": "Kiedy szukać pomocy specjalisty", "note": "Po angielsku."}
+     ]},
+    {"title": "Krok 5: Pomóż dzieciom przejść przez kryzys", "goal": "Zrozum, jak reagują dzieci i jak je uspokoić",
+     "read": [
+       {"doc": "bbk-vorsorgen-fuer-krisen", "page": 21, "label": "Jak wspierać dziecko", "note": "Po niemiecku."}
+     ]}
+  ],
+  "related": ["hurt", "food", "water"],
+  "gaps": {
+    "missing": [
+      "Brak poradnika o opiece nad chorym w domu przez wiele dni lub tygodni.",
+      "Nic o chorobach przewlekłych bez dostępu do lekarza (cukrzyca, nadciśnienie, choroby serca), o ciąży i porodzie ani o zębach.",
+      "Brak poradnika o lekach: co brać na co, dawki ani jak długo leki zachowują ważność.",
+      "Telefony zaufania są podane tylko dla Niemiec i dla austriackiej Styrii."
+    ]
+  }
+}

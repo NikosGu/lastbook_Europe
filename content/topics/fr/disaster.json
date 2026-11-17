@@ -1,0 +1,174 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "disaster",
+  "mode": "now",
+  "title": "Séisme, inondation, incendie et autres catastrophes",
+  "short": "Séisme, tsunami, inondation, incendie, rester à l’intérieur, quitter son domicile",
+  "intro": "Des lectures pour les risques les plus fréquents en Europe : séismes, tsunamis sur les côtes, inondations, incendies à la maison et en forêt, et accidents qui obligent à rester à l’intérieur ou à quitter son domicile. La plupart des pages viennent des protections civiles italienne, allemande et autrichienne.",
+  "keywords": ["séisme", "tremblement de terre", "réplique", "secousse", "tsunami", "raz-de-marée", "inondation", "inondations", "crue", "crue soudaine", "crue éclair", "fortes pluies", "pluies diluviennes", "rivière", "fleuve", "tempête", "orage", "foudre", "éclairs", "incendie", "feu", "incendie domestique", "feu de maison", "fumée", "détecteur de fumée", "feu de forêt", "incendie de forêt", "feux de forêt", "évacuer", "évacuation", "sac d’urgence", "kit d’urgence", "sac d’évacuation", "documents", "papiers", "se mettre à l’abri", "mise à l’abri", "confinement", "rester à l’intérieur", "chimique", "accident chimique", "radioactivité", "radiation", "nucléaire", "iode", "comprimés d’iode", "explosion", "sirène"],
+  "choices": [
+    {
+      "id": "quake-now",
+      "label": "La terre tremble",
+      "hint": "Un séisme, à l’intérieur ou dehors",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 12, "label": "Pendant un séisme",
+         "note": "En italien. À l’intérieur : près d’un mur porteur ou sous une table solide, et ne pas se précipiter dehors. Dehors : loin des bâtiments, des arbres, des lampadaires et des lignes électriques."}
+      ]
+    },
+    {
+      "id": "quake-after",
+      "label": "Les secousses ont cessé",
+      "hint": "Blessés, dégâts, gaz, répliques",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 13, "label": "Après un séisme",
+         "note": "En italien. Premiers secours, couper le gaz, l’eau et l’électricité, garder ses chaussures, pas d’ascenseur, la côte, le téléphone et la voiture, les aires d’attente de la commune."}
+      ]
+    },
+    {
+      "id": "tsunami",
+      "label": "Fort séisme sur la côte, ou la mer se retire",
+      "hint": "Signes et alertes de tsunami, sur la plage ou dans un port",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 18, "label": "Les signes d’un tsunami",
+         "note": "En italien. Il n’y a pas toujours d’alerte officielle : un fort séisme, la mer qui se retire soudainement, un grondement venant de la mer."},
+        {"doc": "dpc-io-non-rischio", "page": 20, "label": "Monter en hauteur, vite, à pied",
+         "note": "En italien. Après une alerte ou un seul de ces signes : la hauteur la plus proche ou les étages supérieurs, prévenir les autres, laisser la voiture ; les bateaux."},
+        {"doc": "dpc-io-non-rischio", "page": 21, "label": "Après un tsunami",
+         "note": "En italien. D’autres vagues peuvent suivre ; rester en hauteur jusqu’à ce que les autorités disent le contraire ; l’eau du robinet et la nourriture."}
+      ]
+    },
+    {
+      "id": "flood-warning",
+      "label": "Une alerte inondation a été donnée",
+      "hint": "Fortes pluies, une rivière qui monte, une alerte pour mon secteur",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 28, "label": "Quand une alerte inondation est émise",
+         "note": "En italien. Rester informé, ne pas dormir au sous-sol, protéger le rez-de-chaussée, bien réfléchir avant de déplacer la voiture."},
+        {"doc": "vvf-acqua-e-vita", "page": 1, "label": "Se protéger lors d’une inondation",
+         "note": "En italien. Monter à l’étage, ne pas aller dans les sous-sols ni les passages souterrains, garder le téléphone pour les urgences, un sac prêt pour partir."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 31, "label": "Monter, ne jamais descendre au sous-sol",
+         "note": "En allemand. Lors d’inondations et de fortes pluies, les étages supérieurs protègent ; les sous-sols, les parkings souterrains et les passages souterrains peuvent devenir des pièges."}
+      ]
+    },
+    {
+      "id": "flood-now",
+      "label": "L’eau monte autour de moi",
+      "hint": "Dans un bâtiment, dehors, ou dans une voiture",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 29, "label": "À l’intérieur pendant une inondation",
+         "note": "En italien. Monter à l’étage, ne pas descendre à la cave ni sortir chercher la voiture ; pas d’ascenseur ; couper le gaz et l’électricité ; aider les voisins âgés ou handicapés."},
+        {"doc": "dpc-io-non-rischio", "page": 30, "label": "Dehors pendant une inondation",
+         "note": "En italien. Sortir de l’eau, gagner un endroit élevé loin des pentes, ne pas conduire, éviter les passages souterrains, les berges et les ponts."}
+      ]
+    },
+    {
+      "id": "flood-after",
+      "label": "L’eau a baissé",
+      "hint": "Rentrer chez soi, la boue, les caves, le gaz et l’électricité",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Après une inondation",
+         "note": "En italien. Attendre les indications des autorités, éviter les routes inondées, vérifier le gaz et l’électricité, les évacuations, l’eau du robinet et la nourriture."}
+      ]
+    },
+    {
+      "id": "home-fire",
+      "label": "Du feu ou de la fumée à la maison",
+      "hint": "Détecteur de fumée, un feu dans une pièce, de la fumée dans l’escalier",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 26, "label": "Incendie à la maison : six étapes",
+         "note": "En allemand. N’éteindre le feu que si c’est sans danger, sortir et fermer la porte, prévenir les autres, ne jamais traverser la fumée, appeler le 112."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 10, "label": "Sortir, ou attendre à la fenêtre",
+         "note": "En allemand. Si une sortie est libre de fumée, partir ; s’il y a de la fumée, fermer les portes, boucher les fentes avec des linges mouillés et attendre à une fenêtre ouverte."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 8, "label": "Éteindre un petit feu",
+         "note": "En allemand. Extincteurs et couvertures anti-feu, jamais d’eau sur de la graisse ou de l’huile en feu, et une personne dont les vêtements brûlent."}
+      ]
+    },
+    {
+      "id": "forest-fire",
+      "label": "Un feu de forêt est proche",
+      "hint": "De la fumée, des flammes dans les bois, surpris par le feu",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 39, "label": "Si vous voyez un feu de forêt, ou si vous êtes pris dedans",
+         "note": "En italien. Appeler tout de suite ; comment s’éloigner, où s’allonger, et quand passer sur une zone déjà brûlée."},
+        {"doc": "dpc-io-non-rischio", "page": 37, "label": "Signaler un feu, ou même de la fumée",
+         "note": "En italien. Indiquer le lieu exact et la commune. Numéros italiens."}
+      ]
+    },
+    {
+      "id": "indoors",
+      "label": "Consigne de rester à l’intérieur : gaz, fumée ou radioactivité",
+      "hint": "Un accident chimique ou nucléaire, des explosions, une alarme par sirène",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 30, "label": "Où se mettre à l’abri du gaz, de la radioactivité ou des explosions",
+         "note": "En allemand. Gaz à l’extérieur : entrer, monter, calfeutrer portes et fenêtres, couper la ventilation. Gaz à l’intérieur : sortir. Radioactivité ou explosions : descendre le plus bas possible."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 4, "label": "Les sirènes en Autriche : avertissement et alarme",
+         "note": "En allemand. Au signal d’alarme, aller dans une pièce protégée ou à la cave et allumer la radio."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "L’eau et l’iode après un accident nucléaire",
+         "note": "En allemand. L’eau du robinet peut être dangereuse pendant quelques jours ; des comprimés d’iode seulement quand les autorités le demandent."}
+      ]
+    },
+    {
+      "id": "thunderstorm",
+      "label": "Orage en montagne",
+      "hint": "La foudre, surpris sur une crête ou un sommet",
+      "read": [
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 27, "label": "Les orages en montagne",
+         "note": "En allemand. Les signes avant-coureurs, et quels endroits protègent un peu et lesquels ne protègent pas du tout."}
+      ]
+    },
+    {
+      "id": "leave",
+      "label": "Nous devrons peut-être quitter la maison",
+      "hint": "Sac d’urgence, documents, personnes qui ont besoin d’aide, animaux",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 36, "label": "Que mettre dans un sac d’urgence",
+         "note": "En allemand. La liste complète, des médicaments et des documents jusqu’à la lampe de poche et la radio."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 27, "label": "Les documents importants",
+         "note": "En allemand. Quels papiers garder ensemble, dans une boîte résistante au feu ou étanche, avec des copies."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Si vous avez besoin d’aide pour partir",
+         "note": "En allemand. Aides techniques, médicaments, contacts, et savoir qui peut vous aider à partir."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Pendant un séisme, ne vous précipitez pas dehors : attendez que les secousses s’arrêtent.", "doc": "dpc-io-non-rischio", "page": 12},
+    {"text": "Après un séisme, ne prenez pas l’ascenseur, et faites attention dans les escaliers.", "doc": "dpc-io-non-rischio", "page": 13},
+    {"text": "Il n’y a pas toujours d’alerte officielle au tsunami : un fort séisme ou la mer qui se retire soudainement est le signal pour gagner les hauteurs.", "doc": "dpc-io-non-rischio", "page": 18},
+    {"text": "Ne prenez pas la voiture pour fuir un tsunami : elle peut devenir un piège.", "doc": "dpc-io-non-rischio", "page": 20},
+    {"text": "D’autres vagues dangereuses peuvent suivre la première : ne revenez pas tant que vous n’y êtes pas autorisé.", "doc": "dpc-io-non-rischio", "page": 21},
+    {"text": "Pendant une inondation, ne descendez jamais dans les caves, les sous-sols ou les garages pour sauver des objets : vous risquez votre vie.", "doc": "dpc-io-non-rischio", "page": 29},
+    {"text": "Dans un sous-sol inondé, vous risquez de ne plus pouvoir ouvrir la porte, et il y a un risque d’électrocution mortelle.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 31},
+    {"text": "Même quelques centimètres d’eau rapide peuvent vous renverser ou arrêter une voiture : tenez-vous loin des passages souterrains, des berges et des ponts.", "doc": "dpc-io-non-rischio", "page": 30},
+    {"text": "Ne fuyez jamais à travers la fumée : quelques inspirations peuvent tuer. Si vous êtes bloqué, faites-vous entendre à une fenêtre.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
+    {"text": "Ne versez jamais d’eau sur de la graisse ou de l’huile en feu.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
+    {"text": "En cas d’incendie, ne prenez pas l’ascenseur et ne sautez pas par la fenêtre.", "doc": "zsv-steiermark-notfallratgeber", "page": 10},
+    {"text": "Si vous voyez un feu de forêt, appelez tout de suite : ne supposez pas que quelqu’un l’a déjà fait.", "doc": "dpc-io-non-rischio", "page": 39},
+    {"text": "Si du gaz ou des liquides dangereux s’échappent à l’intérieur d’un bâtiment, quittez le bâtiment.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 30},
+    {"text": "Ne prenez des comprimés d’iode que lorsque les autorités vous le demandent : ils peuvent avoir des effets secondaires graves.", "doc": "oezsv-bevorratungsratgeber", "page": 17}
+  ],
+  "prepare": [
+    {"doc": "dpc-io-non-rischio", "page": 11, "label": "Rendre la maison plus sûre avant un séisme", "note": "En italien. Fixer les meubles hauts, garder les objets lourds en bas, apprendre à couper le gaz, l’eau et l’électricité, connaître les endroits sûrs."},
+    {"doc": "dpc-io-non-rischio", "page": 26, "label": "Comment se comportent les inondations, et les endroits les plus dangereux", "note": "En italien. L’eau peut monter d’un ou deux mètres en quelques minutes."},
+    {"doc": "dpc-io-non-rischio", "page": 27, "label": "Avant une inondation : un plan, un kit, les objets de valeur hors de la cave", "note": "En italien. Aussi : prévenir la commune si quelqu’un à la maison a besoin d’aide."},
+    {"doc": "dpc-io-non-rischio", "page": 19, "label": "Sur la côte : un plan familial en cas de tsunami", "note": "En italien."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 36, "label": "Liste de contrôle du sac d’urgence", "note": "En allemand."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Les documents dans une pochette étanche, et des sacs anti-inondation", "note": "En allemand."},
+    {"doc": "dpc-io-non-rischio", "page": 38, "label": "Prévenir les feux de forêt", "note": "En italien. Cigarettes, feux en forêt, voitures sur l’herbe sèche, déchets, brûlage des chaumes, vent."}
+  ],
+  "learn": [
+    {"doc": "dpc-io-non-rischio", "label": "Io non rischio : séisme, tsunami, inondation", "note": "En italien. Le guide du Département de la protection civile italienne (2025) : avant, pendant et après, plus les feux de forêt, les volcans et IT-alert. Écrit pour l’Italie."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Se préparer aux crises et aux catastrophes", "note": "En allemand. Le guide fédéral allemand (2025)."},
+    {"doc": "zsv-steiermark-notfallratgeber", "label": "Guide d’urgence : bien réagir dans les situations d’urgence", "note": "En allemand. Guide autrichien (2024) : numéros, sirènes, incendie, premiers secours, accidents, montagne et eau."}
+  ],
+  "related": ["comms", "shelter", "hurt", "water"],
+  "gaps": {
+    "missing": [
+      "Aucun guide sur les tempêtes, la grêle ou les vents violents, à part une page autrichienne sur les orages en montagne.",
+      "Aucun guide sur les glissements de terrain, ni sur les avalanches au-delà du sauvetage entre alpinistes.",
+      "Aucun guide pour nettoyer et sécher un logement après une inondation.",
+      "Sur les accidents chimiques et nucléaires, seulement où se mettre à l’abri et la mise en garde sur l’iode : rien sur combien de temps rester à l’intérieur, ni sur le nettoyage.",
+      "Les pages sur les séismes, les tsunamis, les inondations et les feux de forêt sont écrites pour l’Italie ; les alertes et les sirènes ne sont expliquées que pour l’Italie, l’Allemagne et l’Autriche."
+    ]
+  }
+}

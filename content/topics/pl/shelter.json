@@ -1,0 +1,118 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "shelter",
+  "mode": "now",
+  "title": "Ciepło, chłód i dach nad głową",
+  "short": "Zimno bez ogrzewania, tlenek węgla, śnieżyce, upał",
+  "intro": "Materiały o tym, jak utrzymać ciepło, gdy ogrzewanie przestaje działać, jak ogrzewać bez ryzyka zatrucia tlenkiem węgla, jak przetrwać falę mrozów w domu i w drodze oraz jak pomóc osobom, które najbardziej cierpią z powodu zimna lub upału.",
+  "keywords": ["zimno", "mróz", "zima", "śnieg", "fala mrozów", "silny mróz", "ogrzewanie", "awaria ogrzewania", "brak ogrzewania", "nie ma ogrzewania", "ciepło", "ogrzać się", "utrzymać ciepło", "koce", "śpiwór", "ubranie na cebulkę", "warstwy", "hipotermia", "wychłodzenie", "odmrożenie", "grzejnik", "piecyk", "piecyk gazowy", "piecyk naftowy", "piec na drewno", "koza", "kominek", "tlenek węgla", "czad", "czujnik czadu", "czujnik tlenku węgla", "agregat", "agregat prądotwórczy", "zamarznięte rury", "samochód w śniegu", "utknięcie w śniegu", "lód", "upał", "fala upałów", "gorąco", "schronienie"],
+  "choices": [
+    {
+      "id": "cold",
+      "label": "Jest mróz, a ogrzewanie nie działa",
+      "hint": "Zima, brak prądu, jak przetrwać noc w cieple",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Gdy ogrzewanie przestaje działać",
+         "note": "Po niemiecku. Grzejniki dopuszczone do użytku w pomieszczeniach, ciepłe ubrania, koce i śpiwory; okna zamknięte, ale krótko wietrz pokoje."},
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Ubierz się na cebulkę, napij się czegoś ciepłego",
+         "note": "Po angielsku. Ubranie na zimno, ciepłe napoje i żadnego alkoholu, przebieranie się z mokrych ubrań i kiedy szukać pomocy medycznej."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Ogrzewanie bez prądu",
+         "note": "Po niemiecku. Przy braku prądu przestaje działać nawet ogrzewanie olejowe i gazowe; piecyki turystyczne lub naftowe, zaplanowane z wentylacją i odprowadzeniem spalin."}
+      ]
+    },
+    {
+      "id": "co",
+      "label": "Ogrzewanie lub gotowanie ogniem albo gazem w pomieszczeniu",
+      "hint": "Tlenek węgla z piecyków, kuchenek, grilli, agregatów lub świec",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Tlenek węgla: co jest bezpieczne w pomieszczeniach",
+         "note": "Po niemiecku. Tylko urządzenia dopuszczone do użytku w pomieszczeniach; otwarty ogień w pomieszczeniu może wytwarzać tlenek węgla; zamontuj czujnik czadu."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Nie używaj w środku agregatu ani grzejnika przeznaczonego na zewnątrz",
+         "note": "Po angielsku. Nie używaj w domu agregatu ani grzejników i kuchenek przeznaczonych do użytku na zewnątrz."},
+        {"doc": "ifrc-extreme-cold", "page": 1, "label": "Dlaczego grzejniki i kominki zwiększają ryzyko",
+         "note": "Po angielsku. Podczas fali mrozów przenośne grzejniki i kominki w domu zwiększają ryzyko zatrucia tlenkiem węgla i pożaru domu."}
+      ]
+    },
+    {
+      "id": "home",
+      "label": "Zabezpiecz dom na czas fali mrozów",
+      "hint": "Zamarznięte rury, zapasy, bezpieczny sposób na ogrzanie się",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Przygotuj dom na śnieżycę",
+         "note": "Po angielsku. Woda na wypadek zamarznięcia rur, jedzenie na kilka dni, latarka i radio, źródło ciepła z właściwą wentylacją."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Zamarznięte rury i zagrożenia po śnieżycy",
+         "note": "Po angielsku. Cienki strumień wody z kranu, sprawdzanie rur, przerwy w dostawie prądu, podtopienia z topniejącego śniegu, oblodzone chodniki."}
+      ]
+    },
+    {
+      "id": "outside",
+      "label": "Na mrozie albo w samochodzie, który utknął",
+      "hint": "Śnieg na drodze, lód na jeziorze, odśnieżanie",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Jeśli utkniesz w samochodzie, zostań w nim",
+         "note": "Po angielsku. Unikaj jazdy, zostań w unieruchomionym pojeździe, po śniegu jedź powoli; jak ocenić lód na stawach i jeziorach."},
+        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Zimowy zestaw do samochodu",
+         "note": "Po angielsku. Opony, kable rozruchowe, apteczka, ładowarka, ciepłe ubrania, łopata, pełny bak."},
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Odśnieżanie i inna ciężka praca na mrozie",
+         "note": "Po angielsku. Przemęczenie na mrozie może spowodować zatrzymanie krążenia."}
+      ]
+    },
+    {
+      "id": "at-risk",
+      "label": "Osoby starsze, niemowlęta lub zwierzęta na mrozie",
+      "hint": "Samotnie mieszkający sąsiedzi, zwierzęta domowe, zwierzęta gospodarskie",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Sprawdzaj, co u osób zagrożonych",
+         "note": "Po angielsku. Rodzina, przyjaciele i sąsiedzi, którzy mogą bardziej ucierpieć z powodu zimna, na przykład osoby starsze i przewlekle chore."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Zwierzęta domowe i gospodarskie",
+         "note": "Po angielsku. Dość jedzenia i wody oraz osłona przed zimnem."}
+      ]
+    },
+    {
+      "id": "heat",
+      "label": "Jest niebezpiecznie gorąco",
+      "hint": "Fala upałów, brak chłodzenia, osoby starsze lub niemowlęta w domu",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Pij dość płynów i sprawdzaj, co u osób starszych i niemowląt",
+         "note": "Po angielsku. Z wytycznych pierwszej pomocy IFRC, o odwodnieniu: podczas upałów regularnie sprawdzaj, co u starszych osób i niemowląt."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 332, "label": "Ktoś się przegrzał: schłodź go",
+         "note": "Po angielsku. Przerwij wysiłek i przejdź w chłodne miejsce, schładzaj wodą; kiedy wezwać pomoc."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 333, "label": "Wyczerpanie cieplne czy udar cieplny?",
+         "note": "Po angielsku. Objawy jednego i drugiego."}
+      ]
+    },
+    {
+      "id": "indoors-link",
+      "goto": "disaster/indoors",
+      "label": "Polecono zostać w budynku: gaz, dym lub promieniowanie",
+      "hint": "W poradniku „Klęski żywiołowe”"
+    }
+  ],
+  "limits": [
+    {"text": "W pomieszczeniach używaj tylko grzejników i piecyków dopuszczonych do użytku wewnątrz.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Zatrucie tlenkiem węgla może zabić, a otwarty ogień w pomieszczeniu też może je spowodować. Sprawdzony czujnik czadu cię ostrzeże.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Nie używaj w domu agregatu ani grzejników i kuchenek przeznaczonych do użytku na zewnątrz.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "Szukaj pomocy medycznej, jeśli pojawią się objawy hipotermii lub odmrożeń.", "doc": "ifrc-extreme-cold", "page": 4},
+    {"text": "Unikaj przemęczenia na mrozie, na przykład przy odśnieżaniu: może spowodować zatrzymanie krążenia.", "doc": "ifrc-extreme-cold", "page": 4},
+    {"text": "Trzymaj okna i drzwi zamknięte przed zimnem, ale regularnie i krótko wietrz pokoje.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
+    {"text": "Jeśli podczas śnieżycy utkniesz w samochodzie, zostań w nim.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "Szary lód jest za cienki: zanim na niego wejdziesz, lód powinien być przejrzysty, niebieski i mieć ponad 12 cm grubości.", "doc": "ifrc-extreme-cold", "page": 5}
+  ],
+  "prepare": [
+    {"doc": "ifrc-extreme-cold", "page": 3, "label": "Zapasy, źródło ciepła i zestaw samochodowy na śnieżyce", "note": "Po angielsku."},
+    {"doc": "ifrc-extreme-cold", "page": 2, "label": "Poznaj zagrożenia w swojej okolicy i najbliższą pomoc medyczną", "note": "Po angielsku."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista kontrolna: światło i ciepło", "note": "Po niemiecku. Latarka, świece, ciepłe ubrania i koce, śpiwory, grzejnik niewymagający prądu z sieci i paliwo."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Czujnik dymu, gaśnica, czujnik czadu", "note": "Po niemiecku. Na końcu listy kontrolnej."}
+  ],
+  "learn": [
+    {"doc": "ifrc-extreme-cold", "label": "Silne mrozy i śnieżyce: najważniejsze komunikaty", "note": "Po angielsku. Komunikaty edukacyjne IFRC dla ludności: plan, przygotowanie domu i samochodu, utrzymanie ciepła, po śnieżycy."}
+  ],
+  "related": ["power", "hurt", "health", "disaster"],
+  "gaps": {
+    "missing": [
+      "Brak poradnika o upałach w domu: chłodzenie pomieszczeń, schładzanie ludzi, pomoc dla samotnie mieszkających osób starszych.",
+      "Brak poradnika o tym, jak ocenić, czy budynek uszkodzony przez trzęsienie ziemi, nawałnicę lub pożar jest bezpieczny do przebywania.",
+      "Nic o schronieniach prowadzonych przez władze ani o schronieniu pod gołym niebem."
+    ]
+  }
+}

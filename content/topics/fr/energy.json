@@ -1,0 +1,22 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "energy",
+  "mode": "learn",
+  "title": "Produire et gérer l’énergie",
+  "short": "Batteries, solaire, groupes électrogènes : pas encore dans cette bibliothèque",
+  "intro": "Cette bibliothèque n’a pas encore de guide sur les batteries, les panneaux solaires ou les installations électriques de la maison. Que faire pendant une coupure de courant, et les mises en garde sur les groupes électrogènes, se trouvent dans le guide « Panne de courant ».",
+  "keywords": ["électricité", "énergie", "solaire", "panneau solaire", "panneaux solaires", "photovoltaïque", "PV", "batterie", "batteries", "onduleur", "convertisseur", "régulateur de charge", "hors réseau", "site isolé", "autonomie électrique", "câblage", "installation électrique", "fusible", "station électrique portable", "groupe électrogène", "générateur", "éolienne", "batterie de voiture"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["power"],
+  "gaps": {
+    "missing": [
+      "Aucun guide sur les batteries, les batteries externes ou les stations électriques portables.",
+      "Aucun guide sur les panneaux solaires ou les autres installations électriques de la maison.",
+      "Aucun manuel pour les groupes électrogènes : le guide « Panne de courant » ne contient que les mises en garde que donnent les dépliants de la protection civile."
+    ]
+  }
+}

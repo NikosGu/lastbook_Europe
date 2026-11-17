@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "repair",
+  "mode": "learn",
+  "title": "Reparieren und bauen",
+  "short": "Werkzeug, Reparaturen im Haus, Motoren: noch nicht in dieser Bibliothek",
+  "intro": "Diese Bibliothek hat noch keinen Ratgeber zu Werkzeug, Reparaturen im Haus, Motoren oder zum Bauen, daher gibt es hier nichts zu öffnen. Die Liste unten sagt, was fehlt.",
+  "keywords": ["reparieren", "Reparatur", "flicken", "Werkzeug", "Handwerkzeug", "Werkzeugkasten", "schärfen", "Messer schärfen", "Sanitär", "Installation", "Wasserhahn", "Spülkasten", "Holzarbeiten", "Tischlern", "Schreinern", "Zimmerei", "Kleinmotor", "Motor", "Schweißen", "bauen", "Werkstatt", "Heimwerken", "selber machen", "DIY"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["power"],
+  "gaps": {
+    "missing": [
+      "Kein Ratgeber zu Handwerkzeugen, zum Schärfen oder zu einer Grundausstattung an Werkzeug.",
+      "Kein Ratgeber zu Reparaturen im Haus (Wasserhähne, Toiletten, Fenster, einfache Elektroarbeiten) oder zu Kleinmotoren."
+    ]
+  }
+}

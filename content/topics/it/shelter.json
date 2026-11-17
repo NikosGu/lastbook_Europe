@@ -1,0 +1,118 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "shelter",
+  "mode": "now",
+  "title": "Stare al caldo, al fresco e al riparo",
+  "short": "Freddo senza riscaldamento, monossido di carbonio, tempeste invernali, caldo",
+  "intro": "Letture per stare al caldo quando il riscaldamento non funziona, scaldarsi senza il pericolo del monossido di carbonio, superare un'ondata di freddo in casa e per strada, e aiutare chi soffre di più il freddo o il caldo.",
+  "keywords": ["freddo", "gelo", "si gela", "inverno", "neve", "ondata di freddo", "ondata di gelo", "riscaldamento", "riscaldamento guasto", "caldaia rotta", "senza riscaldamento", "scaldarsi", "stare al caldo", "tenersi al caldo", "coperte", "sacco a pelo", "vestirsi a strati", "ipotermia", "congelamento", "stufa", "stufetta", "stufa a gas", "stufa a petrolio", "stufa a legna", "camino", "caminetto", "monossido di carbonio", "rilevatore di monossido", "rilevatore di CO", "generatore", "tubi gelati", "tubature congelate", "auto bloccata nella neve", "ghiaccio", "caldo", "ondata di calore", "ondata di caldo", "afa", "canicola", "riparo"],
+  "choices": [
+    {
+      "id": "cold",
+      "label": "Fa un freddo gelido e il riscaldamento non va",
+      "hint": "Inverno, un'interruzione di corrente, stare al caldo durante la notte",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Quando il riscaldamento non funziona",
+         "note": "In tedesco. Stufe omologate per l'uso in casa, vestiti caldi, coperte e sacchi a pelo; finestre chiuse, ma arieggia brevemente le stanze."},
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Vestiti a strati, bevi qualcosa di caldo",
+         "note": "In inglese. Abiti per il freddo, bevande calde e niente alcol, togliersi i vestiti bagnati, e quando cercare aiuto medico."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Scaldarsi senza corrente",
+         "note": "In tedesco. Quando manca la corrente si fermano anche i riscaldamenti a gasolio e a gas; stufe da campeggio o a petrolio, da organizzare in anticipo con aerazione e canna fumaria."}
+      ]
+    },
+    {
+      "id": "co",
+      "label": "Scaldarsi o cucinare in casa con il fuoco o il gas",
+      "hint": "Monossido di carbonio da stufe, fornelli, griglie, generatori o candele",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Monossido di carbonio: cosa è sicuro in casa",
+         "note": "In tedesco. Solo apparecchi omologati per l'uso al chiuso; anche un fuoco aperto in casa può produrre monossido di carbonio; installa un rilevatore di CO."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Niente generatori né stufe da esterno in casa",
+         "note": "In inglese. Non usare in casa un generatore, né stufe e fornelli pensati per l'esterno."},
+        {"doc": "ifrc-extreme-cold", "page": 1, "label": "Perché stufe e caminetti aumentano il rischio",
+         "note": "In inglese. In un'ondata di freddo, stufette e caminetti in casa rendono più probabili le intossicazioni da monossido di carbonio e gli incendi domestici."}
+      ]
+    },
+    {
+      "id": "home",
+      "label": "Preparare la casa a un'ondata di freddo",
+      "hint": "Tubi gelati, scorte, un modo sicuro per scaldarsi",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Prepara la casa per una tempesta invernale",
+         "note": "In inglese. Acqua nel caso i tubi gelino, cibo per diversi giorni, una torcia e una radio, una fonte di calore ben ventilata."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Tubi gelati, e i pericoli dopo la tempesta",
+         "note": "In inglese. Un filo d'acqua che scorre, controllare i tubi, interruzioni di corrente, allagamenti per lo scioglimento della neve, percorsi ghiacciati."}
+      ]
+    },
+    {
+      "id": "outside",
+      "label": "Fuori al freddo, o bloccati in auto",
+      "hint": "Neve sulla strada, ghiaccio su un lago, spalare la neve",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Se l'auto resta bloccata, resta dentro",
+         "note": "In inglese. Evita di guidare, resta nel veicolo bloccato, guida piano sulla neve; come valutare il ghiaccio di stagni e laghi."},
+        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Un kit invernale per l'auto",
+         "note": "In inglese. Pneumatici, cavi per la batteria, una cassetta di pronto soccorso, un caricatore, vestiti caldi, una pala, il pieno di carburante."},
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Spalare la neve e altri lavori pesanti al freddo",
+         "note": "In inglese. Uno sforzo eccessivo al freddo può causare un arresto cardiaco."}
+      ]
+    },
+    {
+      "id": "at-risk",
+      "label": "Anziani, bambini piccoli o animali al freddo",
+      "hint": "Vicini che vivono da soli, animali domestici, bestiame",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Controlla come stanno le persone a rischio",
+         "note": "In inglese. Familiari, amici e vicini che rischiano di più di soffrire il freddo, come gli anziani e i malati cronici."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Animali domestici e bestiame",
+         "note": "In inglese. Cibo e acqua a sufficienza, e non troppo esposti al freddo."}
+      ]
+    },
+    {
+      "id": "heat",
+      "label": "Fa un caldo pericoloso",
+      "hint": "Un'ondata di calore, nessun modo per rinfrescarsi, anziani o bambini piccoli in casa",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Bevi abbastanza, e controlla anziani e bambini piccoli",
+         "note": "In inglese. Dalle linee guida di primo soccorso della FICR, sulla disidratazione: quando fa caldo, controlla spesso come stanno anziani e bambini piccoli."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 332, "label": "Una persona si è surriscaldata: rinfrescala",
+         "note": "In inglese. Fermarsi e spostarsi in un luogo fresco, rinfrescarsi con l'acqua, e quando chiamare aiuto."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 333, "label": "Esaurimento da calore o colpo di calore?",
+         "note": "In inglese. I segni di ciascuno."}
+      ]
+    },
+    {
+      "id": "indoors-link",
+      "goto": "disaster/indoors",
+      "label": "Le autorità dicono di restare al chiuso: gas, fumo o radiazioni",
+      "hint": "Nella guida “Terremoto, incendio, alluvione”"
+    }
+  ],
+  "limits": [
+    {"text": "In casa usa solo stufe e fornelli omologati per l'uso al chiuso.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "L'intossicazione da monossido di carbonio può uccidere, e anche un fuoco aperto in casa può provocarla. Un rilevatore di CO certificato ti avvisa.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Non usare in casa un generatore, né stufe e fornelli pensati per l'esterno.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "Cerca aiuto medico se compaiono segni di ipotermia o di congelamento.", "doc": "ifrc-extreme-cold", "page": 4},
+    {"text": "Evita gli sforzi eccessivi al freddo, come spalare la neve: possono causare un arresto cardiaco.", "doc": "ifrc-extreme-cold", "page": 4},
+    {"text": "Tieni chiuse porte e finestre contro il freddo, ma arieggia le stanze per poco tempo e con regolarità.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
+    {"text": "Se in una tempesta invernale l'auto resta bloccata, resta dentro.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "Il ghiaccio grigio è troppo sottile: prima di camminarci sopra, il ghiaccio dovrebbe essere di un azzurro limpido e spesso più di 12 cm.", "doc": "ifrc-extreme-cold", "page": 5}
+  ],
+  "prepare": [
+    {"doc": "ifrc-extreme-cold", "page": 3, "label": "Scorte, fonte di calore e kit per l'auto per le tempeste invernali", "note": "In inglese."},
+    {"doc": "ifrc-extreme-cold", "page": 2, "label": "Conosci i rischi della zona in cui vivi e il soccorso medico più vicino", "note": "In inglese."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista di controllo: luce e calore", "note": "In tedesco. Torcia, candele, vestiti caldi e coperte, sacchi a pelo, una stufa che non ha bisogno della corrente di rete, e il combustibile."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Rilevatore di fumo, estintore, rilevatore di CO", "note": "In tedesco. In fondo alla lista di controllo."}
+  ],
+  "learn": [
+    {"doc": "ifrc-extreme-cold", "label": "Freddo estremo e tempeste invernali: messaggi chiave", "note": "In inglese. Messaggi della FICR per informare il pubblico: pianificare, preparare casa e auto, stare al caldo, dopo la tempesta."}
+  ],
+  "related": ["power", "hurt", "health", "disaster"],
+  "gaps": {
+    "missing": [
+      "Nessuna guida alle ondate di calore in casa: tenere fresche le stanze, rinfrescare le persone, aiutare gli anziani che vivono da soli.",
+      "Nessuna guida per capire se si può restare in un edificio danneggiato da un terremoto, una tempesta o un incendio.",
+      "Nulla sui centri di accoglienza gestiti dalle autorità, né su come ripararsi all'aperto."
+    ]
+  }
+}

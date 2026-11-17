@@ -1,0 +1,115 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "food",
+  "mode": "now",
+  "title": "Essen: Vorrat, Kochen und Sicherheit",
+  "short": "Vorrat, Kochen ohne Strom, was Sie wegwerfen sollten",
+  "intro": "Lesestoff dazu, wie Sie Lebensmittel für eine Woche oder länger zu Hause vorrätig halten, wie Sie kochen, wenn der Elektroherd nicht geht, und woran Sie erkennen, dass Essen nicht mehr sicher ist.",
+  "keywords": ["Essen", "Lebensmittel", "Nahrung", "Vorrat", "Vorräte", "Notvorrat", "Lebensmittelvorrat", "Lebensmittel lagern", "Vorratsschrank", "Speisekammer", "Konserven", "Dosen", "Konservendosen", "haltbar", "lange haltbar", "Haltbarkeit", "Mindesthaltbarkeitsdatum", "MHD", "Ablaufdatum", "Verfallsdatum", "Kühlschrank", "Tiefkühltruhe", "Gefrierschrank", "verdorben", "schlecht geworden", "wegwerfen", "Schimmel", "Kochen", "kochen ohne Strom", "Campingkocher", "Gaskocher", "Gasherd", "Grill", "grillen", "Fondue", "Kohlenmonoxid", "Babynahrung", "Tierfutter", "Hunger", "Hochwasser"],
+  "choices": [
+    {
+      "id": "stock",
+      "label": "Welche Lebensmittel sollten wir zu Hause haben?",
+      "hint": "Lange haltbare Lebensmittel für eine Woche oder länger",
+      "read": [
+        {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Eine Checkliste für sieben Tage",
+         "note": "Getränke, essfertige Lebensmittel, Trockenwaren, Medizin- und Hygieneartikel, Licht, eine Kochmöglichkeit, Bargeld."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Was einen guten Notvorrat ausmacht",
+         "note": "Möglichst 10 Tage, mindestens 3: Lebensmittel, die keinen Kühlschrank brauchen, die man nicht kochen muss oder die schnell gar sind; Allergien, Kinder, Haustiere."},
+        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Eine Einkaufsliste nach Lebensmittelgruppen",
+         "note": "Getränke, Getreide, Konserven, Hülsenfrüchte, H-Milch und mehr; Daten prüfen und Verbrauchtes ersetzen."}
+      ]
+    },
+    {
+      "id": "keeps",
+      "label": "Wie lange ist es haltbar?",
+      "hint": "Daten, Lagerung, Konserven, Trockenwaren, die Tiefkühltruhe",
+      "read": [
+        {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Trockenwaren, Milch, Käse und Konserven",
+         "note": "Wie lange sie halten, bei welcher Temperatur, und nach dem Öffnen einer Dose."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Hülsenfrüchte, Nüsse, Öl, Fleisch und die Tiefkühltruhe",
+         "note": "Lagertemperaturen, und wie viele Monate Lebensmittel in der Tiefkühltruhe halten."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Verbrauchen und ersetzen, oder ein eigener Vorrat, jährlich geprüft",
+         "note": "Aus Österreich."}
+      ]
+    },
+    {
+      "id": "cook",
+      "label": "Kochen ohne Strom",
+      "hint": "Kein Elektroherd: Gas, Campingkocher, Grill, Fondue-Set",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Womit Sie drinnen kochen dürfen und was nur draußen",
+         "note": "Stövchen mit Teelichtern und Fondue-Sets drinnen; Campingkocher und Grills nur im Freien; die Gefahr durch Kohlenmonoxid."},
+        {"doc": "zsv-steiermark-blackout", "page": 28, "label": "Kochen im Blackout",
+         "note": "Warum Elektroherde ausfallen, besondere Ernährung, Lebensmittel aus Kühlschrank und Tiefkühltruhe aufbrauchen, und Gas, Holz oder Holzkohle bereithalten."}
+      ]
+    },
+    {
+      "id": "fridge",
+      "label": "Kühlschrank und Tiefkühltruhe sind aus",
+      "hint": "Was zuerst essen, die Türen geschlossen halten, Schmelzwasser",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Verderbliche Lebensmittel und die Tiefkühltruhe",
+         "note": "Verderbliche Lebensmittel bald essen oder kochen und bei der Tiefkühltruhe auf Schmelzwasser achten; Kühl-Gefrier-Kombinationen tauen früher auf."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Kühlschrank und Tiefkühltruhe so selten wie möglich öffnen",
+         "note": "Auf Italienisch. Teil der Hinweise zum Blackout."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Verderbliches aufbrauchen, Abfall in Säcken sammeln",
+         "note": "Aus Österreich."}
+      ]
+    },
+    {
+      "id": "throw-out",
+      "label": "Kann man das noch gefahrlos essen?",
+      "hint": "Eine aufgeblähte Dose, Schimmel, Lebensmittel, die mit Hochwasser in Berührung kamen",
+      "read": [
+        {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Aufgeblähte Dosen und schimmliger Käse",
+         "note": "Wann eine Dose weggeworfen werden muss und wann man Schimmel bei Hartkäse wegschneiden kann."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Nüsse, Öl und Fleisch, die verdorben sind",
+         "note": "Anzeichen dafür, dass sie weggeworfen werden müssen."},
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Lebensmittel, die mit Hochwasser in Berührung kamen",
+         "note": "Auf Italienisch. Unter den Schritten nach einem Hochwasser."}
+      ]
+    },
+    {
+      "id": "special",
+      "label": "Babys, besondere Ernährung und Haustiere",
+      "hint": "Babynahrung, Windeln, Allergien, Tierfutter",
+      "read": [
+        {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Wenn Sie ein Baby, ein Haustier oder ein Auto haben",
+         "note": "Babynahrung und Windeln, Tierfutter und Streu, und was jeweils in den Vorrat gehört."},
+        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Babys und Haustiere im Vorrat",
+         "note": "Am Ende der Lebensmittelliste."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Kochen Sie drinnen nur mit Geräten, die für Innenräume zugelassen sind; Campingkocher und Grills gehören nach draußen.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Eine Kohlenmonoxidvergiftung kann tödlich sein, und auch ein offenes Feuer in Innenräumen kann sie verursachen.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Werfen Sie eine Dose weg, deren Deckel nach außen gewölbt ist.", "doc": "oezsv-bevorratungsratgeber", "page": 10},
+    {"text": "Werfen Sie Nüsse weg, die seltsam schmecken oder Schimmel zeigen, und Fleisch, das schmierig ist oder stark riecht.", "doc": "oezsv-bevorratungsratgeber", "page": 11},
+    {"text": "Essen Sie keine Lebensmittel, die mit Hochwasser in Berührung kamen: Sie könnten verunreinigt sein.", "doc": "dpc-io-non-rischio", "page": 31}
+  ],
+  "prepare": [
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Eine Checkliste für sieben Tage", "note": "Aus der Schweiz."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Checkliste: Lebensmittel und Wasser für 3, 5, 7 oder 10 Tage", "note": "Aus Deutschland."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Den Vorrat Schritt für Schritt anlegen", "note": "Aus Deutschland."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Den Vorrat einmal im Jahr prüfen", "note": "Aus Österreich."},
+    {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Eine Liste nach Lebensmittelgruppen", "note": "Aus der Steiermark (Österreich)."}
+  ],
+  "learn": [
+    {"doc": "oezsv-bevorratungsratgeber", "label": "Bevorratungsratgeber", "note": "Vom österreichischen Zivilschutz: Bedarf, Lagerung und Haltbarkeit, Wasser, Medikamente, was Haushalte vergessen. Seine Seiten über das Essen von Wildpflanzen sind Überlebenstipps, die keine andere Quelle hier überprüft."},
+    {"doc": "bwl-kluger-rat-notvorrat", "label": "Kluger Rat – Notvorrat", "note": "Das Faltblatt des Schweizer Bundes, vier Seiten."}
+  ],
+  "related": ["water", "power", "preserve", "sanitation"],
+  "gaps": {
+    "missing": [
+      "Kein Ratgeber einer Gesundheitsbehörde zur Lebensmittelsicherheit, der sagt, was nach einem langen Stromausfall oder einem Hochwasser weggeworfen werden muss; die Regeln hier stammen aus Faltblättern des Zivilschutzes.",
+      "Nichts dazu, wie lange Lebensmittel aus Kühlschrank und Tiefkühltruhe ohne Strom sicher bleiben, außer verderbliche Lebensmittel zuerst zu essen und die Türen geschlossen zu halten.",
+      "Kein Ratgeber zum Kochen über offenem Feuer oder auf dem Grill, außer der Warnung, dass Grills und Campingkocher nach draußen gehören."
+    ],
+    "disagree": [
+      "Für wie lange man planen sollte: etwa eine Woche (das Schweizer Faltblatt und der österreichische Bevorratungsratgeber), möglichst 10 Tage und mindestens 3 (der deutsche Ratgeber), ein bis zwei Wochen (der steirische Blackout-Ratgeber), mindestens 10 bis 14 Tage (die österreichische Blackout-Checkliste).",
+      "Kochen auf dem Grill im Blackout: Die österreichischen Ratgeber schlagen einen Gartengrill vor, ohne zu sagen, wo er benutzt werden soll; der deutsche Ratgeber sagt, Grills und Campingkocher sind nur für draußen."
+    ]
+  }
+}

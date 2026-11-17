@@ -1,0 +1,174 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "disaster",
+  "mode": "now",
+  "title": "Trzęsienie ziemi, powódź, pożar i inne klęski",
+  "short": "Trzęsienie ziemi, tsunami, powódź, pożar, pozostanie w budynku, opuszczenie domu",
+  "intro": "Materiały o zagrożeniach, z którymi ludzie w Europie spotykają się najczęściej: trzęsienia ziemi, tsunami na wybrzeżu, powodzie, pożary w domu i w lesie oraz awarie, przy których trzeba zostać w budynku albo opuścić dom. Większość stron pochodzi od włoskich, niemieckich i austriackich służb ochrony ludności.",
+  "keywords": ["trzęsienie ziemi", "wstrząsy", "wstrząs wtórny", "drgania", "tsunami", "powódź", "zalanie", "podtopienie", "powódź błyskawiczna", "ulewa", "ulewny deszcz", "rzeka", "wezbranie", "burza", "nawałnica", "wichura", "piorun", "błyskawica", "pożar", "pożar domu", "pożar mieszkania", "dym", "czujnik dymu", "pożar lasu", "pożar lasów", "pożar roślinności", "ewakuacja", "ewakuować się", "plecak ewakuacyjny", "torba ewakuacyjna", "dokumenty", "schronienie na miejscu", "zostań w domu", "chemikalia", "skażenie chemiczne", "promieniowanie", "awaria jądrowa", "jod", "tabletki z jodem", "wybuch", "eksplozja", "syrena", "syreny alarmowe"],
+  "choices": [
+    {
+      "id": "quake-now",
+      "label": "Ziemia się trzęsie",
+      "hint": "Trzęsienie ziemi, w budynku lub na zewnątrz",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 12, "label": "Podczas trzęsienia ziemi",
+         "note": "Po włosku. W budynku: przy ścianie nośnej lub pod solidnym stołem i nie wybiegaj na zewnątrz. Na zewnątrz: z dala od budynków, drzew, latarni i linii energetycznych."}
+      ]
+    },
+    {
+      "id": "quake-after",
+      "label": "Wstrząsy ustały",
+      "hint": "Urazy, zniszczenia, gaz, wstrząsy wtórne",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 13, "label": "Po trzęsieniu ziemi",
+         "note": "Po włosku. Pierwsza pomoc, zakręcenie gazu i wody, wyłączenie prądu, buty na nogach, bez windy, wybrzeże, telefon i samochód, miejsca zbiórki wyznaczone przez gminę."}
+      ]
+    },
+    {
+      "id": "tsunami",
+      "label": "Silne trzęsienie ziemi na wybrzeżu albo morze się cofa",
+      "hint": "Oznaki tsunami i ostrzeżenia, na plaży lub w porcie",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 18, "label": "Oznaki tsunami",
+         "note": "Po włosku. Oficjalnego ostrzeżenia może nie być: silne trzęsienie ziemi, nagłe cofnięcie się morza, huk od strony morza."},
+        {"doc": "dpc-io-non-rischio", "page": 20, "label": "Szybko, pieszo, jak najwyżej",
+         "note": "Po włosku. Po ostrzeżeniu lub po choćby jednej oznace: najbliższe wzniesienie lub wyższe piętra, ostrzeż innych, zostaw samochód; łodzie."},
+        {"doc": "dpc-io-non-rischio", "page": 21, "label": "Po tsunami",
+         "note": "Po włosku. Mogą nadejść kolejne fale; zostań wysoko, dopóki władze nie zdecydują inaczej; woda z kranu i jedzenie."}
+      ]
+    },
+    {
+      "id": "flood-warning",
+      "label": "Ogłoszono ostrzeżenie przed powodzią",
+      "hint": "Ulewny deszcz, wzbierająca rzeka, alert dla mojej okolicy",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 28, "label": "Gdy wydano alert powodziowy",
+         "note": "Po włosku. Śledź komunikaty, nie śpij w piwnicy ani w suterenie, zabezpiecz parter, dobrze się zastanów, zanim przestawisz samochód."},
+        {"doc": "vvf-acqua-e-vita", "page": 1, "label": "Jak chronić się podczas powodzi",
+         "note": "Po włosku. Idź na wyższe piętro, nie wchodź do piwnic ani do przejść i przejazdów podziemnych, używaj telefonu tylko w nagłych sprawach, miej gotową torbę do wyjścia."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 31, "label": "Idź wyżej, nigdy do piwnicy",
+         "note": "Po niemiecku. Podczas powodzi i ulew chronią wyższe piętra; piwnice, garaże podziemne i przejazdy podziemne mogą stać się pułapką."}
+      ]
+    },
+    {
+      "id": "flood-now",
+      "label": "Woda wokół mnie się podnosi",
+      "hint": "W budynku, na zewnątrz albo w samochodzie",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 29, "label": "W budynku podczas powodzi",
+         "note": "Po włosku. Idź na górę, nie schodź do piwnic i nie wychodź po samochód; nie korzystaj z windy; zakręć gaz i wyłącz prąd; pomóż starszym i niepełnosprawnym sąsiadom."},
+        {"doc": "dpc-io-non-rischio", "page": 30, "label": "Na zewnątrz podczas powodzi",
+         "note": "Po włosku. Wyjdź z wody, przejdź na wyżej położony teren z dala od zboczy, nie jedź samochodem, unikaj przejazdów podziemnych, brzegów rzek i mostów."}
+      ]
+    },
+    {
+      "id": "flood-after",
+      "label": "Woda opadła",
+      "hint": "Powrót do domu, błoto, piwnice, gaz i prąd",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Po powodzi",
+         "note": "Po włosku. Czekaj na komunikaty władz, nie wchodź na zalane drogi, sprawdź gaz i prąd, kanalizację, wodę z kranu i jedzenie."}
+      ]
+    },
+    {
+      "id": "home-fire",
+      "label": "Pożar lub dym w domu",
+      "hint": "Czujnik dymu, pożar w pokoju, dym na klatce schodowej",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 26, "label": "Pożar w domu: sześć kroków",
+         "note": "Po niemiecku. Gaś tylko wtedy, gdy to bezpieczne, wyjdź i zamknij drzwi, ostrzeż innych, nigdy nie przechodź przez dym, zadzwoń pod 112."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 10, "label": "Ucieczka albo czekanie przy oknie",
+         "note": "Po niemiecku. Jeśli droga wyjścia jest wolna od dymu, wyjdź; jeśli jest dym, zamknij drzwi, uszczelnij szpary mokrymi szmatami i czekaj przy otwartym oknie."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 8, "label": "Gaszenie małego pożaru",
+         "note": "Po niemiecku. Gaśnice i koce gaśnicze, nigdy wody na płonący tłuszcz lub olej, oraz osoba, na której pali się ubranie."}
+      ]
+    },
+    {
+      "id": "forest-fire",
+      "label": "W pobliżu jest pożar lasu",
+      "hint": "Dym, płomienie w lesie, ogień odcina drogę",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 39, "label": "Jeśli widzisz pożar lasu albo ogień cię otoczył",
+         "note": "Po włosku. Zadzwoń od razu; jak się oddalić, gdzie się położyć i kiedy przejść na teren, który już się wypalił."},
+        {"doc": "dpc-io-non-rischio", "page": 37, "label": "Zgłoś pożar, a nawet sam dym",
+         "note": "Po włosku. Podaj dokładne miejsce i miejscowość. Włoskie numery."}
+      ]
+    },
+    {
+      "id": "indoors",
+      "label": "Polecono zostać w budynku: gaz, dym lub promieniowanie",
+      "hint": "Awaria chemiczna lub jądrowa, wybuchy, alarm syren",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 30, "label": "Gdzie schronić się przed gazem, promieniowaniem lub wybuchami",
+         "note": "Po niemiecku. Gaz na zewnątrz: wejdź do budynku, idź wyżej, uszczelnij okna i drzwi, wyłącz wentylację. Gaz w budynku: wyjdź. Promieniowanie lub wybuchy: zejdź jak najgłębiej."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 4, "label": "Syreny w Austrii: ostrzeżenie i alarm",
+         "note": "Po niemiecku. Na sygnał alarmu idź do chronionego pomieszczenia lub do piwnicy i włącz radio."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Woda i jod po awarii jądrowej",
+         "note": "Po niemiecku. Woda z kranu może przez kilka dni nie być bezpieczna; tabletki z jodem tylko na polecenie władz."}
+      ]
+    },
+    {
+      "id": "thunderstorm",
+      "label": "Burza w górach",
+      "hint": "Pioruny, burza zastała cię na grani lub na szczycie",
+      "read": [
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 27, "label": "Burze w górach",
+         "note": "Po niemiecku. Oznaki ostrzegawcze oraz które miejsca dają pewną ochronę, a które żadnej."}
+      ]
+    },
+    {
+      "id": "leave",
+      "label": "Być może będziemy musieli opuścić dom",
+      "hint": "Torba ewakuacyjna, dokumenty, osoby potrzebujące pomocy, zwierzęta domowe",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 36, "label": "Co spakować do torby ewakuacyjnej",
+         "note": "Po niemiecku. Pełna lista, od leków i dokumentów po latarkę i radio."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 27, "label": "Ważne dokumenty",
+         "note": "Po niemiecku. Które dokumenty trzymać razem, w ognioodpornym lub wodoszczelnym pudełku, razem z kopiami."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Jeśli potrzebujesz pomocy, by opuścić dom",
+         "note": "Po niemiecku. Sprzęt pomocniczy, leki, kontakty i ustalenie, kto pomoże ci wydostać się z domu."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Podczas trzęsienia ziemi nie wybiegaj na zewnątrz: poczekaj, aż wstrząsy ustaną.", "doc": "dpc-io-non-rischio", "page": 12},
+    {"text": "Po trzęsieniu ziemi nie korzystaj z windy i uważaj na schody.", "doc": "dpc-io-non-rischio", "page": 13},
+    {"text": "Oficjalnego ostrzeżenia przed tsunami może nie być: silne trzęsienie ziemi albo nagłe cofnięcie się morza to sygnał, by uciekać na wyżej położony teren.", "doc": "dpc-io-non-rischio", "page": 18},
+    {"text": "Nie uciekaj przed tsunami samochodem: może stać się pułapką.", "doc": "dpc-io-non-rischio", "page": 20},
+    {"text": "Po pierwszej fali mogą nadejść kolejne niebezpieczne fale: nie wracaj, dopóki nie dostaniesz pozwolenia.", "doc": "dpc-io-non-rischio", "page": 21},
+    {"text": "Podczas powodzi nigdy nie schodź do piwnic, suteren ani garaży, żeby ratować rzeczy: ryzykujesz życiem.", "doc": "dpc-io-non-rischio", "page": 29},
+    {"text": "W zalanej piwnicy możesz nie dać rady otworzyć drzwi i grozi tam śmiertelne porażenie prądem.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 31},
+    {"text": "Nawet kilka centymetrów szybko płynącej wody może cię przewrócić lub unieruchomić samochód: trzymaj się z dala od przejazdów podziemnych, brzegów rzek i mostów.", "doc": "dpc-io-non-rischio", "page": 30},
+    {"text": "Nigdy nie uciekaj przez dym: kilka oddechów może zabić. Jeśli nie możesz się wydostać, zwróć na siebie uwagę z okna.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
+    {"text": "Nigdy nie lej wody na płonący tłuszcz lub olej.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
+    {"text": "Podczas pożaru nie korzystaj z windy i nie skacz z okna.", "doc": "zsv-steiermark-notfallratgeber", "page": 10},
+    {"text": "Jeśli widzisz pożar lasu, zadzwoń od razu: nie zakładaj, że ktoś już to zrobił.", "doc": "dpc-io-non-rischio", "page": 39},
+    {"text": "Jeśli w budynku ulatnia się gaz albo wyciekają niebezpieczne ciecze, wyjdź z budynku.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 30},
+    {"text": "Tabletki z jodem przyjmuj tylko na polecenie władz: mogą mieć poważne skutki uboczne.", "doc": "oezsv-bevorratungsratgeber", "page": 17}
+  ],
+  "prepare": [
+    {"doc": "dpc-io-non-rischio", "page": 11, "label": "Zabezpiecz dom przed trzęsieniem ziemi", "note": "Po włosku. Przymocuj wysokie meble, trzymaj ciężkie rzeczy nisko, naucz się zakręcać gaz i wodę oraz wyłączać prąd, poznaj bezpieczne miejsca."},
+    {"doc": "dpc-io-non-rischio", "page": 26, "label": "Jak przebiega powódź i gdzie jest najniebezpieczniej", "note": "Po włosku. Woda może podnieść się o metr lub dwa w ciągu kilku minut."},
+    {"doc": "dpc-io-non-rischio", "page": 27, "label": "Przed powodzią: plan, zestaw, cenne rzeczy z piwnicy na górę", "note": "Po włosku. Także zgłoszenie gminie, jeśli ktoś w domu potrzebuje pomocy."},
+    {"doc": "dpc-io-non-rischio", "page": 19, "label": "Na wybrzeżu: rodzinny plan na wypadek tsunami", "note": "Po włosku."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 36, "label": "Lista kontrolna torby ewakuacyjnej", "note": "Po niemiecku."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Dokumenty w wodoszczelnej teczce i worki przeciwpowodziowe", "note": "Po niemiecku."},
+    {"doc": "dpc-io-non-rischio", "page": 38, "label": "Jak zapobiegać pożarom lasów", "note": "Po włosku. Papierosy, ogniska w lesie, samochody na suchej trawie, śmieci, wypalanie ściernisk, wiatr."}
+  ],
+  "learn": [
+    {"doc": "dpc-io-non-rischio", "label": "Io non rischio: trzęsienie ziemi, tsunami, powódź", "note": "Po włosku. Poradnik włoskiego Departamentu Ochrony Ludności (Protezione Civile) z 2025 roku: przed, w trakcie i po, a także pożary lasów, wulkany i IT-alert. Napisany dla Włoch."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Przygotowanie na kryzysy i katastrofy", "note": "Po niemiecku. Niemiecki poradnik federalny (2025)."},
+    {"doc": "zsv-steiermark-notfallratgeber", "label": "Poradnik na wypadek zagrożenia: właściwe zachowanie w sytuacjach awaryjnych", "note": "Po niemiecku. Austriacki poradnik (2024): numery alarmowe, syreny, pożar, pierwsza pomoc, wypadki, góry i woda."}
+  ],
+  "related": ["comms", "shelter", "hurt", "water"],
+  "gaps": {
+    "missing": [
+      "Brak poradnika o burzach, gradzie lub silnym wietrze, poza austriacką stroną o burzach w górach.",
+      "Brak poradnika o osuwiskach ani o lawinach, poza ratowaniem się nawzajem przez wspinaczy.",
+      "Brak poradnika o sprzątaniu i osuszaniu domu po powodzi.",
+      "O awariach chemicznych i jądrowych tylko to, gdzie się schronić, i ostrzeżenie dotyczące jodu: nic o tym, jak długo zostać w budynku, ani o sprzątaniu.",
+      "Strony o trzęsieniach ziemi, tsunami, powodziach i pożarach lasów są napisane dla Włoch; alerty i syreny są wyjaśnione tylko dla Włoch, Niemiec i Austrii."
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "sanitation",
+  "mode": "now",
+  "title": "Váter, basura e higiene cuando se corta el agua",
+  "short": "Un váter sin agua, manos limpias, basura",
+  "intro": "Lecturas para cuando no se puede tirar de la cadena o no hay agua: un váter de emergencia, mantener las manos limpias y la basura. La biblioteca solo tiene pasajes cortos sobre esto; lo que falta está en la lista de abajo.",
+  "keywords": ["váter", "inodoro", "retrete", "baño", "aseo", "WC", "cisterna", "tirar de la cadena", "no funciona la cisterna", "aguas residuales", "alcantarillado", "desagües", "váter de cubo", "cubos", "váter químico", "inodoro portátil", "bolsas para el váter", "bolsas de basura", "basura", "residuos", "desechos", "higiene", "lavarse", "lavarse las manos", "manos", "jabón", "gel hidroalcohólico", "desinfectante", "pañales", "compresas", "tampones", "productos menstruales", "moscas"],
+  "choices": [
+    {
+      "id": "no-flush",
+      "label": "No se puede tirar de la cadena",
+      "hint": "Sin agua, un apagón largo, el alcantarillado dañado",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 21, "label": "Bolsas para el váter, un cubo o un váter de camping",
+         "note": "En alemán. Por qué el váter se convierte en un problema en un apagón largo, y qué tener: bolsas que se puedan cerrar, cubos, un váter de camping."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Bolsas resistentes para colgar en el váter",
+         "note": "En alemán. La lista de comprobación de higiene: bolsas de basura grandes y resistentes para el váter, un váter de camping y otros artículos de higiene."},
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Un váter de emergencia si fallan el agua o el alcantarillado",
+         "note": "En alemán. Forma parte de los primeros pasos en casa durante un apagón."},
+        {"doc": "who-tn09-how-much-water", "page": 2, "label": "Cuánta agua gasta una descarga de la cisterna",
+         "note": "En inglés. Hasta 7 litros cada vez; los váteres más sencillos necesitan mucha menos. Escrita para quienes planifican la ayuda humanitaria."}
+      ]
+    },
+    {
+      "id": "hands",
+      "label": "Mantener las manos limpias con poca agua",
+      "hint": "Sin agua corriente, se acaba el jabón",
+      "read": [
+        {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "Cuándo debe lavarse las manos todo el mundo",
+         "note": "En inglés. Después de ir al váter, antes de preparar la comida, antes de comer o de dar de comer a un niño, y después de limpiar a un niño."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Manos limpias antes de tocar el agua para beber",
+         "note": "En inglés. Lavarse las manos antes de manipular el agua guardada, y un grifo en el recipiente."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Guantes, platos y cubiertos desechables",
+         "note": "En alemán. Sin agua y sin luz no se puede fregar; los guantes ayudan cuando tienes que curar una herida y no puedes lavarte las manos."}
+      ]
+    },
+    {
+      "id": "waste",
+      "label": "La basura se acumula",
+      "hint": "No pasan a recogerla, restos de comida, olores, moscas",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Por qué la basura se vuelve peligrosa en pocos días",
+         "note": "En alemán. En un apagón largo, la basura y los excrementos pronto atraen insectos y provocan enfermedades."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Genera poca basura y recógela en bolsas",
+         "note": "En alemán."}
+      ]
+    },
+    {
+      "id": "sewage",
+      "label": "Los desagües tras una inundación, o las aguas residuales que rebosan",
+      "hint": "Sótano inundado, desagües que rebosan, una bomba de aguas residuales",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Antes de usar los desagües tras una inundación",
+         "note": "En italiano. Averigua si el alcantarillado, las fosas sépticas y los pozos están dañados, y sigue las indicaciones de las autoridades antes de limpiar."},
+        {"doc": "zsv-steiermark-blackout", "page": 27, "label": "Bombas de aguas residuales y válvulas antirretorno",
+         "note": "En alemán. Si la casa tiene su propia bomba de aguas residuales, revísala, y también las válvulas antirretorno que haya."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "La basura y los excrementos que se dejan tirados atraen insectos y provocan enfermedades en pocos días.", "doc": "zsv-steiermark-blackout", "page": 10},
+    {"text": "Después de una inundación, averigua si el alcantarillado, las fosas sépticas y los pozos están dañados antes de usar los desagües.", "doc": "dpc-io-non-rischio", "page": 31},
+    {"text": "En un apagón largo, lavarse va en segundo lugar: hay que ahorrar el agua para beber.", "doc": "zsv-steiermark-blackout", "page": 21}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Lista de comprobación de higiene", "note": "En alemán."},
+    {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Listas de higiene y salud", "note": "En alemán."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Lo que se suele olvidar en casa: papel higiénico, bolsas, guantes", "note": "En alemán."}
+  ],
+  "learn": [],
+  "related": ["water", "hurt", "food"],
+  "gaps": {
+    "missing": [
+      "Ninguna guía paso a paso para un váter de emergencia: cómo montar un váter con bolsa o con cubo y deshacerse de los residuos sin peligro.",
+      "Nada sobre cómo mantenerse limpio con muy poca agua, aparte de cuándo lavarse las manos.",
+      "Ninguna guía para limpiar una casa en la que han entrado aguas residuales o agua de una inundación.",
+      "Nada sobre cómo evitar que una enfermedad como la diarrea se contagie en casa."
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "power",
+  "mode": "now",
+  "title": "Manca la corrente",
+  "short": "Prime cose da fare, luce, medicinali, ascensori, generatori",
+  "intro": "Letture per un'interruzione di corrente che può durare ore o giorni: le prime cose da fare in casa, come avere notizie, i medicinali che dipendono dalla corrente o dal freddo, gli ascensori, i generatori e cosa fare quando la corrente torna.",
+  "keywords": ["interruzione di corrente", "mancanza di corrente", "manca la corrente", "senza corrente", "è saltata la corrente", "è andata via la luce", "blackout", "black out", "corrente", "elettricità", "senza luce", "niente luce", "buio", "torcia", "pila", "candele", "batterie", "pile", "power bank", "radio", "generatore", "gruppo elettrogeno", "ascensore", "bloccato in ascensore", "insulina", "apparecchio medico", "dispositivo medico", "ossigeno", "frigo", "frigorifero", "congelatore", "contanti", "fusibile", "salvavita", "è tornata la corrente", "vicini", "vicini di casa"],
+  "choices": [
+    {
+      "id": "first-hours",
+      "label": "La corrente è appena andata via",
+      "hint": "Un'interruzione di corrente o un blackout: buio in casa e dai vicini, non si sa per quanto",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 5, "label": "Cosa fare in un blackout, in ordine",
+         "note": "In tedesco. Mantieni la calma, controlla se manca solo nella tua via, accendi la radio, avvisa la famiglia, stacca le spine, lascia accesa una lampada."},
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Le prime cose da fare in casa",
+         "note": "In tedesco. Famiglia, apparecchi, radio, acqua, luce, ascensore, congelatore, farmaci salvavita, rifiuti e un WC di fortuna."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Come comportarsi durante un blackout",
+         "note": "Spegni gli elettrodomestici, tieni chiuso il frigo, ascolta la radio, evita gli ascensori; e come usare un generatore in sicurezza."}
+      ]
+    },
+    {
+      "id": "food-link",
+      "goto": "food/cook",
+      "label": "Cucina e frigo senza corrente",
+      "hint": "Nella guida “Cibo e cucina”"
+    },
+    {
+      "id": "cold-link",
+      "goto": "shelter/cold",
+      "label": "Stare al caldo senza riscaldamento",
+      "hint": "Nella guida “Troppo caldo o freddo”"
+    },
+    {
+      "id": "medical",
+      "label": "Qualcuno ha bisogno di corrente o di freddo per un medicinale o un apparecchio",
+      "hint": "Insulina, un respiratore, ossigeno, una carrozzina elettrica",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "I farmaci salvavita in un blackout",
+         "note": "In tedesco. Controlla quanto dureranno; l'insulina va tenuta al fresco; se non bastano per una settimana, a chi dirlo."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Apparecchi salvavita che funzionano a corrente",
+         "note": "Chiedi aiuto per tempo: per l'Italia la pagina indica il 118 e i servizi sociali."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Batterie di riserva e caricatori per gli ausili",
+         "note": "In tedesco. Ausili che funzionano a corrente, un piano dei medicinali e una scorta, e chi può aiutarti ad andare via se devi farlo."}
+      ]
+    },
+    {
+      "id": "lift",
+      "label": "Un ascensore si è fermato, o abito ai piani alti",
+      "hint": "Qualcuno potrebbe essere bloccato dentro, solo le scale",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Controlla che nessuno sia bloccato in ascensore",
+         "note": "In tedesco. Tra le cose da fare per il palazzo e la via: l'ascensore, i vicini e le persone che hanno bisogno di aiuto."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Non usare l'ascensore finché la corrente non torna stabilmente",
+         "note": "La corrente può andare e venire durante le riparazioni."}
+      ]
+    },
+    {
+      "id": "generator",
+      "label": "Voglio usare un generatore",
+      "hint": "Un generatore portatile, il carburante, dove metterlo",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 18, "label": "Generatori: dove farli funzionare, carburante, rischio di incendio",
+         "note": "In tedesco. Mai in locali chiusi; circa un litro di carburante all'ora; il carburante tenuto di scorta è un rischio di incendio. Spiega anche perché di solito si fermano anche i pannelli solari."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Collega gli apparecchi al generatore, non all'impianto di casa",
+         "note": "Non collegarlo all'impianto elettrico di casa, e non accenderlo mai in casa o in garage."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Niente generatori né stufe da esterno dentro casa",
+         "note": "In inglese. Dai messaggi della FICR per l'inverno."}
+      ]
+    },
+    {
+      "id": "long",
+      "label": "Potrebbe durare giorni",
+      "hint": "Negozi chiusi, niente bancomat, niente telefoni, restare a casa",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Cosa comporta un lungo blackout",
+         "note": "In tedesco. I negozi chiudono, le cure mediche diventano più difficili di ora in ora, le case si raffreddano, niente ascensore né telefono, i rifiuti si accumulano."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 7, "label": "Cosa smette di funzionare senza corrente",
+         "note": "In tedesco. Telefoni e internet, pagamenti con carta e bancomat, frigo, fornelli, acqua del rubinetto, luce, riscaldamento."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Restare a casa e aiutarsi a vicenda",
+         "note": "In tedesco. Resta a casa se non c'è bisogno di te altrove, risparmia carburante, parla con i vicini, scopri chi ha bisogno di aiuto."}
+      ]
+    },
+    {
+      "id": "back-on",
+      "label": "La corrente è tornata",
+      "hint": "Cosa riaccendere, telefonate, riscaldamento",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 7, "label": "Dopo un blackout",
+         "note": "In tedesco. Controlla che fornelli e ferro da stiro siano spenti, accendi solo ciò che ti serve, evita le telefonate non urgenti."},
+        {"doc": "zsv-steiermark-blackout", "page": 27, "label": "Quando torna la corrente",
+         "note": "In tedesco. Apparecchi, riscaldamento, frigo, pompe per le acque di scarico, contanti, restare a casa, e aspettare prima di riaccendere i computer."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Chiama i numeri di emergenza solo se c'è pericolo di vita.", "doc": "oezsv-blackout-checkliste", "page": 5},
+    {"text": "Un generatore ha un motore: non si può far funzionare in locali chiusi, e il carburante tenuto di scorta è un rischio di incendio.", "doc": "zsv-steiermark-blackout", "page": 18},
+    {"text": "Non collegare un generatore all'impianto elettrico di casa, e non accenderlo mai in casa o in garage.", "doc": "ravenna-rischio-blackout", "page": 1},
+    {"text": "Evita gli ascensori finché la corrente non viene dichiarata ripristinata: può andare e venire durante le riparazioni.", "doc": "ravenna-rischio-blackout", "page": 1},
+    {"text": "Se i farmaci salvavita, come l'insulina, non bastano per una settimana, avvisa una farmacia, un medico o il servizio ambulanze.", "doc": "zsv-steiermark-blackout", "page": 26},
+    {"text": "Non lasciare mai incustodite candele o altre fiamme libere.", "doc": "zsv-steiermark-notfallratgeber", "page": 7},
+    {"text": "Quando torna la corrente, controlla che fornelli e ferro da stiro siano davvero spenti: possono causare un incendio.", "doc": "zsv-steiermark-blackout", "page": 27}
+  ],
+  "prepare": [
+    {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "Cosa tenere in casa per un blackout", "note": "In tedesco. Acqua, cibo, una radio a batterie o a manovella, luci, medicinali, un modo per cucinare, contanti in banconote di piccolo taglio; prevedi da 10 a 14 giorni."},
+    {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Preparati come per un campeggio", "note": "In tedesco. Valvole di chiusura, cosa ha previsto il tuo Comune, cibo e acqua per una o due settimane."},
+    {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Liste di controllo: luce, radio, igiene, medicinali, uno zaino da prendere al volo", "note": "In tedesco."},
+    {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Domande di cui parlare prima che succeda", "note": "In tedesco. Tornare a casa dal lavoro o da scuola, chi contattare, chi ha bisogno di aiuto, i vicini, le abitudini dei bambini."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Numeri su carta e un power bank", "note": "In tedesco."},
+    {"doc": "bwl-scorte-d-emergenza", "page": 2, "label": "Radio, torcia, candele e un po' di contanti", "note": "L'elenco dell'opuscolo svizzero di ciò che ogni casa dovrebbe avere."}
+  ],
+  "learn": [
+    {"doc": "zsv-steiermark-blackout", "label": "Blackout: cosa fare quando manca la corrente", "note": "In tedesco. Della protezione civile della Stiria: cos'è un blackout, essere pronti, le prime cose da fare, cucinare, quando torna la corrente. Alcune pagine sono pubblicità."},
+    {"doc": "oezsv-blackout-checkliste", "label": "Lista di controllo per il blackout", "note": "In tedesco. Della protezione civile austriaca (2022): prima, durante e dopo, in otto pagine."}
+  ],
+  "related": ["food", "shelter", "comms", "water"],
+  "gaps": {
+    "missing": [
+      "Nessun manuale per generatori o stazioni di energia portatili: solo le avvertenze di questa guida.",
+      "Nulla per chi vive in edifici alti, oltre a controllare l'ascensore: la pressione dell'acqua, le lunghe scale, i vicini che non riescono a scendere.",
+      "Nessuna guida agli apparecchi medici che funzionano a corrente, come quelli per l'ossigeno o i respiratori, oltre a chiedere aiuto per tempo."
+    ],
+    "disagree": [
+      "Per quanto tempo prepararsi a un blackout: almeno da 10 a 14 giorni (la lista di controllo austriaca per il blackout), da una a due settimane (la guida stiriana sul blackout), 10 giorni (la guida tedesca), circa una settimana (l'opuscolo svizzero)."
+    ]
+  }
+}

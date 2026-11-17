@@ -31,8 +31,9 @@ or taken from files already on the computer.
 
 ## What it does
 
-- **Guides first.** Short guides for urgent needs (`content/topics/`), each pointing to real pages of real sources, with
-  page numbers.
+- **Guides first.** Short guides for urgent needs (`content/topics/`), written for Europe in the interface's six
+  languages, each pointing to real pages of the library's sources, with page numbers. What the library does not cover
+  yet is said plainly, not filled in from memory.
 - **The library.** Manuals and PDFs, videos with their transcripts, saved web pages and offline encyclopedias (ZIM
   files), with search everywhere.
 - **The offline map.** A base map of Europe and a detailed map of the region chosen in setup: streets, buildings, terrain,
@@ -133,7 +134,7 @@ streaming work do.
 | `crates/tools` | The data tools, one command, `lastbook-tools`: a region's map and address index (`build-map`, `pack-map`, `pack-addresses`, `build-terrain`), a library and its pack (`build-library`, `build-pack`), and the regions' boxes from Eurostat's NUTS boundaries (`region-boxes`). |
 | `third_party/llama-cpp-2` | The `llama-cpp-2` crate with one addition (see `PROVENANCE.md`). |
 | `web/` | The interface, in plain HTML, CSS and JavaScript, with no build step and nothing loaded from the web. |
-| `content/` | The guides (`topics/`), what curators looked for and did not find (`gaps.json`), the words search uses in each language (`search/`), and the lists of documents libraries are built from (`library/`). |
+| `content/` | The guides (`topics/*.json` in English, `topics/<lang>/` in the other languages; rules in `SCHEMA.md`), what the library does not cover (`gaps.json`), the words search uses in each language (`search/`), and the lists of documents libraries are built from (`library/`). |
 | `packaging/rust/` | The installers for macOS, Windows and Linux. |
 | `docs/` | How a region's map is built (`MAPS.md`), how addresses are searched (`ADDRESSES.md`), the setup contract (`SETUP-API.md`) and the state of the work (`EUROPE-STATUS.md`). |
 
@@ -207,9 +208,10 @@ saves a picture of it, on macOS, Windows and Linux; CI photographs the app on ea
 
 ## Credits and licence
 
-Lastbook Europe started from [Lastbook](https://github.com/Immortal-Protocols/lastbook), whose interface and guides it
-keeps, and is rewritten in Rust for Europe. Its code and documentation use the [MIT License](LICENSE), which keeps
-Lastbook's notice. Third-party software keeps its own licence: see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The
-regions' boxes are made from Eurostat's NUTS 2024 boundaries, © EuroGeographics for the administrative boundaries.
+Lastbook Europe started from [Lastbook](https://github.com/Immortal-Protocols/lastbook), whose interface it keeps, and is
+rewritten in Rust for Europe, with guides written anew from European sources. Its code and documentation use the
+[MIT License](LICENSE), which keeps Lastbook's notice. Third-party software keeps its own licence: see
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The regions' boxes are made from Eurostat's NUTS 2024 boundaries,
+© EuroGeographics for the administrative boundaries.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).

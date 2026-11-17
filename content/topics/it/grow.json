@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "grow",
+  "mode": "learn",
+  "title": "Coltivare alimenti di base",
+  "short": "Terreno, colture e semi: non ancora in questa biblioteca",
+  "intro": "Questa biblioteca non ha ancora una guida alla coltivazione, quindi qui non c'è nulla da aprire. L'elenco qui sotto dice cosa manca; le scorte di cibo in casa sono nella guida “Cibo e cucina”.",
+  "keywords": ["coltivare", "orto", "giardino", "ortaggi", "verdure", "semi", "seminare", "piantare", "compost", "terreno", "patate", "fagioli", "zucche", "conservare i semi", "vasi", "balcone", "orto urbano", "annaffiare", "parassiti"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["food", "water"],
+  "gaps": {
+    "missing": [
+      "Nessuna guida alla coltivazione: terreno, periodi di semina per i climi europei, colture di base come patate e fagioli, irrigazione.",
+      "Nessuna guida per conservare i semi o per coltivare in vaso o sul balcone."
+    ]
+  }
+}

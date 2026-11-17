@@ -1,0 +1,22 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "energy",
+  "mode": "learn",
+  "title": "Strom erzeugen und verwalten",
+  "short": "Batterien, Solar, Stromaggregate: noch nicht in dieser Bibliothek",
+  "intro": "Diese Bibliothek hat noch keinen Ratgeber zu Batterien, Solarmodulen oder Stromanlagen für das Zuhause. Was bei einem Stromausfall zu tun ist, und die Warnhinweise zu Notstromaggregaten, stehen im Ratgeber „Stromausfall“.",
+  "keywords": ["Strom", "Elektrizität", "Solar", "Solarmodul", "Solarpanel", "Solaranlage", "Photovoltaik", "PV", "Batterie", "Batterien", "Akku", "Wechselrichter", "Laderegler", "Inselanlage", "netzunabhängig", "autark", "Verkabelung", "Elektroinstallation", "Sicherung", "Powerstation", "Windrad", "Windkraftanlage", "Autobatterie"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["power"],
+  "gaps": {
+    "missing": [
+      "Kein Ratgeber zu Batterien, Powerbanks oder tragbaren Powerstations.",
+      "Kein Ratgeber zu Solarmodulen oder anderen Stromanlagen für das Zuhause.",
+      "Keine Anleitung für Notstromaggregate: Der Ratgeber „Stromausfall“ enthält nur die Warnhinweise aus den Faltblättern des Zivilschutzes."
+    ]
+  }
+}

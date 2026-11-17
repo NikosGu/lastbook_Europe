@@ -1,0 +1,115 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "food",
+  "mode": "now",
+  "title": "Cibo: scorte, cucina e sicurezza",
+  "short": "Scorte, cucinare senza corrente, cosa buttare",
+  "intro": "Letture su come tenere in casa cibo per una settimana o più, come cucinare quando la cucina elettrica non funziona e come capire quando un cibo non è più sicuro da mangiare.",
+  "keywords": ["cibo", "alimenti", "viveri", "scorte", "scorte alimentari", "provviste", "dispensa", "cibo di emergenza", "conservare il cibo", "scatolette", "cibo in scatola", "a lunga conservazione", "lunga conservazione", "scadenza", "data di scadenza", "preferibilmente entro", "frigo", "frigorifero", "congelatore", "freezer", "andato a male", "avariato", "buttare", "muffa", "cucinare", "cucinare senza corrente", "fornelletto da campeggio", "fornello a gas", "griglia", "barbecue", "fondue", "fonduta", "monossido di carbonio", "omogeneizzati", "pappe", "cibo per bambini", "cibo per animali", "fame", "alluvione"],
+  "choices": [
+    {
+      "id": "stock",
+      "label": "Che cibo dovremmo tenere in casa?",
+      "hint": "Cibo a lunga conservazione per una settimana o più",
+      "read": [
+        {"doc": "bwl-scorte-d-emergenza", "page": 4, "label": "Una lista di controllo per sette giorni",
+         "note": "Bevande, cibi pronti, alimenti secchi, articoli sanitari e per l'igiene, luce, un modo per cucinare, contanti."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Quali cibi sono adatti come scorta di emergenza",
+         "note": "In tedesco. 10 giorni se puoi, almeno 3: cibi che non vanno in frigo, che non vanno cotti o che cuociono in fretta; allergie, bambini, animali domestici."},
+        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Una lista della spesa per gruppi di alimenti",
+         "note": "In tedesco. Bevande, cereali, scatolette, legumi, latte a lunga conservazione e altro; controlla le scadenze e sostituisci ciò che usi."}
+      ]
+    },
+    {
+      "id": "keeps",
+      "label": "Quanto si conserva?",
+      "hint": "Scadenze, conservazione, scatolette, alimenti secchi, il congelatore",
+      "read": [
+        {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Alimenti secchi, latte, formaggio e scatolette",
+         "note": "In tedesco. Quanto si conservano, a che temperatura, e dopo aver aperto una scatoletta."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Legumi, frutta secca, olio, carne e il congelatore",
+         "note": "In tedesco. Le temperature di conservazione, e per quanti mesi il cibo si conserva nel congelatore."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Usare e sostituire, oppure una scorta a parte controllata ogni anno",
+         "note": "In tedesco."}
+      ]
+    },
+    {
+      "id": "cook",
+      "label": "Cucinare senza corrente",
+      "hint": "Niente cucina elettrica: gas, fornelletto da campeggio, griglia, set per fondue",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Con cosa puoi cucinare in casa, e con cosa solo all'aperto",
+         "note": "In tedesco. Scaldavivande a lumini e set per fondue in casa; fornelletti da campeggio e griglie solo all'aperto; il pericolo del monossido di carbonio."},
+        {"doc": "zsv-steiermark-blackout", "page": 28, "label": "Cucinare in un blackout",
+         "note": "In tedesco. Perché le cucine elettriche si fermano, diete speciali, consumare il cibo di frigo e congelatore, e tenere una scorta di gas, legna o carbonella."}
+      ]
+    },
+    {
+      "id": "fridge",
+      "label": "Frigo e congelatore sono spenti",
+      "hint": "Cosa mangiare prima, tenere chiuse le porte, l'acqua di scongelamento",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Cibi deperibili e congelatore",
+         "note": "In tedesco. Mangia o cuoci presto i cibi deperibili e controlla se nel congelatore si forma acqua; i frigoriferi combinati si scongelano prima."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Apri frigo e congelatore il meno possibile",
+         "note": "Fa parte dei consigli per il blackout."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Consuma i cibi deperibili, raccogli i rifiuti in sacchi",
+         "note": "In tedesco."}
+      ]
+    },
+    {
+      "id": "throw-out",
+      "label": "Si può ancora mangiare?",
+      "hint": "Una scatoletta gonfia, la muffa, cibo toccato dall'acqua dell'alluvione",
+      "read": [
+        {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Scatolette gonfie e formaggio ammuffito",
+         "note": "In tedesco. Quando una scatoletta va buttata, e quando la muffa sul formaggio duro si può tagliare via."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Frutta secca, olio e carne andati a male",
+         "note": "In tedesco. I segni che vanno buttati."},
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Cibo toccato dall'acqua dell'alluvione",
+         "note": "Tra le cose da fare dopo un'alluvione."}
+      ]
+    },
+    {
+      "id": "special",
+      "label": "Bambini piccoli, diete speciali e animali domestici",
+      "hint": "Pappe, pannolini, allergie, cibo per animali",
+      "read": [
+        {"doc": "bwl-scorte-d-emergenza", "page": 2, "label": "Se hai un bambino piccolo, un animale domestico o un'auto",
+         "note": "Pappe e pannolini, cibo e lettiera per gli animali, e cosa serve a ciascuno nelle scorte."},
+        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Bambini piccoli e animali domestici nelle scorte",
+         "note": "In tedesco. In fondo alla lista degli alimenti."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "In casa cucina solo con apparecchi omologati per l'uso al chiuso; fornelletti da campeggio e griglie vanno usati all'aperto.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "L'intossicazione da monossido di carbonio può uccidere, e anche un fuoco aperto in casa può provocarla.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Butta via una scatoletta con il coperchio gonfio verso l'esterno.", "doc": "oezsv-bevorratungsratgeber", "page": 10},
+    {"text": "Butta via la frutta secca che ha un sapore strano o mostra muffa, e la carne viscida o dall'odore forte.", "doc": "oezsv-bevorratungsratgeber", "page": 11},
+    {"text": "Non mangiare cibo toccato dall'acqua dell'alluvione: potrebbe essere contaminato.", "doc": "dpc-io-non-rischio", "page": 31}
+  ],
+  "prepare": [
+    {"doc": "bwl-scorte-d-emergenza", "page": 4, "label": "Una lista di controllo per sette giorni", "note": "Dall'opuscolo svizzero sulle scorte."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista di controllo: cibo e acqua per 3, 5, 7 o 10 giorni", "note": "In tedesco."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Costruisci le scorte poco alla volta", "note": "In tedesco."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Controlla le scorte una volta all'anno", "note": "In tedesco."},
+    {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Una lista per gruppi di alimenti", "note": "In tedesco."}
+  ],
+  "learn": [
+    {"doc": "oezsv-bevorratungsratgeber", "label": "Guida alle scorte", "note": "In tedesco. Della protezione civile austriaca: fabbisogno, conservazione e durata, acqua, medicinali, cosa dimenticano le famiglie. Le sue pagine sulle piante selvatiche da mangiare sono consigli di sopravvivenza che nessun'altra fonte qui verifica."},
+    {"doc": "bwl-scorte-d-emergenza", "label": "Scorte d'emergenza: per ogni evenienza", "note": "L'opuscolo federale svizzero, di quattro pagine."}
+  ],
+  "related": ["water", "power", "preserve", "sanitation"],
+  "gaps": {
+    "missing": [
+      "Nessuna guida di un'autorità sanitaria sulla sicurezza degli alimenti che dica cosa buttare dopo una lunga interruzione di corrente o un'alluvione; le regole qui vengono da opuscoli della protezione civile.",
+      "Nulla su per quanto tempo il cibo in frigo e nel congelatore resta sicuro senza corrente, oltre a mangiare prima i cibi deperibili e tenere chiuse le porte.",
+      "Nessuna guida per cucinare sul fuoco o alla griglia, a parte l'avvertenza che griglie e fornelletti da campeggio vanno usati all'aperto."
+    ],
+    "disagree": [
+      "Per quanto tempo organizzarsi: circa una settimana (l'opuscolo svizzero e la guida austriaca alle scorte), 10 giorni se possibile e almeno 3 (la guida tedesca), da una a due settimane (la guida stiriana sul blackout), almeno da 10 a 14 giorni (la lista di controllo austriaca per il blackout).",
+      "Cucinare alla griglia in un blackout: le guide austriache suggeriscono un barbecue da giardino senza dire dove usarlo; la guida tedesca dice che griglie e fornelletti da campeggio sono solo per l'aperto."
+    ]
+  }
+}

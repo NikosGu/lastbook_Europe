@@ -39,6 +39,7 @@ None of these blocks the work: each has a placeholder.
 | 17 Nov 2026 | Windows and Linux run the local AI on the processor until Vulkan builds on GitHub's machines; Vulkan is a build option tried in a CI job of its own | the first Vulkan builds failed there (Cargo's newer folder layout on Linux, Visual Studio's generator on Windows) |
 | 17 Nov 2026 | No Liechtenstein document in the starter library yet | llv.li refuses automated downloads, and that refusal is respected |
 | 17 Nov 2026 | First aid in the starter library comes from the IFRC guidelines, in English | no Italian first-aid document from a public body was found |
+| 17 Nov 2026 | Guides the starter library cannot support (growing food, preserving, repairs, home energy, land) keep an honest intro and their search words, with no readings; what is missing is in `content/gaps.json` | a guide gives only what its documents say: nothing from memory, nothing from the old US library |
 
 ## Done and checked
 
@@ -64,11 +65,10 @@ None of these blocks the work: each has a placeholder.
 | The map's data tools | `lastbook-tools build-map`, `pack-map`, `pack-addresses`, `build-terrain`: the detailed map from Geofabrik's GeoPackage, addresses and buildings from OpenStreetMap's PBF, places and water, elevation from Copernicus DEM GLO-30, the zoomed-out base from Natural Earth ([MAPS.md](MAPS.md)); Liechtenstein built in 3 seconds: 32,191 map features, 441 help points, 12,499 addresses, 12 MB to download | 23 tools tests; packs checked by setup's own zip check; the map, an address and a postcode photographed |
 | The library's tools | `lastbook-tools build-library` and `build-pack`: each document checked against its size and SHA-256, page texts through PDFium (words split at a line end joined again), the search index, a Sources page; the starter library: 14 public documents in Italian, German and English (BWL, Protezione Civile, BBK, Zivilschutz, IFRC, WHO), 707 pages, 39 MB to download; PDFium in each installer, pinned by SHA-256 | tests with and without PDFium; the release photographs each packaged app drawing a PDF page |
 | The path in Italian with Liechtenstein | setup finds the three packs on this computer, suggests the starter library, Liechtenstein chosen, installed and opened; the map of Vaduz with relief, help points and the nearest help in metres; "Städtle 11, Vaduz" and "9490" found | photographed in the app on this Mac |
+| The guides for Europe | fourteen guides rewritten on the starter library: water, food, power cuts, heat and cold, disasters, first aid, health, toilets and hygiene, warnings and calls; 316 readings and warnings, each on a real page of a document the library holds; in the six languages (the five translations marked for review), each guide in the interface's language where it is translated; what the library lacks, and where its sources disagree, in `content/gaps.json` | engine tests (every reading on a page of a listed document, every translation opening the same pages); the app photographed in Italian |
 
 ## Being done now
 
-- The guides rewritten for Europe on the starter library, each reading a real page of it, in the interface's language
-  (English and Italian complete first), with what the library does not cover in `content/gaps.json`.
 - The other test regions: Malta, Luxembourg, Bremen.
 - The engine's remaining English sentences become codes the interface translates; setup's disk kinds, the "library
   cannot be reached" card and banner, and the choice of where an AI model goes, in the six languages.

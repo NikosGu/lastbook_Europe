@@ -1,0 +1,125 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "health",
+  "mode": "learn",
+  "title": "Cuidar la salud cuando la ayuda está lejos",
+  "short": "Medicamentos, botiquín, estrés, niños, personas que necesitan cuidados",
+  "intro": "Lecturas para cuidar la salud cuando es difícil llegar a médicos y farmacias: medicamentos y botiquín de casa, miedo y estrés después de una catástrofe, niños en una crisis y personas que necesitan cuidados especiales. Para heridas y enfermedades repentinas, consulta la guía «Heridas y enfermedad».",
+  "keywords": ["salud", "medicamentos", "medicinas", "botiquín", "botiquín de casa", "armario de las medicinas", "receta", "recetas", "insulina", "botiquín de primeros auxilios", "curso de primeros auxilios", "estrés", "miedo", "ansiedad", "pánico", "angustia", "preocupación", "duelo", "trauma", "dormir", "insomnio", "niños", "niñas", "hijos", "discapacidad", "personas mayores", "ancianos", "cuidados", "cuidador", "cuidadora", "primeros auxilios psicológicos", "suicidio", "salud mental"],
+  "choices": [
+    {
+      "id": "medicines",
+      "label": "Suficientes medicamentos y un botiquín en casa",
+      "hint": "Medicamentos habituales, recetas, guardarlos de forma segura",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Un botiquín en casa y medicamentos para diez días",
+         "note": "En alemán. Puede que no se pueda llegar a médicos ni farmacias; qué tener en casa, y por qué ayuda un curso de primeros auxilios."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 13, "label": "Dónde y cómo guardar los medicamentos",
+         "note": "En alemán. En un sitio fresco, seco y oscuro, bajo llave y lejos de los niños, no en el cuarto de baño; una revisión al año; los medicamentos viejos, de vuelta a la farmacia."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Lista de comprobación del botiquín de casa",
+         "note": "En alemán."}
+      ]
+    },
+    {
+      "id": "mind",
+      "label": "Miedo, estrés o duelo después de una catástrofe",
+      "hint": "Sin poder dormir, con preocupación constante, alguien en shock o desesperado",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 18, "label": "Qué ayuda con el miedo y la preocupación",
+         "note": "En alemán. Mantener el contacto, rutinas diarias, salir al aire libre, descansar, y solo las noticias que necesites. Teléfonos de ayuda alemanes."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 116, "label": "Primeros auxilios psicológicos: observar, escuchar, conectar",
+         "note": "En inglés. Cómo acercarte a alguien que lo está pasando mal y escucharle, y qué no decir."},
+        {"doc": "zsv-steiermark-blackout", "page": 16, "label": "Formas de calmarte",
+         "note": "En alemán. Respirar despacio, pequeñas tareas, una manta, moverse, escribir un diario."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 118, "label": "Cuándo buscar ayuda especializada",
+         "note": "En inglés. Una semana sin dormir, no poder con la vida diaria, o amenazar con hacerse daño o hacer daño a otros."}
+      ]
+    },
+    {
+      "id": "children",
+      "label": "Los niños tienen miedo",
+      "hint": "Preguntas, pesadillas, se comportan de otra manera",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 20, "label": "Cómo pueden reaccionar los niños",
+         "note": "En alemán. Cada niño reacciona a su manera; dibujar y jugar; cuándo pedir consejo."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 21, "label": "Cómo apoyar a un niño",
+         "note": "En alemán. Escuchar, responder con sinceridad y sencillez, no forzar una conversación, tranquilizar."}
+      ]
+    },
+    {
+      "id": "care",
+      "label": "Alguien necesita cuidados especiales",
+      "hint": "Una discapacidad, pérdida de oído o de vista, una persona mayor que vive sola",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Prepararse si tienes una discapacidad",
+         "note": "En alemán. Ayudas técnicas, pilas de repuesto y cargadores, un plan de medicamentos, un animal de asistencia, contactos."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Comunicarse con los equipos de rescate",
+         "note": "En alemán. Una tarjeta de emergencia, papel y bolígrafo, y vecinos que sepan cómo ayudar."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Vecinos que necesitan ayuda",
+         "note": "En alemán. Personas a las que los cuidadores o los servicios de comida a domicilio ya no llegan durante un apagón."}
+      ]
+    },
+    {
+      "id": "kit",
+      "label": "Qué lleva un botiquín de primeros auxilios",
+      "hint": "Para casa y para el coche",
+      "read": [
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Un botiquín de primeros auxilios para casa",
+         "note": "En alemán. Lo que lleva un botiquín estándar austriaco."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "No guardes los medicamentos en el cuarto de baño, y no tires los medicamentos viejos por el váter.", "doc": "oezsv-bevorratungsratgeber", "page": 13},
+    {"text": "Si alguien no quiere ayuda, no se la impongas.", "doc": "ifrc-first-aid-guidelines-2020", "page": 117},
+    {"text": "Busca ayuda especializada si una persona lleva una semana sin dormir, no puede con la vida diaria, o amenaza con hacerse daño o hacer daño a otros.", "doc": "ifrc-first-aid-guidelines-2020", "page": 118},
+    {"text": "Una sola sesión de «debriefing» psicológico después de un suceso traumático puede hacer daño.", "doc": "ifrc-first-aid-guidelines-2020", "page": 366},
+    {"text": "No presiones a un niño para que hable de la crisis.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 21},
+    {"text": "Si un niño te preocupa mucho, consulta a un pediatra, a un servicio de orientación o a un psicoterapeuta infantil.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 20}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Lista de comprobación del botiquín de casa", "note": "En alemán."},
+    {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Contenido del botiquín de primeros auxilios", "note": "En alemán."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Si vives con una discapacidad", "note": "En alemán."},
+    {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Quién te necesita y a quién necesitas", "note": "En alemán. Preguntas sobre la familia, los vecinos, las personas que dependen de ayuda y las rutinas de los niños."}
+  ],
+  "learn": [
+    {"doc": "ifrc-first-aid-guidelines-2020", "label": "Directrices internacionales de primeros auxilios, reanimación y educación 2020", "note": "En inglés. De la FICR, escritas para quienes diseñan cursos de primeros auxilios. Entre sus temas están los primeros auxilios psicológicos, los sucesos traumáticos, el riesgo de suicidio y el duelo."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Prepararse para crisis y catástrofes", "note": "En alemán. Medicamentos, miedo y preocupación, niños y personas con discapacidad."}
+  ],
+  "route": [
+    {"title": "Paso 1: Ten un botiquín en casa y tus propios medicamentos", "goal": "Suficientes medicamentos habituales para varios días sin farmacia, guardados de forma segura",
+     "read": [
+       {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Medicamentos para diez días", "note": "En alemán."},
+       {"doc": "oezsv-bevorratungsratgeber", "page": 13, "label": "Guardarlos y revisarlos", "note": "En alemán."}
+     ]},
+    {"title": "Paso 2: Aprende primeros auxilios", "goal": "Saber lo que hace quien presta primeros auxilios antes de necesitarlo",
+     "read": [
+       {"doc": "zsv-steiermark-notfallratgeber", "page": 16, "label": "Las tareas de quien presta primeros auxilios", "note": "En alemán."},
+       {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Revisar a una persona, por orden", "note": "En inglés."}
+     ]},
+    {"title": "Paso 3: Conoce lo que ayuda con el miedo y el estrés", "goal": "Notar el estrés en ti y en los demás, y saber qué lo alivia",
+     "read": [
+       {"doc": "bbk-vorsorgen-fuer-krisen", "page": 18, "label": "Qué ayuda", "note": "En alemán."},
+       {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Señales de estrés y qué protege", "note": "En alemán."}
+     ]},
+    {"title": "Paso 4: Ayuda a alguien que lo está pasando mal", "goal": "Escuchar y poner a las personas en contacto con ayuda, sin forzarlas",
+     "read": [
+       {"doc": "ifrc-first-aid-guidelines-2020", "page": 116, "label": "Primeros auxilios psicológicos", "note": "En inglés."},
+       {"doc": "ifrc-first-aid-guidelines-2020", "page": 118, "label": "Cuándo buscar ayuda especializada", "note": "En inglés."}
+     ]},
+    {"title": "Paso 5: Ayuda a los niños en una crisis", "goal": "Entender cómo reaccionan los niños y cómo tranquilizarlos",
+     "read": [
+       {"doc": "bbk-vorsorgen-fuer-krisen", "page": 21, "label": "Cómo apoyar a un niño", "note": "En alemán."}
+     ]}
+  ],
+  "related": ["hurt", "food", "water"],
+  "gaps": {
+    "missing": [
+      "Ninguna guía para cuidar a una persona enferma en casa durante días o semanas.",
+      "Nada sobre enfermedades de larga duración sin médico (diabetes, tensión alta, enfermedades del corazón), sobre el embarazo y el parto, ni sobre los dientes.",
+      "Ninguna guía de medicamentos: qué tomar para cada cosa, dosis, o cuánto tiempo se conservan los medicamentos.",
+      "Solo se dan teléfonos de ayuda para Alemania y para Estiria, en Austria."
+    ]
+  }
+}

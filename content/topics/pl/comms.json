@@ -1,0 +1,95 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "comms",
+  "mode": "now",
+  "title": "Odbieraj ostrzeżenia, wzywaj pomoc i bądź w kontakcie",
+  "short": "Ostrzeżenia, 112, awaria telefonów, radio",
+  "intro": "Materiały o tym, jak docierają do ciebie oficjalne ostrzeżenia, co powiedzieć, gdy wzywasz pomoc, i jak zdobywać informacje, gdy nie działają telefony, internet lub prąd.",
+  "keywords": ["ostrzeżenie", "ostrzeżenia", "alert", "alarm", "syrena", "syreny", "radio", "radio na baterie", "radio na korbkę", "telefon nie działa", "brak zasięgu", "brak sieci", "internet nie działa", "sieć komórkowa", "112", "911", "999", "połączenie alarmowe", "numer alarmowy", "IT-alert", "NINA", "Alert RCB", "aplikacja ostrzegawcza", "powerbank", "plotki", "fake news", "fałszywe wiadomości", "dezinformacja", "głuchy", "osoba głucha", "niedosłyszący", "karta ratunkowa"],
+  "choices": [
+    {
+      "id": "warnings",
+      "label": "Chcę dostawać oficjalne ostrzeżenia i wiadomości",
+      "hint": "Syreny, alerty w telefonie, aplikacje ostrzegawcze, radio",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 12, "label": "Jak docierają do ciebie ostrzeżenia i co oznaczają syreny",
+         "note": "Po niemiecku. Aplikacje, radio, syreny i alerty w telefonie oraz niemieckie sygnały syren oznaczające zagrożenie i jego odwołanie."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 4, "label": "Sygnały syren w Austrii i co robić przy każdym z nich",
+         "note": "Po niemiecku. Ostrzeżenie, alarm i odwołanie alarmu w Austrii: włącz radio albo idź do chronionego pomieszczenia lub do piwnicy."},
+        {"doc": "dpc-io-non-rischio", "page": 59, "label": "IT-alert: komunikaty alarmowe na telefony komórkowe we Włoszech",
+         "note": "Po włosku. Czym jest IT-alert i w jakich sytuacjach zagrożenia jest dziś używany."}
+      ]
+    },
+    {
+      "id": "phones-down",
+      "label": "Nie działają telefony albo internet",
+      "hint": "Połączenia nie dochodzą do skutku, brak mobilnego internetu, bateria się kończy",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Gdy 112 nie działa i dlaczego radio pomaga",
+         "note": "Po niemiecku. Dokąd iść, gdy numery alarmowe nie działają, i które radia działają przy braku prądu."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Numery na papierze i naładowany powerbank",
+         "note": "Po niemiecku. Spisana lista ważnych numerów, powerbank do telefonu i mapy zapisane do użytku offline."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Nie blokuj linii telefonicznych podczas blackoutu",
+         "note": "Po włosku. Wśród rad na czas blackoutu: słuchaj radia i używaj telefonu tylko w nagłych sytuacjach."}
+      ]
+    },
+    {
+      "id": "call",
+      "label": "Wzywanie pomocy: co powiedzieć",
+      "hint": "112, wypadek, pożar, powódź, ktoś w niebezpieczeństwie",
+      "read": [
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 3, "label": "Co mówić przy każdym zgłoszeniu alarmowym",
+         "note": "Po niemiecku. Gdzie, co się stało, ilu jest rannych, kto dzwoni; z numerem 112 i austriackimi numerami alarmowymi."},
+        {"doc": "vvf-acqua-e-vita", "page": 2, "label": "Wzywanie pomocy podczas powodzi",
+         "note": "Po włosku. Co powiedzieć dyspozytorowi i pozostanie na linii, dopóki dyspozytor nie zakończy rozmowy. Podaje włoskie numery."}
+      ]
+    },
+    {
+      "id": "rescuers",
+      "label": "Ktoś słabo słyszy lub ma trudności z mówieniem",
+      "hint": "Porozumiewanie się z ratownikami, karta ratunkowa",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Zaplanuj, jak porozumiesz się z ratownikami",
+         "note": "Po niemiecku. Karta ratunkowa, która pokazuje, jak się porozumiewasz, długopis i kartka oraz prośba do sąsiadów o pomoc. Podaje niemiecką aplikację."}
+      ]
+    },
+    {
+      "id": "rumours",
+      "label": "Czy ta wiadomość jest prawdziwa?",
+      "hint": "Plotki, łańcuszki, niepokojące filmy",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 16, "label": "Dlaczego fałszywe informacje są groźne w czasie kryzysu",
+         "note": "Po niemiecku. Jak rozchodzą się plotki i pierwsze pytania o to, kto wysłał wiadomość."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 17, "label": "Sprawdź wiadomość, zanim ją przekażesz",
+         "note": "Po niemiecku. Kolejne pytania do zadania; jeśli choć jedna odpowiedź brzmi „nie”, nie udostępniaj jej."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Przy braku prądu albo awarii sieci komórkowej wiele kanałów ostrzegania przestaje działać.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
+    {"text": "Traktuj oficjalne ostrzeżenia poważnie: mówią, jak chronić siebie i innych.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
+    {"text": "Gdy numery alarmowe nie działają, idź, jeśli możesz, na najbliższy posterunek policji lub do szpitala.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 15},
+    {"text": "Jeśli wiadomość nie przejdzie choćby jednego sprawdzenia, nie przekazuj jej dalej.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 17},
+    {"text": "Podczas blackoutu nie blokuj linii telefonicznych, szukając wiadomości: słuchaj radia i dzwoń tylko w nagłych sytuacjach.", "doc": "ravenna-rischio-blackout", "page": 1}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Numery na papierze, powerbank, mapy offline", "note": "Po niemiecku."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Radio samochodowe, na korbkę lub na baterie", "note": "Po niemiecku. Radio działa nadal, gdy nie ma internetu ani prądu."},
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Radio na baterie w domowym zapasie", "note": "Po niemiecku. Lista ze szwajcarskiej ulotki: co trzymać w domu."},
+    {"doc": "zsv-steiermark-notfallratgeber", "page": 42, "label": "Noś numery alarmowe przy sobie", "note": "Po niemiecku. Austriacka karta do portfela z numerami alarmowymi."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Karta ratunkowa do porozumiewania się z ratownikami", "note": "Po niemiecku."}
+  ],
+  "learn": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Przygotowanie na kryzysy i katastrofy", "note": "Po niemiecku. Niemiecki poradnik federalny: zapasy, ostrzeżenia, dostęp do informacji, strach, pierwsza pomoc, pożar, dokumenty, torba ewakuacyjna, schronienie."},
+    {"doc": "zsv-steiermark-notfallratgeber", "label": "Poradnik na wypadek zagrożenia: właściwe zachowanie w sytuacjach awaryjnych", "note": "Po niemiecku. Austriacki poradnik: numery alarmowe, syreny, pożar, pierwsza pomoc, wypadki, góry i woda."}
+  ],
+  "related": ["power", "disaster"],
+  "gaps": {
+    "missing": [
+      "Brak poradnika o radiach do rozmów między ludźmi, takich jak krótkofalówki PMR, CB radio czy krótkofalarstwo.",
+      "Brak poradnika o planie rodzinnym: gdzie się spotkać i do kogo dzwonić, gdy telefony nie działają.",
+      "Systemy ostrzegania są wyjaśnione tylko dla Niemiec, Austrii i Włoch.",
+      "Brak poradnika o czytaniu mapy i korzystaniu z kompasu."
+    ]
+  }
+}

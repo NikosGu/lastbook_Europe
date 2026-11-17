@@ -21,7 +21,8 @@
    "source": "https://so.ch/fileadmin/internet/vwd/vwd-amb-kav/BWL_Prospekt_Notvorrat_IT_Web.pdf (the federal leaflet, as the Canton of Solothurn publishes it)",
    "collection": "Svizzera: approvvigionamento economico (UFAE)",
    "category": "preparedness",
-   "notes": "Emergency supplies for about a week: water (9 litres a person), food and what else a household needs, with a stock calculator."
+   "notes": "Emergency supplies for about a week: water (9 litres a person), food and what else a household needs, with a stock calculator.",
+   "same_pages_as": "bwl-kluger-rat-notvorrat"
   },
   {
    "id": "dpc-io-non-rischio",

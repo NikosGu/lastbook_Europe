@@ -1,0 +1,22 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "land",
+  "mode": "learn",
+  "title": "Trouver des terres sûres et des ressources naturelles",
+  "short": "Sol, sources, plantes sauvages, cartes : pas encore dans cette bibliothèque",
+  "intro": "Cette bibliothèque n’a encore rien sur le sol, les sources et les puits, les plantes sauvages ou la lecture d’une carte. Les inondations, les séismes et les autres risques de l’endroit où vous vivez se trouvent dans le guide « Séisme, feu, inondation ».",
+  "keywords": ["terre", "terres", "terrain", "sol", "source", "puits", "eau de pluie", "cueillette", "cueillette sauvage", "plantes sauvages", "plantes comestibles", "plantes toxiques", "plantes vénéneuses", "champignons", "carte", "boussole", "orientation", "s’orienter", "carte topographique", "course d’orientation", "navigation"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["disaster", "water"],
+  "gaps": {
+    "missing": [
+      "Aucune carte des risques (inondations, séismes, glissements de terrain), pour aucune région.",
+      "Rien sur la façon de trouver de l’eau dans la nature (sources, puits, pluie), ni sur les plantes sauvages et les champignons.",
+      "Rien sur la lecture d’une carte ou l’utilisation d’une boussole."
+    ]
+  }
+}

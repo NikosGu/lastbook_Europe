@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "repair",
+  "mode": "learn",
+  "title": "Réparer et construire",
+  "short": "Outils, réparations à la maison, moteurs : pas encore dans cette bibliothèque",
+  "intro": "Cette bibliothèque n’a pas encore de guide sur les outils, les réparations à la maison, les moteurs ou la construction, il n’y a donc rien à ouvrir ici. La liste ci-dessous indique ce qui manque.",
+  "keywords": ["réparer", "réparation", "dépanner", "bricoler", "bricolage", "outils", "outils à main", "boîte à outils", "caisse à outils", "aiguiser", "affûter", "plomberie", "robinet", "chasse d’eau", "menuiserie", "travail du bois", "charpente", "petit moteur", "moteur", "souder", "soudure", "construire", "atelier", "DIY"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["power"],
+  "gaps": {
+    "missing": [
+      "Aucun guide sur les outils à main, l’affûtage ou une boîte à outils de base.",
+      "Aucun guide sur les réparations à la maison (robinets, toilettes, fenêtres, petits travaux d’électricité) ni sur les petits moteurs."
+    ]
+  }
+}

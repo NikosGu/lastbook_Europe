@@ -1,0 +1,129 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "power",
+  "mode": "now",
+  "title": "Nie ma prądu",
+  "short": "Pierwsze kroki, światło, leki, windy, agregaty",
+  "intro": "Materiały na przerwę w dostawie prądu, która może trwać godziny albo dni: pierwsze kroki w domu, dostęp do informacji, leki, które potrzebują prądu lub chłodu, windy, agregaty prądotwórcze i co robić, gdy prąd wróci.",
+  "keywords": ["brak prądu", "nie ma prądu", "przerwa w dostawie prądu", "awaria prądu", "awaria zasilania", "wyłączenie prądu", "blackout", "prąd", "elektryczność", "ciemno", "zgasło światło", "latarka", "świece", "świeczki", "baterie", "powerbank", "radio", "agregat", "agregat prądotwórczy", "generator", "winda", "utknięcie w windzie", "zablokowana winda", "insulina", "urządzenie medyczne", "tlen", "koncentrator tlenu", "lodówka", "zamrażarka", "gotówka", "bezpiecznik", "korki", "prąd wrócił", "sąsiedzi"],
+  "choices": [
+    {
+      "id": "first-hours",
+      "label": "Właśnie zabrakło prądu",
+      "hint": "Brak prądu albo blackout: ciemno w domu i u sąsiadów, nie wiadomo, na jak długo",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 5, "label": "Co robić podczas blackoutu, po kolei",
+         "note": "Po niemiecku. Zachowaj spokój, sprawdź, czy prądu nie ma tylko na twojej ulicy, włącz radio, daj znać rodzinie, wyłącz urządzenia z gniazdek, zostaw włączoną jedną lampę."},
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Pierwsze kroki w domu",
+         "note": "Po niemiecku. Rodzina, urządzenia, radio, woda, światło, winda, zamrażarka, leki niezbędne do życia, odpady i toaleta zastępcza."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Jak się zachować podczas blackoutu",
+         "note": "Po włosku. Wyłącz urządzenia, nie otwieraj lodówki, słuchaj radia, unikaj wind, a także bezpieczne korzystanie z agregatu."}
+      ]
+    },
+    {
+      "id": "food-link",
+      "goto": "food/cook",
+      "label": "Gotowanie i lodówka bez prądu",
+      "hint": "W poradniku „Jedzenie i gotowanie”"
+    },
+    {
+      "id": "cold-link",
+      "goto": "shelter/cold",
+      "label": "Jak utrzymać ciepło bez ogrzewania",
+      "hint": "W poradniku „Upał lub zimno”"
+    },
+    {
+      "id": "medical",
+      "label": "Ktoś potrzebuje prądu lub chłodu do leku albo urządzenia",
+      "hint": "Insulina, aparat do oddychania, tlen, elektryczny wózek inwalidzki",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Leki niezbędne do życia podczas blackoutu",
+         "note": "Po niemiecku. Sprawdź, na jak długo wystarczą; insulinę trzeba trzymać w chłodzie; komu dać znać, jeśli nie wystarczą na tydzień."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Urządzenia podtrzymujące życie, które potrzebują prądu",
+         "note": "Po włosku. Poproś o pomoc wcześnie: we Włoszech strona podaje numer 118 i pomoc społeczną."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Zapasowe baterie i ładowarki do sprzętu pomocniczego",
+         "note": "Po niemiecku. Sprzęt pomocniczy zasilany prądem, plan przyjmowania leków i ich zapas oraz kto pomoże ci opuścić dom, jeśli będzie trzeba."}
+      ]
+    },
+    {
+      "id": "lift",
+      "label": "Winda stanęła albo mieszkam wysoko",
+      "hint": "Ktoś może być uwięziony, zostają tylko schody",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Sprawdź, czy nikt nie utknął w windzie",
+         "note": "Po niemiecku. Wśród kroków dotyczących budynku i ulicy: winda, sąsiedzi i osoby, które potrzebują pomocy."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Nie korzystaj z windy, dopóki prąd nie wróci na dobre",
+         "note": "Po włosku. Podczas napraw prąd może się włączać i wyłączać."}
+      ]
+    },
+    {
+      "id": "generator",
+      "label": "Chcę uruchomić agregat prądotwórczy",
+      "hint": "Przenośny agregat, paliwo, gdzie go postawić",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 18, "label": "Agregaty: gdzie je uruchamiać, paliwo, ryzyko pożaru",
+         "note": "Po niemiecku. Nigdy w zamkniętych pomieszczeniach; około litra paliwa na godzinę; przechowywane paliwo grozi pożarem. Także dlaczego panele słoneczne zwykle też przestają działać."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Podłączaj urządzenia do agregatu, a nie agregat do domu",
+         "note": "Po włosku. Nie podłączaj go do instalacji elektrycznej w domu i nigdy nie uruchamiaj go w domu ani w garażu."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Nie używaj w domu agregatu ani grzejnika przeznaczonego na zewnątrz",
+         "note": "Po angielsku. Z zimowych komunikatów IFRC."}
+      ]
+    },
+    {
+      "id": "long",
+      "label": "To może potrwać wiele dni",
+      "hint": "Sklepy zamknięte, bankomaty i telefony nie działają, zostajesz w domu",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Co oznacza długi blackout",
+         "note": "Po niemiecku. Sklepy się zamykają, z każdą godziną trudniej o pomoc medyczną, mieszkania się wychładzają, nie działają windy ani telefony, piętrzą się śmieci."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 7, "label": "Co przestaje działać bez prądu",
+         "note": "Po niemiecku. Telefony i internet, płatności kartą i bankomaty, lodówka, kuchenka, woda z kranu, światło, ogrzewanie."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Zostać w domu i wspierać się nawzajem",
+         "note": "Po niemiecku. Zostań w domu, chyba że cię potrzebują, oszczędzaj paliwo, rozmawiaj z sąsiadami, sprawdź, kto potrzebuje pomocy."}
+      ]
+    },
+    {
+      "id": "back-on",
+      "label": "Prąd wrócił",
+      "hint": "Co włączyć, rozmowy telefoniczne, ogrzewanie",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 7, "label": "Po blackoucie",
+         "note": "Po niemiecku. Sprawdź, czy kuchenka i żelazko są wyłączone, włączaj tylko to, czego potrzebujesz, unikaj niepilnych rozmów telefonicznych."},
+        {"doc": "zsv-steiermark-blackout", "page": 27, "label": "Gdy prąd wraca",
+         "note": "Po niemiecku. Urządzenia, ogrzewanie, lodówka, pompy do ścieków, gotówka, pozostanie w domu i odczekanie przed ponownym włączeniem komputerów."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Dzwoń na numery alarmowe tylko w sytuacji zagrożenia życia.", "doc": "oezsv-blackout-checkliste", "page": 5},
+    {"text": "Agregat ma silnik: nie można go uruchamiać w zamkniętych pomieszczeniach, a przechowywane paliwo grozi pożarem.", "doc": "zsv-steiermark-blackout", "page": 18},
+    {"text": "Nie podłączaj agregatu do instalacji elektrycznej w domu i nigdy nie uruchamiaj go w domu ani w garażu.", "doc": "ravenna-rischio-blackout", "page": 1},
+    {"text": "Unikaj wind, dopóki nie ogłoszą, że zasilanie przywrócono: podczas napraw prąd może się włączać i wyłączać.", "doc": "ravenna-rischio-blackout", "page": 1},
+    {"text": "Jeśli leki niezbędne do życia, takie jak insulina, nie wystarczą na tydzień, powiedz o tym w aptece, lekarzowi albo pogotowiu ratunkowemu.", "doc": "zsv-steiermark-blackout", "page": 26},
+    {"text": "Nigdy nie zostawiaj bez nadzoru świec ani innego otwartego ognia.", "doc": "zsv-steiermark-notfallratgeber", "page": 7},
+    {"text": "Gdy prąd wróci, sprawdź, czy kuchenka i żelazko na pewno są wyłączone: mogą wywołać pożar.", "doc": "zsv-steiermark-blackout", "page": 27}
+  ],
+  "prepare": [
+    {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "Co mieć w domu na wypadek blackoutu", "note": "Po niemiecku. Woda, jedzenie, radio na baterie lub na korbkę, oświetlenie, leki, możliwość gotowania, gotówka w drobnych banknotach; zaplanuj na 10 do 14 dni."},
+    {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Przygotuj się jak na biwak", "note": "Po niemiecku. Zawory odcinające, co zaplanowała twoja gmina, jedzenie i woda na jeden do dwóch tygodni."},
+    {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Listy kontrolne: światło, radio, higiena, leki, torba do zabrania w pośpiechu", "note": "Po niemiecku."},
+    {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Pytania do omówienia, zanim to się stanie", "note": "Po niemiecku. Powrót do domu z pracy lub ze szkoły, z kim się kontaktować, kto potrzebuje pomocy, sąsiedzi, codzienny rytm dzieci."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Numery na papierze i powerbank", "note": "Po niemiecku."},
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Radio, latarka, świece i trochę gotówki", "note": "Po niemiecku. Lista ze szwajcarskiej ulotki: co powinno być w każdym domu."}
+  ],
+  "learn": [
+    {"doc": "zsv-steiermark-blackout", "label": "Blackout: co robić, gdy nie ma prądu", "note": "Po niemiecku. Ochrona ludności Styrii: czym jest blackout, przygotowanie, pierwsze kroki, gotowanie, gdy prąd wraca. Niektóre strony to reklamy."},
+    {"doc": "oezsv-blackout-checkliste", "label": "Lista kontrolna na blackout", "note": "Po niemiecku. Austriacka ochrona ludności (2022): przed, w trakcie i po, na ośmiu stronach."}
+  ],
+  "related": ["food", "shelter", "comms", "water"],
+  "gaps": {
+    "missing": [
+      "Brak instrukcji do agregatów prądotwórczych i przenośnych stacji zasilania: są tylko ostrzeżenia w tym poradniku.",
+      "Nic dla mieszkańców wysokich budynków poza sprawdzeniem windy: ciśnienie wody, długie schody, sąsiedzi, którzy nie mogą zejść na dół.",
+      "Brak poradnika o urządzeniach medycznych zasilanych prądem, takich jak koncentratory tlenu czy aparaty do oddychania, poza radą, by wcześnie poprosić o pomoc."
+    ],
+    "disagree": [
+      "Na jak długo przygotować się na blackout: co najmniej 10 do 14 dni (austriacka lista kontrolna na blackout), tydzień do dwóch tygodni (styryjski poradnik o blackoucie), 10 dni (niemiecki poradnik), około tygodnia (szwajcarska ulotka)."
+    ]
+  }
+}

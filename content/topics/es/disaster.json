@@ -1,0 +1,174 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "disaster",
+  "mode": "now",
+  "title": "Terremoto, inundación, incendio y otras catástrofes",
+  "short": "Terremoto, tsunami, inundación, incendio, quedarse dentro, salir de casa",
+  "intro": "Lecturas para los peligros más frecuentes en Europa: terremotos, tsunamis en la costa, inundaciones, incendios en casa e incendios forestales, y accidentes que obligan a quedarse dentro o a salir de casa. La mayoría de las páginas son de la protección civil italiana, alemana y austriaca.",
+  "keywords": ["terremoto", "terremotos", "seísmo", "sismo", "réplicas", "temblor", "temblores", "tsunami", "maremoto", "inundación", "inundaciones", "riada", "riadas", "crecida", "lluvias torrenciales", "DANA", "gota fría", "río", "temporal", "tormenta", "tormentas", "rayos", "relámpagos", "incendio", "incendios", "fuego", "incendio en casa", "humo", "detector de humo", "incendio forestal", "fuego en el monte", "evacuar", "evacuación", "mochila de emergencia", "documentos", "confinamiento", "confinarse", "quedarse en casa", "no salir de casa", "químico", "radiación", "nuclear", "yodo", "pastillas de yodo", "explosión", "explosiones", "sirenas"],
+  "choices": [
+    {
+      "id": "quake-now",
+      "label": "La tierra está temblando",
+      "hint": "Un terremoto, dentro o fuera de casa",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 12, "label": "Durante un terremoto",
+         "note": "En italiano. Dentro: junto a un muro de carga o debajo de una mesa resistente, y sin salir corriendo. Fuera: lejos de edificios, árboles, farolas y cables eléctricos."}
+      ]
+    },
+    {
+      "id": "quake-after",
+      "label": "El temblor ha parado",
+      "hint": "Heridos, daños, gas, réplicas",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 13, "label": "Después de un terremoto",
+         "note": "En italiano. Primeros auxilios, cerrar el gas, el agua y la luz, ponerse zapatos, nada de ascensor, la costa, el teléfono y el coche, las zonas de espera del municipio."}
+      ]
+    },
+    {
+      "id": "tsunami",
+      "label": "Un terremoto fuerte en la costa, o el mar se retira",
+      "hint": "Señales y avisos de tsunami, en la playa o en un puerto",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 18, "label": "Las señales de un tsunami",
+         "note": "En italiano. Puede que no haya aviso oficial: un terremoto fuerte, el mar que se retira de repente, un estruendo que viene del mar."},
+        {"doc": "dpc-io-non-rischio", "page": 20, "label": "Sube a un lugar alto, rápido y a pie",
+         "note": "En italiano. Tras un aviso o una sola de las señales: el lugar alto más cercano o los pisos superiores, avisa a los demás, deja el coche; las embarcaciones."},
+        {"doc": "dpc-io-non-rischio", "page": 21, "label": "Después de un tsunami",
+         "note": "En italiano. Pueden llegar más olas; quédate en alto hasta que las autoridades digan otra cosa; el agua del grifo y la comida."}
+      ]
+    },
+    {
+      "id": "flood-warning",
+      "label": "Han dado un aviso de inundación",
+      "hint": "Lluvias intensas, un río que crece, una alerta para mi zona",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 28, "label": "Cuando se da una alerta por inundación",
+         "note": "En italiano. Mantente informado, no duermas en sótanos, protege la planta baja, piénsatelo dos veces antes de mover el coche."},
+        {"doc": "vvf-acqua-e-vita", "page": 1, "label": "Protegerte en una inundación",
+         "note": "En italiano. Sube a los pisos altos, no entres en sótanos ni en pasos subterráneos, deja el teléfono para emergencias, una bolsa lista para salir."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 31, "label": "Sube, nunca bajes al sótano",
+         "note": "En alemán. En inundaciones y lluvias intensas, los pisos altos protegen; los sótanos, los aparcamientos subterráneos y los pasos subterráneos pueden dejarte atrapado."}
+      ]
+    },
+    {
+      "id": "flood-now",
+      "label": "El agua está subiendo a mi alrededor",
+      "hint": "En un edificio, fuera o en un coche",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 29, "label": "Dentro de un edificio durante una inundación",
+         "note": "En italiano. Sube a los pisos altos, no bajes a los sótanos ni salgas a por el coche; nada de ascensor; cierra el gas y corta la luz; ayuda a los vecinos mayores o con discapacidad."},
+        {"doc": "dpc-io-non-rischio", "page": 30, "label": "Fuera durante una inundación",
+         "note": "En italiano. Sal del agua, ve a un lugar alto lejos de las laderas, no conduzcas, evita los pasos subterráneos, las orillas de los ríos y los puentes."}
+      ]
+    },
+    {
+      "id": "flood-after",
+      "label": "El agua ha bajado",
+      "hint": "Volver a casa, barro, sótanos, gas y luz",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Después de una inundación",
+         "note": "En italiano. Espera las indicaciones de las autoridades, no vayas por calles inundadas, revisa el gas y la luz, los desagües, el agua del grifo y la comida."}
+      ]
+    },
+    {
+      "id": "home-fire",
+      "label": "Fuego o humo en casa",
+      "hint": "El detector de humo, fuego en una habitación, humo en la escalera",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 26, "label": "Fuego en casa: seis pasos",
+         "note": "En alemán. Apágalo solo si no hay peligro, sal y cierra la puerta, avisa a los demás, nunca atravieses el humo, llama al 112."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 10, "label": "Salir, o esperar en la ventana",
+         "note": "En alemán. Si hay una salida sin humo, sal; si hay humo, cierra las puertas, tapa las rendijas con trapos mojados y espera en una ventana abierta."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 8, "label": "Apagar un fuego pequeño",
+         "note": "En alemán. Extintores y mantas ignífugas, nunca agua sobre grasa o aceite ardiendo, y una persona con la ropa en llamas."}
+      ]
+    },
+    {
+      "id": "forest-fire",
+      "label": "Hay un incendio forestal cerca",
+      "hint": "Humo, llamas en el monte, atrapado por el fuego",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 39, "label": "Si ves un incendio forestal, o te atrapa uno",
+         "note": "En italiano. Llama enseguida; cómo alejarte, dónde tumbarte, y cuándo pasar a una zona que ya se ha quemado."},
+        {"doc": "dpc-io-non-rischio", "page": 37, "label": "Avisa de un incendio, o incluso de humo",
+         "note": "En italiano. Di el lugar exacto y el municipio. Números de Italia."}
+      ]
+    },
+    {
+      "id": "indoors",
+      "label": "Te dicen que no salgas de casa: gas, humo o radiación",
+      "hint": "Un accidente químico o nuclear, explosiones, una alarma de sirenas",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 30, "label": "Dónde refugiarse del gas, la radiación o las explosiones",
+         "note": "En alemán. Gas fuera: entra, sube, sella puertas y ventanas, apaga la ventilación. Gas dentro: sal. Radiación o explosiones: baja todo lo que puedas."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 4, "label": "Las sirenas de Austria: aviso y alarma",
+         "note": "En alemán. Con la señal de alarma, ve a una habitación protegida o al sótano y enciende la radio."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Agua y yodo después de un accidente nuclear",
+         "note": "En alemán. El agua del grifo puede no ser segura durante algunos días; pastillas de yodo solo cuando lo digan las autoridades."}
+      ]
+    },
+    {
+      "id": "thunderstorm",
+      "label": "Tormenta en la montaña",
+      "hint": "Rayos, sorprendido en una cresta o en una cima",
+      "read": [
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 27, "label": "Tormentas en la montaña",
+         "note": "En alemán. Señales de aviso, y qué sitios dan algo de protección y cuáles ninguna."}
+      ]
+    },
+    {
+      "id": "leave",
+      "label": "Puede que tengamos que salir de casa",
+      "hint": "Mochila de emergencia, documentos, personas que necesitan ayuda, mascotas",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 36, "label": "Qué meter en la mochila de emergencia",
+         "note": "En alemán. La lista completa, desde los medicamentos y los documentos hasta una linterna y una radio."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 27, "label": "Documentos importantes",
+         "note": "En alemán. Qué papeles guardar juntos, en una caja ignífuga o impermeable, con copias."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Si necesitas ayuda para salir",
+         "note": "En alemán. Ayudas técnicas, medicamentos, contactos, y pensar quién puede ayudarte a salir."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Durante un terremoto, no salgas corriendo: espera a que pare el temblor.", "doc": "dpc-io-non-rischio", "page": 12},
+    {"text": "Después de un terremoto, no uses el ascensor, y ten cuidado con las escaleras.", "doc": "dpc-io-non-rischio", "page": 13},
+    {"text": "Puede que no haya un aviso oficial de tsunami: un terremoto fuerte o el mar que se retira de repente son la señal para subir a un lugar alto.", "doc": "dpc-io-non-rischio", "page": 18},
+    {"text": "No uses el coche para huir de un tsunami: puede convertirse en una trampa.", "doc": "dpc-io-non-rischio", "page": 20},
+    {"text": "Después de la primera pueden llegar más olas peligrosas: no vuelvas hasta que te lo permitan.", "doc": "dpc-io-non-rischio", "page": 21},
+    {"text": "En una inundación, nunca bajes a sótanos, semisótanos o garajes para salvar cosas: arriesgas la vida.", "doc": "dpc-io-non-rischio", "page": 29},
+    {"text": "En un sótano inundado puede que no consigas abrir la puerta, y hay riesgo de una descarga eléctrica mortal.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 31},
+    {"text": "Incluso unos pocos centímetros de agua rápida pueden tirarte al suelo o calar un coche: aléjate de los pasos subterráneos, las orillas de los ríos y los puentes.", "doc": "dpc-io-non-rischio", "page": 30},
+    {"text": "Nunca huyas a través del humo: unas pocas bocanadas pueden matar. Si estás atrapado, hazte oír desde una ventana.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
+    {"text": "Nunca eches agua sobre grasa o aceite ardiendo.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
+    {"text": "En un incendio, no uses el ascensor y no saltes por la ventana.", "doc": "zsv-steiermark-notfallratgeber", "page": 10},
+    {"text": "Si ves un incendio forestal, llama enseguida: no des por hecho que otra persona ya ha llamado.", "doc": "dpc-io-non-rischio", "page": 39},
+    {"text": "Si hay una fuga de gas o de líquidos peligrosos dentro de un edificio, sal del edificio.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 30},
+    {"text": "Toma pastillas de yodo solo cuando te lo digan las autoridades: pueden tener efectos secundarios graves.", "doc": "oezsv-bevorratungsratgeber", "page": 17}
+  ],
+  "prepare": [
+    {"doc": "dpc-io-non-rischio", "page": 11, "label": "Haz tu casa más segura antes de un terremoto", "note": "En italiano. Sujeta los muebles altos, pon las cosas pesadas abajo, aprende a cerrar el gas, el agua y la luz, conoce los sitios seguros."},
+    {"doc": "dpc-io-non-rischio", "page": 26, "label": "Cómo se comportan las inundaciones y cuáles son los sitios más peligrosos", "note": "En italiano. El agua puede subir uno o dos metros en pocos minutos."},
+    {"doc": "dpc-io-non-rischio", "page": 27, "label": "Antes de una inundación: plan, kit, objetos de valor fuera del sótano", "note": "En italiano. También avisar al ayuntamiento si alguien en casa necesita ayuda."},
+    {"doc": "dpc-io-non-rischio", "page": 19, "label": "En la costa: un plan familiar para un tsunami", "note": "En italiano."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 36, "label": "Lista de comprobación de la mochila de emergencia", "note": "En alemán."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Documentos en una carpeta impermeable, y sacos contra inundaciones", "note": "En alemán."},
+    {"doc": "dpc-io-non-rischio", "page": 38, "label": "Prevenir los incendios forestales", "note": "En italiano. Cigarrillos, hogueras en el bosque, coches sobre hierba seca, basura, quema de rastrojos, viento."}
+  ],
+  "learn": [
+    {"doc": "dpc-io-non-rischio", "label": "Io non rischio: terremoto, tsunami, inundación", "note": "En italiano. La guía del Departamento de Protección Civil de Italia (2025): antes, durante y después, y además incendios forestales, volcanes e IT-alert. Escrita para Italia."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Prepararse para crisis y catástrofes", "note": "En alemán. La guía federal alemana (2025)."},
+    {"doc": "zsv-steiermark-notfallratgeber", "label": "Guía de emergencias: cómo actuar bien en una emergencia", "note": "En alemán. Guía austriaca (2024): números, sirenas, incendios, primeros auxilios, accidentes, montaña y agua."}
+  ],
+  "related": ["comms", "shelter", "hurt", "water"],
+  "gaps": {
+    "missing": [
+      "Ninguna guía sobre temporales, granizo o vientos fuertes, salvo una página austriaca sobre las tormentas en la montaña.",
+      "Ninguna guía sobre deslizamientos de tierra, ni sobre aludes más allá del rescate entre montañeros.",
+      "Ninguna guía para limpiar y secar una casa después de una inundación.",
+      "Sobre accidentes químicos y nucleares, solo dónde refugiarse y la advertencia sobre el yodo: nada sobre cuánto tiempo quedarse dentro ni sobre cómo limpiar.",
+      "Las páginas sobre terremotos, tsunamis, inundaciones e incendios forestales están escritas para Italia; las alertas y las sirenas solo se explican para Italia, Alemania y Austria."
+    ]
+  }
+}

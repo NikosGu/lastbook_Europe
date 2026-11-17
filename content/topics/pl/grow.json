@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "grow",
+  "mode": "learn",
+  "title": "Uprawiaj podstawową żywność",
+  "short": "Gleba, uprawy i nasiona: jeszcze nie ma w tej bibliotece",
+  "intro": "Ta biblioteka nie ma jeszcze poradnika o uprawie żywności, więc nie ma tu nic do otwarcia. Lista poniżej mówi, czego brakuje; o zapasach jedzenia w domu przeczytasz w poradniku „Jedzenie i gotowanie”.",
+  "keywords": ["uprawa", "uprawiać", "ogród", "ogródek", "ogrodnictwo", "warzywa", "warzywnik", "nasiona", "sadzić", "sadzenie", "siew", "siać", "kompost", "gleba", "ziemia", "ziemniak", "ziemniaki", "sadzenie ziemniaków", "fasola", "dynia", "cukinia", "zbieranie nasion", "donice", "uprawa w pojemnikach", "podwyższona grządka", "grządka", "balkon", "działka", "ogródek działkowy", "podlewanie", "szkodniki"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["food", "water"],
+  "gaps": {
+    "missing": [
+      "Brak poradnika o uprawie żywności: o glebie, terminach sadzenia w klimatach Europy, podstawowych uprawach, takich jak ziemniaki i fasola, ani o podlewaniu.",
+      "Brak poradnika o zbieraniu nasion ani o uprawie w doniczkach lub na balkonie."
+    ]
+  }
+}

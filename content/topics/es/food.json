@@ -1,0 +1,115 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "food",
+  "mode": "now",
+  "title": "Comida: provisiones, cocina y seguridad",
+  "short": "Provisiones, cocinar sin luz, qué tirar",
+  "intro": "Lecturas sobre cómo tener comida en casa para una semana o más, cocinar cuando la cocina eléctrica no funciona y saber cuándo un alimento ya no se puede comer sin riesgo.",
+  "keywords": ["comida", "alimentos", "provisiones", "reservas", "despensa", "comida de emergencia", "almacenar comida", "guardar comida", "latas", "conservas", "comida enlatada", "larga duración", "no perecederos", "caducidad", "fecha de caducidad", "consumo preferente", "nevera", "frigorífico", "congelador", "estropeado", "estropeada", "en mal estado", "tirar", "moho", "cocinar", "cocinar sin luz", "hornillo de camping", "camping gas", "cocina de gas", "parrilla", "barbacoa", "fondue", "monóxido de carbono", "comida para bebés", "potitos", "comida para mascotas", "pienso", "hambre", "inundación"],
+  "choices": [
+    {
+      "id": "stock",
+      "label": "¿Qué comida deberíamos tener en casa?",
+      "hint": "Alimentos de larga duración para una semana o más",
+      "read": [
+        {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Una lista de comprobación para siete días",
+         "note": "En alemán. Bebidas, comida lista para comer, alimentos secos, material médico y de higiene, luz, algo para cocinar, dinero en efectivo."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Qué es una buena comida de emergencia",
+         "note": "En alemán. 10 días si puedes, al menos 3: comida que no necesite nevera, que no haya que cocinar o que se cocine rápido; alergias, niños, mascotas."},
+        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Una lista de la compra por grupos de alimentos",
+         "note": "En alemán. Bebidas, cereales, latas, legumbres, leche de larga duración y más; revisa las fechas y repón lo que uses."}
+      ]
+    },
+    {
+      "id": "keeps",
+      "label": "¿Cuánto tiempo se conserva?",
+      "hint": "Fechas, almacenamiento, latas, alimentos secos, el congelador",
+      "read": [
+        {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Alimentos secos, leche, queso y latas",
+         "note": "En alemán. Cuánto tiempo se conservan, a qué temperatura, y cuánto duran una vez abierta la lata."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Legumbres, frutos secos, aceite, carne y el congelador",
+         "note": "En alemán. Temperaturas de conservación, y cuántos meses se conservan los alimentos en el congelador."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Consumir y reponer, o una reserva aparte revisada cada año",
+         "note": "En alemán."}
+      ]
+    },
+    {
+      "id": "cook",
+      "label": "Cocinar sin luz",
+      "hint": "Sin cocina eléctrica: gas, hornillo de camping, barbacoa, fondue",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Con qué se puede cocinar dentro de casa, y con qué solo fuera",
+         "note": "En alemán. Calientaplatos de velitas y fondues dentro de casa; hornillos de camping y barbacoas solo al aire libre; el peligro del monóxido de carbono."},
+        {"doc": "zsv-steiermark-blackout", "page": 28, "label": "Cocinar en un apagón",
+         "note": "En alemán. Por qué dejan de funcionar las cocinas eléctricas, dietas especiales, aprovechar la comida de la nevera y del congelador, y tener gas, leña o carbón vegetal."}
+      ]
+    },
+    {
+      "id": "fridge",
+      "label": "La nevera y el congelador no funcionan",
+      "hint": "Qué comer primero, mantener las puertas cerradas, el agua del deshielo",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Alimentos perecederos y el congelador",
+         "note": "En alemán. Come o cocina pronto los alimentos perecederos y vigila si el congelador suelta agua del deshielo; los frigoríficos combi se descongelan antes."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Abre la nevera y el congelador lo menos posible",
+         "note": "En italiano. Forma parte de los consejos para un apagón."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Gasta primero los alimentos perecederos, recoge la basura en bolsas",
+         "note": "En alemán."}
+      ]
+    },
+    {
+      "id": "throw-out",
+      "label": "¿Todavía se puede comer sin peligro?",
+      "hint": "Una lata hinchada, moho, comida que ha tocado el agua de una inundación",
+      "read": [
+        {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Latas hinchadas y queso con moho",
+         "note": "En alemán. Cuándo hay que tirar una lata, y cuándo se puede cortar el moho de un queso duro."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Frutos secos, aceite y carne en mal estado",
+         "note": "En alemán. Las señales de que hay que tirarlos."},
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Comida que ha tocado el agua de la inundación",
+         "note": "En italiano. Entre los pasos después de una inundación."}
+      ]
+    },
+    {
+      "id": "special",
+      "label": "Bebés, dietas especiales y mascotas",
+      "hint": "Comida para bebés, pañales, alergias, comida para mascotas",
+      "read": [
+        {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Si tienes un bebé, una mascota o un coche",
+         "note": "En alemán. Comida para bebés y pañales, comida y arena para las mascotas, y lo que necesita cada uno en las provisiones."},
+        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Bebés y mascotas en las provisiones",
+         "note": "En alemán. Al final de la lista de alimentos."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Dentro de casa, cocina solo con aparatos aprobados para interiores; los hornillos de camping y las barbacoas son para el exterior.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "La intoxicación por monóxido de carbono puede matar, y un fuego abierto dentro de casa también puede causarla.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Tira una lata si la tapa está abombada hacia fuera.", "doc": "oezsv-bevorratungsratgeber", "page": 10},
+    {"text": "Tira los frutos secos que sepan raro o tengan moho, y la carne que esté viscosa o huela fuerte.", "doc": "oezsv-bevorratungsratgeber", "page": 11},
+    {"text": "No comas alimentos que hayan tocado el agua de una inundación: pueden estar contaminados.", "doc": "dpc-io-non-rischio", "page": 31}
+  ],
+  "prepare": [
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Una lista de comprobación para siete días", "note": "En alemán."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista de comprobación: comida y agua para 3, 5, 7 o 10 días", "note": "En alemán."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Haz tus provisiones poco a poco", "note": "En alemán."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Revisa las provisiones una vez al año", "note": "En alemán."},
+    {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Una lista por grupos de alimentos", "note": "En alemán."}
+  ],
+  "learn": [
+    {"doc": "oezsv-bevorratungsratgeber", "label": "Guía de provisiones", "note": "En alemán. De la protección civil austriaca: necesidades, almacenamiento y duración, agua, medicamentos, lo que se suele olvidar en casa. Sus páginas sobre comer plantas silvestres son consejos de supervivencia que ninguna otra fuente de aquí comprueba."},
+    {"doc": "bwl-kluger-rat-notvorrat", "label": "Buen consejo: provisiones de emergencia", "note": "En alemán. El folleto federal suizo, de cuatro páginas."}
+  ],
+  "related": ["water", "power", "preserve", "sanitation"],
+  "gaps": {
+    "missing": [
+      "Ninguna guía de seguridad alimentaria de una autoridad sanitaria sobre qué tirar después de un apagón largo o de una inundación; las normas de aquí vienen de folletos de protección civil.",
+      "Nada sobre cuánto tiempo sigue siendo segura la comida de la nevera y del congelador sin luz, aparte de comer primero los alimentos perecederos y mantener las puertas cerradas.",
+      "Ninguna guía para cocinar al fuego o en una barbacoa, aparte de la advertencia de que las barbacoas y los hornillos de camping son para el exterior."
+    ],
+    "disagree": [
+      "Para cuánto tiempo prepararse: una semana, más o menos (el folleto suizo y la guía austriaca de provisiones); 10 días si es posible y al menos 3 (la guía alemana); de una a dos semanas (la guía de Estiria sobre apagones); al menos de 10 a 14 días (la lista austriaca para apagones).",
+      "Cocinar en una barbacoa durante un apagón: las guías austriacas proponen una barbacoa de jardín sin decir dónde usarla; la guía alemana dice que las barbacoas y los hornillos de camping son solo para el exterior."
+    ]
+  }
+}

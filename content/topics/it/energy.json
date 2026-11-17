@@ -1,0 +1,22 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "energy",
+  "mode": "learn",
+  "title": "Produrre e gestire l'energia",
+  "short": "Batterie, solare, generatori: non ancora in questa biblioteca",
+  "intro": "Questa biblioteca non ha ancora una guida a batterie, pannelli solari o impianti elettrici domestici. Cosa fare quando manca la corrente, e le avvertenze sui generatori, sono nella guida “Senza corrente”.",
+  "keywords": ["elettricità", "solare", "pannelli solari", "fotovoltaico", "batteria", "batterie", "inverter", "regolatore di carica", "impianto a isola", "impianto elettrico", "fusibile", "stazione di energia portatile", "eolico", "batteria dell'auto"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["power"],
+  "gaps": {
+    "missing": [
+      "Nessuna guida a batterie, power bank o stazioni di energia portatili.",
+      "Nessuna guida ai pannelli solari o ad altri impianti elettrici domestici.",
+      "Nessun manuale per i generatori: la guida “Senza corrente” riporta solo le avvertenze degli opuscoli della protezione civile."
+    ]
+  }
+}

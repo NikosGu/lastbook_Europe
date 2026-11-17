@@ -1,0 +1,81 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "sanitation",
+  "mode": "now",
+  "title": "Toilettes, déchets et hygiène quand l’eau est coupée",
+  "short": "Des toilettes sans eau, des mains propres, les ordures",
+  "intro": "Des lectures pour quand la chasse d’eau ne marche plus ou que l’eau est coupée : des toilettes de fortune, garder les mains propres, et les ordures. La bibliothèque n’a que de courts passages sur ce sujet ; ce qui manque est indiqué ci-dessous.",
+  "keywords": ["toilettes", "WC", "cabinets", "chasse d’eau", "plus de chasse d’eau", "eaux usées", "égout", "égouts", "canalisations", "évacuation", "toilettes seau", "seau", "toilettes de camping", "toilettes sèches", "sacs pour toilettes", "sacs poubelle", "déchets", "ordures", "poubelle", "poubelles", "hygiène", "se laver", "lavage des mains", "se laver les mains", "mains", "savon", "gel hydroalcoolique", "désinfectant", "couches", "protections hygiéniques", "serviettes hygiéniques", "mouches"],
+  "choices": [
+    {
+      "id": "no-flush",
+      "label": "La chasse d’eau ne fonctionne plus",
+      "hint": "Plus d’eau, un long black-out, des égouts endommagés",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 21, "label": "Des sacs pour toilettes, un seau ou des toilettes de camping",
+         "note": "En allemand. Pourquoi les toilettes deviennent un problème lors d’un long black-out, et ce qu’il faut avoir : des sacs qui se ferment, des seaux, des toilettes de camping."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Des sacs solides à suspendre dans la cuvette des toilettes",
+         "note": "En allemand. La liste de contrôle pour l’hygiène : de grands sacs poubelle solides pour les toilettes, des toilettes de camping, et d’autres articles d’hygiène."},
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Des toilettes de fortune si l’eau ou les égouts ne fonctionnent plus",
+         "note": "En allemand. Fait partie des premières mesures à la maison lors d’un black-out."},
+        {"doc": "who-tn09-how-much-water", "page": 2, "label": "Combien d’eau utilise une chasse d’eau",
+         "note": "En anglais. Jusqu’à 7 litres à chaque fois ; des toilettes plus simples en demandent beaucoup moins. Rédigé pour ceux qui organisent l’aide d’urgence."}
+      ]
+    },
+    {
+      "id": "hands",
+      "label": "Garder les mains propres avec peu d’eau",
+      "hint": "Pas d’eau courante, bientôt plus de savon",
+      "read": [
+        {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "Quand chacun doit se laver les mains",
+         "note": "En anglais. Après être allé aux toilettes, avant de préparer à manger, avant de manger ou de nourrir un enfant, et après avoir nettoyé un enfant."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Des mains propres avant de toucher l’eau potable",
+         "note": "En anglais. Se laver les mains avant de manipuler l’eau stockée, et un robinet sur le récipient."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Gants, assiettes et couverts jetables",
+         "note": "En allemand. Sans eau ni électricité, on ne peut pas faire la vaisselle ; des gants aident quand vous devez panser une plaie sans pouvoir vous laver les mains."}
+      ]
+    },
+    {
+      "id": "waste",
+      "label": "Les ordures s’accumulent",
+      "hint": "Plus de ramassage, déchets alimentaires, odeurs, mouches",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Pourquoi les déchets deviennent dangereux en quelques jours",
+         "note": "En allemand. Lors d’un long black-out, les ordures et les excréments font vite proliférer les insectes et les maladies."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Éviter les déchets et les rassembler dans des sacs",
+         "note": "En allemand."}
+      ]
+    },
+    {
+      "id": "sewage",
+      "label": "Les évacuations après une inondation, ou des eaux usées qui refoulent",
+      "hint": "Cave inondée, évacuations qui refoulent, une pompe de relevage",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Avant d’utiliser les évacuations après une inondation",
+         "note": "En italien. Vérifier si les égouts, les fosses septiques et les puits sont endommagés, et suivre les indications des autorités avant de nettoyer."},
+        {"doc": "zsv-steiermark-blackout", "page": 27, "label": "Pompes de relevage et clapets anti-retour",
+         "note": "En allemand. Si la maison a sa propre pompe de relevage, la vérifier, ainsi que les éventuels clapets anti-retour."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Les ordures et les excréments qui traînent font proliférer les insectes et les maladies en quelques jours.", "doc": "zsv-steiermark-blackout", "page": 10},
+    {"text": "Après une inondation, vérifiez si les égouts, les fosses septiques et les puits sont endommagés avant d’utiliser les évacuations.", "doc": "dpc-io-non-rischio", "page": 31},
+    {"text": "Lors d’un long black-out, se laver passe au second plan : il faut économiser l’eau potable.", "doc": "zsv-steiermark-blackout", "page": 21}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Liste de contrôle pour l’hygiène", "note": "En allemand."},
+    {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Listes pour l’hygiène et la santé", "note": "En allemand."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Ce que les ménages oublient : papier toilette, sacs, gants", "note": "En allemand."}
+  ],
+  "learn": [],
+  "related": ["water", "hurt", "food"],
+  "gaps": {
+    "missing": [
+      "Aucun guide pas à pas pour des toilettes de secours : installer des toilettes avec un sac ou un seau, et se débarrasser des déchets sans danger.",
+      "Rien sur la façon de rester propre avec très peu d’eau, en dehors des moments où il faut se laver les mains.",
+      "Aucun guide pour nettoyer un logement après une entrée d’eaux usées ou d’eau d’inondation.",
+      "Rien sur la façon d’empêcher une maladie comme la diarrhée de se propager dans un foyer."
+    ]
+  }
+}

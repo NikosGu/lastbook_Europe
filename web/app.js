@@ -163,11 +163,11 @@ const away = (() => {
 })();
 let LIB = null;
 const libInfo = () => LIB || (LIB = api('/api/library').catch(() => { LIB = null; return {} }));   // what this library holds; a failed ask is asked again. An older server leaves out zims, pins and sources: then everything stays offered.
-let TOPICS = null;
+let TOPICS = null, TOPICS_LANG = '';   // the guides, in the language they were asked in: another language asks again
 async function topics() {
-  if (TOPICS) return TOPICS;
-  try { TOPICS = await api('/api/topics'); store.set('topicsCache', TOPICS) }
-  catch (e) { TOPICS = store.get('topicsCache', null); if (!TOPICS) throw e }
+  if (TOPICS && TOPICS_LANG === I18N.lang) return TOPICS;
+  try { TOPICS = await api('/api/topics?lang=' + I18N.lang); TOPICS_LANG = I18N.lang; store.set('topicsCache', TOPICS) }
+  catch (e) { TOPICS = TOPICS || store.get('topicsCache', null); if (!TOPICS) throw e }
   return TOPICS;
 }
 const topicById = id => (TOPICS || []).find(t => t.id === id);

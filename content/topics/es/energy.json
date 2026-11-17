@@ -1,0 +1,22 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "energy",
+  "mode": "learn",
+  "title": "Producir y gestionar la electricidad",
+  "short": "Baterías, solar, generadores: aún no están en esta biblioteca",
+  "intro": "Esta biblioteca aún no tiene ninguna guía sobre baterías, placas solares u otros sistemas de energía para casa. Qué hacer en un corte de luz, y las advertencias sobre los generadores, están en la guía «Apagón».",
+  "keywords": ["electricidad", "energía", "solar", "placa solar", "placas solares", "panel solar", "paneles solares", "fotovoltaica", "fotovoltaico", "FV", "batería", "baterías", "inversor", "regulador de carga", "aislada de la red", "sin conexión a la red", "off-grid", "cableado", "instalación eléctrica", "fusible", "fusibles", "plomos", "estación de energía portátil", "power station", "aerogenerador", "eólica", "batería del coche"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["power"],
+  "gaps": {
+    "missing": [
+      "Ninguna guía sobre baterías, baterías externas o estaciones de energía portátiles.",
+      "Ninguna guía sobre placas solares u otros sistemas de energía para casa.",
+      "Ningún manual de generadores: la guía «Apagón» solo tiene las advertencias que dan los folletos de protección civil."
+    ]
+  }
+}

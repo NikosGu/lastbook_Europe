@@ -1,0 +1,22 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "energy",
+  "mode": "learn",
+  "title": "Wytwarzaj prąd i zarządzaj nim",
+  "short": "Akumulatory, energia słoneczna, agregaty: jeszcze nie ma w tej bibliotece",
+  "intro": "Ta biblioteka nie ma jeszcze poradnika o akumulatorach, panelach słonecznych ani domowych instalacjach zasilania. Co robić przy braku prądu i ostrzeżenia dotyczące agregatów znajdziesz w poradniku „Brak prądu”.",
+  "keywords": ["prąd", "elektryczność", "energia słoneczna", "panel słoneczny", "panele słoneczne", "fotowoltaika", "PV", "bateria", "baterie", "akumulator", "akumulatory", "falownik", "inwerter", "regulator ładowania", "off-grid", "instalacja wyspowa", "instalacja elektryczna", "okablowanie", "bezpiecznik", "stacja zasilania", "magazyn energii", "turbina wiatrowa", "wiatrak", "akumulator samochodowy"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["power"],
+  "gaps": {
+    "missing": [
+      "Brak poradnika o akumulatorach, powerbankach i przenośnych stacjach zasilania.",
+      "Brak poradnika o panelach słonecznych i innych domowych instalacjach zasilania.",
+      "Brak instrukcji do agregatów: poradnik „Brak prądu” podaje tylko ostrzeżenia z ulotek ochrony ludności."
+    ]
+  }
+}

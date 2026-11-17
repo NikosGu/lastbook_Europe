@@ -1,0 +1,22 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "land",
+  "mode": "learn",
+  "title": "Sicheres Land und natürliche Ressourcen finden",
+  "short": "Boden, Quellen, Wildpflanzen, Karten: noch nicht in dieser Bibliothek",
+  "intro": "Diese Bibliothek hat noch nichts zu Boden, Quellen und Brunnen, Wildpflanzen oder zum Kartenlesen. Hochwasser, Erdbeben und andere Gefahren an Ihrem Wohnort zu kennen, ist Thema im Ratgeber „Beben, Feuer, Flut“.",
+  "keywords": ["Land", "Boden", "Quelle", "Brunnen", "Regenwasser", "Sammeln", "Wildkräuter sammeln", "Wildpflanzen", "essbare Pflanzen", "Giftpflanzen", "giftige Pflanzen", "Pilze", "Pilze sammeln", "Karte", "Landkarte", "Kompass", "Navigation", "Orientierung", "topografische Karte", "Wanderkarte", "Orientierungslauf"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["disaster", "water"],
+  "gaps": {
+    "missing": [
+      "Keine Gefahrenkarten (Hochwasser, Erdbeben, Erdrutsche) für irgendein Gebiet.",
+      "Nichts dazu, wie man in der Natur Wasser findet (Quellen, Brunnen, Regen), und nichts zu Wildpflanzen und Pilzen.",
+      "Nichts zum Kartenlesen oder zum Umgang mit dem Kompass."
+    ]
+  }
+}

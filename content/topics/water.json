@@ -3,7 +3,7 @@
   "mode": "now",
   "title": "Get safe drinking water",
   "short": "Store it, make it safer, keep it clean",
-  "intro": "Readings for when the tap water stops or may not be safe: how much to keep, how to make water safer to drink, and how to keep it clean. The pages come from the WHO and from Swiss, German and Austrian civil protection.",
+  "intro": "Readings for when the tap water stops or may not be safe: how much to keep, how to make water safer to drink, and how to keep it clean. The pages come from the WHO and from Swiss, German, Austrian and Italian civil protection.",
   "keywords": ["water", "drinking water", "tap water", "boil", "boiling", "boil water", "chlorine", "tablets", "purify", "disinfect", "filter", "sand filter", "SODIS", "sunlight", "bottled water", "mineral water", "storage", "store water", "container", "jerrycan", "bathtub", "how much water", "litres", "thirsty", "dirty water", "flood", "broken pipe", "contaminated", "blackout"],
   "choices": [
     {
@@ -64,7 +64,7 @@
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "About 2 litres a person a day",
          "note": "In German. Half a litre of it for cooking; how much a family of three needs for 3, 5 or 10 days; water for pets."},
         {"doc": "who-tn09-how-much-water", "page": 2, "label": "The least people need to survive, and for hygiene",
-         "note": "Written for relief planners: litres a day to drink and eat, for washing and for cooking; a flushing toilet uses up to 7 litres."},
+         "note": "Written for relief planners: litres a day to drink and eat, for washing and for cooking; a flushing toilet uses up to 7 litres each time."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Seven bottles a person for a week",
          "note": "In German. The Austrian rule of a week without shopping or power, and a yearly check of the stock."}
       ]

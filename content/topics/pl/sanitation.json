@@ -1,0 +1,81 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "sanitation",
+  "mode": "now",
+  "title": "Toalety, odpady i higiena, gdy nie ma wody",
+  "short": "Toaleta bez wody, czyste ręce, śmieci",
+  "intro": "Materiały na czas, gdy nie da się spłukać toalety albo nie ma wody: toaleta zastępcza, czystość rąk i śmieci. Biblioteka ma na ten temat tylko krótkie fragmenty; czego brakuje, wymieniono poniżej.",
+  "keywords": ["toaleta", "ubikacja", "WC", "sedes", "toaleta nie działa", "nie da się spłukać", "spłuczka nie działa", "ścieki", "kanalizacja", "odpływ", "toaleta z wiadra", "wiadro", "toaleta turystyczna", "worki do toalety", "worki na śmieci", "odpady", "śmieci", "odpadki", "higiena", "mycie", "mycie rąk", "ręce", "mydło", "żel antybakteryjny", "płyn do dezynfekcji rąk", "środek dezynfekujący", "pieluchy", "podpaski", "tampony", "artykuły menstruacyjne", "muchy"],
+  "choices": [
+    {
+      "id": "no-flush",
+      "label": "Nie da się spłukać toalety",
+      "hint": "Brak wody, długi blackout, uszkodzona kanalizacja",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 21, "label": "Worki do toalety, wiadro lub toaleta turystyczna",
+         "note": "Po niemiecku. Dlaczego podczas długiego blackoutu toaleta staje się problemem i co mieć w zapasie: szczelnie zamykane worki, wiadra, toaletę turystyczną."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Mocne worki do zawieszenia w toalecie",
+         "note": "Po niemiecku. Lista kontrolna higieny: duże, wytrzymałe worki na śmieci do toalety, toaleta turystyczna i inne środki higieny."},
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Toaleta zastępcza, gdy zawiedzie woda lub kanalizacja",
+         "note": "Po niemiecku. Część pierwszych kroków w domu podczas blackoutu."},
+        {"doc": "who-tn09-how-much-water", "page": 2, "label": "Ile wody zużywa jedno spłukanie",
+         "note": "Po angielsku. Do 7 litrów za każdym razem; prostsze toalety potrzebują znacznie mniej. Napisane dla planujących pomoc humanitarną."}
+      ]
+    },
+    {
+      "id": "hands",
+      "label": "Dbaj o czyste ręce, gdy wody jest mało",
+      "hint": "Brak bieżącej wody, kończy się mydło",
+      "read": [
+        {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "Kiedy każdy powinien myć ręce",
+         "note": "Po angielsku. Po skorzystaniu z toalety, przed przygotowaniem jedzenia, przed jedzeniem lub karmieniem dziecka i po podmyciu dziecka."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Czyste ręce, zanim dotkniesz wody pitnej",
+         "note": "Po angielsku. Mycie rąk przed nabieraniem przechowywanej wody i kranik w pojemniku."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Rękawiczki, jednorazowe talerze i sztućce",
+         "note": "Po niemiecku. Bez wody i prądu nie da się zmywać naczyń; rękawiczki pomagają, gdy musisz opatrzyć ranę, a nie możesz umyć rąk."}
+      ]
+    },
+    {
+      "id": "waste",
+      "label": "Piętrzą się śmieci",
+      "hint": "Brak wywozu, resztki jedzenia, przykry zapach, muchy",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Dlaczego odpady w ciągu kilku dni stają się groźne",
+         "note": "Po niemiecku. Podczas długiego blackoutu śmieci i odchody szybko stają się wylęgarnią owadów i chorób."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Unikaj odpadów i zbieraj je do worków",
+         "note": "Po niemiecku."}
+      ]
+    },
+    {
+      "id": "sewage",
+      "label": "Kanalizacja po powodzi albo cofające się ścieki",
+      "hint": "Zalana piwnica, cofająca się woda w odpływach, pompa do ścieków",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Zanim po powodzi skorzystasz z kanalizacji",
+         "note": "Po włosku. Dowiedz się, czy kanalizacja, szamba i studnie nie są uszkodzone, i zanim zaczniesz sprzątać, stosuj się do zaleceń władz."},
+        {"doc": "zsv-steiermark-blackout", "page": 27, "label": "Pompy do ścieków i zawory przeciwzalewowe",
+         "note": "Po niemiecku. Jeśli dom ma własną pompę do ścieków, sprawdź ją i ewentualne zawory przeciwzalewowe."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Pozostawione śmieci i odchody w ciągu kilku dni stają się wylęgarnią owadów i chorób.", "doc": "zsv-steiermark-blackout", "page": 10},
+    {"text": "Po powodzi, zanim skorzystasz z kanalizacji, dowiedz się, czy kanały, szamba i studnie nie są uszkodzone.", "doc": "dpc-io-non-rischio", "page": 31},
+    {"text": "Podczas długiego blackoutu mycie schodzi na drugi plan: trzeba oszczędzać wodę pitną.", "doc": "zsv-steiermark-blackout", "page": 21}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Lista kontrolna higieny", "note": "Po niemiecku."},
+    {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Listy: higiena i zdrowie", "note": "Po niemiecku."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "O czym zapominają gospodarstwa domowe: papier toaletowy, worki, rękawiczki", "note": "Po niemiecku."}
+  ],
+  "learn": [],
+  "related": ["water", "hurt", "food"],
+  "gaps": {
+    "missing": [
+      "Brak instrukcji krok po kroku dotyczącej toalety awaryjnej: jak przygotować toaletę z worka lub wiadra i bezpiecznie pozbyć się nieczystości.",
+      "Nic o utrzymaniu czystości przy bardzo małej ilości wody, poza tym, kiedy myć ręce.",
+      "Brak poradnika o sprzątaniu domu, do którego dostały się ścieki lub woda powodziowa.",
+      "Nic o tym, jak zapobiec rozprzestrzenianiu się w domu choroby, na przykład biegunki."
+    ]
+  }
+}

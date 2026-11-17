@@ -1,0 +1,255 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "hurt",
+  "mode": "now",
+  "title": "Qualcuno è ferito o si sente male all'improvviso",
+  "short": "Primo soccorso: emorragie, ustioni, respirazione, traumi, malori improvvisi",
+  "intro": "Letture di primo soccorso in attesa dei soccorsi: controllare la persona, chiamare aiuto, emorragie, ustioni, respirazione e rianimazione (RCP), traumi e malori improvvisi. La maggior parte delle pagine viene dalle linee guida internazionali di primo soccorso (2020) della Federazione internazionale della Croce Rossa (FICR), scritte per gli istruttori di primo soccorso; alcune da guide della protezione civile austriaca e tedesca.",
+  "keywords": ["primo soccorso", "pronto soccorso", "ferita", "ferito", "feriti", "male", "taglio", "sangue", "perde sangue", "emorragia", "laccio emostatico", "tourniquet", "bendaggio compressivo", "ustione", "bruciatura", "scottatura", "osso rotto", "frattura", "distorsione", "storta", "stecca", "trauma cranico", "colpo alla testa", "commozione cerebrale", "colonna vertebrale", "schiena", "collo", "RCP", "rianimazione", "massaggio cardiaco", "non respira", "svenuto", "privo di sensi", "incosciente", "non risponde", "posizione laterale di sicurezza", "defibrillatore", "DAE", "soffocamento", "soffoca", "shock", "colpo di calore", "disidratazione", "diarrea", "vomito", "ipotermia", "congelamento", "reazione allergica", "anafilassi", "shock anafilattico", "adrenalina", "epinefrina", "asma", "attacco d'asma", "infarto", "attacco di cuore", "dolore al petto", "ictus", "crisi epilettica", "convulsioni", "ipoglicemia", "zucchero basso", "diabete", "avvelenamento", "intossicazione", "veleno", "monossido di carbonio", "morso", "puntura", "zecca", "serpente", "vipera", "112", "118", "911", "999", "ambulanza", "emergenza"],
+  "choices": [
+    {
+      "id": "check",
+      "label": "Non so cos'ha: come controllo la persona?",
+      "hint": "Un incidente, qualcuno che si accascia, più persone ferite",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Controlla la persona, in ordine",
+         "note": "In inglese. Il luogo è sicuro? La persona risponde, le vie aeree sono libere, respira normalmente, perde molto sangue?"},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Resta al sicuro, chiama presto, aiuta prima i più gravi",
+         "note": "In inglese. Quando restare a distanza e avvisare le autorità, chiamare con il vivavoce, e più persone ferite."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 103, "label": "Cosa dire ai soccorsi",
+         "note": "In inglese. Mantieni la calma e rispondi alle loro domande; meglio chiamare presto con poche informazioni che aspettare."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 16, "label": "Cosa fa chi presta soccorso",
+         "note": "In tedesco. Mantenere la calma, mettere in sicurezza il luogo, le manovre salvavita, chiamare aiuto, cosa dire."}
+      ]
+    },
+    {
+      "id": "bleeding",
+      "label": "Forte emorragia, un taglio o una ferita",
+      "hint": "Sangue che inzuppa vestiti o bende, un taglio profondo, un'escoriazione sporca",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 187, "label": "Fermare un'emorragia grave",
+         "note": "In inglese. Premi forte sulla ferita; un laccio emostatico solo su un braccio o una gamba e solo se la pressione non basta; cosa non fare."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 188, "label": "Passo per passo, e cosa lasciare dov'è",
+         "note": "In inglese. Premi, fai sdraiare la persona, chiama aiuto, metti una seconda medicazione sopra la prima; lascia dov'è un oggetto conficcato nella ferita."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 23, "label": "Un bendaggio compressivo in quattro passaggi",
+         "note": "In tedesco. Per una ferita profonda che sanguina molto."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 202, "label": "Pulire un taglio o un'escoriazione",
+         "note": "In inglese. Sciacqua con acqua pulita del rubinetto e copri; i segni di infezione; il tetano."}
+      ]
+    },
+    {
+      "id": "burn",
+      "label": "Ustione o scottatura",
+      "hint": "Fuoco, acqua bollente, olio da cucina, sostanze chimiche, elettricità",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 213, "label": "Raffredda l'ustione con acqua corrente",
+         "note": "In inglese. Almeno dieci minuti, meglio venti; poi una medicazione umida che non si attacca; cosa non fare."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 214, "label": "Niente ghiaccio, e quando chiamare aiuto",
+         "note": "In inglese. Perché niente ghiaccio né acqua gelata, e quali ustioni richiedono i soccorsi."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 215, "label": "Sostanze chimiche nell'occhio; ustioni nei bambini piccoli",
+         "note": "In inglese. Sciacqua subito l'occhio con acqua pulita; chiedi un parere medico quando si ustiona un bambino piccolo o una persona fragile."}
+      ]
+    },
+    {
+      "id": "bone",
+      "label": "Osso rotto, distorsione o lussazione",
+      "hint": "Una caduta, una storta alla caviglia, un arto dall'aspetto strano",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 223, "label": "Comportati come se fosse una frattura e tieni fermo l'arto",
+         "note": "In inglese. Sostieni l'arto nella posizione in cui lo trovi, raffreddalo fino a 20 minuti, steccalo per un tragitto accidentato."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 224, "label": "Quando chiamare aiuto",
+         "note": "In inglese. Molto dolore o gonfiore, un arto in una posizione strana; avvolgi sempre il ghiaccio in un panno."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 20, "label": "Lesioni di ossa e articolazioni",
+         "note": "In tedesco. Tieni fermo l'arto, copri le ferite, togli subito anelli e orologi, raffredda contro il gonfiore."}
+      ]
+    },
+    {
+      "id": "breathing",
+      "label": "Non risponde, non respira normalmente o sta soffocando",
+      "hint": "Accasciato a terra, boccheggia, cibo bloccato in gola, tirato fuori dall'acqua",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 128, "label": "Non risponde ma respira: la posizione laterale di sicurezza",
+         "note": "In inglese. Chiamala ad alta voce, scuotila delicatamente, apri le vie aeree, controlla il respiro per non più di dieci secondi, girala su un fianco."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 134, "label": "Non respira normalmente: inizia la RCP",
+         "note": "In inglese. Agisci come se il cuore si fosse fermato; spingi forte e veloce, da 100 a 120 volte al minuto, a circa 5 cm di profondità, 30 compressioni e 2 ventilazioni."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 171, "label": "Soffocamento: colpi sulla schiena e compressioni addominali",
+         "note": "In inglese. Fino a cinque colpi tra le scapole, poi fino a cinque compressioni addominali, alternandoli."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 17, "label": "Incosciente, o non respira",
+         "note": "In tedesco. Il controllo, la posizione laterale di sicurezza, la RCP con 30 compressioni e 2 ventilazioni, e il defibrillatore."}
+      ]
+    },
+    {
+      "id": "shock",
+      "label": "Pallido, freddo, sudato, debole: potrebbe essere uno shock",
+      "hint": "Dopo una forte emorragia, ustioni gravi o una grave allergia",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 288, "label": "Fai sdraiare la persona e tienila al caldo",
+         "note": "In inglese. Sulla schiena, gambe sollevate se non sono ferite e se questo aiuta, evita che perda calore, chiama i soccorsi."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 289, "label": "I segni dello shock",
+         "note": "In inglese. Pelle pallida, labbra bluastre, pelle fresca o sudaticcia, polso rapido; una coperta, e qualcosa tra la persona e il terreno freddo."}
+      ]
+    },
+    {
+      "id": "head",
+      "label": "Trauma alla testa, al collo o alla schiena",
+      "hint": "Una caduta, un incidente d'auto, un colpo alla testa",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 233, "label": "Segnali di allarme dopo un colpo alla testa",
+         "note": "In inglese. Quando chiamare subito i soccorsi, e tenere d'occhio la persona nelle 24 ore successive."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 228, "label": "Una possibile lesione della colonna vertebrale",
+         "note": "In inglese. Dopo incidenti stradali o cadute dall'alto: tieni ferma la persona, niente collare né cinghie, chiama sempre aiuto."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 230, "label": "Non spostare la persona",
+         "note": "In inglese. A meno che non sia in pericolo, e in quel caso con due soccorritori."}
+      ]
+    },
+    {
+      "id": "heat-cold",
+      "label": "Troppo caldo o troppo freddo",
+      "hint": "Colpo di calore, ondata di caldo, brividi, dita bianche e intorpidite",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 332, "label": "Surriscaldamento: rinfresca la persona",
+         "note": "In inglese. Fermarsi e spostarsi in un luogo fresco; raffreddamento in acqua fredda per un adulto surriscaldato dallo sforzo; quando chiamare aiuto."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 333, "label": "Esaurimento da calore e colpo di calore",
+         "note": "In inglese. I segni di ciascuno, e il raffreddamento in acqua fredda per circa 15 minuti."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 343, "label": "Ipotermia",
+         "note": "In inglese. Portala via dal freddo, togli i vestiti bagnati, scaldala, una bevanda calda e zuccherata se riesce a deglutire; chiama sempre aiuto."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 349, "label": "Congelamento",
+         "note": "In inglese. Riscalda solo se le cure sono a più di due ore e la parte non può congelarsi di nuovo: acqua calda da 37 a 39 °C, mai un fuoco o una stufa."}
+      ]
+    },
+    {
+      "id": "allergy",
+      "label": "Grave reazione allergica",
+      "hint": "Gonfiore, fatica a respirare dopo una puntura, un cibo o un medicinale",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 279, "label": "Adrenalina per l'anafilassi",
+         "note": "In inglese. L'autoiniettore della persona; una seconda dose dopo 5-10 minuti se non c'è risposta e i soccorsi non sono ancora arrivati."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 281, "label": "Usare un autoiniettore, passo per passo",
+         "note": "In inglese. Chiama aiuto, fai sdraiare la persona, inietta nella parte esterna della coscia attraverso vestiti sottili."}
+      ]
+    },
+    {
+      "id": "asthma",
+      "label": "Attacco d'asma",
+      "hint": "Respiro sibilante, fiato corto, l'inalatore non aiuta",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 180, "label": "Aiutare durante un attacco d'asma",
+         "note": "In inglese. Far sedere la persona dritta, il suo inalatore, allentare i vestiti, lontano da fumo o polvere."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 181, "label": "Quando chiamare aiuto",
+         "note": "In inglese. Niente inalatore e un attacco che dura minuti, un inalatore che non funziona, labbra bluastre, confusione, affaticamento."}
+      ]
+    },
+    {
+      "id": "poison",
+      "label": "Avvelenamento: ha ingerito qualcosa, o fumi",
+      "hint": "Detersivi, troppe pastiglie, una batteria a bottone, monossido di carbonio",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 258, "label": "Veleno ingerito, o gas tossico",
+         "note": "In inglese. Interrompi l'esposizione; non far vomitare, e niente latte, acqua o carbone se non lo dice il centro antiveleni; porta via una persona dal gas solo se puoi farlo in sicurezza."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 259, "label": "Chiama il centro antiveleni o i soccorsi",
+         "note": "In inglese. E come prevenire gli avvelenamenti in casa, anche con un rilevatore di monossido di carbonio."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 263, "label": "Monossido di carbonio, e batterie a bottone",
+         "note": "In inglese. Il monossido di carbonio non ha colore né odore; cosa fare quando viene ingoiata una batteria a bottone."}
+      ]
+    },
+    {
+      "id": "diarrhoea",
+      "label": "Diarrea, vomito o disidratazione",
+      "hint": "Un virus intestinale, acqua contaminata, un bambino piccolo o un anziano che si disidrata",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Bere, o sali per la reidratazione orale",
+         "note": "In inglese. Disidratazione lieve: bere abbastanza; grave: sali per la reidratazione orale; continuare ad allattare; quando chiedere aiuto."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 339, "label": "Una bevanda reidratante fatta in casa",
+         "note": "In inglese. Sale, zucchero e acqua potabile, nelle quantità indicate nella pagina."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 308, "label": "Mal di pancia, diarrea e vomito: quando farsi curare",
+         "note": "In inglese. Diarrea grave, vomito ripetuto, febbre sopra i 38 °C, sangue nel vomito o nelle feci."}
+      ]
+    },
+    {
+      "id": "sudden",
+      "label": "Dolore al petto, segni di ictus, una crisi convulsiva o zucchero basso nel sangue",
+      "hint": "Un dolore al petto opprimente, un lato del viso che si abbassa, convulsioni, una persona diabetica che sembra confusa",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 264, "label": "Dolore al petto: un possibile infarto",
+         "note": "In inglese. Chiama anche se il dolore è durato solo pochi minuti; aspirina nell'attesa, se la persona può prenderla."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 272, "label": "Ictus: il controllo FAST",
+         "note": "In inglese. FAST sta per viso, braccia, parola, tempo: chiama subito i soccorsi e annota quando è iniziato."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 296, "label": "Una crisi convulsiva: proteggi la persona",
+         "note": "In inglese. Libera lo spazio intorno, metti qualcosa di morbido sotto la testa, non tenere ferma la persona; quando chiamare aiuto."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 291, "label": "Zucchero basso nel sangue",
+         "note": "In inglese. Glucosio o zucchero se la persona risponde e riesce a deglutire; chiama se non migliora in fretta."}
+      ]
+    },
+    {
+      "id": "bites",
+      "label": "Morsi e punture",
+      "hint": "Un morso di cane, una puntura d'ape, una zecca, un serpente",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 242, "label": "Morsi di animali",
+         "note": "In inglese. Pulisci la ferita con acqua pulita e sapone, contro le infezioni e la rabbia."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 245, "label": "Zecche",
+         "note": "In inglese. Come togliere una zecca, e i segni dopo il morso che richiedono un medico."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 254, "label": "Morso di serpente",
+         "note": "In inglese. Tieni la persona il più ferma possibile e chiama aiuto; niente laccio emostatico, incisioni o suzione."}
+      ]
+    },
+    {
+      "id": "no-help",
+      "label": "I soccorsi sono lontani, o ci sono molti feriti",
+      "hint": "Una calamità, telefoni fuori uso, i soccorsi possono metterci ore o giorni",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Quando i soccorsi possono metterci giorni",
+         "note": "In inglese. Nelle calamità i soccorsi possono metterci ore, giorni o settimane: concentrati su emorragie, vie aeree e shock."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Più persone ferite",
+         "note": "In inglese. Chiama presto, richiama con i dettagli, e occupati prima di chi è in maggior pericolo di vita."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Se il 112 non funziona",
+         "note": "In tedesco. Vai al posto di polizia o all'ospedale più vicino, se puoi."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Non avvicinarti al luogo se non è sicuro.", "doc": "ifrc-first-aid-guidelines-2020", "page": 102},
+    {"text": "Chiama i soccorsi per ogni emorragia grave.", "doc": "ifrc-first-aid-guidelines-2020", "page": 187},
+    {"text": "Non estrarre un oggetto conficcato in una ferita. Una volta messo il laccio emostatico, lascialo finché arrivano i soccorsi.", "doc": "ifrc-first-aid-guidelines-2020", "page": 188},
+    {"text": "Non coprire mai una ferita infetta: cerca aiuto medico.", "doc": "ifrc-first-aid-guidelines-2020", "page": 203},
+    {"text": "Non mettere ghiaccio o acqua gelata su un'ustione.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
+    {"text": "Chiama aiuto per ustioni estese o profonde, ustioni vicino a viso, gola o genitali, e ustioni da sostanze chimiche, elettricità o fiamme.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
+    {"text": "Se il respiro non è normale (boccheggia, è irregolare o assente), inizia subito la RCP.", "doc": "ifrc-first-aid-guidelines-2020", "page": 130},
+    {"text": "Non toccare la persona mentre il defibrillatore dà la scarica.", "doc": "ifrc-first-aid-guidelines-2020", "page": 158},
+    {"text": "Non frugare alla cieca con un dito nella bocca di chi sta soffocando.", "doc": "ifrc-first-aid-guidelines-2020", "page": 170},
+    {"text": "Non fare compressioni addominali su un lattante.", "doc": "ifrc-first-aid-guidelines-2020", "page": 173},
+    {"text": "Chiama subito i soccorsi se una persona mostra segni di shock.", "doc": "ifrc-first-aid-guidelines-2020", "page": 288},
+    {"text": "Dopo un colpo alla testa, chiama subito se la persona perde conoscenza anche per poco, vomita più di una volta, ha una crisi convulsiva o perde sangue dal naso o dalle orecchie.", "doc": "ifrc-first-aid-guidelines-2020", "page": 233},
+    {"text": "Non spostare chi potrebbe avere una lesione alla colonna vertebrale, a meno che non sia in pericolo.", "doc": "ifrc-first-aid-guidelines-2020", "page": 230},
+    {"text": "Chiama aiuto per ogni caso di ipotermia, e non strofinare la pelle della persona.", "doc": "ifrc-first-aid-guidelines-2020", "page": 343},
+    {"text": "Per un congelamento servono sempre cure mediche.", "doc": "ifrc-first-aid-guidelines-2020", "page": 350},
+    {"text": "Se è stato ingerito un veleno, non far vomitare la persona e non darle latte, acqua o carbone se non lo dice il centro antiveleni.", "doc": "ifrc-first-aid-guidelines-2020", "page": 258},
+    {"text": "Per un dolore al petto, chiama i soccorsi anche se è durato solo un paio di minuti.", "doc": "ifrc-first-aid-guidelines-2020", "page": 264},
+    {"text": "Se sospetti un ictus, chiama subito i soccorsi e annota l'ora in cui è iniziato.", "doc": "ifrc-first-aid-guidelines-2020", "page": 272},
+    {"text": "Durante una crisi convulsiva, non tenere ferma la persona.", "doc": "ifrc-first-aid-guidelines-2020", "page": 296},
+    {"text": "Non mettere un laccio emostatico su un morso di serpente.", "doc": "ifrc-first-aid-guidelines-2020", "page": 254}
+  ],
+  "prepare": [
+    {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Cosa contiene una cassetta di pronto soccorso per la casa", "note": "In tedesco. Un elenco secondo lo standard austriaco."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Lista di controllo: farmacia di casa", "note": "In tedesco."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Medicinali per 10 giorni, e un corso di primo soccorso", "note": "In tedesco."},
+    {"doc": "ifrc-first-aid-guidelines-2020", "page": 106, "label": "Salva i numeri di emergenza nel telefono", "note": "In inglese."},
+    {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Organizzati per soccorsi che tardano ad arrivare", "note": "In inglese. Un kit per i primi tre giorni."}
+  ],
+  "learn": [
+    {"doc": "ifrc-first-aid-guidelines-2020", "label": "Linee guida internazionali di primo soccorso, rianimazione e formazione 2020", "note": "In inglese. Della FICR, 476 pagine, scritte per chi progetta corsi di primo soccorso: le prove scientifiche e le raccomandazioni, argomento per argomento. Non è un manuale per il pubblico."},
+    {"doc": "zsv-steiermark-notfallratgeber", "label": "Guida per le emergenze: come comportarsi correttamente", "note": "In tedesco. Le sue pagine di primo soccorso sono brevi e pratiche."}
+  ],
+  "related": ["health", "shelter", "water", "sanitation"],
+  "gaps": {
+    "missing": [
+      "Nessun manuale di primo soccorso scritto per il pubblico: le linee guida della FICR sono scritte per gli istruttori, e le guide austriache e tedesche hanno solo poche pagine di primo soccorso.",
+      "Le linee guida della FICR non indicano nessun numero di emergenza; il 112 e i numeri nazionali vengono dalle guide austriache, tedesche e italiane.",
+      "Nessun metodo semplice per smistare molti feriti (triage) scritto per il pubblico.",
+      "Alcuni medicinali citati dalle linee guida della FICR, come l'aspirina, l'adrenalina o un inalatore, si possono dare solo dove le regole locali lo permettono; nessuna fonte qui riporta queste regole per alcun paese."
+    ],
+    "disagree": [
+      "Raffreddare un'ustione: le linee guida della FICR dicono acqua corrente fresca per almeno dieci minuti, meglio venti, ma non gelata; la guida austriaca dice di sciacquare con acqua tiepida e di smettere se la persona trema."
+    ]
+  }
+}

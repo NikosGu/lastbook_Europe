@@ -1,0 +1,115 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "food",
+  "mode": "now",
+  "title": "Jedzenie: zapasy, gotowanie i bezpieczeństwo",
+  "short": "Zapasy, gotowanie bez prądu, co wyrzucić",
+  "intro": "Materiały o tym, jak trzymać w domu zapas jedzenia na tydzień lub dłużej, jak gotować, gdy kuchenka elektryczna nie działa, i jak poznać, że żywność nie jest już bezpieczna do jedzenia.",
+  "keywords": ["jedzenie", "żywność", "zapasy", "zapas jedzenia", "żywność na kryzys", "żywność awaryjna", "przechowywanie żywności", "spiżarnia", "konserwy", "puszki", "jedzenie z puszki", "żywność trwała", "długi termin przydatności", "termin przydatności", "najlepiej spożyć przed", "data ważności", "lodówka", "chłodziarka", "zamrażarka", "zepsute jedzenie", "wyrzucić", "pleśń", "gotowanie", "gotowanie bez prądu", "kuchenka turystyczna", "kuchenka gazowa", "grill", "grillowanie", "fondue", "tlenek węgla", "czad", "jedzenie dla niemowląt", "karma dla zwierząt", "głód", "powódź"],
+  "choices": [
+    {
+      "id": "stock",
+      "label": "Jakie jedzenie trzymać w domu?",
+      "hint": "Żywność o długim terminie przydatności na tydzień lub dłużej",
+      "read": [
+        {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Lista kontrolna na siedem dni",
+         "note": "Po niemiecku. Napoje, żywność gotowa do jedzenia, produkty sypkie, artykuły medyczne i higieniczne, światło, możliwość gotowania, gotówka."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Jaka żywność dobrze nadaje się na zapas",
+         "note": "Po niemiecku. Na 10 dni, jeśli możesz, a co najmniej na 3: żywność, która nie wymaga lodówki, nie trzeba jej gotować albo szybko się gotuje; alergie, dzieci, zwierzęta domowe."},
+        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Lista zakupów według grup żywności",
+         "note": "Po niemiecku. Napoje, produkty zbożowe, konserwy, rośliny strączkowe, mleko UHT i inne; sprawdzaj daty i uzupełniaj to, co zużyjesz."}
+      ]
+    },
+    {
+      "id": "keeps",
+      "label": "Jak długo można to przechowywać?",
+      "hint": "Daty, przechowywanie, konserwy, produkty sypkie, zamrażarka",
+      "read": [
+        {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Produkty sypkie, mleko, ser i konserwy",
+         "note": "Po niemiecku. Jak długo można je przechowywać, w jakiej temperaturze i co po otwarciu puszki."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Rośliny strączkowe, orzechy, olej, mięso i zamrażarka",
+         "note": "Po niemiecku. Temperatury przechowywania i ile miesięcy żywność wytrzymuje w zamrażarce."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Zużywaj i uzupełniaj albo trzymaj osobny zapas sprawdzany co roku",
+         "note": "Po niemiecku."}
+      ]
+    },
+    {
+      "id": "cook",
+      "label": "Gotowanie bez prądu",
+      "hint": "Bez kuchenki elektrycznej: gaz, kuchenka turystyczna, grill, zestaw do fondue",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Na czym wolno gotować w domu, a na czym tylko na zewnątrz",
+         "note": "Po niemiecku. Podgrzewacze ze świeczkami tealight i zestawy do fondue w domu; kuchenki turystyczne i grille tylko na zewnątrz; zagrożenie tlenkiem węgla."},
+        {"doc": "zsv-steiermark-blackout", "page": 28, "label": "Gotowanie podczas blackoutu",
+         "note": "Po niemiecku. Dlaczego kuchenki elektryczne przestają działać, specjalne diety, zużywanie jedzenia z lodówki i zamrażarki oraz zapas gazu, drewna lub węgla drzewnego."}
+      ]
+    },
+    {
+      "id": "fridge",
+      "label": "Lodówka i zamrażarka nie działają",
+      "hint": "Co zjeść najpierw, zamknięte drzwiczki, woda z rozmrażania",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Łatwo psująca się żywność i zamrażarka",
+         "note": "Po niemiecku. Szybko zjedz lub ugotuj łatwo psującą się żywność i pilnuj, czy w zamrażarce nie pojawia się woda z topniejącego lodu; lodówki z zamrażarką rozmrażają się szybciej."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Otwieraj lodówkę i zamrażarkę jak najrzadziej",
+         "note": "Po włosku. Część zaleceń na czas blackoutu."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Zużyj łatwo psującą się żywność, zbieraj odpady do worków",
+         "note": "Po niemiecku."}
+      ]
+    },
+    {
+      "id": "throw-out",
+      "label": "Czy to jeszcze nadaje się do jedzenia?",
+      "hint": "Wybrzuszona puszka, pleśń, jedzenie, które miało kontakt z wodą powodziową",
+      "read": [
+        {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Wybrzuszone puszki i spleśniały ser",
+         "note": "Po niemiecku. Kiedy puszkę trzeba wyrzucić i kiedy pleśń z twardego sera można odkroić."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Zepsute orzechy, olej i mięso",
+         "note": "Po niemiecku. Oznaki, że trzeba je wyrzucić."},
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Jedzenie, które miało kontakt z wodą powodziową",
+         "note": "Po włosku. Wśród kroków po powodzi."}
+      ]
+    },
+    {
+      "id": "special",
+      "label": "Niemowlęta, specjalne diety i zwierzęta domowe",
+      "hint": "Jedzenie dla niemowląt, pieluchy, alergie, karma dla zwierząt",
+      "read": [
+        {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Jeśli masz niemowlę, zwierzę albo samochód",
+         "note": "Po niemiecku. Jedzenie dla niemowląt i pieluchy, karma i żwirek dla zwierząt oraz co dla każdego z nich trzeba mieć w zapasie."},
+        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Zapasy dla niemowląt i zwierząt",
+         "note": "Po niemiecku. Na końcu listy żywności."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "W domu gotuj tylko na urządzeniach dopuszczonych do użytku w pomieszczeniach; kuchenki turystyczne i grille są do używania na zewnątrz.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Zatrucie tlenkiem węgla może zabić, a otwarty ogień w pomieszczeniu też może je spowodować.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Wyrzuć puszkę, której wieczko jest wybrzuszone na zewnątrz.", "doc": "oezsv-bevorratungsratgeber", "page": 10},
+    {"text": "Wyrzuć orzechy, które mają dziwny smak lub ślady pleśni, oraz mięso, które jest śliskie lub ma silny zapach.", "doc": "oezsv-bevorratungsratgeber", "page": 11},
+    {"text": "Nie jedz żywności, która miała kontakt z wodą powodziową: może być skażona.", "doc": "dpc-io-non-rischio", "page": 31}
+  ],
+  "prepare": [
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Lista kontrolna na siedem dni", "note": "Po niemiecku."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista kontrolna: jedzenie i woda na 3, 5, 7 lub 10 dni", "note": "Po niemiecku."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Gromadź zapasy krok po kroku", "note": "Po niemiecku."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Sprawdzaj zapasy raz w roku", "note": "Po niemiecku."},
+    {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Lista według grup żywności", "note": "Po niemiecku."}
+  ],
+  "learn": [
+    {"doc": "oezsv-bevorratungsratgeber", "label": "Poradnik o zapasach", "note": "Po niemiecku. Austriacka ochrona ludności: potrzeby, przechowywanie i trwałość, woda, leki, o czym zapominają gospodarstwa domowe. Jego strony o jedzeniu dzikich roślin to porady survivalowe, których nie sprawdza żadne inne źródło w tej bibliotece."},
+    {"doc": "bwl-kluger-rat-notvorrat", "label": "Mądra rada: zapas awaryjny", "note": "Po niemiecku. Szwajcarska ulotka federalna, cztery strony."}
+  ],
+  "related": ["water", "power", "preserve", "sanitation"],
+  "gaps": {
+    "missing": [
+      "Brak poradnika o bezpieczeństwie żywności od instytucji zdrowia publicznego o tym, co wyrzucić po długiej przerwie w dostawie prądu lub po powodzi; zasady podane tutaj pochodzą z ulotek ochrony ludności.",
+      "Nic o tym, jak długo jedzenie z lodówki i zamrażarki pozostaje bezpieczne bez prądu, poza radą, by najpierw zjeść łatwo psujące się produkty i nie otwierać drzwiczek.",
+      "Brak poradnika o gotowaniu na ogniu lub na grillu poza ostrzeżeniem, że grille i kuchenki turystyczne są do używania na zewnątrz."
+    ],
+    "disagree": [
+      "Na jak długo planować: około tygodnia (szwajcarska ulotka i austriacki poradnik o zapasach), 10 dni, jeśli to możliwe, a co najmniej 3 (niemiecki poradnik), tydzień do dwóch tygodni (styryjski poradnik o blackoucie), co najmniej 10 do 14 dni (austriacka lista kontrolna na blackout).",
+      "Gotowanie na grillu podczas blackoutu: austriackie poradniki proponują grill ogrodowy, nie mówiąc, gdzie go używać; niemiecki poradnik mówi, że grille i kuchenki turystyczne są tylko do użytku na zewnątrz."
+    ]
+  }
+}

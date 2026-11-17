@@ -1,0 +1,95 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "comms",
+  "mode": "now",
+  "title": "Recevoir les alertes, appeler les secours et garder le contact",
+  "short": "Alertes, 112, téléphone coupé, radio",
+  "intro": "Des lectures sur la façon dont les alertes officielles vous parviennent, sur ce qu’il faut dire quand vous appelez les secours, et sur la façon de rester informé quand le téléphone, Internet ou l’électricité sont coupés.",
+  "keywords": ["alerte", "alertes", "avertissement", "sirène", "sirènes", "radio", "radio à piles", "radio à manivelle", "téléphone coupé", "pas de réseau", "plus de réseau", "Internet coupé", "réseau mobile", "112", "911", "999", "appel d’urgence", "numéro d’urgence", "appeler les secours", "pompiers", "IT-alert", "NINA", "FR-Alert", "application d’alerte", "batterie externe", "power bank", "rumeurs", "fausses nouvelles", "fake news", "infox", "désinformation", "sourd", "malentendant", "carte d’urgence"],
+  "choices": [
+    {
+      "id": "warnings",
+      "label": "Je veux les alertes et les informations officielles",
+      "hint": "Sirènes, alertes sur le téléphone, applications d’alerte, radio",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 12, "label": "Comment les alertes vous parviennent, et ce que signifient les sirènes",
+         "note": "En allemand. Applications, radio, sirènes et alertes sur le téléphone, et les signaux des sirènes allemandes pour le danger et pour la fin de l’alerte."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 4, "label": "Les signaux des sirènes en Autriche, et que faire pour chacun",
+         "note": "En allemand. Avertissement, alarme et fin de l’alerte en Autriche : allumer la radio, ou aller dans une pièce protégée ou à la cave."},
+        {"doc": "dpc-io-non-rischio", "page": 59, "label": "IT-alert : les messages d’urgence sur les téléphones portables en Italie",
+         "note": "En italien. Ce qu’est IT-alert et les urgences pour lesquelles il sert aujourd’hui."}
+      ]
+    },
+    {
+      "id": "phones-down",
+      "label": "Le téléphone ou Internet ne marche plus",
+      "hint": "Les appels ne passent pas, plus de données mobiles, la batterie est presque vide",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Quand le 112 ne fonctionne pas, et pourquoi une radio est utile",
+         "note": "En allemand. Où aller si les numéros d’urgence ne fonctionnent pas, et quelles radios marchent encore pendant une coupure de courant."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Les numéros sur papier et une batterie externe chargée",
+         "note": "En allemand. Une liste écrite des numéros importants, une batterie externe pour le téléphone, et des cartes enregistrées pour s’en servir hors ligne."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Laisser les lignes téléphoniques libres pendant un black-out",
+         "note": "En italien. Parmi ses conseils en cas de black-out : écouter la radio et n’utiliser le téléphone qu’en cas d’urgence."}
+      ]
+    },
+    {
+      "id": "call",
+      "label": "Appeler les secours : que dire",
+      "hint": "112, un accident, un incendie, une inondation, quelqu’un en danger",
+      "read": [
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 3, "label": "Que dire lors de tout appel d’urgence",
+         "note": "En allemand. Où, ce qui s’est passé, combien de blessés, qui appelle ; avec le 112 et les numéros propres à l’Autriche."},
+        {"doc": "vvf-acqua-e-vita", "page": 2, "label": "Appeler les secours pendant une inondation",
+         "note": "En italien. Ce qu’il faut dire à l’opérateur, et rester en ligne jusqu’à ce qu’il mette fin à l’appel. Donne les numéros italiens."}
+      ]
+    },
+    {
+      "id": "rescuers",
+      "label": "Quelqu’un a du mal à entendre ou à parler",
+      "hint": "Communiquer avec les secours, une carte d’urgence",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Prévoir comment communiquer avec les secours",
+         "note": "En allemand. Une carte d’urgence qui indique comment vous communiquez, un stylo et du papier, et demander de l’aide aux voisins. Cite une application allemande."}
+      ]
+    },
+    {
+      "id": "rumours",
+      "label": "Ce message est-il vrai ?",
+      "hint": "Rumeurs, messages en chaîne, vidéos alarmantes",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 16, "label": "Pourquoi les fausses informations sont dangereuses en temps de crise",
+         "note": "En allemand. Comment les rumeurs se propagent, et les premières questions à se poser sur l’auteur d’un message."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 17, "label": "Vérifier un message avant de le transmettre",
+         "note": "En allemand. D’autres questions à se poser ; si une réponse est non, ne le partagez pas."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Lors d’une coupure de courant, ou quand le réseau mobile tombe en panne, beaucoup de moyens d’alerte ne fonctionnent plus.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
+    {"text": "Prenez les alertes officielles au sérieux : elles vous disent comment vous protéger et protéger les autres.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
+    {"text": "Si les numéros d’urgence ne fonctionnent pas, rendez-vous au poste de police ou à l’hôpital le plus proche, si vous le pouvez.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 15},
+    {"text": "Si un message ne passe pas l’une de ces vérifications, ne le transmettez pas.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 17},
+    {"text": "Pendant un black-out, n’encombrez pas les lignes téléphoniques pour chercher des nouvelles : écoutez la radio et n’appelez qu’en cas d’urgence.", "doc": "ravenna-rischio-blackout", "page": 1}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Les numéros sur papier, une batterie externe, des cartes hors ligne", "note": "En allemand."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Une radio de voiture, à manivelle ou à piles", "note": "En allemand. La radio fonctionne encore quand Internet et l’électricité sont coupés."},
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Une radio à piles dans les provisions de la maison", "note": "En allemand. La liste du dépliant suisse de ce qu’il faut garder à la maison."},
+    {"doc": "zsv-steiermark-notfallratgeber", "page": 42, "label": "Garder les numéros d’urgence sur soi", "note": "En allemand. Une carte autrichienne, au format portefeuille, avec les numéros d’urgence."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Une carte d’urgence pour communiquer avec les secours", "note": "En allemand."}
+  ],
+  "learn": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Se préparer aux crises et aux catastrophes", "note": "En allemand. Le guide fédéral allemand : provisions, alertes, s’informer, la peur, premiers secours, incendie, documents, sac d’urgence, mise à l’abri."},
+    {"doc": "zsv-steiermark-notfallratgeber", "label": "Guide d’urgence : bien réagir dans les situations d’urgence", "note": "En allemand. Guide autrichien : numéros, sirènes, incendie, premiers secours, accidents, montagne et eau."}
+  ],
+  "related": ["power", "disaster"],
+  "gaps": {
+    "missing": [
+      "Aucun guide sur les radios pour communiquer entre vous, comme les talkies-walkies PMR, la CB ou la radio amateur.",
+      "Aucun guide pour un plan familial : où se retrouver et qui appeler quand les téléphones ne marchent plus.",
+      "Les systèmes d’alerte ne sont expliqués que pour l’Allemagne, l’Autriche et l’Italie.",
+      "Aucun guide pour lire une carte ou utiliser une boussole."
+    ]
+  }
+}

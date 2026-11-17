@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "grow",
+  "mode": "learn",
+  "title": "Cultiver des aliments de base",
+  "short": "Sol, cultures et semences : pas encore dans cette bibliothèque",
+  "intro": "Cette bibliothèque n’a pas encore de guide pour cultiver des aliments, il n’y a donc rien à ouvrir ici. La liste ci-dessous indique ce qui manque ; les provisions de nourriture à la maison se trouvent dans le guide « Manger et cuisiner ».",
+  "keywords": ["cultiver", "culture", "jardin", "jardinage", "potager", "légumes", "graines", "semences", "semer", "semis", "planter", "plantation", "compost", "sol", "terre", "pomme de terre", "pommes de terre", "haricots", "courge", "courges", "conserver ses semences", "pot", "pots", "jardinière", "bac surélevé", "balcon", "jardin familial", "jardin partagé", "arroser", "arrosage", "nuisibles", "ravageurs"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["food", "water"],
+  "gaps": {
+    "missing": [
+      "Aucun guide pour cultiver des aliments : le sol, les périodes de plantation selon les climats d’Europe, les cultures de base comme les pommes de terre et les haricots, ou l’arrosage.",
+      "Aucun guide pour conserver ses semences, ni pour cultiver en pot ou sur un balcon."
+    ]
+  }
+}

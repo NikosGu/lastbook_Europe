@@ -1,0 +1,255 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "hurt",
+  "mode": "now",
+  "title": "Quelqu’un est blessé ou soudainement malade",
+  "short": "Premiers secours : saignements, brûlures, respiration, blessures, malaises soudains",
+  "intro": "Des lectures pour porter les premiers secours en attendant l’arrivée de l’aide : examiner la personne, appeler les secours, saignements, brûlures, respiration et réanimation cardio-pulmonaire, blessures et malaises soudains. La plupart des pages viennent des lignes directrices internationales de premiers secours de la FICR (2020), écrites pour les formateurs en premiers secours ; d’autres viennent de guides de protection civile autrichiens et allemands.",
+  "keywords": ["premiers secours", "secourisme", "gestes qui sauvent", "blessure", "blessé", "blessée", "plaie", "coupure", "saignement", "hémorragie", "sang", "garrot", "pansement compressif", "brûlure", "brûlé", "os cassé", "fracture", "entorse", "foulure", "luxation", "attelle", "traumatisme crânien", "commotion cérébrale", "colonne vertébrale", "dos", "nuque", "cou", "RCP", "massage cardiaque", "réanimation", "ne respire plus", "inconscient", "évanoui", "ne réagit pas", "position latérale de sécurité", "PLS", "défibrillateur", "DAE", "étouffement", "s’étouffe", "fausse route", "état de choc", "choc", "coup de chaleur", "insolation", "déshydratation", "diarrhée", "vomissements", "vomir", "hypothermie", "gelures", "réaction allergique", "allergie", "anaphylaxie", "choc anaphylactique", "adrénaline", "épinéphrine", "stylo d’adrénaline", "asthme", "crise d’asthme", "crise cardiaque", "infarctus", "douleur thoracique", "douleur dans la poitrine", "AVC", "accident vasculaire cérébral", "crise d’épilepsie", "convulsions", "hypoglycémie", "diabète", "intoxication", "empoisonnement", "poison", "monoxyde de carbone", "morsure", "piqûre", "tique", "serpent", "vipère", "112", "911", "999", "ambulance", "SAMU", "urgence", "urgences"],
+  "choices": [
+    {
+      "id": "check",
+      "label": "Je ne sais pas ce qui ne va pas : comment examiner la personne ?",
+      "hint": "Un accident, quelqu’un qui s’effondre, plusieurs blessés",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Examiner la personne, dans l’ordre",
+         "note": "En anglais. Est-ce sans danger ? La personne réagit-elle, les voies respiratoires sont-elles libres, respire-t-elle normalement, saigne-t-elle beaucoup ?"},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Rester en sécurité, appeler tôt, aider d’abord les plus gravement blessés",
+         "note": "En anglais. Quand se tenir à l’écart et alerter les autorités, appeler avec le haut-parleur du téléphone, et plusieurs blessés."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 103, "label": "Ce qu’il faut dire aux services d’urgence",
+         "note": "En anglais. Rester calme et répondre à leurs questions ; mieux vaut appeler tôt avec peu d’informations qu’attendre."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 16, "label": "Ce que fait un secouriste",
+         "note": "En allemand. Rester calme, sécuriser les lieux, les gestes qui sauvent, appeler les secours, ce qu’il faut dire."}
+      ]
+    },
+    {
+      "id": "bleeding",
+      "label": "Saignement abondant, coupure ou plaie",
+      "hint": "Du sang qui traverse le pansement, une coupure profonde, une éraflure sale",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 187, "label": "Arrêter un saignement grave",
+         "note": "En anglais. Appuyer fort sur la plaie ; un garrot seulement sur un bras ou une jambe, et seulement si la compression ne suffit pas ; ce qu’il ne faut pas faire."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 188, "label": "Étape par étape, et ce qu’il ne faut pas toucher",
+         "note": "En anglais. Appuyer, faire allonger la personne, appeler les secours, un deuxième pansement par-dessus ; laisser en place un objet planté dans la plaie."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 23, "label": "Un pansement compressif en quatre étapes",
+         "note": "En allemand. Pour une plaie profonde qui saigne beaucoup."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 202, "label": "Nettoyer une coupure ou une éraflure",
+         "note": "En anglais. Rincer à l’eau propre du robinet et couvrir ; les signes d’infection ; le tétanos."}
+      ]
+    },
+    {
+      "id": "burn",
+      "label": "Brûlure, y compris par un liquide brûlant",
+      "hint": "Feu, eau chaude, huile de cuisson, produits chimiques, électricité",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 213, "label": "Refroidir la brûlure sous l’eau courante",
+         "note": "En anglais. Au moins dix minutes, idéalement vingt ; puis un pansement humide qui n’adhère pas ; ce qu’il ne faut pas faire."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 214, "label": "Pas de glace, et quand appeler les secours",
+         "note": "En anglais. Pourquoi pas de glace ni d’eau glacée, et quelles brûlures demandent les services d’urgence."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 215, "label": "Produits chimiques dans l’œil ; brûlures chez les bébés",
+         "note": "En anglais. Rincer l’œil tout de suite à l’eau propre ; demander un avis médical quand un bébé ou une personne fragile est brûlé."}
+      ]
+    },
+    {
+      "id": "bone",
+      "label": "Os cassé, entorse ou luxation",
+      "hint": "Une chute, une cheville tordue, un membre à la forme anormale",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 223, "label": "Le traiter comme une fracture et l’immobiliser",
+         "note": "En anglais. Soutenir le membre dans la position où vous le trouvez, le refroidir jusqu’à 20 minutes, poser une attelle pour un trajet cahoteux."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 224, "label": "Quand appeler les secours",
+         "note": "En anglais. Beaucoup de douleur ou de gonflement, un membre dans une position anormale ; toujours envelopper une poche de glace dans un linge."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 20, "label": "Blessures des os et des articulations",
+         "note": "En allemand. Immobiliser, couvrir les plaies, retirer tôt bagues et montres, refroidir contre le gonflement."}
+      ]
+    },
+    {
+      "id": "breathing",
+      "label": "Ne réagit pas, ne respire pas normalement, ou s’étouffe",
+      "hint": "Effondré, respire par à-coups, un aliment coincé dans la gorge, sorti de l’eau",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 128, "label": "Ne réagit pas mais respire : la position latérale de sécurité",
+         "note": "En anglais. Parler fort, secouer doucement, libérer les voies respiratoires, vérifier la respiration pendant dix secondes au plus, tourner la personne sur le côté."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 134, "label": "Ne respire pas normalement : commencer la réanimation cardio-pulmonaire",
+         "note": "En anglais. Considérer que le cœur s’est arrêté ; appuyer fort et vite, 100 à 120 fois par minute, sur environ 5 cm de profondeur, 30 compressions pour 2 insufflations."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 171, "label": "Étouffement : claques dans le dos et compressions abdominales",
+         "note": "En anglais. Jusqu’à cinq claques entre les omoplates, puis jusqu’à cinq compressions abdominales, en alternance."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 17, "label": "Inconscient, ou ne respire pas",
+         "note": "En allemand. Le bilan, la position latérale de sécurité, la réanimation à 30 pour 2, et le défibrillateur."}
+      ]
+    },
+    {
+      "id": "shock",
+      "label": "Pâle, froid, en sueur, faible : c’est peut-être un état de choc",
+      "hint": "Après un saignement abondant, de graves brûlures ou une allergie sévère",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 288, "label": "Allonger la personne et la garder au chaud",
+         "note": "En anglais. Sur le dos, jambes surélevées si elles ne sont pas blessées et que cela aide, éviter qu’elle se refroidisse, appeler les services d’urgence."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 289, "label": "Les signes de l’état de choc",
+         "note": "En anglais. Peau pâle, lèvres bleutées, peau froide ou moite, pouls rapide ; une couverture, et quelque chose entre la personne et le sol froid."}
+      ]
+    },
+    {
+      "id": "head",
+      "label": "Blessure à la tête, au cou ou au dos",
+      "hint": "Une chute, un accident de voiture, un coup à la tête",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 233, "label": "Les signes d’alerte après un coup à la tête",
+         "note": "En anglais. Quand appeler tout de suite les services d’urgence, et surveiller la personne pendant les 24 heures suivantes."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 228, "label": "Une blessure possible de la colonne vertébrale",
+         "note": "En anglais. Après un accident de la route ou une chute de hauteur : garder la personne immobile, pas de collier cervical ni de sangles, toujours appeler les secours."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 230, "label": "Ne pas déplacer la personne",
+         "note": "En anglais. Sauf si elle est en danger, et dans ce cas avec deux personnes pour aider."}
+      ]
+    },
+    {
+      "id": "heat-cold",
+      "label": "Trop chaud ou trop froid",
+      "hint": "Coup de chaleur, canicule, frissons, doigts blancs et engourdis",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 332, "label": "Coup de chaud : rafraîchir la personne",
+         "note": "En anglais. S’arrêter et aller dans un endroit frais ; refroidir à l’eau froide un adulte qui a eu trop chaud à cause d’un effort ; quand appeler les secours."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 333, "label": "Épuisement par la chaleur et coup de chaleur",
+         "note": "En anglais. Les signes de chacun, et le refroidissement dans l’eau froide pendant environ 15 minutes."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 343, "label": "Hypothermie",
+         "note": "En anglais. Mettre à l’abri du froid, retirer les vêtements mouillés, réchauffer la personne, une boisson chaude et sucrée si elle peut avaler ; toujours appeler les secours."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 349, "label": "Gelures",
+         "note": "En anglais. Réchauffer seulement si les soins sont à plus de deux heures et que la zone ne peut pas geler à nouveau : de l’eau chaude entre 37 et 39 °C, jamais un feu ni un radiateur."}
+      ]
+    },
+    {
+      "id": "allergy",
+      "label": "Réaction allergique grave",
+      "hint": "Gonflement, difficulté à respirer après une piqûre, un aliment ou un médicament",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 279, "label": "L’adrénaline en cas d’anaphylaxie",
+         "note": "En anglais. Le stylo auto-injecteur de la personne ; une deuxième dose après 5 à 10 minutes s’il n’y a pas d’amélioration et que les secours ne sont pas encore là."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 281, "label": "Utiliser un stylo auto-injecteur, étape par étape",
+         "note": "En anglais. Appeler les secours, allonger la personne, injecter dans la face externe de la cuisse, à travers un vêtement fin."}
+      ]
+    },
+    {
+      "id": "asthma",
+      "label": "Crise d’asthme",
+      "hint": "Respiration sifflante, essoufflement, l’inhalateur n’aide pas",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 180, "label": "Aider lors d’une crise d’asthme",
+         "note": "En anglais. Position assise, l’inhalateur de la personne, desserrer les vêtements, loin de la fumée ou de la poussière."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 181, "label": "Quand appeler les secours",
+         "note": "En anglais. Pas d’inhalateur et une crise qui dure plusieurs minutes, un inhalateur qui ne fait pas effet, des lèvres bleutées, de la confusion, une personne qui s’épuise."}
+      ]
+    },
+    {
+      "id": "poison",
+      "label": "Intoxication : un produit avalé, ou des fumées respirées",
+      "hint": "Produits ménagers, trop de comprimés, une pile bouton, monoxyde de carbone",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 258, "label": "Poison avalé, ou gaz toxique",
+         "note": "En anglais. Arrêter l’exposition ; ne pas faire vomir, et pas de lait, d’eau ni de charbon activé sauf si le centre antipoison le dit ; ne secourir quelqu’un dans un gaz que si c’est sans danger."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 259, "label": "Appeler le centre antipoison ou les services d’urgence",
+         "note": "En anglais. Et prévenir les intoxications à la maison, notamment avec un détecteur de monoxyde de carbone."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 263, "label": "Monoxyde de carbone, et piles bouton",
+         "note": "En anglais. Le monoxyde de carbone n’a ni couleur ni odeur ; que faire quand une pile bouton a été avalée."}
+      ]
+    },
+    {
+      "id": "diarrhoea",
+      "label": "Diarrhée, vomissements ou déshydratation",
+      "hint": "Une gastro-entérite, de l’eau impropre, un bébé ou une personne âgée qui se déshydrate",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Boire, ou des sels de réhydratation orale",
+         "note": "En anglais. Déshydratation légère : boire suffisamment ; grave : des sels de réhydratation orale ; continuer l’allaitement ; quand demander de l’aide."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 339, "label": "Une boisson de réhydratation faite maison",
+         "note": "En anglais. Sel, sucre et eau potable, dans les quantités que donne la page."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 308, "label": "Maux de ventre, diarrhée et vomissements : quand consulter",
+         "note": "En anglais. Diarrhée sévère, vomissements répétés, fièvre au-dessus de 38 °C, sang dans les vomissements ou les selles."}
+      ]
+    },
+    {
+      "id": "sudden",
+      "label": "Douleur dans la poitrine, signes d’AVC, crise convulsive ou hypoglycémie",
+      "hint": "Une douleur qui serre la poitrine, un visage qui s’affaisse, des convulsions, une personne diabétique qui semble confuse",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 264, "label": "Douleur dans la poitrine : peut-être une crise cardiaque",
+         "note": "En anglais. Appeler même si la douleur n’a duré que quelques minutes ; de l’aspirine en attendant, sauf si la personne ne doit pas en prendre."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 272, "label": "AVC : le test FAST",
+         "note": "En anglais. Face (visage), Arms (bras), Speech (parole), Time (temps) : appeler tout de suite les services d’urgence et noter l’heure du début."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 296, "label": "Une crise convulsive : protéger la personne",
+         "note": "En anglais. Dégager l’espace autour, protéger la tête avec quelque chose de mou, ne pas maintenir la personne ; quand appeler les secours."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 291, "label": "Hypoglycémie",
+         "note": "En anglais. Du glucose ou du sucre si la personne réagit et peut avaler ; appeler s’il n’y a pas d’amélioration rapide."}
+      ]
+    },
+    {
+      "id": "bites",
+      "label": "Morsures et piqûres",
+      "hint": "Une morsure de chien, une piqûre d’abeille, une tique, un serpent",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 242, "label": "Morsures d’animaux",
+         "note": "En anglais. Nettoyer la plaie à l’eau propre et au savon, contre l’infection et la rage."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 245, "label": "Tiques",
+         "note": "En anglais. Retirer une tique, et les signes après une piqûre qui demandent de voir un médecin."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 254, "label": "Morsure de serpent",
+         "note": "En anglais. Garder la personne aussi immobile que possible et appeler les secours ; pas de garrot, pas d’incision, pas de succion."}
+      ]
+    },
+    {
+      "id": "no-help",
+      "label": "Les secours sont loin, ou il y a beaucoup de blessés",
+      "hint": "Une catastrophe, le téléphone coupé, les secours peuvent mettre des heures ou des jours",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Quand les secours peuvent mettre des jours",
+         "note": "En anglais. Lors de catastrophes, les services d’urgence peuvent mettre des heures, des jours ou des semaines : se concentrer sur les saignements, les voies respiratoires et l’état de choc."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Plusieurs blessés",
+         "note": "En anglais. Appeler tôt, rappeler avec des détails, et s’occuper d’abord de ceux dont la vie est le plus en danger."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Si le 112 ne fonctionne pas",
+         "note": "En allemand. Se rendre au poste de police ou à l’hôpital le plus proche, si possible."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "N’approchez pas des lieux s’ils ne sont pas sûrs.", "doc": "ifrc-first-aid-guidelines-2020", "page": 102},
+    {"text": "Appelez les services d’urgence pour tout saignement grave.", "doc": "ifrc-first-aid-guidelines-2020", "page": 187},
+    {"text": "Ne retirez pas un objet planté dans une plaie. Une fois un garrot posé, laissez-le en place jusqu’à l’arrivée des secours.", "doc": "ifrc-first-aid-guidelines-2020", "page": 188},
+    {"text": "Ne couvrez jamais une plaie infectée : demandez une aide médicale.", "doc": "ifrc-first-aid-guidelines-2020", "page": 203},
+    {"text": "Ne mettez ni glace ni eau glacée sur une brûlure.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
+    {"text": "Appelez les secours pour les brûlures étendues ou profondes, les brûlures près du visage, de la gorge ou des organes génitaux, et les brûlures dues à des produits chimiques, à l’électricité ou à des flammes.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
+    {"text": "Si la respiration n’est pas normale (par à-coups, irrégulière ou absente), commencez tout de suite la réanimation cardio-pulmonaire.", "doc": "ifrc-first-aid-guidelines-2020", "page": 130},
+    {"text": "Ne touchez pas la personne pendant que le défibrillateur délivre un choc.", "doc": "ifrc-first-aid-guidelines-2020", "page": 158},
+    {"text": "Ne fouillez pas à l’aveugle avec un doigt dans la bouche d’une personne qui s’étouffe.", "doc": "ifrc-first-aid-guidelines-2020", "page": 170},
+    {"text": "Ne faites pas de compressions abdominales sur un bébé.", "doc": "ifrc-first-aid-guidelines-2020", "page": 173},
+    {"text": "Appelez tout de suite les services d’urgence si une personne montre des signes d’état de choc.", "doc": "ifrc-first-aid-guidelines-2020", "page": 288},
+    {"text": "Après un coup à la tête, appelez tout de suite si la personne perd connaissance même brièvement, vomit plus d’une fois, fait une crise convulsive, ou saigne du nez ou des oreilles.", "doc": "ifrc-first-aid-guidelines-2020", "page": 233},
+    {"text": "Ne déplacez pas une personne qui a peut-être une blessure à la colonne vertébrale, sauf si elle est en danger.", "doc": "ifrc-first-aid-guidelines-2020", "page": 230},
+    {"text": "Appelez les secours pour toute hypothermie, et ne frottez pas la peau de la personne.", "doc": "ifrc-first-aid-guidelines-2020", "page": 343},
+    {"text": "En cas de gelures, faites toujours appel à des soins médicaux.", "doc": "ifrc-first-aid-guidelines-2020", "page": 350},
+    {"text": "Si un poison a été avalé, ne faites pas vomir la personne, et ne donnez ni lait, ni eau, ni charbon activé, sauf si le centre antipoison le dit.", "doc": "ifrc-first-aid-guidelines-2020", "page": 258},
+    {"text": "Pour une douleur dans la poitrine, appelez les services d’urgence même si elle n’a duré que quelques minutes.", "doc": "ifrc-first-aid-guidelines-2020", "page": 264},
+    {"text": "Si vous pensez à un AVC, appelez tout de suite les services d’urgence et notez l’heure du début.", "doc": "ifrc-first-aid-guidelines-2020", "page": 272},
+    {"text": "Pendant une crise convulsive, ne maintenez pas la personne.", "doc": "ifrc-first-aid-guidelines-2020", "page": 296},
+    {"text": "Ne posez pas de garrot sur une morsure de serpent.", "doc": "ifrc-first-aid-guidelines-2020", "page": 254}
+  ],
+  "prepare": [
+    {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Ce que contient une trousse de secours pour la maison", "note": "En allemand. Une liste standard autrichienne."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Liste de contrôle de la pharmacie de la maison", "note": "En allemand."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Des médicaments pour 10 jours, et une formation aux premiers secours", "note": "En allemand."},
+    {"doc": "ifrc-first-aid-guidelines-2020", "page": 106, "label": "Enregistrer les numéros d’urgence dans votre téléphone", "note": "En anglais."},
+    {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Prévoir que les secours tardent", "note": "En anglais. Un kit pour les trois premiers jours."}
+  ],
+  "learn": [
+    {"doc": "ifrc-first-aid-guidelines-2020", "label": "Lignes directrices internationales 2020 sur les premiers secours, la réanimation et la formation", "note": "En anglais. FICR, 476 pages, rédigé pour ceux qui conçoivent les formations aux premiers secours : les données scientifiques et les recommandations, sujet par sujet. Ce n’est pas un manuel pour le grand public."},
+    {"doc": "zsv-steiermark-notfallratgeber", "label": "Guide d’urgence : bien réagir dans les situations d’urgence", "note": "En allemand. Ses pages de premiers secours sont courtes et pratiques."}
+  ],
+  "related": ["health", "shelter", "water", "sanitation"],
+  "gaps": {
+    "missing": [
+      "Aucun manuel de premiers secours écrit pour le grand public : les lignes directrices de la FICR sont écrites pour les formateurs, et les guides autrichien et allemand n’ont que quelques pages de premiers secours.",
+      "Les lignes directrices de la FICR ne citent aucun numéro d’urgence ; le 112 et les numéros nationaux viennent des guides autrichiens, allemands et italiens.",
+      "Aucune méthode simple, écrite pour le grand public, pour trier de nombreux blessés (triage).",
+      "Certains médicaments que citent les lignes directrices de la FICR, comme l’aspirine, l’adrénaline ou un inhalateur, ne peuvent être donnés que là où les règles locales le permettent ; aucune source ici ne donne ces règles, pour aucun pays."
+    ],
+    "disagree": [
+      "Refroidir une brûlure : les lignes directrices de la FICR disent de l’eau courante fraîche pendant au moins dix minutes, idéalement vingt, mais pas glacée ; le guide autrichien dit de rincer à l’eau tiède et d’arrêter si la personne frissonne."
+    ]
+  }
+}

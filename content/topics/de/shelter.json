@@ -1,0 +1,118 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "shelter",
+  "mode": "now",
+  "title": "Warm, kühl und geschützt bleiben",
+  "short": "Kälte ohne Heizung, Kohlenmonoxid, Winterstürme, Hitze",
+  "intro": "Lesestoff dazu, wie Sie warm bleiben, wenn die Heizung ausfällt, wie Sie ohne Gefahr durch Kohlenmonoxid heizen, wie Sie eine Kältewelle zu Hause und unterwegs überstehen und wie Sie Menschen helfen, die am meisten unter Kälte oder Hitze leiden.",
+  "keywords": ["Kälte", "kalt", "Frost", "eiskalt", "Winter", "Schnee", "Kältewelle", "Kälteeinbruch", "Heizung", "Heizung ausgefallen", "Heizungsausfall", "keine Heizung", "warm", "warm halten", "warm bleiben", "Decken", "Schlafsack", "Zwiebelprinzip", "mehrere Schichten", "Unterkühlung", "Erfrierung", "Erfrierungen", "Heizgerät", "Gasheizung", "Gasofen", "Petroleumofen", "Holzofen", "Kaminofen", "Kamin", "Kohlenmonoxid", "CO-Melder", "Kohlenmonoxidmelder", "Notstromaggregat", "Generator", "eingefrorene Leitungen", "eingefrorene Rohre", "Auto im Schnee stecken geblieben", "Eis", "Glatteis", "Hitze", "Hitzewelle", "heiß", "Unterkunft", "Schutz"],
+  "choices": [
+    {
+      "id": "cold",
+      "label": "Es ist eiskalt und die Heizung ist ausgefallen",
+      "hint": "Winter, ein Stromausfall, über Nacht warm bleiben",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Wenn die Heizung ausfällt",
+         "note": "Heizgeräte, die für Innenräume zugelassen sind, warme Kleidung, Decken und Schlafsäcke; Fenster geschlossen halten, aber kurz lüften."},
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Mehrere Schichten anziehen, etwas Warmes trinken",
+         "note": "Auf Englisch. Kleidung für die Kälte, warme Getränke und kein Alkohol, nasse Kleidung wechseln, und wann man ärztliche Hilfe holen sollte."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Heizen ohne Strom",
+         "note": "Auch Öl- und Gasheizungen fallen bei einem Stromausfall aus; Camping- oder Petroleumöfen, mit Lüftung und Rauchabzug geplant."}
+      ]
+    },
+    {
+      "id": "co",
+      "label": "Drinnen mit Feuer oder Gas heizen oder kochen",
+      "hint": "Kohlenmonoxid aus Heizgeräten, Öfen, Grills, Notstromaggregaten oder Kerzen",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Kohlenmonoxid: was drinnen sicher ist",
+         "note": "Nur Geräte, die für Innenräume zugelassen sind; ein offenes Feuer in Innenräumen kann Kohlenmonoxid erzeugen; einen CO-Melder anbringen."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Kein Stromaggregat und kein Heizgerät für draußen im Haus",
+         "note": "Auf Englisch. Kein Stromaggregat und keine Heiz- oder Kochgeräte, die für draußen gedacht sind, in der Wohnung benutzen."},
+        {"doc": "ifrc-extreme-cold", "page": 1, "label": "Warum Heizgeräte und Kamine das Risiko erhöhen",
+         "note": "Auf Englisch. In einer Kältewelle machen Heizgeräte und Kamine in Innenräumen Kohlenmonoxidvergiftungen und Hausbrände wahrscheinlicher."}
+      ]
+    },
+    {
+      "id": "home",
+      "label": "Zu Hause gut durch eine Kältewelle kommen",
+      "hint": "Eingefrorene Leitungen, Vorräte, eine sichere Art, warm zu bleiben",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Das Zuhause auf einen Wintersturm vorbereiten",
+         "note": "Auf Englisch. Wasser, falls Leitungen einfrieren, Lebensmittel für mehrere Tage, eine Taschenlampe und ein Radio, eine gut belüftete Wärmequelle."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Eingefrorene Leitungen und Gefahren nach dem Sturm",
+         "note": "Auf Englisch. Wasser in dünnem Strahl laufen lassen, Leitungen prüfen, Stromausfälle, Überschwemmungen durch Schneeschmelze, vereiste Wege."}
+      ]
+    },
+    {
+      "id": "outside",
+      "label": "Draußen in der Kälte oder im Auto festsitzen",
+      "hint": "Schnee auf der Straße, Eis auf einem See, Schnee schaufeln",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Wenn Sie im Auto festsitzen, bleiben Sie darin",
+         "note": "Auf Englisch. Möglichst nicht fahren, in einem festsitzenden Fahrzeug bleiben, auf Schnee langsam fahren; wie man Eis auf Teichen und Seen beurteilt."},
+        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Eine Winterausrüstung für das Auto",
+         "note": "Auf Englisch. Reifen, Starthilfekabel, ein Erste-Hilfe-Set, ein Ladegerät, warme Kleidung, eine Schaufel, ein voller Tank."},
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Schnee schaufeln und andere schwere Arbeit in der Kälte",
+         "note": "Auf Englisch. Überanstrengung in der Kälte kann einen Herzstillstand auslösen."}
+      ]
+    },
+    {
+      "id": "at-risk",
+      "label": "Ältere Menschen, Babys oder Tiere in der Kälte",
+      "hint": "Alleinlebende Nachbarn, Haustiere, Nutztiere",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Nach gefährdeten Menschen sehen",
+         "note": "Auf Englisch. Familie, Freunde und Nachbarn, die eher unter der Kälte leiden, etwa ältere und chronisch kranke Menschen."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Haustiere und Nutztiere",
+         "note": "Auf Englisch. Genug Futter und Wasser, und nicht zu sehr der Kälte ausgesetzt."}
+      ]
+    },
+    {
+      "id": "heat",
+      "label": "Es ist gefährlich heiß",
+      "hint": "Eine Hitzewelle, keine Kühlung, ältere Menschen oder Babys zu Hause",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Genug trinken, und nach älteren Menschen und Babys sehen",
+         "note": "Auf Englisch. Aus den Erste-Hilfe-Leitlinien der IFRC, zur Dehydrierung: Bei heißem Wetter regelmäßig nach älteren Menschen und Babys sehen."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 332, "label": "Jemand ist überhitzt: die Person abkühlen",
+         "note": "Auf Englisch. Aufhören und an einen kühlen Ort gehen, mit Wasser kühlen, und wann man Hilfe rufen sollte."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 333, "label": "Hitzeerschöpfung oder Hitzschlag?",
+         "note": "Auf Englisch. Woran man beides erkennt."}
+      ]
+    },
+    {
+      "id": "indoors-link",
+      "goto": "disaster/indoors",
+      "label": "Aufforderung, drinnen zu bleiben: Gas, Rauch oder Strahlung",
+      "hint": "Im Ratgeber „Beben, Feuer, Flut“"
+    }
+  ],
+  "limits": [
+    {"text": "Benutzen Sie drinnen nur Heizgeräte und Öfen, die für Innenräume zugelassen sind.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Eine Kohlenmonoxidvergiftung kann tödlich sein, und auch ein offenes Feuer in Innenräumen kann sie verursachen. Ein geprüfter CO-Melder warnt Sie.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "Benutzen Sie in der Wohnung kein Stromaggregat und keine Heiz- oder Kochgeräte, die für draußen gedacht sind.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "Holen Sie ärztliche Hilfe, wenn Anzeichen von Unterkühlung oder Erfrierungen auftreten.", "doc": "ifrc-extreme-cold", "page": 4},
+    {"text": "Vermeiden Sie Überanstrengung in der Kälte, etwa beim Schneeräumen: Sie kann einen Herzstillstand auslösen.", "doc": "ifrc-extreme-cold", "page": 4},
+    {"text": "Halten Sie Fenster und Türen gegen die Kälte geschlossen, aber lüften Sie regelmäßig kurz.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
+    {"text": "Wenn Sie in einem Wintersturm im Auto festsitzen, bleiben Sie im Auto.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "Graues Eis ist zu dünn: Eis sollte klar blau und mehr als 12 cm dick sein, bevor Sie es betreten.", "doc": "ifrc-extreme-cold", "page": 5}
+  ],
+  "prepare": [
+    {"doc": "ifrc-extreme-cold", "page": 3, "label": "Vorräte, Wärmequelle und Autoausrüstung für Winterstürme", "note": "Auf Englisch."},
+    {"doc": "ifrc-extreme-cold", "page": 2, "label": "Die Gefahren an Ihrem Wohnort kennen, und die nächste medizinische Hilfe", "note": "Auf Englisch."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Checkliste: Licht und Wärme", "note": "Taschenlampe, Kerzen, warme Kleidung und Decken, Schlafsäcke, ein Heizgerät, das keinen Netzstrom braucht, und Brennstoff."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Rauchmelder, Feuerlöscher, CO-Melder", "note": "Am Ende der Checkliste."}
+  ],
+  "learn": [
+    {"doc": "ifrc-extreme-cold", "label": "Extreme Kälte und Winterstürme: Kernbotschaften", "note": "Auf Englisch. Botschaften der IFRC zur Aufklärung der Bevölkerung: planen, Zuhause und Auto vorbereiten, warm bleiben, nach dem Sturm."}
+  ],
+  "related": ["power", "hurt", "health", "disaster"],
+  "gaps": {
+    "missing": [
+      "Kein Ratgeber zu Hitzewellen zu Hause: Räume kühl halten, Menschen abkühlen, Hilfe für alleinlebende ältere Menschen.",
+      "Kein Ratgeber dazu, wie man beurteilt, ob man in einem Gebäude sicher bleiben kann, das durch ein Erdbeben, einen Sturm oder einen Brand beschädigt wurde.",
+      "Nichts zu Notunterkünften der Behörden oder dazu, wie man im Freien Schutz findet."
+    ]
+  }
+}

@@ -31,7 +31,7 @@ fn offset(req: &Request) -> usize {
     req.param("offset").and_then(|v| v.trim().parse::<i64>().ok()).unwrap_or(0).max(0) as usize
 }
 
-/// The interface's language for a search: `lang`, else English.
+/// The interface's language (for a search, or the guides): `lang`, else English.
 fn lang(req: &Request) -> String {
     param(req, "lang", "en")
 }
@@ -43,7 +43,7 @@ impl Library {
         let cat = || self.catalog();
         Some(match path {
             "/api/health" => json(&json!({"service": "survival-library", "offline": true, "ok": true, "engine": "rust", "data": true})),
-            "/api/topics" => json(&Value::Array(self.topics_resolved())),
+            "/api/topics" => json(&Value::Array(self.topics_resolved_in(&lang(req)))),
             "/api/find" => json(&self.find(&param(req, "q", ""), &param(req, "kind", "all"), &lang(req))),
             "/api/search" => json(&Value::Array(self.simple_search(&req.param("q").unwrap_or_default(), 40))),
             "/api/retrieve" => {

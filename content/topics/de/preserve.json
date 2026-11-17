@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "preserve",
+  "mode": "learn",
+  "title": "Lebensmittel haltbar machen und lagern",
+  "short": "Einkochen, Trocknen, Fermentieren: noch nicht in dieser Bibliothek",
+  "intro": "Diese Bibliothek hat noch keinen Ratgeber dazu, wie man Lebensmittel zu Hause haltbar macht, etwa durch Einkochen in Gläsern, Trocknen, Einlegen oder Fermentieren. Wie lange gekaufte Lebensmittel halten und wie man sie lagert, steht im Ratgeber „Essen & Kochen“.",
+  "keywords": ["haltbar machen", "konservieren", "Konservieren", "einkochen", "Einkochen", "einmachen", "Einmachgläser", "Einweckgläser", "Gläser", "trocknen", "dörren", "Dörrgerät", "einlegen", "eingelegt", "Essiggurken", "fermentieren", "Sauerkraut", "Botulismus", "einfrieren", "blanchieren", "Marmelade", "Konfitüre"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["food"],
+  "gaps": {
+    "missing": [
+      "Kein Ratgeber zum Haltbarmachen von Lebensmitteln zu Hause: Einkochen in Gläsern, Trocknen, Einlegen, Fermentieren oder Einfrieren.",
+      "Kein Ratgeber dazu, wie man erkennt, ob selbst haltbar gemachte Lebensmittel sicher zu essen sind."
+    ]
+  }
+}

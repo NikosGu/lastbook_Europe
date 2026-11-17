@@ -1,0 +1,81 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "sanitation",
+  "mode": "now",
+  "title": "Bagno, rifiuti e igiene quando manca l'acqua",
+  "short": "Un WC senza acqua, mani pulite, rifiuti",
+  "intro": "Letture per quando non si può tirare lo sciacquone o manca l'acqua: un WC di fortuna, mani pulite e rifiuti. La biblioteca ha solo brevi passaggi su questo; cosa manca è elencato qui sotto.",
+  "keywords": ["bagno", "WC", "gabinetto", "water", "toilette", "sciacquone", "lo sciacquone non va", "non scarica", "liquami", "fogna", "fognature", "scarichi", "WC a secchio", "secchio", "WC da campeggio", "WC chimico", "sacchetti per WC", "sacchi della spazzatura", "rifiuti", "spazzatura", "immondizia", "pattumiera", "igiene", "lavarsi", "lavarsi le mani", "mani", "sapone", "gel igienizzante", "igienizzante per le mani", "disinfettante", "pannolini", "assorbenti", "mosche"],
+  "choices": [
+    {
+      "id": "no-flush",
+      "label": "Non si può tirare lo sciacquone",
+      "hint": "Niente acqua, un lungo blackout, fognature danneggiate",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 21, "label": "Sacchetti per il WC, un secchio o un WC da campeggio",
+         "note": "In tedesco. Perché il bagno diventa un problema in un lungo blackout, e cosa tenere: sacchetti richiudibili, secchi, un WC da campeggio."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Sacchi resistenti da sistemare nella tazza del WC",
+         "note": "In tedesco. La lista di controllo per l'igiene: sacchi della spazzatura grandi e robusti per il WC, un WC da campeggio e altri articoli per l'igiene."},
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Un WC di fortuna se mancano l'acqua o le fognature",
+         "note": "In tedesco. Fa parte delle prime cose da fare in casa in un blackout."},
+        {"doc": "who-tn09-how-much-water", "page": 2, "label": "Quanta acqua usa uno sciacquone",
+         "note": "In inglese. Fino a 7 litri ogni volta; i WC più semplici ne usano molta meno. Scritta per chi organizza i soccorsi."}
+      ]
+    },
+    {
+      "id": "hands",
+      "label": "Tenere le mani pulite con poca acqua",
+      "hint": "Niente acqua corrente, il sapone sta finendo",
+      "read": [
+        {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "Quando tutti dovrebbero lavarsi le mani",
+         "note": "In inglese. Dopo aver usato il WC, prima di preparare il cibo, prima di mangiare o di dare da mangiare a un bambino, e dopo aver pulito un bambino."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Mani pulite prima di toccare l'acqua da bere",
+         "note": "In inglese. Lavarsi le mani prima di maneggiare l'acqua conservata, e un rubinetto sul contenitore."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Guanti, piatti e posate usa e getta",
+         "note": "In tedesco. Senza acqua e corrente non si possono lavare i piatti; i guanti aiutano quando devi medicare una ferita e non puoi lavarti le mani."}
+      ]
+    },
+    {
+      "id": "waste",
+      "label": "I rifiuti si accumulano",
+      "hint": "Nessuna raccolta, avanzi di cibo, cattivi odori, mosche",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Perché i rifiuti diventano pericolosi in pochi giorni",
+         "note": "In tedesco. In un lungo blackout, rifiuti ed escrementi fanno presto proliferare insetti e malattie."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Evita di produrre rifiuti e raccoglili in sacchi",
+         "note": "In tedesco."}
+      ]
+    },
+    {
+      "id": "sewage",
+      "label": "Scarichi dopo un'alluvione, o liquami che risalgono",
+      "hint": "Cantina allagata, scarichi che rigurgitano, una pompa per le acque di scarico",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Prima di usare gli scarichi dopo un'alluvione",
+         "note": "Informati se fognature, fosse biologiche e pozzi sono danneggiati, e segui le indicazioni delle autorità prima di fare pulizia."},
+        {"doc": "zsv-steiermark-blackout", "page": 27, "label": "Pompe per le acque di scarico e valvole antiriflusso",
+         "note": "In tedesco. Se la casa ha una sua pompa per le acque di scarico, controllala insieme alle eventuali valvole antiriflusso."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Rifiuti ed escrementi lasciati in giro fanno proliferare insetti e malattie nel giro di pochi giorni.", "doc": "zsv-steiermark-blackout", "page": 10},
+    {"text": "Dopo un'alluvione, informati se fognature, fosse biologiche e pozzi sono danneggiati prima di usare gli scarichi.", "doc": "dpc-io-non-rischio", "page": 31},
+    {"text": "In un lungo blackout lavarsi viene dopo: l'acqua da bere va risparmiata.", "doc": "zsv-steiermark-blackout", "page": 21}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Lista di controllo: igiene", "note": "In tedesco."},
+    {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Liste per l'igiene e la salute", "note": "In tedesco."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Cosa dimenticano le famiglie: carta igienica, sacchetti, guanti", "note": "In tedesco."}
+  ],
+  "learn": [],
+  "related": ["water", "hurt", "food"],
+  "gaps": {
+    "missing": [
+      "Nessuna guida passo per passo a un WC di emergenza: come allestire un WC con sacchetto o secchio e come smaltire i rifiuti in modo sicuro.",
+      "Nulla su come tenersi puliti con pochissima acqua, oltre a quando lavarsi le mani.",
+      "Nessuna guida per pulire una casa in cui sono entrati liquami o acqua dell'alluvione.",
+      "Nulla su come evitare che una malattia come la diarrea si diffonda in famiglia."
+    ]
+  }
+}

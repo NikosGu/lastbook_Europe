@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "repair",
+  "mode": "learn",
+  "title": "Riparare e costruire",
+  "short": "Attrezzi, riparazioni, motori: non ancora in questa biblioteca",
+  "intro": "Questa biblioteca non ha ancora una guida ad attrezzi, riparazioni in casa, motori o costruzioni, quindi qui non c'è nulla da aprire. L'elenco qui sotto dice cosa manca.",
+  "keywords": ["riparare", "aggiustare", "attrezzi", "utensili", "cassetta degli attrezzi", "affilare", "idraulica", "rubinetto", "sciacquone", "falegnameria", "motore", "saldatura", "costruire", "officina", "fai da te"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["power"],
+  "gaps": {
+    "missing": [
+      "Nessuna guida agli attrezzi manuali, all'affilatura o a una cassetta degli attrezzi di base.",
+      "Nessuna guida alle riparazioni in casa (rubinetti, WC, finestre, semplici lavori elettrici) o ai piccoli motori."
+    ]
+  }
+}

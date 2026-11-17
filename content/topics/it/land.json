@@ -1,0 +1,22 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "land",
+  "mode": "learn",
+  "title": "Trovare terreni sicuri e risorse naturali",
+  "short": "Terreno, sorgenti, piante selvatiche, carte: non ancora in questa biblioteca",
+  "intro": "Questa biblioteca non ha ancora nulla su terreno, sorgenti e pozzi, piante selvatiche o lettura delle carte. Conoscere alluvioni, terremoti e altri rischi del luogo in cui vivi è nella guida “Terremoto, incendio, alluvione”.",
+  "keywords": ["terreno", "sorgente", "pozzo", "acqua piovana", "raccolta spontanea", "piante selvatiche", "piante velenose", "funghi", "mappa", "carta", "bussola", "orientamento", "carta topografica"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["disaster", "water"],
+  "gaps": {
+    "missing": [
+      "Nessuna mappa dei rischi (alluvioni, terremoti, frane) per alcuna zona.",
+      "Nulla su come trovare acqua in natura (sorgenti, pozzi, pioggia), né su piante selvatiche e funghi.",
+      "Nulla su come leggere una carta o usare una bussola."
+    ]
+  }
+}

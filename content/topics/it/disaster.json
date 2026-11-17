@@ -1,0 +1,174 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "disaster",
+  "mode": "now",
+  "title": "Terremoto, alluvione, incendio e altre calamità",
+  "short": "Terremoto, maremoto, alluvione, incendio, restare al chiuso, lasciare casa",
+  "intro": "Letture per i pericoli più frequenti per chi vive in Europa: terremoti, maremoti sulla costa, alluvioni, incendi in casa e nei boschi, e incidenti per cui bisogna restare al chiuso o lasciare casa. La maggior parte delle pagine viene dalla protezione civile italiana, tedesca e austriaca.",
+  "keywords": ["terremoto", "sisma", "scossa", "scosse", "scosse di assestamento", "repliche", "maremoto", "tsunami", "onda anomala", "alluvione", "allagamento", "inondazione", "esondazione", "piena", "bomba d'acqua", "nubifragio", "pioggia forte", "fiume", "tempesta", "temporale", "fulmine", "fulmini", "incendio", "fuoco", "incendio in casa", "fumo", "rilevatore di fumo", "incendio boschivo", "incendio nel bosco", "evacuare", "evacuazione", "zaino di emergenza", "kit di emergenza", "documenti", "restare al chiuso", "restare in casa", "chimico", "incidente chimico", "radiazioni", "nucleare", "iodio", "pastiglie di iodio", "esplosione", "sirena"],
+  "choices": [
+    {
+      "id": "quake-now",
+      "label": "La terra trema",
+      "hint": "Un terremoto, al chiuso o all'aperto",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 12, "label": "Durante un terremoto",
+         "note": "Al chiuso: vicino a un muro portante o sotto un tavolo robusto, e non precipitarti fuori. All'aperto: lontano da edifici, alberi, lampioni e linee elettriche."}
+      ]
+    },
+    {
+      "id": "quake-after",
+      "label": "La scossa è finita",
+      "hint": "Feriti, danni, gas, altre scosse",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 13, "label": "Dopo un terremoto",
+         "note": "Primo soccorso, chiudere gas, acqua e luce, scarpe ai piedi, niente ascensore, la costa, telefono e auto, le aree di attesa del Comune."}
+      ]
+    },
+    {
+      "id": "tsunami",
+      "label": "Forte terremoto sulla costa, o il mare si ritira",
+      "hint": "Segnali e allerte di maremoto, in spiaggia o in porto",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 18, "label": "I segnali di un maremoto",
+         "note": "Potrebbe non esserci un'allerta ufficiale: un forte terremoto, il mare che si ritira all'improvviso, un boato dal mare."},
+        {"doc": "dpc-io-non-rischio", "page": 20, "label": "Sali in alto, in fretta, a piedi",
+         "note": "Dopo un'allerta o anche un solo segnale: il punto elevato più vicino o i piani alti, avvisa gli altri, lascia l'auto; le imbarcazioni."},
+        {"doc": "dpc-io-non-rischio", "page": 21, "label": "Dopo un maremoto",
+         "note": "Possono arrivare altre onde; resta in alto finché le autorità non dicono altrimenti; acqua del rubinetto e cibo."}
+      ]
+    },
+    {
+      "id": "flood-warning",
+      "label": "È stata data l'allerta per alluvione",
+      "hint": "Piogge forti, un fiume che si ingrossa, un'allerta per la mia zona",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 28, "label": "Quando viene diramata un'allerta",
+         "note": "Segui gli aggiornamenti, non dormire nei seminterrati, proteggi il piano terra, pensaci bene prima di spostare l'auto."},
+        {"doc": "vvf-acqua-e-vita", "page": 1, "label": "Proteggersi in caso di alluvione",
+         "note": "Sali ai piani alti, stai lontano da seminterrati e sottopassi, usa il telefono solo per le emergenze, uno zaino pronto per andare via."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 31, "label": "Sali più in alto, mai in cantina",
+         "note": "In tedesco. Con alluvioni e piogge forti i piani alti proteggono; cantine, parcheggi sotterranei e sottopassi possono diventare trappole."}
+      ]
+    },
+    {
+      "id": "flood-now",
+      "label": "L'acqua sta salendo intorno a me",
+      "hint": "In un edificio, all'aperto o in auto",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 29, "label": "Al chiuso durante un'alluvione",
+         "note": "Sali ai piani alti, non scendere in cantina e non uscire per spostare l'auto; niente ascensore; chiudi gas e luce; aiuta i vicini anziani o con disabilità."},
+        {"doc": "dpc-io-non-rischio", "page": 30, "label": "All'aperto durante un'alluvione",
+         "note": "Esci dall'acqua, raggiungi un punto più alto lontano dai pendii, non guidare, evita sottopassi, argini e ponti."}
+      ]
+    },
+    {
+      "id": "flood-after",
+      "label": "L'acqua si è ritirata",
+      "hint": "Tornare a casa, fango, cantine, gas e corrente",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Dopo un'alluvione",
+         "note": "Aspetta le indicazioni delle autorità, evita le strade allagate, controlla gas e impianto elettrico, gli scarichi, l'acqua del rubinetto e il cibo."}
+      ]
+    },
+    {
+      "id": "home-fire",
+      "label": "Fuoco o fumo in casa",
+      "hint": "Il rilevatore di fumo suona, un incendio in una stanza, fumo sulle scale",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 26, "label": "Incendio in casa: sei passi",
+         "note": "In tedesco. Spegnilo solo se puoi farlo senza rischi, esci e chiudi la porta, avvisa gli altri, non attraversare mai il fumo, chiama il 112."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 10, "label": "Uscire, o aspettare alla finestra",
+         "note": "In tedesco. Se la via d'uscita è libera dal fumo, esci; se c'è fumo, chiudi le porte, tappa le fessure con panni bagnati e aspetta a una finestra aperta."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 8, "label": "Spegnere un piccolo incendio",
+         "note": "In tedesco. Estintori e coperte antifiamma, mai acqua su grasso o olio che bruciano, e una persona con i vestiti in fiamme."}
+      ]
+    },
+    {
+      "id": "forest-fire",
+      "label": "C'è un incendio boschivo vicino",
+      "hint": "Fumo, fiamme nel bosco, il fuoco ti ha raggiunto",
+      "read": [
+        {"doc": "dpc-io-non-rischio", "page": 39, "label": "Se vedi un incendio boschivo, o se le fiamme ti raggiungono",
+         "note": "Chiama subito; come allontanarsi, dove sdraiarsi e quando passare sulla zona già bruciata."},
+        {"doc": "dpc-io-non-rischio", "page": 37, "label": "Segnala un incendio, o anche solo del fumo",
+         "note": "Indica il luogo esatto e il Comune. Con i numeri italiani."}
+      ]
+    },
+    {
+      "id": "indoors",
+      "label": "Le autorità dicono di restare al chiuso: gas, fumo o radiazioni",
+      "hint": "Un incidente chimico o nucleare, esplosioni, una sirena d'allarme",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 30, "label": "Dove ripararsi da gas, radiazioni o esplosioni",
+         "note": "In tedesco. Gas all'esterno: entra, sali ai piani alti, sigilla porte e finestre, spegni la ventilazione. Gas all'interno: esci. Radiazioni o esplosioni: scendi il più in basso possibile."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 4, "label": "Le sirene in Austria: preallarme e allarme",
+         "note": "In tedesco. Al segnale di allarme, vai in un locale protetto o in cantina e accendi la radio."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Acqua e iodio dopo un incidente nucleare",
+         "note": "In tedesco. L'acqua del rubinetto può non essere sicura per alcuni giorni; pastiglie di iodio solo quando lo dicono le autorità."}
+      ]
+    },
+    {
+      "id": "thunderstorm",
+      "label": "Temporale in montagna",
+      "hint": "Fulmini, il temporale ti sorprende su una cresta o in vetta",
+      "read": [
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 27, "label": "Temporali in montagna",
+         "note": "In tedesco. I segnali di avvertimento, e quali luoghi offrono un po' di protezione e quali nessuna."}
+      ]
+    },
+    {
+      "id": "leave",
+      "label": "Forse dobbiamo lasciare casa",
+      "hint": "Zaino di emergenza, documenti, persone che hanno bisogno di aiuto, animali domestici",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 36, "label": "Cosa mettere nello zaino di emergenza",
+         "note": "In tedesco. L'elenco completo, dai medicinali e dai documenti fino alla torcia e alla radio."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 27, "label": "Documenti importanti",
+         "note": "In tedesco. Quali documenti tenere insieme, in una scatola ignifuga o impermeabile, con le copie."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Se hai bisogno di aiuto per andare via",
+         "note": "In tedesco. Ausili, medicinali, contatti, e capire chi può aiutarti a uscire."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Durante un terremoto non precipitarti fuori: aspetta che la scossa finisca.", "doc": "dpc-io-non-rischio", "page": 12},
+    {"text": "Dopo un terremoto non usare l'ascensore, e fai attenzione alle scale.", "doc": "dpc-io-non-rischio", "page": 13},
+    {"text": "Potrebbe non esserci un'allerta ufficiale di maremoto: un forte terremoto o il mare che si ritira all'improvviso sono il segnale per salire in alto.", "doc": "dpc-io-non-rischio", "page": 18},
+    {"text": "Non usare l'auto per fuggire da un maremoto: può diventare una trappola.", "doc": "dpc-io-non-rischio", "page": 20},
+    {"text": "Dopo la prima possono arrivare altre onde pericolose: non tornare finché non è consentito.", "doc": "dpc-io-non-rischio", "page": 21},
+    {"text": "In un'alluvione non scendere mai in cantine, seminterrati o garage per salvare le tue cose: rischi la vita.", "doc": "dpc-io-non-rischio", "page": 29},
+    {"text": "In una cantina allagata potresti non riuscire ad aprire la porta, e c'è il rischio di una scossa elettrica mortale.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 31},
+    {"text": "Anche pochi centimetri d'acqua che scorre veloce possono farti cadere o bloccare un'auto: stai lontano da sottopassi, argini e ponti.", "doc": "dpc-io-non-rischio", "page": 30},
+    {"text": "Non fuggire mai attraverso il fumo: pochi respiri possono uccidere. Se non hai via d'uscita, fatti sentire da una finestra.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
+    {"text": "Non gettare mai acqua su grasso o olio che bruciano.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 26},
+    {"text": "In un incendio non usare l'ascensore e non saltare dalla finestra.", "doc": "zsv-steiermark-notfallratgeber", "page": 10},
+    {"text": "Se vedi un incendio boschivo, chiama subito: non pensare che l'abbia già fatto qualcun altro.", "doc": "dpc-io-non-rischio", "page": 39},
+    {"text": "Se in un edificio fuoriescono gas o liquidi pericolosi, esci dall'edificio.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 30},
+    {"text": "Prendi le pastiglie di iodio solo quando te lo dicono le autorità: possono avere gravi effetti collaterali.", "doc": "oezsv-bevorratungsratgeber", "page": 17}
+  ],
+  "prepare": [
+    {"doc": "dpc-io-non-rischio", "page": 11, "label": "Rendi la casa più sicura prima di un terremoto", "note": "Fissa i mobili alti, tieni in basso gli oggetti pesanti, impara a chiudere gas, acqua e luce, individua i punti sicuri."},
+    {"doc": "dpc-io-non-rischio", "page": 26, "label": "Come si comportano le alluvioni, e i luoghi più pericolosi", "note": "L'acqua può salire di uno o due metri in pochi minuti."},
+    {"doc": "dpc-io-non-rischio", "page": 27, "label": "Prima di un'alluvione: piano, kit, oggetti di valore fuori dalla cantina", "note": "E anche avvisare il Comune se in casa c'è qualcuno che ha bisogno di aiuto."},
+    {"doc": "dpc-io-non-rischio", "page": 19, "label": "Sulla costa: un piano familiare per il maremoto", "note": "Dalla guida “Io non rischio” della Protezione Civile."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 36, "label": "Lista di controllo per lo zaino di emergenza", "note": "In tedesco."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Documenti in una cartellina impermeabile, e sacchi antiallagamento", "note": "In tedesco."},
+    {"doc": "dpc-io-non-rischio", "page": 38, "label": "Prevenire gli incendi boschivi", "note": "Sigarette, fuochi nel bosco, auto sull'erba secca, rifiuti, bruciatura delle stoppie, vento."}
+  ],
+  "learn": [
+    {"doc": "dpc-io-non-rischio", "label": "Io non rischio: terremoto, maremoto, alluvione", "note": "La guida del Dipartimento della Protezione Civile (2025): prima, durante e dopo, più incendi boschivi, vulcani e IT-alert. Scritta per l'Italia."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Prepararsi a crisi e catastrofi", "note": "In tedesco. La guida federale tedesca (2025)."},
+    {"doc": "zsv-steiermark-notfallratgeber", "label": "Guida per le emergenze: come comportarsi correttamente", "note": "In tedesco. Guida austriaca (2024): numeri, sirene, incendi, primo soccorso, incidenti, montagna e acqua."}
+  ],
+  "related": ["comms", "shelter", "hurt", "water"],
+  "gaps": {
+    "missing": [
+      "Nessuna guida a tempeste, grandine o vento forte, a parte una pagina austriaca sui temporali in montagna.",
+      "Nessuna guida alle frane, né alle valanghe oltre al soccorso tra alpinisti.",
+      "Nessuna guida per pulire e asciugare una casa dopo un'alluvione.",
+      "Sugli incidenti chimici e nucleari, solo dove ripararsi e l'avvertenza sullo iodio: nulla su quanto tempo restare al chiuso o su come fare pulizia.",
+      "Le pagine su terremoto, maremoto, alluvione e incendi boschivi sono scritte per l'Italia; allerte e sirene sono spiegate solo per Italia, Germania e Austria."
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "water",
+  "mode": "now",
+  "title": "Zdobądź bezpieczną wodę pitną",
+  "short": "Przechowuj ją, uzdatniaj i chroń przed zabrudzeniem",
+  "intro": "Materiały na czas, gdy woda z kranu przestaje płynąć albo może nie być bezpieczna: ile wody trzymać w zapasie, jak sprawić, by była bezpieczniejsza do picia, i jak utrzymać ją w czystości. Strony pochodzą od WHO oraz od szwajcarskich, niemieckich, austriackich i włoskich służb ochrony ludności.",
+  "keywords": ["woda", "woda pitna", "woda z kranu", "kranówka", "gotowanie", "zagotować", "przegotować", "przegotowana woda", "gotowanie wody", "chlor", "tabletki", "tabletki do uzdatniania wody", "oczyszczanie wody", "uzdatnianie wody", "uzdatnić", "dezynfekcja", "odkażanie", "filtr", "filtr piaskowy", "SODIS", "słońce", "światło słoneczne", "woda butelkowana", "woda mineralna", "przechowywanie", "przechowywanie wody", "zapas wody", "pojemnik", "kanister", "baniak", "wanna", "ile wody", "litry", "pragnienie", "brudna woda", "powódź", "pęknięta rura", "awaria wodociągu", "skażona woda", "zanieczyszczona woda", "blackout", "brak prądu"],
+  "choices": [
+    {
+      "id": "unsafe",
+      "label": "Woda z kranu nie leci albo może nie być bezpieczna",
+      "hint": "Powódź, pęknięta rura, ostrzeżenie, żeby jej nie pić",
+      "read": [
+        {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Dlaczego każdy dom potrzebuje zapasu wody",
+         "note": "Po niemiecku. Nawałnica może uszkodzić rurę albo sprawić, że woda z kranu nie będzie bezpieczna; miej zapas na czas do przywrócenia dostaw."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Co daje, a czego nie daje uzdatnianie wody w domu",
+         "note": "Po angielsku. Uzdatniać trzeba tylko wodę do picia i do przygotowania jedzenia, około 5 litrów na osobę dziennie. Te metody nie usuwają chemikaliów."},
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Po powodzi: zanim napijesz się wody z kranu",
+         "note": "Po włosku. Wśród kroków po powodzi: sprawdź, czy żaden lokalny komunikat nie zakazuje picia wody z kranu, i nie jedz żywności, która miała kontakt z wodą."}
+      ]
+    },
+    {
+      "id": "boil",
+      "label": "Mogę zagotować wodę",
+      "hint": "Kuchenka gazowa, kuchenka turystyczna, ogień",
+      "read": [
+        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Gotowanie, chlor i słońce",
+         "note": "Po angielsku. Zagotuj wodę, aż zacznie mocno wrzeć; to skuteczne, ale zużywa dużo paliwa. Strona omawia też chlor i dezynfekcję słońcem."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "Prosty filtr, a potem zagotuj wodę",
+         "note": "Po niemiecku. Prowizoryczny filtr piaskowy do mętnej wody, po którym wodę gotuje się przez około minutę."}
+      ]
+    },
+    {
+      "id": "tablets",
+      "label": "Mam tabletki do uzdatniania wody albo chlor",
+      "hint": "Tabletki lub krople z apteki albo ze sklepu turystycznego",
+      "read": [
+        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Tabletki z chlorem krok po kroku",
+         "note": "Po angielsku. Instrukcja obrazkowa dla wody klarownej i dla brudnej, potem 30 minut czekania. Dawka zależy od produktu: stosuj się do jego instrukcji."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Co chlor robi, a czego nie",
+         "note": "Po angielsku. Chlor zabija większość zarazków, ale nie wszystkie; produkty mają różną moc, więc zawsze stosuj się do instrukcji producenta."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Tabletki, wanna i słońce",
+         "note": "Po niemiecku. Tabletki dezynfekujące z apteki, napełnienie wanny na zapas i dezynfekcja słońcem w butelkach."}
+      ]
+    },
+    {
+      "id": "no-fuel",
+      "label": "Nie mam paliwa ani tabletek",
+      "hint": "Tylko przezroczyste butelki, słońce, tkanina albo piasek",
+      "read": [
+        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Odstaw wodę, a potem ją przefiltruj",
+         "note": "Po angielsku. Potrząsanie, by napowietrzyć wodę, odstawianie, by brud opadł, i domowe filtry. Odstana woda nadal wymaga sprawdzonej metody uzdatniania."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Dezynfekcja słońcem w przezroczystych butelkach (SODIS)",
+         "note": "Po angielsku. Przezroczyste butelki jedno- lub dwulitrowe z klarowną wodą na pełnym słońcu; jak długo, zależy od słońca i butelki."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Dezynfekcja słońcem według austriackiego poradnika",
+         "note": "Po niemiecku. Wielkość butelki, jak długo trzymać ją na słońcu i ile zarazków to zabija."}
+      ]
+    },
+    {
+      "id": "how-much",
+      "label": "Ile wody potrzebujemy?",
+      "hint": "Na osobę, na dzień, na ile dni",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Około 2 litrów na osobę dziennie",
+         "note": "Po niemiecku. Z tego pół litra do gotowania; ile potrzebuje trzyosobowa rodzina na 3, 5 lub 10 dni; woda dla zwierząt domowych."},
+        {"doc": "who-tn09-how-much-water", "page": 2, "label": "Minimum potrzebne do przeżycia i do higieny",
+         "note": "Po angielsku. Napisane dla planujących pomoc humanitarną: ile litrów dziennie do picia i jedzenia, do mycia i do gotowania; toaleta ze spłukiwaniem zużywa do 7 litrów za każdym razem."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Siedem butelek na osobę na tydzień",
+         "note": "Po niemiecku. Austriacka zasada tygodnia bez zakupów i bez prądu oraz coroczne sprawdzanie zapasów."}
+      ]
+    },
+    {
+      "id": "store",
+      "label": "Przechowuj wodę i utrzymuj ją w czystości",
+      "hint": "Butelki, kanistry, wiadra, jak długo można ją przechowywać",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 20, "label": "Woda butelkowana i przechowywanie wody z kranu przez miesiące",
+         "note": "Po niemiecku. Dlaczego woda jest najważniejsza, która woda butelkowana najdłużej się przechowuje i jak trzymać wodę z kranu w bardzo czystych pojemnikach, w ciemnym i chłodnym miejscu."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Chroń uzdatnioną wodę przed zabrudzeniem",
+         "note": "Po angielsku. Czyste, przykryte pojemniki w chłodnym i ciemnym miejscu, czyste ręce i kranik w pojemniku, żeby nikt nie sięgał do środka."}
+      ]
+    },
+    {
+      "id": "blackout",
+      "label": "Nie ma prądu: czy woda nadal będzie płynąć?",
+      "hint": "Długa przerwa w dostawie prądu, wodociągi, kanalizacja",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 6, "label": "Wodociągi potrzebują prądu",
+         "note": "Po niemiecku. Bez prądu dostawy wody mogą ustać; co jeszcze może zakłócić długa awaria."},
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Pierwsze kroki podczas blackoutu: napełnij pojemniki",
+         "note": "Po niemiecku. Sprawdź zapasy, napełnij garnki, wiadra i butelki, póki woda jeszcze leci, i oszczędzaj ją."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Uzdatnianie wody w domu usuwa brud i zarazki, ale nie chemikalia.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
+    {"text": "Woda, którą odstawiono, by brud opadł, nadal wymaga sprawdzonego uzdatnienia, zanim ją wypijesz.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
+    {"text": "Chlor nie zabija wszystkich zarazków: niektóre, na przykład Cryptosporidium, są na niego odporne. Zawsze stosuj się do instrukcji producenta.", "doc": "who-tn05-emergency-water-treatment", "page": 2},
+    {"text": "Podczas powodzi nie pij wody z kranu: może być skażona.", "doc": "dpc-io-non-rischio", "page": 29},
+    {"text": "Po powodzi pij wodę z kranu dopiero wtedy, gdy żadne lokalne zarządzenie ani komunikat tego nie zakazuje.", "doc": "dpc-io-non-rischio", "page": 31},
+    {"text": "Choroby przenoszone przez brudną wodę, takie jak cholera czy dur brzuszny, mogą zabić, jeśli się ich nie leczy.", "doc": "oezsv-bevorratungsratgeber", "page": 15},
+    {"text": "9 litrów na osobę wystarcza do picia i gotowania na trzy dni, ale nie do mycia ani spłukiwania toalety.", "doc": "bwl-kluger-rat-notvorrat", "page": 3}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Ile wody trzymać na 3, 5 lub 10 dni", "note": "Po niemiecku."},
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Co najmniej 9 litrów na osobę: jedna zgrzewka sześciu butelek", "note": "Po niemiecku. Łatwo ją przenieść i można ją przechowywać miesiącami."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Zapas na tydzień, sprawdzany raz w roku", "note": "Po niemiecku."},
+    {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Wiedz, gdzie zakręca się wodę, i zapytaj w swojej gminie", "note": "Po niemiecku. Także woda do mycia i spłukiwania, nie tylko do picia."},
+    {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Pojemniki, w których woda pozostaje czysta", "note": "Po angielsku."}
+  ],
+  "learn": [
+    {"doc": "who-tn05-emergency-water-treatment", "label": "Awaryjne uzdatnianie wody pitnej w miejscu jej użycia", "note": "Po angielsku. Nota techniczna WHO (2013) napisana dla pracowników pomocy humanitarnej: odstawianie, filtry, gotowanie, chlor, słońce, przechowywanie."},
+    {"doc": "who-tn09-how-much-water", "label": "Ile wody potrzeba w sytuacjach kryzysowych", "note": "Po angielsku. Nota techniczna WHO (2013) dla planujących pomoc humanitarną."},
+    {"doc": "oezsv-bevorratungsratgeber", "label": "Poradnik o zapasach", "note": "Po niemiecku. Austriacka ochrona ludności: woda, jedzenie, przechowywanie, leki."}
+  ],
+  "related": ["food", "sanitation", "power"],
+  "gaps": {
+    "missing": [
+      "Brak poradnika o wodzie, w której mogą być paliwo, chemikalia lub ścieki, poza uwagą WHO, że uzdatnianie wody w domu nie usuwa chemikaliów.",
+      "Nic o szukaniu wody w terenie (źródła, strumienie, deszcz) ani o tym, czy wodę z rzeki lub jeziora można bezpiecznie pić.",
+      "Brak komunikatu wodociągów o konieczności gotowania wody i nic o tym, jak długo podczas blackoutu woda leci z kranów w wysokim budynku.",
+      "Żadne źródło nie porównuje tabletek do uzdatniania wody ani filtrów; jeden austriacki poradnik podaje jedną markę."
+    ],
+    "disagree": [
+      "Ile wody trzymać: niemiecki poradnik podaje 2 litry na osobę dziennie (z tego pół litra do gotowania); szwajcarska ulotka co najmniej 9 litrów na osobę, czyli tyle, by przez trzy dni pić i gotować; austriacki poradnik o zapasach 1,5 litra do picia i 3,5 litra do mycia dziennie oraz siedem butelek 1,5-litrowych na osobę; nota WHO 2,5 do 3 litrów dziennie do picia i jedzenia, a łącznie 7,5 do 15. Każda strona podaje własną liczbę.",
+      "Dezynfekcja słońcem (SODIS): nota WHO mówi o około jednym dniu słońca w pobliżu równika i o dwóch dniach, gdy jest pochmurno; austriacki poradnik o zapasach mówi o około 6 godzinach pełnego słońca, około trzech dniach przy zachmurzeniu i o tym, że zabija ona od 30 do 80 procent zarazków."
+    ]
+  }
+}

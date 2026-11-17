@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "preserve",
+  "mode": "learn",
+  "title": "Conservare il cibo",
+  "short": "Conserve, essiccazione, fermentazione: non ancora in questa biblioteca",
+  "intro": "Questa biblioteca non ha ancora una guida per conservare il cibo in casa, come le conserve in vasetto, l'essiccazione, i sottaceti o la fermentazione. Quanto durano gli alimenti acquistati, e come conservarli, è nella guida “Cibo e cucina”.",
+  "keywords": ["conservare", "conserve", "vasetti", "barattoli", "sterilizzare", "essiccare", "essiccatore", "sottaceti", "sottolio", "fermentare", "crauti", "botulino", "congelare", "sbollentare", "marmellata"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["food"],
+  "gaps": {
+    "missing": [
+      "Nessuna guida per conservare il cibo in casa: conserve in vasetto, essiccazione, sottaceti, fermentazione o congelamento.",
+      "Nessuna guida per capire se un cibo conservato in casa si può mangiare senza rischi."
+    ]
+  }
+}

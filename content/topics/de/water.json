@@ -1,0 +1,130 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "water",
+  "mode": "now",
+  "title": "Für sicheres Trinkwasser sorgen",
+  "short": "Lagern, sicherer machen, sauber halten",
+  "intro": "Lesestoff für den Fall, dass kein Wasser mehr aus der Leitung kommt oder es nicht sicher sein könnte: wie viel Sie vorrätig haben sollten, wie Sie Wasser sicherer zum Trinken machen und wie Sie es sauber halten. Die Seiten stammen von der WHO und aus dem Zivilschutz der Schweiz, Deutschlands, Österreichs und Italiens.",
+  "keywords": ["Wasser", "Trinkwasser", "Leitungswasser", "abkochen", "Wasser abkochen", "kochen", "Chlor", "Tabletten", "Chlortabletten", "Entkeimungstabletten", "Desinfektionstabletten", "aufbereiten", "Wasser aufbereiten", "reinigen", "desinfizieren", "entkeimen", "Filter", "Wasserfilter", "Sandfilter", "SODIS", "Sonnenlicht", "Flaschenwasser", "Mineralwasser", "Wasservorrat", "Wasser lagern", "Vorrat", "Behälter", "Kanister", "Wasserkanister", "Badewanne", "wie viel Wasser", "Liter", "Durst", "durstig", "schmutziges Wasser", "verschmutzt", "verunreinigt", "Hochwasser", "Überschwemmung", "Rohrbruch", "Blackout", "Stromausfall"],
+  "choices": [
+    {
+      "id": "unsafe",
+      "label": "Kein Leitungswasser, oder es ist vielleicht nicht sicher",
+      "hint": "Hochwasser, ein Rohrbruch, eine Warnung, es nicht zu trinken",
+      "read": [
+        {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Warum jeder Haushalt einen Wasservorrat braucht",
+         "note": "Ein Unwetter kann eine Leitung beschädigen oder das Leitungswasser unsicher machen; ein Vorrat überbrückt die Zeit, bis die Versorgung wieder läuft."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Was Wasseraufbereitung zu Hause kann und was nicht",
+         "note": "Auf Englisch. Nur Wasser zum Trinken und für das Essen muss aufbereitet werden, etwa 5 Liter pro Person und Tag. Diese Methoden entfernen keine Chemikalien."},
+        {"doc": "dpc-io-non-rischio", "page": 31, "label": "Nach dem Hochwasser: bevor Sie Leitungswasser trinken",
+         "note": "Auf Italienisch. Unter den Schritten nach einem Hochwasser: prüfen, dass keine örtliche Bekanntmachung das Trinken von Leitungswasser verbietet, und nichts essen, was das Wasser berührt hat."}
+      ]
+    },
+    {
+      "id": "boil",
+      "label": "Ich kann Wasser abkochen",
+      "hint": "Ein Gasherd, ein Campingkocher, ein Feuer",
+      "read": [
+        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Abkochen, Chlor und Sonnenlicht",
+         "note": "Auf Englisch. Das Wasser sprudelnd aufkochen; das ist wirksam, verbraucht aber viel Brennstoff. Die Seite behandelt auch Chlor und die Entkeimung mit Sonnenlicht."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "Ein einfacher Filter, danach das Wasser abkochen",
+         "note": "Ein behelfsmäßiger Sandfilter für trübes Wasser; danach wird das Wasser etwa eine Minute lang abgekocht."}
+      ]
+    },
+    {
+      "id": "tablets",
+      "label": "Ich habe Entkeimungstabletten oder Chlor",
+      "hint": "Tabletten oder Tropfen aus der Apotheke oder dem Campingladen",
+      "read": [
+        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Chlortabletten anwenden, Schritt für Schritt",
+         "note": "Auf Englisch. Eine Bildanleitung für klares und für schmutziges Wasser, danach 30 Minuten warten. Die Dosis hängt vom Produkt ab: Halten Sie sich an dessen Gebrauchsanweisung."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Was Chlor bewirkt und was nicht",
+         "note": "Auf Englisch. Chlor tötet die meisten Keime, aber nicht alle; die Produkte sind unterschiedlich stark, darum immer nach der Anleitung des Herstellers vorgehen."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Tabletten, die Badewanne und die Sonne",
+         "note": "Desinfektionstabletten aus der Apotheke, die Badewanne als Vorrat füllen und Entkeimung mit Sonnenlicht in Flaschen."}
+      ]
+    },
+    {
+      "id": "no-fuel",
+      "label": "Kein Brennstoff und keine Tabletten",
+      "hint": "Nur durchsichtige Flaschen, Sonnenlicht, ein Tuch oder Sand",
+      "read": [
+        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Absetzen lassen, dann filtern",
+         "note": "Auf Englisch. Schütteln, damit Luft hineinkommt, Schmutz absetzen lassen, und Filter für den Haushalt. Abgesetztes Wasser braucht danach noch eine bewährte Aufbereitung."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Entkeimung mit Sonnenlicht in durchsichtigen Flaschen (SODIS)",
+         "note": "Auf Englisch. Durchsichtige Ein- oder Zwei-Liter-Flaschen mit klarem Wasser in die direkte Sonne; wie lange, hängt von der Sonne und der Flasche ab."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Entkeimung mit Sonnenlicht, wie ein österreichischer Ratgeber sie erklärt",
+         "note": "Flaschengröße, wie lange die Flaschen in der Sonne liegen und wie viele Keime das abtötet."}
+      ]
+    },
+    {
+      "id": "how-much",
+      "label": "Wie viel Wasser brauchen wir?",
+      "hint": "Pro Person, pro Tag, für wie viele Tage",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Etwa 2 Liter pro Person und Tag",
+         "note": "Davon ein halber Liter zum Kochen; wie viel eine dreiköpfige Familie für 3, 5 oder 10 Tage braucht; Wasser für Haustiere."},
+        {"doc": "who-tn09-how-much-water", "page": 2, "label": "Das Mindeste zum Überleben und für die Hygiene",
+         "note": "Auf Englisch, für Planer von Hilfseinsätzen geschrieben: Liter pro Tag zum Trinken und Essen, zum Waschen und zum Kochen; eine Toilette mit Spülung braucht bis zu 7 Liter pro Spülung."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Sieben Flaschen pro Person für eine Woche",
+         "note": "Die österreichische Regel: eine Woche ohne Einkaufen und ohne Strom, und den Vorrat einmal im Jahr prüfen."}
+      ]
+    },
+    {
+      "id": "store",
+      "label": "Wasser lagern und sauber halten",
+      "hint": "Flaschen, Kanister, Eimer, wie lange es hält",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 20, "label": "Wasser in Flaschen, und Leitungswasser monatelang aufbewahren",
+         "note": "Warum Wasser an erster Stelle steht, welches Flaschenwasser sich am besten hält, und Leitungswasser in sehr sauberen Behältern dunkel und kühl lagern."},
+        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Aufbereitetes Wasser sauber halten",
+         "note": "Auf Englisch. Saubere, abgedeckte Behälter an einem kühlen, dunklen Ort, saubere Hände und ein Zapfhahn am Behälter, damit niemand hineinschöpft."}
+      ]
+    },
+    {
+      "id": "blackout",
+      "label": "Der Strom ist weg: Läuft das Wasser weiter?",
+      "hint": "Ein langer Stromausfall, das Wasserwerk, die Kanalisation",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 6, "label": "Wasserwerke brauchen Strom",
+         "note": "Ohne Strom kann die Wasserversorgung ausfallen; was ein langer Ausfall sonst noch stören kann."},
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Erste Schritte im Blackout: Behälter füllen",
+         "note": "Vorrat prüfen, Töpfe, Eimer und Flaschen füllen, solange noch Wasser fließt, und sparsam damit umgehen."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Wasseraufbereitung zu Hause entfernt Schmutz und Keime, aber keine Chemikalien.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
+    {"text": "Wasser, das sich abgesetzt hat, braucht vor dem Trinken noch eine bewährte Aufbereitung.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
+    {"text": "Chlor tötet nicht jeden Keim: Manche, etwa Kryptosporidien, sind dagegen widerstandsfähig. Halten Sie sich immer an die Anleitung des Herstellers.", "doc": "who-tn05-emergency-water-treatment", "page": 2},
+    {"text": "Trinken Sie während eines Hochwassers kein Leitungswasser: Es könnte verunreinigt sein.", "doc": "dpc-io-non-rischio", "page": 29},
+    {"text": "Trinken Sie nach einem Hochwasser erst dann Leitungswasser, wenn keine örtliche Anordnung oder Bekanntmachung es verbietet.", "doc": "dpc-io-non-rischio", "page": 31},
+    {"text": "Krankheiten, die durch verschmutztes Wasser übertragen werden, etwa Cholera oder Typhus, können tödlich sein, wenn sie nicht behandelt werden.", "doc": "oezsv-bevorratungsratgeber", "page": 15},
+    {"text": "9 Liter pro Person reichen für drei Tage zum Trinken und Kochen, nicht zum Waschen oder für die Toilettenspülung.", "doc": "bwl-kluger-rat-notvorrat", "page": 3}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Wie viel Wasser Sie für 3, 5 oder 10 Tage vorrätig haben sollten", "note": "Aus Deutschland."},
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Mindestens 9 Liter pro Person: ein Sechserpack Flaschen", "note": "Leicht zu tragen und monatelang haltbar."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Ein Vorrat für eine Woche, einmal im Jahr geprüft", "note": "Aus Österreich."},
+    {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Wissen, wo Sie das Wasser abstellen, und bei Ihrer Gemeinde nachfragen", "note": "Auch Wasser zum Waschen und für die Toilettenspülung, nicht nur zum Trinken."},
+    {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Behälter, die Wasser sauber halten", "note": "Auf Englisch."}
+  ],
+  "learn": [
+    {"doc": "who-tn05-emergency-water-treatment", "label": "Trinkwasser im Notfall dort aufbereiten, wo es gebraucht wird", "note": "Auf Englisch. Technisches Merkblatt der WHO (2013), für Hilfskräfte geschrieben: Absetzen, Filter, Abkochen, Chlor, Sonnenlicht, Lagerung."},
+    {"doc": "who-tn09-how-much-water", "label": "Wie viel Wasser im Notfall gebraucht wird", "note": "Auf Englisch. Technisches Merkblatt der WHO (2013) für Planer von Hilfseinsätzen."},
+    {"doc": "oezsv-bevorratungsratgeber", "label": "Bevorratungsratgeber", "note": "Vom österreichischen Zivilschutz: Wasser, Lebensmittel, Lagerung, Medikamente."}
+  ],
+  "related": ["food", "sanitation", "power"],
+  "gaps": {
+    "missing": [
+      "Kein Ratgeber für Wasser, das Treibstoff, Chemikalien oder Abwasser enthalten könnte, außer dem Hinweis der WHO, dass Aufbereitung zu Hause keine Chemikalien entfernt.",
+      "Nichts dazu, wie man draußen Wasser findet (Quellen, Bäche, Regen), oder wie sicher es ist, aus einem Fluss oder See zu trinken.",
+      "Kein Abkochgebot eines Wasserversorgers, und nichts dazu, wie lange in einem Hochhaus bei einem Blackout noch Wasser aus dem Hahn kommt.",
+      "Keine Quelle vergleicht Entkeimungstabletten oder Filter; ein österreichischer Ratgeber nennt eine einzige Marke."
+    ],
+    "disagree": [
+      "Wie viel Wasser man vorrätig haben sollte: Der deutsche Ratgeber sagt 2 Liter pro Person und Tag (davon ein halber Liter zum Kochen); das Schweizer Faltblatt mindestens 9 Liter pro Person, genug zum Trinken und Kochen für drei Tage; der österreichische Bevorratungsratgeber 1,5 Liter zum Trinken plus 3,5 Liter zum Waschen pro Tag, und sieben 1,5-Liter-Flaschen pro Person; das WHO-Merkblatt 2,5 bis 3 Liter pro Tag zum Trinken und Essen, und 7,5 bis 15 Liter insgesamt. Jede Seite nennt ihre eigene Zahl.",
+      "Entkeimung mit Sonnenlicht (SODIS): Das WHO-Merkblatt sagt etwa einen Tag Sonne in der Nähe des Äquators, zwei Tage bei Bewölkung; der österreichische Bevorratungsratgeber sagt etwa 6 Stunden volle Sonne, etwa drei Tage bei Bewölkung, und dass dabei 30 bis 80 Prozent der Keime abgetötet werden."
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "preserve",
+  "mode": "learn",
+  "title": "Conservar y almacenar alimentos",
+  "short": "Conservas en tarros, secado, fermentación: aún no están en esta biblioteca",
+  "intro": "Esta biblioteca aún no tiene ninguna guía para conservar alimentos en casa, como hacer conservas en tarros, secar, encurtir o fermentar. Cuánto duran los alimentos comprados, y cómo guardarlos, está en la guía «Comida y cocina».",
+  "keywords": ["conservar", "conservación", "conservas", "conservas caseras", "envasar", "envasado", "tarros", "botes", "frascos", "esterilizar", "baño maría", "secar", "secado", "deshidratar", "deshidratador", "encurtir", "encurtidos", "fermentar", "fermentación", "chucrut", "botulismo", "congelar", "congelación", "escaldar", "mermelada", "confitura"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["food"],
+  "gaps": {
+    "missing": [
+      "Ninguna guía para conservar alimentos en casa: conservas en tarros, secado, encurtidos, fermentación o congelación.",
+      "Ninguna guía para saber si una conserva casera se puede comer sin peligro."
+    ]
+  }
+}

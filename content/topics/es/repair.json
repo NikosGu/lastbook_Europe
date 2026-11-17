@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "repair",
+  "mode": "learn",
+  "title": "Reparar y construir",
+  "short": "Herramientas, arreglos en casa, motores: aún no están en esta biblioteca",
+  "intro": "Esta biblioteca aún no tiene ninguna guía sobre herramientas, reparaciones en casa, motores o construcción, así que aquí no hay nada que abrir. La lista de abajo dice lo que falta.",
+  "keywords": ["reparar", "reparación", "reparaciones", "arreglar", "arreglos", "herramientas", "herramientas manuales", "caja de herramientas", "afilar", "fontanería", "grifo", "grifos", "cisterna", "cisterna del váter", "carpintería", "trabajar la madera", "motor pequeño", "motores", "soldar", "soldadura", "construir", "construcción", "taller", "bricolaje", "DIY"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["power"],
+  "gaps": {
+    "missing": [
+      "Ninguna guía sobre herramientas manuales, cómo afilar o una caja de herramientas básica.",
+      "Ninguna guía sobre reparaciones en casa (grifos, váteres, ventanas, trabajos eléctricos sencillos) ni sobre motores pequeños."
+    ]
+  }
+}

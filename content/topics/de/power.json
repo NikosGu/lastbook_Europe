@@ -1,0 +1,129 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "power",
+  "mode": "now",
+  "title": "Der Strom ist ausgefallen",
+  "short": "Erste Schritte, Licht, Medikamente, Aufzüge, Notstromaggregate",
+  "intro": "Lesestoff für einen Stromausfall, der Stunden oder Tage dauern kann: die ersten Schritte zu Hause, informiert bleiben, Medikamente, die Strom oder Kühlung brauchen, Aufzüge, Notstromaggregate und was zu tun ist, wenn der Strom zurückkommt.",
+  "keywords": ["Stromausfall", "Blackout", "Ausfall", "Strom", "Elektrizität", "kein Strom", "Strom weg", "Licht aus", "dunkel", "Taschenlampe", "Kerzen", "Batterien", "Powerbank", "Radio", "Kurbelradio", "Notstromaggregat", "Stromaggregat", "Generator", "Aufzug", "Lift", "im Aufzug stecken geblieben", "Insulin", "medizinisches Gerät", "Beatmungsgerät", "Sauerstoff", "Kühlschrank", "Tiefkühltruhe", "Gefrierschrank", "Bargeld", "Sicherung", "Strom wieder da", "Nachbarn"],
+  "choices": [
+    {
+      "id": "first-hours",
+      "label": "Der Strom ist gerade ausgefallen",
+      "hint": "Ein Stromausfall oder ein Blackout: dunkel zu Hause und nebenan, unklar, für wie lange",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 5, "label": "Was im Blackout zu tun ist, der Reihe nach",
+         "note": "Ruhe bewahren, prüfen, ob nur Ihre Straße betroffen ist, Radio einschalten, die Familie informieren, Stecker von Geräten ziehen, eine Lampe eingeschaltet lassen."},
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Erste Schritte zu Hause",
+         "note": "Familie, Geräte, das Radio, Wasser, Licht, der Aufzug, die Tiefkühltruhe, lebenswichtige Medikamente, Abfall und eine Ersatztoilette."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Wie man sich im Blackout verhält",
+         "note": "Auf Italienisch. Geräte ausschalten, den Kühlschrank geschlossen halten, Radio hören, Aufzüge meiden, und die Sicherheit beim Notstromaggregat."}
+      ]
+    },
+    {
+      "id": "food-link",
+      "goto": "food/cook",
+      "label": "Kochen und der Kühlschrank ohne Strom",
+      "hint": "Im Ratgeber „Essen & Kochen“"
+    },
+    {
+      "id": "cold-link",
+      "goto": "shelter/cold",
+      "label": "Ohne Heizung warm bleiben",
+      "hint": "Im Ratgeber „Hitze & Kälte“"
+    },
+    {
+      "id": "medical",
+      "label": "Jemand braucht Strom oder Kühlung für ein Medikament oder ein Gerät",
+      "hint": "Insulin, ein Beatmungsgerät, Sauerstoff, ein Elektrorollstuhl",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Lebenswichtige Medikamente im Blackout",
+         "note": "Prüfen, wie lange sie reichen; Insulin muss kühl gelagert werden; wem man Bescheid gibt, wenn sie keine Woche reichen."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Lebenserhaltende Geräte, die Strom brauchen",
+         "note": "Auf Italienisch. Frühzeitig um Hilfe bitten: Für Italien nennt die Seite die 118 und die Sozialdienste."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Ersatzbatterien und Ladegeräte für Hilfsmittel",
+         "note": "Hilfsmittel, die Strom brauchen, ein Medikamentenplan und -vorrat, und wer Ihnen helfen kann, die Wohnung zu verlassen, wenn Sie müssen."}
+      ]
+    },
+    {
+      "id": "lift",
+      "label": "Ein Aufzug ist stehen geblieben, oder ich wohne weit oben",
+      "hint": "Vielleicht ist jemand eingeschlossen, nur noch Treppen",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Im Aufzug nachsehen, ob jemand eingeschlossen ist",
+         "note": "Unter den Schritten für das Haus und die Straße: der Aufzug, die Nachbarn und Menschen, die Hilfe brauchen."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Den Aufzug erst benutzen, wenn der Strom endgültig zurück ist",
+         "note": "Auf Italienisch. Während der Reparaturen kann der Strom kommen und wieder gehen."}
+      ]
+    },
+    {
+      "id": "generator",
+      "label": "Ich möchte ein Notstromaggregat betreiben",
+      "hint": "Ein tragbares Stromaggregat, Treibstoff, wo es stehen soll",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 18, "label": "Notstromaggregate: wo man sie betreibt, Treibstoff, Brandgefahr",
+         "note": "Nie in geschlossenen Räumen; etwa ein Liter Treibstoff pro Stunde; gelagerter Treibstoff ist eine Brandgefahr. Außerdem, warum Solaranlagen meist auch ausfallen."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Geräte an das Aggregat anschließen, nicht das Haus",
+         "note": "Auf Italienisch. Nicht an die Hausinstallation anschließen und nie im Haus oder in der Garage starten."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Kein Stromaggregat und kein Heizgerät für draußen im Haus",
+         "note": "Auf Englisch. Aus den Kernbotschaften der IFRC für den Winter."}
+      ]
+    },
+    {
+      "id": "long",
+      "label": "Es könnte Tage dauern",
+      "hint": "Geschäfte zu, keine Geldautomaten, kein Telefon, zu Hause bleiben",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Was ein langer Blackout bedeutet",
+         "note": "Geschäfte schließen, die medizinische Versorgung wird von Stunde zu Stunde schwieriger, Wohnungen kühlen aus, kein Aufzug und kein Telefon, der Müll stapelt sich."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 7, "label": "Was ohne Strom nicht mehr funktioniert",
+         "note": "Telefon und Internet, Kartenzahlung und Geldautomaten, Kühlschrank, Herd, Leitungswasser, Licht, Heizung."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Zu Hause bleiben und aufeinander achten",
+         "note": "Zu Hause bleiben, außer Sie werden gebraucht, Treibstoff sparen, mit den Nachbarn reden, herausfinden, wer Hilfe braucht."}
+      ]
+    },
+    {
+      "id": "back-on",
+      "label": "Der Strom ist wieder da",
+      "hint": "Was Sie einschalten, Telefonate, Heizung",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 7, "label": "Nach einem Blackout",
+         "note": "Prüfen, ob Herd und Bügeleisen aus sind, nur einschalten, was Sie brauchen, nicht dringende Anrufe vermeiden."},
+        {"doc": "zsv-steiermark-blackout", "page": 27, "label": "Wenn der Strom zurückkommt",
+         "note": "Geräte, Heizung, Kühlschrank, Abwasserpumpen, Bargeld, zu Hause bleiben, und warten, bevor Sie Computer neu starten."}
+      ]
+    }
+  ],
+  "limits": [
+    {"text": "Rufen Sie die Notrufnummern nur bei einem lebensbedrohlichen Notfall an.", "doc": "oezsv-blackout-checkliste", "page": 5},
+    {"text": "Ein Notstromaggregat hat einen Motor: Es darf nicht in geschlossenen Räumen laufen, und gelagerter Treibstoff ist eine Brandgefahr.", "doc": "zsv-steiermark-blackout", "page": 18},
+    {"text": "Schließen Sie ein Notstromaggregat nicht an die Hausinstallation an, und starten Sie es nie im Haus oder in der Garage.", "doc": "ravenna-rischio-blackout", "page": 1},
+    {"text": "Meiden Sie Aufzüge, bis offiziell gemeldet wird, dass der Strom wieder da ist: Während der Reparaturen kann er kommen und gehen.", "doc": "ravenna-rischio-blackout", "page": 1},
+    {"text": "Wenn lebenswichtige Medikamente wie Insulin keine Woche reichen, sagen Sie es einer Apotheke, einem Arzt oder dem Rettungsdienst.", "doc": "zsv-steiermark-blackout", "page": 26},
+    {"text": "Lassen Sie Kerzen oder anderes offenes Feuer nie unbeaufsichtigt.", "doc": "zsv-steiermark-notfallratgeber", "page": 7},
+    {"text": "Wenn der Strom zurückkommt, prüfen Sie, ob Herd und Bügeleisen wirklich aus sind: Sie können einen Brand auslösen.", "doc": "zsv-steiermark-blackout", "page": 27}
+  ],
+  "prepare": [
+    {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "Was Sie für einen Blackout zu Hause haben sollten", "note": "Wasser, Lebensmittel, ein Batterie- oder Kurbelradio, Licht, Medikamente, eine Kochmöglichkeit, Bargeld in kleinen Scheinen; für 10 bis 14 Tage planen."},
+    {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Sich vorbereiten wie für einen Campingurlaub", "note": "Absperrhähne, was Ihre Gemeinde geplant hat, Essen und Wasser für ein bis zwei Wochen."},
+    {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Checklisten: Licht, Radio, Hygiene, Medikamente, Notgepäck", "note": "Aus der Steiermark (Österreich)."},
+    {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Fragen, die Sie vorher besprechen sollten", "note": "Der Weg nach Hause von der Arbeit oder der Schule, mit wem man Kontakt aufnimmt, wer Hilfe braucht, Nachbarn, feste Abläufe für Kinder."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Telefonnummern auf Papier und eine Powerbank", "note": "Aus Deutschland."},
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Radio, Taschenlampe, Kerzen und etwas Bargeld", "note": "Die Liste des Schweizer Faltblatts, was ein Haushalt haben sollte."}
+  ],
+  "learn": [
+    {"doc": "zsv-steiermark-blackout", "label": "Blackout – Was tun, wenn der Strom weg ist?", "note": "Vom Zivilschutz Steiermark: was ein Blackout ist, Vorbereitung, erste Schritte, Kochen, wenn der Strom zurückkommt. Einige Seiten sind Werbung."},
+    {"doc": "oezsv-blackout-checkliste", "label": "Blackout-Checkliste", "note": "Vom österreichischen Zivilschutz (2022): vorher, währenddessen und danach, auf acht Seiten."}
+  ],
+  "related": ["food", "shelter", "comms", "water"],
+  "gaps": {
+    "missing": [
+      "Keine Anleitung für Notstromaggregate oder tragbare Powerstations: nur die Warnhinweise in diesem Ratgeber.",
+      "Nichts für Menschen in Hochhäusern, außer den Aufzug zu prüfen: Wasserdruck, lange Treppen, Nachbarn, die nicht hinunterkommen.",
+      "Kein Ratgeber zu medizinischen Geräten, die Strom brauchen, etwa Sauerstoff- oder Beatmungsgeräten, außer dem Rat, früh um Hilfe zu bitten."
+    ],
+    "disagree": [
+      "Für wie lange man sich auf einen Blackout vorbereiten sollte: mindestens 10 bis 14 Tage (die österreichische Blackout-Checkliste), ein bis zwei Wochen (der steirische Blackout-Ratgeber), 10 Tage (der deutsche Ratgeber), etwa eine Woche (das Schweizer Faltblatt)."
+    ]
+  }
+}

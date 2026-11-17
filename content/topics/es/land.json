@@ -1,0 +1,22 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "land",
+  "mode": "learn",
+  "title": "Encontrar tierras seguras y recursos naturales",
+  "short": "Tierra, manantiales, plantas silvestres, mapas: aún no están en esta biblioteca",
+  "intro": "Esta biblioteca aún no tiene nada sobre la tierra, los manantiales y los pozos, las plantas silvestres o cómo leer un mapa. Conocer las inundaciones, los terremotos y otros peligros de donde vives está en la guía «Terremoto, fuego, riada».",
+  "keywords": ["terreno", "terrenos", "tierra", "suelo", "manantial", "manantiales", "fuente natural", "pozo", "pozos", "agua de lluvia", "recolectar", "recolección", "plantas silvestres", "plantas comestibles", "plantas venenosas", "setas", "hongos", "mapa", "mapas", "brújula", "orientación", "orientarse", "navegación", "topográfico", "mapa topográfico", "orientación deportiva"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["disaster", "water"],
+  "gaps": {
+    "missing": [
+      "Ningún mapa de peligros (inundaciones, terremotos, deslizamientos de tierra) de ninguna zona.",
+      "Nada sobre cómo encontrar agua en la naturaleza (manantiales, pozos, lluvia), ni sobre plantas silvestres y setas.",
+      "Nada sobre cómo leer un mapa o usar una brújula."
+    ]
+  }
+}

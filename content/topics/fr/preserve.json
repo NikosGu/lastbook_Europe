@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "preserve",
+  "mode": "learn",
+  "title": "Conserver et stocker les aliments",
+  "short": "Bocaux, séchage, fermentation : pas encore dans cette bibliothèque",
+  "intro": "Cette bibliothèque n’a pas encore de guide pour conserver les aliments à la maison, comme la mise en bocaux, le séchage, les conserves au vinaigre ou la fermentation. Combien de temps se gardent les aliments achetés, et comment les stocker : c’est dans le guide « Manger et cuisiner ».",
+  "keywords": ["conserver", "conservation", "conserves", "conserves maison", "mise en bocaux", "bocaux", "stériliser", "stérilisation", "sécher", "séchage", "déshydrateur", "déshydrater", "conserves au vinaigre", "pickles", "cornichons", "fermenter", "fermentation", "lactofermentation", "choucroute", "botulisme", "congeler", "congélation", "blanchir", "confiture"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["food"],
+  "gaps": {
+    "missing": [
+      "Aucun guide pour conserver les aliments à la maison : mise en bocaux, séchage, conserves au vinaigre, fermentation ou congélation.",
+      "Aucun guide pour savoir si des conserves faites à la maison peuvent être mangées sans danger."
+    ]
+  }
+}

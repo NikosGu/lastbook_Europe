@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "repair",
+  "mode": "learn",
+  "title": "Naprawiaj i buduj",
+  "short": "Narzędzia, naprawy w domu, silniki: jeszcze nie ma w tej bibliotece",
+  "intro": "Ta biblioteka nie ma jeszcze poradnika o narzędziach, naprawach w domu, silnikach ani budowaniu, więc nie ma tu nic do otwarcia. Lista poniżej mówi, czego brakuje.",
+  "keywords": ["naprawa", "naprawić", "naprawiać", "narzędzia", "narzędzia ręczne", "skrzynka z narzędziami", "ostrzenie", "ostrzyć", "ostrzenie noża", "hydraulika", "kran", "cieknący kran", "spłuczka", "rezerwuar", "stolarka", "stolarstwo", "ciesielstwo", "mały silnik", "silnik spalinowy", "spawanie", "budowa", "budować", "warsztat", "majsterkowanie", "zrób to sam"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["power"],
+  "gaps": {
+    "missing": [
+      "Brak poradnika o narzędziach ręcznych, ostrzeniu ani podstawowym zestawie narzędzi.",
+      "Brak poradnika o naprawach w domu (krany, toalety, okna, proste prace elektryczne) ani o małych silnikach."
+    ]
+  }
+}

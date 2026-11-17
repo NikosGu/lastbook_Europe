@@ -1,0 +1,21 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "grow",
+  "mode": "learn",
+  "title": "Cultivar alimentos básicos",
+  "short": "Tierra, cultivos y semillas: aún no están en esta biblioteca",
+  "intro": "Esta biblioteca aún no tiene ninguna guía para cultivar alimentos, así que aquí no hay nada que abrir. La lista de abajo dice lo que falta; cómo tener provisiones de comida en casa está en la guía «Comida y cocina».",
+  "keywords": ["cultivar", "cultivo", "cultivos", "huerto", "huerta", "jardín", "jardinería", "horticultura", "verduras", "hortalizas", "semillas", "sembrar", "siembra", "plantar", "plantas", "compost", "abono", "tierra", "suelo", "patatas", "judías", "alubias", "calabazas", "calabacines", "guardar semillas", "macetas", "jardineras", "bancal elevado", "mesa de cultivo", "balcón", "terraza", "huerto urbano", "regar", "riego", "plagas"],
+  "choices": [],
+  "limits": [],
+  "prepare": [],
+  "learn": [],
+  "route": [],
+  "related": ["food", "water"],
+  "gaps": {
+    "missing": [
+      "Ninguna guía para cultivar alimentos: la tierra, las épocas de siembra en los climas de Europa, cultivos básicos como las patatas y las judías, o el riego.",
+      "Ninguna guía para guardar semillas, ni para cultivar en macetas o en el balcón."
+    ]
+  }
+}

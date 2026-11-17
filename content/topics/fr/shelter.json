@@ -1,0 +1,118 @@
+{
+  "_review": "machine-assisted, needs native-speaker review",
+  "id": "shelter",
+  "mode": "now",
+  "title": "Rester au chaud, au frais et à l’abri",
+  "short": "Froid sans chauffage, monoxyde de carbone, tempêtes d’hiver, chaleur",
+  "intro": "Des lectures pour rester au chaud quand le chauffage tombe en panne, se chauffer sans danger de monoxyde de carbone, traverser une vague de froid à la maison et sur la route, et aider les personnes qui souffrent le plus du froid ou de la chaleur.",
+  "keywords": ["froid", "grand froid", "gel", "glacial", "hiver", "neige", "vague de froid", "chauffage", "panne de chauffage", "plus de chauffage", "pas de chauffage", "se réchauffer", "rester au chaud", "garder la chaleur", "couvertures", "sac de couchage", "couches de vêtements", "hypothermie", "gelures", "engelures", "chauffage d’appoint", "radiateur", "chauffage au gaz", "poêle à pétrole", "poêle à bois", "cheminée", "monoxyde de carbone", "détecteur de monoxyde de carbone", "détecteur de CO", "groupe électrogène", "canalisations gelées", "tuyaux gelés", "voiture bloquée dans la neige", "verglas", "glace", "chaleur", "canicule", "vague de chaleur", "chaud", "abri", "s’abriter"],
+  "choices": [
+    {
+      "id": "cold",
+      "label": "Il gèle et le chauffage est en panne",
+      "hint": "L’hiver, une coupure de courant, rester au chaud pendant la nuit",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Quand le chauffage tombe en panne",
+         "note": "En allemand. Des chauffages autorisés pour l’intérieur, des vêtements chauds, des couvertures et des sacs de couchage ; fenêtres fermées, mais aérer brièvement les pièces."},
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "S’habiller en plusieurs couches, boire chaud",
+         "note": "En anglais. Les vêtements pour le froid, des boissons chaudes et pas d’alcool, retirer les vêtements mouillés, et quand demander une aide médicale."},
+        {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Se chauffer sans électricité",
+         "note": "En allemand. Même le chauffage au fioul ou au gaz s’arrête lors d’une coupure de courant ; des réchauds de camping ou des poêles à pétrole, prévus avec une aération et un conduit d’évacuation."}
+      ]
+    },
+    {
+      "id": "co",
+      "label": "Se chauffer ou cuisiner avec du feu ou du gaz à l’intérieur",
+      "hint": "Le monoxyde de carbone des chauffages, des poêles, des grils, des groupes électrogènes ou des bougies",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Monoxyde de carbone : ce qui est sûr à l’intérieur",
+         "note": "En allemand. Seulement des appareils autorisés pour l’intérieur ; un feu ouvert à l’intérieur peut produire du monoxyde de carbone ; installer un détecteur de CO."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Pas de groupe électrogène ni de chauffage d’extérieur à l’intérieur",
+         "note": "En anglais. Ne pas utiliser de groupe électrogène, ni de chauffages ou de réchauds prévus pour l’extérieur, à l’intérieur de la maison."},
+        {"doc": "ifrc-extreme-cold", "page": 1, "label": "Pourquoi les chauffages et les cheminées augmentent le risque",
+         "note": "En anglais. Lors d’une vague de froid, les chauffages d’appoint et les cheminées à l’intérieur rendent plus probables les intoxications au monoxyde de carbone et les incendies domestiques."}
+      ]
+    },
+    {
+      "id": "home",
+      "label": "Protéger la maison pendant une vague de froid",
+      "hint": "Canalisations gelées, provisions, un moyen sûr de se chauffer",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Préparer la maison à une tempête d’hiver",
+         "note": "En anglais. De l’eau au cas où les canalisations gèlent, de la nourriture pour plusieurs jours, une lampe de poche et une radio, une source de chaleur bien ventilée."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Canalisations gelées, et dangers après la tempête",
+         "note": "En anglais. Laisser couler un filet d’eau, vérifier les canalisations, les coupures de courant, les inondations dues à la fonte des neiges, les chemins verglacés."}
+      ]
+    },
+    {
+      "id": "outside",
+      "label": "Dehors dans le froid, ou bloqué dans la voiture",
+      "hint": "De la neige sur la route, de la glace sur un lac, pelleter la neige",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Si vous êtes bloqué dans la voiture, restez-y",
+         "note": "En anglais. Éviter de conduire, rester dans un véhicule bloqué, rouler lentement sur la neige ; comment juger la glace sur les étangs et les lacs."},
+        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Un équipement d’hiver pour la voiture",
+         "note": "En anglais. Pneus, câbles de démarrage, une trousse de secours, un chargeur, des vêtements chauds, une pelle, un réservoir plein."},
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Pelleter la neige et les autres efforts dans le froid",
+         "note": "En anglais. Un effort excessif dans le froid peut provoquer un arrêt cardiaque."}
+      ]
+    },
+    {
+      "id": "at-risk",
+      "label": "Personnes âgées, bébés ou animaux dans le froid",
+      "hint": "Voisins vivant seuls, animaux de compagnie, bétail",
+      "read": [
+        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Prendre des nouvelles des personnes à risque",
+         "note": "En anglais. La famille, les amis et les voisins qui risquent davantage de souffrir du froid, comme les personnes âgées et les malades chroniques."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Animaux de compagnie et bétail",
+         "note": "En anglais. Assez de nourriture et d’eau, et pas trop exposés au froid."}
+      ]
+    },
+    {
+      "id": "heat",
+      "label": "Il fait dangereusement chaud",
+      "hint": "Une canicule, aucun moyen de se rafraîchir, des personnes âgées ou des bébés à la maison",
+      "read": [
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Boire suffisamment, et prendre des nouvelles des personnes âgées et des bébés",
+         "note": "En anglais. Tiré des lignes directrices de premiers secours de la FICR, sur la déshydratation : par temps chaud, vérifier régulièrement l’état des personnes âgées et des bébés."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 332, "label": "Quelqu’un souffre de la chaleur : le rafraîchir",
+         "note": "En anglais. S’arrêter et aller dans un endroit frais, refroidir avec de l’eau, et quand appeler les secours."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 333, "label": "Épuisement par la chaleur ou coup de chaleur ?",
+         "note": "En anglais. Les signes de chacun."}
+      ]
+    },
+    {
+      "id": "indoors-link",
+      "goto": "disaster/indoors",
+      "label": "Consigne de rester à l’intérieur : gaz, fumée ou radioactivité",
+      "hint": "Dans le guide « Séisme, feu, inondation »"
+    }
+  ],
+  "limits": [
+    {"text": "À l’intérieur, n’utilisez que des chauffages et des poêles autorisés pour l’intérieur.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "L’intoxication au monoxyde de carbone peut tuer, et un feu ouvert à l’intérieur peut aussi la provoquer. Un détecteur de CO testé vous avertit.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "N’utilisez pas de groupe électrogène, ni de chauffages ou de réchauds prévus pour l’extérieur, à l’intérieur de la maison.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "Demandez une aide médicale si des signes d’hypothermie ou de gelures apparaissent.", "doc": "ifrc-extreme-cold", "page": 4},
+    {"text": "Évitez les efforts excessifs dans le froid, comme déblayer la neige : ils peuvent provoquer un arrêt cardiaque.", "doc": "ifrc-extreme-cold", "page": 4},
+    {"text": "Gardez les fenêtres et les portes fermées contre le froid, mais aérez les pièces brièvement et régulièrement.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
+    {"text": "Si vous êtes bloqué en voiture pendant une tempête d’hiver, restez à l’intérieur.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "La glace grise est trop fine : la glace doit être bleue et transparente, et faire plus de 12 cm d’épaisseur, avant que vous marchiez dessus.", "doc": "ifrc-extreme-cold", "page": 5}
+  ],
+  "prepare": [
+    {"doc": "ifrc-extreme-cold", "page": 3, "label": "Provisions, source de chaleur et équipement de la voiture pour les tempêtes d’hiver", "note": "En anglais."},
+    {"doc": "ifrc-extreme-cold", "page": 2, "label": "Connaître les risques là où vous vivez, et l’aide médicale la plus proche", "note": "En anglais."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Liste de contrôle : lumière et chaleur", "note": "En allemand. Lampe de poche, bougies, vêtements chauds et couvertures, sacs de couchage, un chauffage qui fonctionne sans le courant du secteur, et du combustible."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Détecteur de fumée, extincteur, détecteur de CO", "note": "En allemand. À la fin de la liste de contrôle."}
+  ],
+  "learn": [
+    {"doc": "ifrc-extreme-cold", "label": "Grand froid et tempêtes d’hiver : messages clés", "note": "En anglais. Messages de la FICR pour informer le public : planifier, préparer la maison et la voiture, rester au chaud, après la tempête."}
+  ],
+  "related": ["power", "hurt", "health", "disaster"],
+  "gaps": {
+    "missing": [
+      "Aucun guide sur les canicules à la maison : garder les pièces au frais, rafraîchir les personnes, aider les personnes âgées qui vivent seules.",
+      "Aucun guide pour juger si un bâtiment endommagé par un séisme, une tempête ou un incendie peut être occupé sans danger.",
+      "Rien sur les abris gérés par les autorités, ni sur la façon de s’abriter en plein air."
+    ]
+  }
+}
