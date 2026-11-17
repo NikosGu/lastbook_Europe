@@ -1,0 +1,93 @@
+# Installers for macOS, Windows and Linux, built on GitHub's machines and put in a draft release, which the maintainer
+# publishes. A version tag (v1.2.3) makes that release; a push to the working branch updates the preview draft.
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [europe-fase-0-1]
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    name: Package, ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, windows-2022, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Linux build libraries
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libclang-dev cmake
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        run: bash packaging/rust/package_macos.sh dist
+      - name: Package (Linux)
+        if: runner.os == 'Linux'
+        run: bash packaging/rust/package_linux.sh dist
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        run: powershell -ExecutionPolicy Bypass -File packaging\rust\package_windows.ps1 -Out dist
+      - name: The packaged app opens (macOS, a picture of its first page)
+        if: runner.os == 'macOS'
+        run: |
+          hdiutil attach -nobrowse -readonly dist/*.dmg -mountpoint /tmp/lb
+          mkdir -p shots
+          "/tmp/lb/Lastbook Europe.app/Contents/MacOS/lastbook" --home "$RUNNER_TEMP/lb-home" --size 1000x800 --after 4 --snapshot shots/macos-setup.png
+          hdiutil detach /tmp/lb
+      - name: The packaged runner answers (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y ./dist/*.deb
+          /opt/lastbook-europe/lastbook-llm || test $? -eq 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: installers-${{ matrix.os }}
+          path: dist/*
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always() && runner.os == 'macOS'
+        with:
+          name: shots-${{ matrix.os }}
+          path: shots/*
+          if-no-files-found: ignore
+
+  release:
+    name: Draft release
+    needs: package
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: installers-*
+          path: dist
+          merge-multiple: true
+      - name: Make or update the draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VER=$(bash packaging/rust/version.sh)
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then TAG="$GITHUB_REF_NAME"; TITLE="Lastbook Europe ${TAG#v}"; else TAG="v$VER-preview"; TITLE="Lastbook Europe $VER (preview)"; fi
+          # an earlier draft with this tag goes (a published release is never touched)
+          for id in $(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" --jq ".[] | select(.draft and .tag_name == \"$TAG\") | .id"); do
+            gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/$id"
+          done
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" >/dev/null 2>&1; then
+            echo "$TAG is already published: left as it is"; exit 0
+          fi
+          { cat packaging/rust/RELEASE_NOTES.md; echo; echo "Built from ${GITHUB_SHA::12}."; } > notes.md
+          gh release create "$TAG" dist/* --draft --prerelease --target "$GITHUB_SHA" --title "$TITLE" --notes-file notes.md
+          ls -la dist
