@@ -14,11 +14,12 @@ use lastbook_engine::{dist, regions};
 use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
 
-const BUILD_MAP: &str = "lastbook-tools build-map --region REGION --gpkg FILE --pbf FILE [--dem FILE]... [--ne FOLDER] --out FOLDER
+const BUILD_MAP: &str = "lastbook-tools build-map --region REGION --gpkg FILE... --pbf FILE... [--dem FILE]... [--ne FOLDER] --out FOLDER
 
   --region  the region's code (crates/engine/src/regions.rs), as LI or DE-HB
-  --gpkg    Geofabrik's free GeoPackage of the region (<region>-latest-free.gpkg.zip)
-  --pbf     Geofabrik's PBF of the region (<region>-latest.osm.pbf)
+  --gpkg    Geofabrik's free GeoPackage of the region (<region>-latest-free.gpkg.zip); more after it are the
+            neighbours', read only inside the region's boxes (Switzerland's for Liechtenstein's bank of the Rhine)
+  --pbf     Geofabrik's PBF of the region (<region>-latest.osm.pbf), then the neighbours', read the same way
   --dem     a Copernicus DEM GLO-30 GeoTIFF; give each one the region's boxes touch (none: no elevation)
   --ne      the folder holding Natural Earth's six zips (none: no zoomed-out base)
   --out     the folder to write map/ (the map set) and addresses/<REGION>.sqlite into
@@ -97,7 +98,9 @@ fn run(name: &str, help: &str, args: &[String], job: impl FnOnce(&Opts) -> Resul
 
 pub fn build_map(args: &[String]) -> i32 {
     run("build-map", BUILD_MAP, args, |o| {
-        let sources = mapset::Sources { gpkg: o.need("gpkg")?.into(), pbf: o.need("pbf")?.into(), dem: o.all("dem"), ne: o.get("ne").map(PathBuf::from) };
+        o.need("gpkg")?;
+        o.need("pbf")?;
+        let sources = mapset::Sources { gpkg: o.all("gpkg"), pbf: o.all("pbf"), dem: o.all("dem"), ne: o.get("ne").map(PathBuf::from) };
         mapset::build(o.need("region")?, &sources, Path::new(o.need("out")?))
     })
 }

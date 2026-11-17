@@ -48,7 +48,32 @@ fn owned(t: &[(&str, &str)]) -> Tags {
 }
 
 pub fn read(path: &Path, keep: Keep) -> Result<Vec<Thing>, String> {
+    read_with(path, keep, None)
+}
+
+/// As [`read`], keeping only what reaches into the boxes: a neighbour's extract, read for the strip of it a region's
+/// boxes hold. A first pass finds the nodes inside; a way is kept if one of its nodes is, so memory grows with the
+/// boxes, not with the neighbour.
+pub fn read_within(path: &Path, keep: Keep, boxes: &[[f64; 4]]) -> Result<Vec<Thing>, String> {
+    read_with(path, keep, Some(boxes))
+}
+
+fn read_with(path: &Path, keep: Keep, within: Option<&[[f64; 4]]>) -> Result<Vec<Thing>, String> {
     let err = |e: osmpbf::Error| format!("{}: {e}", path.display());
+    let inside_box = |lon: f64, lat: f64| within.is_none_or(|b| b.iter().any(|x| x[0] <= lon && lon <= x[2] && x[1] <= lat && lat <= x[3]));
+    // 0: with boxes, the nodes inside them
+    let mut inside: HashSet<i64> = HashSet::new();
+    if within.is_some() {
+        ElementReader::from_path(path).map_err(err)?.for_each(|e| match e {
+            Element::Node(n) if inside_box(n.lon(), n.lat()) => {
+                inside.insert(n.id());
+            }
+            Element::DenseNode(n) if inside_box(n.lon(), n.lat()) => {
+                inside.insert(n.id());
+            }
+            _ => {}
+        }).map_err(err)?;
+    }
     // 1: relations kept, and the ways they are made of
     let mut rels: Vec<(i64, Tags, Vec<i64>)> = Vec::new();
     ElementReader::from_path(path).map_err(err)?.for_each(|e| {
@@ -68,7 +93,10 @@ pub fn read(path: &Path, keep: Keep) -> Result<Vec<Thing>, String> {
             let t: Vec<(&str, &str)> = w.tags().collect();
             let kept = keep(Kind::Way, &t);
             if kept || member_ways.contains(&w.id()) {
-                ways.push((w.id(), kept.then(|| owned(&t)), w.refs().collect()));
+                let refs: Vec<i64> = w.refs().collect();
+                if within.is_none() || refs.iter().any(|r| inside.contains(r)) {
+                    ways.push((w.id(), kept.then(|| owned(&t)), refs));
+                }
             }
         }
     }).map_err(err)?;
@@ -81,7 +109,7 @@ pub fn read(path: &Path, keep: Keep) -> Result<Vec<Thing>, String> {
             if wanted.contains(&id) {
                 at.insert(id, (lon, lat));
             }
-            if !t.is_empty() && keep(Kind::Node, &t) {
+            if !t.is_empty() && inside_box(lon, lat) && keep(Kind::Node, &t) {
                 out.push(Thing { kind: Kind::Node, id, tags: owned(&t), rings: Vec::new(), point: (lon, lat) });
             }
         };

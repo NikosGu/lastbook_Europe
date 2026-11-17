@@ -8,7 +8,7 @@
 
 use crate::map::admin::Admin;
 use crate::map::geo;
-use crate::map::gpkg;
+use crate::map::gpkg::Layers;
 use crate::map::osm::{Kind, Thing};
 use lastbook_engine::map::text::place_key;
 use lastbook_engine::regions;
@@ -34,9 +34,9 @@ pub struct Record {
 }
 
 /// The region's water records: reservoirs, named lakes and ponds of at least 0.4 ha from the GeoPackage, and dams.
-pub fn collect(g: &Connection, dams: &[Thing], region: &str) -> Vec<Record> {
+pub fn collect(g: &impl Layers, dams: &[Thing], region: &str) -> Vec<Record> {
     let mut out = Vec::new();
-    for r in gpkg::layer(g, "gis_osm_water_a_free", &["fclass", "name", "osm_id"]) {
+    for r in g.layer("gis_osm_water_a_free", &["fclass", "name", "osm_id"]) {
         let ha = r.parts.first().map(|p| geo::ring_area_m2(p) / 10_000.0).unwrap_or(0.0);
         let name = r.col(1).unwrap_or("").to_string();
         let kind = match r.col(0) {

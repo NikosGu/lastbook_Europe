@@ -11,7 +11,7 @@ use crate::map::addresses::Row as Address;
 use crate::map::admin::Admin;
 use crate::map::detail::POI_KEEP;
 use crate::map::geo;
-use crate::map::gpkg::{self, Kind as Geom};
+use crate::map::gpkg::{Kind as Geom, Layers};
 use crate::map::osm::{Kind, Tags, Thing};
 use lastbook_engine::map::address::countries;
 use lastbook_engine::map::text::place_key;
@@ -87,7 +87,7 @@ fn area_words(detail: &str, country: &str) -> Vec<String> {
 }
 
 /// Every place of the region the place finder offers.
-pub fn collect(g: &Connection, things: &[Thing], admin: &Admin, addresses: &[Address], region: &str) -> Vec<Place> {
+pub fn collect(g: &impl Layers, things: &[Thing], admin: &Admin, addresses: &[Address], region: &str) -> Vec<Place> {
     let own = regions::country(region);
     let inside = |lon: f64, lat: f64| regions::contains(region, lat, lon);
     let country_at = |lon: f64, lat: f64| if admin.in_country(lon, lat) { own.to_string() } else { String::new() };
@@ -111,7 +111,7 @@ pub fn collect(g: &Connection, things: &[Thing], admin: &Admin, addresses: &[Add
     let mut out: Vec<Place> = Vec::new();
     // the places mapped as points, then those mapped only as areas (Malta's islands, some suburbs), at their middle
     for (table, areas) in [("gis_osm_places_free", false), ("gis_osm_places_a_free", true)] {
-        for r in gpkg::layer(g, table, &["fclass", "name", "osm_id"]) {
+        for r in g.layer(table, &["fclass", "name", "osm_id"]) {
             let at = if areas { geo::centroid(&r.parts) } else { r.parts.first().and_then(|p| p.first()).copied() };
             let (Some(name), Some((lon, lat))) = (r.col(1), at) else { continue };
             // an area with a point of the same name nearby is that place again
@@ -157,14 +157,14 @@ pub fn collect(g: &Connection, things: &[Thing], admin: &Admin, addresses: &[Add
         out.push(Place { name: shown.clone(), kind: "Postcode".into(), detail, lat: lat / n as f64, lon: lon / n as f64, rank: 2, country,
                          other: [pc, key].into_iter().filter(|x| *x != shown).collect(), osm_id: None });
     }
-    for r in gpkg::layer(g, "gis_osm_natural_free", &["fclass", "name"]) {
+    for r in g.layer("gis_osm_natural_free", &["fclass", "name"]) {
         let (Some("peak"), Some(name), Some(&(lon, lat))) = (r.col(0), r.col(1), r.parts.first().and_then(|p| p.first())) else { continue };
         if inside(lon, lat) {
             out.push(Place { name: name.into(), kind: "peak".into(), detail: detail(name, lon, lat), lat, lon, rank: 3, country: country_at(lon, lat), other: Vec::new(), osm_id: None });
         }
     }
     for table in ["gis_osm_pois_free", "gis_osm_pois_a_free", "gis_osm_traffic_free"] {
-        for r in gpkg::layer(g, table, &["fclass", "name"]) {
+        for r in g.layer(table, &["fclass", "name"]) {
             let (Some(cls), Some(name)) = (r.col(0).filter(|c| POI_KEEP.contains(c)), r.col(1)) else { continue };
             let Some((lon, lat)) = (if r.kind == Geom::Polygon { geo::centroid(&r.parts) } else { r.parts.first().and_then(|p| p.first()).copied() }) else { continue };
             if inside(lon, lat) {

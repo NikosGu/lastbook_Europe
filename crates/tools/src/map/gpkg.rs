@@ -54,34 +54,115 @@ pub fn data_as_of(zip_path: &Path) -> Option<String> {
 }
 
 /// Every row of a layer that has a readable geometry, with the columns asked for. A layer that is not there has no rows.
+/// A layer's rows, with the columns asked for (a column the layer lacks reads as none).
 pub fn layer(c: &Connection, table: &str, cols: &[&str]) -> Vec<Row> {
+    read(c, table, cols, None).into_iter().map(|(_, r)| r).collect()
+}
+
+/// A geometry's box from its header's envelope, when it has one: [west, south, east, north].
+fn envelope(b: &[u8]) -> Option<[f64; 4]> {
+    if b.len() < 40 || &b[..2] != b"GP" || (b[3] >> 1) & 7 == 0 {
+        return None;
+    }
+    let le = b[3] & 1 == 1;
+    let f = |i: usize| -> Option<f64> {
+        let a: [u8; 8] = b[8 + 8 * i..16 + 8 * i].try_into().ok()?;
+        Some(if le { f64::from_le_bytes(a) } else { f64::from_be_bytes(a) })
+    };
+    let (minx, maxx, miny, maxy) = (f(0)?, f(1)?, f(2)?, f(3)?);
+    Some([minx, miny, maxx, maxy])
+}
+
+fn touches(b: &[f64; 4], boxes: &[[f64; 4]]) -> bool {
+    boxes.iter().any(|x| b[0] <= x[2] && b[2] >= x[0] && b[1] <= x[3] && b[3] >= x[1])
+}
+
+/// A layer's rows with their `osm_id`, only those that touch `within` when given: a row is read through, and its
+/// geometry decoded, only if its header's envelope (or, without one, the geometry) reaches into a box.
+fn read(c: &Connection, table: &str, cols: &[&str], within: Option<&[[f64; 4]]>) -> Vec<(Option<String>, Row)> {
     let have: Vec<String> = c.prepare(&format!("SELECT * FROM \"{table}\" LIMIT 0")).map(|st| st.column_names().map(|s| s.to_string()).collect()).unwrap_or_default();
     if have.is_empty() {
         return Vec::new();
     }
-    let select: Vec<String> = cols.iter().map(|c| if have.iter().any(|h| h == c) { format!("\"{c}\"") } else { "NULL".into() }).collect();
-    let sql = format!("SELECT geom{}{} FROM \"{table}\"", if select.is_empty() { "" } else { "," }, select.join(","));
-    let Ok(mut st) = c.prepare(&sql) else { return Vec::new() };
-    let rows = st.query_map([], |r| {
-        let g: Option<Vec<u8>> = r.get(0)?;
-        let mut out = Vec::with_capacity(cols.len());
-        for i in 0..cols.len() {
-            out.push(match r.get_ref(i + 1)? {
-                ValueRef::Text(t) => Some(String::from_utf8_lossy(t).into_owned()),
-                ValueRef::Integer(n) => Some(n.to_string()),
-                ValueRef::Real(f) => Some(f.to_string()),
-                _ => None,
-            });
+    let col = |c: &str| if have.iter().any(|h| h == c) { format!("\"{c}\"") } else { "NULL".into() };
+    let select: Vec<String> = std::iter::once(col("osm_id")).chain(cols.iter().map(|c| col(c))).collect();
+    let Ok(mut st) = c.prepare(&format!("SELECT geom,{} FROM \"{table}\"", select.join(","))) else { return Vec::new() };
+    let text = |v: ValueRef| match v {
+        ValueRef::Text(t) => Some(String::from_utf8_lossy(t).into_owned()),
+        ValueRef::Integer(n) => Some(n.to_string()),
+        ValueRef::Real(f) => Some(f.to_string()),
+        _ => None,
+    };
+    let Ok(mut rows) = st.query([]) else { return Vec::new() };
+    let mut out = Vec::new();
+    while let Ok(Some(r)) = rows.next() {
+        let Ok(ValueRef::Blob(g)) = r.get_ref(0) else { continue };
+        if let Some(boxes) = within {
+            if envelope(g).is_some_and(|e| !touches(&e, boxes)) {
+                continue;
+            }
         }
-        Ok((g, out))
-    });
-    let Ok(rows) = rows else { return Vec::new() };
-    rows.flatten()
-        .filter_map(|(g, cols)| {
-            let (kind, parts) = geometry(&g?)?;
-            Some(Row { kind, parts, cols })
-        })
-        .collect()
+        let Some((kind, parts)) = geometry(g) else { continue };
+        if let Some(boxes) = within {
+            if !crate::map::geo::bbox(&parts).is_some_and(|b| touches(&[b.minx, b.miny, b.maxx, b.maxy], boxes)) {
+                continue;
+            }
+        }
+        let id = r.get_ref(1).ok().and_then(text);
+        let cols = (0..cols.len()).map(|i| r.get_ref(i + 2).ok().and_then(text)).collect();
+        out.push((id, Row { kind, parts, cols }));
+    }
+    out
+}
+
+/// Where the builders read layers from: one GeoPackage, or a region's [`Set`].
+pub trait Layers {
+    fn layer(&self, table: &str, cols: &[&str]) -> Vec<Row>;
+}
+
+impl Layers for Connection {
+    fn layer(&self, table: &str, cols: &[&str]) -> Vec<Row> {
+        layer(self, table, cols)
+    }
+}
+
+/// A region's GeoPackages: its own extract first, read whole, then its neighbours', read only inside the region's boxes
+/// (Switzerland's for Liechtenstein's bank of the Rhine). A feature two extracts hold, a road across the border, comes
+/// once, from the first.
+pub struct Set {
+    conns: Vec<Connection>,
+    boxes: Vec<[f64; 4]>,
+}
+
+impl Set {
+    pub fn open(paths: &[PathBuf], boxes: &[[f64; 4]]) -> Result<Set, String> {
+        let conns = paths.iter().map(|p| Connection::open_with_flags(p, rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY).map_err(|e| format!("{}: {e}", p.display())))
+            .collect::<Result<Vec<_>, _>>()?;
+        if conns.is_empty() {
+            return Err("no GeoPackage".into());
+        }
+        Ok(Set { conns, boxes: boxes.to_vec() })
+    }
+
+    /// The region's own extract: its administrative areas say which country an address is in.
+    pub fn own(&self) -> &Connection {
+        &self.conns[0]
+    }
+}
+
+impl Layers for Set {
+    fn layer(&self, table: &str, cols: &[&str]) -> Vec<Row> {
+        let mut seen = std::collections::HashSet::new();
+        let mut out = Vec::new();
+        for (i, c) in self.conns.iter().enumerate() {
+            for (id, row) in read(c, table, cols, (i > 0).then_some(&self.boxes[..])) {
+                if id.is_none_or(|id| seen.insert(id)) {
+                    out.push(row);
+                }
+            }
+        }
+        out
+    }
 }
 
 /// A GeoPackage geometry blob: the "GP" header, its envelope, then well-known binary.

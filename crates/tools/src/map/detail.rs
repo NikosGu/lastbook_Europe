@@ -9,7 +9,7 @@
 //! A feature shows from zoom `minz` to zoom `maxz`. The layers, classes and zooms are the original Lastbook's.
 
 use crate::map::geo::{self, area_z, bbox, simplify, Part};
-use crate::map::gpkg::{self, Kind};
+use crate::map::gpkg::{Kind, Layers};
 use lastbook_engine::map::tiles::pack;
 use rusqlite::{params, Connection};
 use std::path::Path;
@@ -128,11 +128,11 @@ pub struct Counts {
 
 /// The region's detail from the GeoPackage: water, land, waterways, rail, roads, place names and help points, each kept
 /// when it overlaps one of the region's boxes.
-pub fn detail(w: &mut MapWriter, g: &Connection, boxes: &[[f64; 4]]) -> rusqlite::Result<Counts> {
+pub fn detail(w: &mut MapWriter, g: &impl Layers, boxes: &[[f64; 4]]) -> rusqlite::Result<Counts> {
     let (f0, p0) = (w.next, w.pois);
     let inside = |parts: &[Part]| bbox(parts).is_some_and(|b| boxes.iter().any(|x| b.overlaps(x)));
     let thin = |parts: &[Part], tol: f64| -> Vec<Part> { parts.iter().map(|p| simplify(p, tol)).collect() };
-    for r in gpkg::layer(g, "gis_osm_water_a_free", &["fclass", "name"]) {
+    for r in g.layer("gis_osm_water_a_free", &["fclass", "name"]) {
         if !inside(&r.parts) {
             continue;
         }
@@ -140,49 +140,49 @@ pub fn detail(w: &mut MapWriter, g: &Connection, boxes: &[[f64; 4]]) -> rusqlite
         let layer = if cls.starts_with("wetland") { "wet" } else { "water" };
         w.add(layer, cls, r.col(1), area_z(&bbox(&r.parts).unwrap(), 7), 30, &thin(&r.parts, 0.00001))?;
     }
-    for r in gpkg::layer(g, "gis_osm_natural_a_free", &["fclass", "name"]) {
+    for r in g.layer("gis_osm_natural_a_free", &["fclass", "name"]) {
         if r.col(0) == Some("beach") && inside(&r.parts) {
             w.add("beach", "beach", r.col(1), area_z(&bbox(&r.parts).unwrap(), 10), 30, &r.parts)?;
         }
     }
-    for r in gpkg::layer(g, "gis_osm_landuse_a_free", &["fclass", "name"]) {
+    for r in g.layer("gis_osm_landuse_a_free", &["fclass", "name"]) {
         if let Some(cls) = r.col(0).and_then(land) {
             if inside(&r.parts) {
                 w.add("land", cls, r.col(1), area_z(&bbox(&r.parts).unwrap(), 9), 30, &thin(&r.parts, 0.00001))?;
             }
         }
     }
-    for r in gpkg::layer(g, "gis_osm_protected_areas_a_free", &["fclass"]) {
+    for r in g.layer("gis_osm_protected_areas_a_free", &["fclass"]) {
         if inside(&r.parts) {
             w.add("land", "park", None, area_z(&bbox(&r.parts).unwrap(), 8), 30, &thin(&r.parts, 0.00002))?;
         }
     }
-    for r in gpkg::layer(g, "gis_osm_waterways_free", &["fclass", "name"]) {
+    for r in g.layer("gis_osm_waterways_free", &["fclass", "name"]) {
         if inside(&r.parts) {
             let cls = r.col(0).unwrap_or("stream");
             w.add("waterway", cls, r.col(1), if cls == "river" { 10 } else { 13 }, 30, &r.parts)?;
         }
     }
-    for r in gpkg::layer(g, "gis_osm_railways_free", &["fclass", "name"]) {
+    for r in g.layer("gis_osm_railways_free", &["fclass", "name"]) {
         if inside(&r.parts) {
             let cls = r.col(0).unwrap_or("rail");
             w.add("rail", cls, r.col(1), if cls == "rail" { 10 } else { 13 }, 30, &r.parts)?;
         }
     }
-    for r in gpkg::layer(g, "gis_osm_roads_free", &["fclass", "name", "ref"]) {
+    for r in g.layer("gis_osm_roads_free", &["fclass", "name", "ref"]) {
         if inside(&r.parts) {
             let cls = r.col(0).unwrap_or("unknown");
             w.add("road", cls, r.col(1).or(r.col(2)), road_z(cls), 30, &r.parts)?;
         }
     }
-    for r in gpkg::layer(g, "gis_osm_places_free", &["fclass", "population", "name"]) {
+    for r in g.layer("gis_osm_places_free", &["fclass", "population", "name"]) {
         let (Some(name), true) = (r.col(2), inside(&r.parts)) else { continue };
         let cls = r.col(0).unwrap_or("locality");
         let pop = r.col(1).and_then(|p| p.parse().ok()).unwrap_or(0);
         w.add("place", cls, Some(name), place_z(cls, pop), 30, &r.parts)?;
     }
     for table in ["gis_osm_pois_free", "gis_osm_pois_a_free", "gis_osm_traffic_free", "gis_osm_traffic_a_free", "gis_osm_natural_free", "gis_osm_natural_a_free"] {
-        for r in gpkg::layer(g, table, &["fclass", "name"]) {
+        for r in g.layer(table, &["fclass", "name"]) {
             let Some(cls) = r.col(0).filter(|c| POI_KEEP.contains(c)) else { continue };
             if table == "gis_osm_natural_free" && cls != "spring" {
                 continue;
