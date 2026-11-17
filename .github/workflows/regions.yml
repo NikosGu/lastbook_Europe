@@ -45,14 +45,23 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if draft=$(gh release view "$RELEASE" --json isDraft --jq .isDraft 2>/dev/null); then
-            if [ "$draft" != true ]; then
+          # two drafts under one tag would split the data between them
+          same=$(gh release list --limit 1000 --json tagName --jq "[.[] | select(.tagName == \"$RELEASE\")] | length")
+          if [ "$same" -gt 1 ]; then
+            echo "$same releases are tagged $RELEASE: keep one" >&2
+            exit 1
+          fi
+          if said=$(gh release view "$RELEASE" --json isDraft --jq .isDraft 2>&1); then
+            if [ "$said" != true ]; then
               echo "$RELEASE is published: this workflow adds only to the draft. Make it a draft again, or start another data release." >&2
               exit 1
             fi
-          else
+          elif grep -qi "not found" <<<"$said"; then
             gh release create "$RELEASE" --draft --title "Lastbook Europe data" \
               --notes "The region maps, address indexes and packs setup downloads, and manifest-v1.json, which lists them. Built by the Regions workflow; the maintainer publishes it."
+          else
+            echo "$said" >&2
+            exit 1
           fi
       - name: The regions asked for, in the order to build them
         id: list
@@ -99,6 +108,7 @@ jobs:
           name: lastbook-tools
           path: target/release/lastbook-tools
           retention-days: 30
+          overwrite: true
 
   region:
     name: ${{ matrix.region }}
@@ -218,12 +228,21 @@ jobs:
             echo "$RELEASE is no longer a draft: nothing is added to it" >&2
             exit 1
           fi
+          # upload FILE...: tried again after a broken connection; --clobber replaces a file already there
+          upload() {
+            local try
+            for try in 1 2 3; do
+              gh release upload "$RELEASE" "$@" --clobber && return 0
+              sleep $((try * 30))
+            done
+            return 1
+          }
           # the old entries first and the new ones last: an entry never stands beside another build's zip
           for f in "map-entry-$REGION.json" "addresses-entry-$REGION.json"; do
             gh release delete-asset "$RELEASE" "$f" --yes 2>/dev/null || true
           done
-          gh release upload "$RELEASE" "$packs/Lastbook-Map-$REGION.zip" "$packs/Lastbook-Addresses-$REGION.zip" --clobber
-          gh release upload "$RELEASE" "$packs/map-entry-$REGION.json" "$packs/addresses-entry-$REGION.json" --clobber
+          upload "$packs/Lastbook-Map-$REGION.zip" "$packs/Lastbook-Addresses-$REGION.zip"
+          upload "$packs/map-entry-$REGION.json" "$packs/addresses-entry-$REGION.json"
       - name: What it made
         if: always()
         run: |
@@ -242,6 +261,7 @@ jobs:
             ${{ env.OUT }}/${{ matrix.region }}/build-report.json
             ${{ env.OUT }}/${{ matrix.region }}/time.txt
           if-no-files-found: warn
+          overwrite: true   # a job run again replaces its first try's
       - name: A pause before the next region, for Geofabrik
         if: always()
         run: sleep 120
