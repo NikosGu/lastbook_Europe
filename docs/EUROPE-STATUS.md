@@ -36,7 +36,8 @@ None of these blocks the work: each has a placeholder.
 |---|---|---|
 | 17 Nov 2026 | The app opens on "What do you need?" (the search and the guides), with Home first in the sidebar; videos keep their page | the original opened on its videos; the starter library has none |
 | 17 Nov 2026 | Setup suggests the smallest available library, whatever its name, and leaves 5% of the disk free in all (between 1 and 5 GB) | it looked for a pack named "small", and two margins added together turned down a 43 MB library on a disk with 7 GB free |
-| 17 Nov 2026 | Windows and Linux run the local AI on the processor until Vulkan builds on GitHub's machines; Vulkan is a build option tried in a CI job of its own | the first Vulkan builds failed there (Cargo's newer folder layout on Linux, Visual Studio's generator on Windows) |
+| 17 Nov 2026 | Vulkan on Windows and Linux in the installers, built with Ninja in a short folder on Windows, llama.cpp's libraries copied beside the runner; local package builds keep the processor unless LASTBOOK_VULKAN=1 | Cargo's newer folder layout, Visual Studio's generator and Windows' 260-character paths each broke the first builds; the release now checks that the packaged runner finds the processor's backend |
+| 17 Nov 2026 | The local AI writes its choices and log in the app's own folder when the library's folder cannot be written | a library on a read-only network share or stick must keep its AI |
 | 17 Nov 2026 | No Liechtenstein document in the starter library yet | llv.li refuses automated downloads, and that refusal is respected |
 | 17 Nov 2026 | First aid in the starter library comes from the IFRC guidelines, in English | no Italian first-aid document from a public body was found |
 | 17 Nov 2026 | Guides the starter library cannot support (growing food, preserving, repairs, home energy, land) keep an honest intro and their search words, with no readings; what is missing is in `content/gaps.json` | a guide gives only what its documents say: nothing from memory, nothing from the old US library |
@@ -50,7 +51,7 @@ None of these blocks the work: each has a placeholder.
 | Setup | manifest, downloader (own HTTPS client, pinned roots built in, resume with ETag), installer (check, unpack beside, switch at restart), hardware, `/api/setup/*` ([SETUP-API.md](SETUP-API.md)) | 49 engine tests, 9 of them whole flows against a local HTTPS server; on macOS, Windows and Ubuntu in CI |
 | The app's start | settings and data folders on each system, the remembered library, setup when there is none, the system's file picker, a restart after setup | snapshots of the app (setup page) |
 | Setup's region choice | country, then region for a split country | snapshots: Germany → region list, Bremen → sizes, Liechtenstein → one choice |
-| Local AI runner | `lastbook-llm` on llama.cpp: JSON lines, no sockets; llama.cpp's fit; Metal on a Mac, the processor on Windows and Linux (Vulkan, for their graphics cards, is a build option being made to build on GitHub's machines, in a job of its own); "from the disk" for models larger than the memory, with each layer's chosen experts read ahead | protocol tests in CI; a small Qwen 3.5 mixture-of-experts test model on Metal, and from the disk with experts read ahead writing exactly the same; Qwen3.6-35B-A3B Q8_0 (37.8 GB) loads on a 16 GB Mac with its weights read from the disk |
+| Local AI runner | `lastbook-llm` on llama.cpp: JSON lines, no sockets; llama.cpp's fit; Metal on a Mac; on Windows and Linux, Vulkan for graphics cards or the best processor variant, as separate libraries beside the runner, each loaded only where it can run (`--devices` lists what it found); "from the disk" for models larger than the memory, with each layer's chosen experts read ahead | protocol tests in CI; a small Qwen 3.5 mixture-of-experts test model on Metal, and from the disk with experts read ahead writing exactly the same; Qwen3.6-35B-A3B Q8_0 (37.8 GB) loads on a 16 GB Mac with its weights read from the disk |
 | Prompt formats | Qwen 3.5/3.6 (ChatML, XML tool calls) and Gemma 4, chosen by the model file's header | tests against the chat templates |
 | Installers and releases | `.dmg` (6.5 MB), Inno Setup installer and `.zip`, `.deb` and `.tar.gz`; a draft release on each push | the `.dmg` opened and photographed here; the release workflow on GitHub |
 | Windows | downloads, paths and file locks fixed after the first run on GitHub's Windows machines | CI |
@@ -61,7 +62,7 @@ None of these blocks the work: each has a placeholder.
 | Check for updates | only when asked; nothing while the download site is the placeholder | tests against a local HTTPS server |
 | Pictures on all three systems | `--snapshot` with WKWebView, WebView2 and WebKitGTK; CI photographs the app on each | the pictures from GitHub's Windows and Ubuntu machines, looked at |
 | Six languages | the interface in English, Italian, German, French, Spanish and Polish (1,175 keys each, the five translations marked for review), chosen in setup and the app, kept, changed in place; metric only; Europe on the map; what the engine says (setup, the map, the library, the local AI, updates) comes as a code with its numbers, which the interface words in the person's language, the English kept for the log | `tools/check_locales.mjs`; a test in each engine module that every code has words; pictures in Italian, German, Spanish and Polish |
-| Storage anywhere | a library and its models on this computer, an external disk, a USB stick or a NAS (SMB, NFS, mapped drives, UNC paths); disk kinds shown in setup; SQLite read immutable; a library out of reach said plainly at start and while running; models beside the library or on this computer | tests on each system, and a library read through a network path on Windows in CI |
+| Storage anywhere | a library and its models on this computer, an external disk, a USB stick or a NAS (SMB, NFS, mapped drives, UNC paths); disk kinds shown in setup; SQLite read immutable; a library out of reach said plainly at start and while running; models beside the library or on this computer; a library on a read-only share or stick keeps its local AI, whose choices and log go to the app's own folder | tests on each system, and a library read through a network path on Windows in CI |
 | The map's data tools | `lastbook-tools build-map`, `pack-map`, `pack-addresses`, `build-terrain`: the detailed map from Geofabrik's GeoPackage, addresses and buildings from OpenStreetMap's PBF, places and water, elevation from Copernicus DEM GLO-30, the zoomed-out base from Natural Earth ([MAPS.md](MAPS.md)); Liechtenstein built in 3 seconds: 32,191 map features, 441 help points, 12,499 addresses, 12 MB to download | 23 tools tests; packs checked by setup's own zip check; the map, an address and a postcode photographed |
 | The library's tools | `lastbook-tools build-library` and `build-pack`: each document checked against its size and SHA-256, page texts through PDFium (words split at a line end joined again), the search index, a Sources page; the starter library: 14 public documents in Italian, German and English (BWL, Protezione Civile, BBK, Zivilschutz, IFRC, WHO), 707 pages, 39 MB to download; PDFium in each installer, pinned by SHA-256 | tests with and without PDFium; the release photographs each packaged app drawing a PDF page |
 | The whole path in Italian with Liechtenstein | setup finds the three packs on this computer, suggests the starter library, Liechtenstein chosen, installed and opened; the map of Vaduz with relief, help points and the nearest help in metres; "Städtle 11, Vaduz" and "9490" found; the chat with Qwen3.6-35B-A3B Q8_0 (37.8 GB) from the disk on a 16 GB Mac, offered after its file was checked and chosen by a click: "how much water per person" answered in Italian with each point cited to the Swiss federal leaflet's pages (9 litres a person, for 3 days), and "the nearest pharmacy to Städtle 11" through the offline map (Schloss Apotheke, 0.27 km south) | photographed in the app on this Mac |
@@ -71,19 +72,19 @@ None of these blocks the work: each has a placeholder.
 ## Being done now
 
 - The other test regions: Malta, Luxembourg, Bremen.
-- The last English words on screen: the details of lakes and dams, a few of the engine's messages, the map's facts
-  quoted in the chat's sources; the map page's date of the data and credits from the installed map; setup's found files
-  by name.
+- Documents in French, Spanish and Polish for the starter library, so the guides in those languages open pages in
+  their own language.
 
 ## Left, in order
 
 1. All regions built by the tools on GitHub's machines. A region's box reaches into its neighbours, whose country
    extracts are separate: the strip around a region stays empty until the build takes the neighbours' extracts too.
 2. The release checks: the pinned roots cover the download hosts, nothing ships that must not.
-3. Vulkan for graphics cards on Windows and Linux, once it builds on GitHub's machines.
-4. "From the disk" faster: about a word a second is slow for long answers. Next, the same model at 4 bits (about 21 GB,
+3. "From the disk" faster: about a word a second is slow for long answers. Next, the same model at 4 bits (about 21 GB,
    closer to a 16 GB Mac's memory), the graphics processor for the layers that fit, and a cache of experts kept by use,
    as BigMoeOnEdge does; each measured as above.
+4. The map's facts quoted in the chat's sources ("Pharmacy · 0.27 km south of …") in the person's language; setup's
+   button says "Install" when nothing is to be downloaded; plural forms in About.
 5. Native-speaker review of the five translations of the interface and the guides.
 
 ## Test models
