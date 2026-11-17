@@ -1,0 +1,161 @@
+# Lastbook Europe
+
+Lastbook Europe is an offline survival library for Europe, for macOS, Windows and Linux. It puts practical guides,
+manuals, videos, encyclopedias, an offline map with help points and address search, and an optional local AI on one
+computer. After setup it works with no internet. The AI answers from the library and links every answer to its pages.
+
+It covers the 31 countries of the EU and EFTA (the 27 EU countries, Switzerland, Norway, Iceland and Liechtenstein) in
+110 regions. The interface is in English, Italian, German, French, Spanish and Polish; more languages will follow.
+
+The app is written in Rust; the interface is plain HTML, CSS and JavaScript.
+
+> **Status: under construction.** The window, setup, the region choice, the local AI runner and the installers work.
+> The map, the library and the chat are being rewritten in Rust now, and the European library packs, region maps and
+> models are not published yet. What is done, what is left and what is waiting for a decision is in
+> [docs/EUROPE-STATUS.md](docs/EUROPE-STATUS.md).
+
+## Download and install
+
+Installers are on the [Releases](https://github.com/NikosGu/lastbook_Europe/releases) page. They are built on GitHub's
+machines from this repository by [.github/workflows/release.yml](.github/workflows/release.yml).
+
+| System | File | Install |
+|---|---|---|
+| macOS 13 or later, Apple silicon | `LastbookEurope-<version>-macos-arm64.dmg` | Open the disk image and drag **Lastbook Europe** to Applications. The builds are not signed with an Apple Developer ID yet: the first time, Control-click the app and choose **Open**. |
+| Windows 10 and 11, x64 | `LastbookEurope-<version>-windows-x64-setup.exe` | Run it; no administrator rights are needed. The builds are not signed yet: if SmartScreen warns, choose **More info → Run anyway**. A `.zip` to unpack anywhere is there too. |
+| Linux x86-64 (Debian, Ubuntu and similar) | `lastbook-europe_<version>_amd64.deb` | `sudo apt install ./lastbook-europe_<version>_amd64.deb`, then open **Lastbook Europe** from the menu. A `.tar.gz` is there too; it needs WebKitGTK 4.1. |
+
+The installers are small (a few megabytes): the library, the maps and the AI model are chosen and downloaded by setup,
+or taken from files already on the computer.
+
+## What it does
+
+- **Guides first.** Short guides for urgent needs (`content/topics/`), each pointing to real pages of real sources, with
+  page numbers.
+- **The library.** Manuals and PDFs, videos with their transcripts, saved web pages and offline encyclopedias (ZIM
+  files), with search everywhere.
+- **The offline map.** A base map of Europe and a detailed map of the region chosen in setup: streets, buildings, terrain,
+  water, and places to get help (hospitals, pharmacies, drinking water, shelters). Addresses can be found offline, written
+  the way each country writes them. Distances are metric. The person chooses the region; Lastbook never detects location.
+- **The local AI, optional.** Ask in plain words, in your language, and get an answer that cites the library's pages,
+  from a model running on the computer itself (see below). Without it, the chat still finds the right pages.
+- **Setup in one step.** On first run, setup shows this computer's free space and memory, suggests a library and the
+  largest AI model that fits, and downloads what the person chooses, checking every file. A library or a model file
+  already on the computer can be used instead of downloading.
+
+## The local AI
+
+The model is never part of the app. The person adds one in setup, or points setup at a GGUF model file already on the
+computer. Lastbook knows each model it offers by name, size and SHA-256, and checks the file before using it.
+
+**Which models.** Lastbook prompts two families, telling them apart by the model file's own header: **Qwen 3.5 / 3.6**
+(including mixtures of experts such as Qwen3.6-35B-A3B) and **Gemma 4**. The answers cite the library in every
+language.
+
+**Does it fit this computer?** Lastbook asks llama.cpp to fit the model to this computer's memory, then gives one of
+three answers:
+
+- **In memory.** The model fits. It runs on the graphics processor where there is one (Metal on a Mac; on Windows and
+  Linux the CPU for now, Vulkan is planned).
+- **From the disk.** A mixture-of-experts model larger than the memory can still run: each word uses only a few of its
+  experts, so the experts stay in the model file and are read from the disk as they are needed (the file is mapped, not
+  copied into memory). It is much slower. It is offered only as an explicit choice with a warning, only on an SSD and only
+  after a short measurement on that computer, and it is never the default. On a Mac this mode runs on the CPU, because
+  Metal must hold all of its share in memory.
+- **Too big.** Setup says so in plain words, and why.
+
+**The runner.** `lastbook-llm` (`crates/llm`) is a small Rust program on [llama.cpp](https://github.com/ggml-org/llama.cpp),
+through the `llama-cpp-2` crate (`third_party/llama-cpp-2` adds one setting to it, see its `PROVENANCE.md`). It runs one
+model, talks to the app only through its standard input and output (one JSON object per line), opens no socket and
+contains no network code. It stops when unused, and when the app closes.
+
+Next: the chat with citations in Rust, then a faster "from the disk" mode that keeps the most used experts in memory and
+reads only the missing ones, as [BigMoeOnEdge](https://github.com/Helldez/BigMoeOnEdge) and llama.cpp's expert
+streaming work do.
+
+## Privacy and network use
+
+- **No listening port.** The window (`crates/app`, on [tao](https://github.com/tauri-apps/tao) and
+  [wry](https://github.com/tauri-apps/wry)) shows the interface in the system's own web view: WKWebView on a Mac,
+  WebView2 on Windows, WebKitGTK on Linux. It talks to the engine through the app's own address scheme
+  (`lastbook://app/`; on Windows `http://lastbook.localhost/`, which WebView2 hands to the app without any network), never
+  a network port. Pages from anywhere else are blocked.
+- **One use of the network, started by the person.** Setup's downloader (`crates/engine/src/setup/net.rs` and
+  `download.rs`) is the only code that connects anywhere: HTTPS on port 443, only to the hosts in
+  `crates/engine/src/dist.rs`, no proxy from the system, and a redirect only to another allowed host.
+- **Pinned trust.** The downloader trusts only the root certificates in `crates/engine/src/setup/roots.pem`, built into
+  the program, never the system's trust store.
+- **Checked files.** Every download is checked against the SHA-256 published for it before it is used. Zips are checked
+  for unsafe paths, links and sizes before anything is written.
+- **A working library is never broken.** New data is unpacked beside the old one, checked, and switched in when the app
+  next starts. A failure at any step leaves the old library as it was.
+- **Nothing else.** No telemetry, no account, and nothing that reaches the network on its own.
+
+## What's where
+
+| Path | What it is |
+|---|---|
+| `crates/engine` | The engine: the request router, setup (manifest, downloader, installer, hardware), the European regions, the map, the library, the local AI and the assistant. |
+| `crates/app` | The desktop window and the app's start: which library opens, setup when there is none, the system's file picker. |
+| `crates/llm` | `lastbook-llm`, the local AI runner. |
+| `crates/tools` | Data tools, such as `region-boxes`, which makes the regions' boxes from Eurostat's NUTS boundaries. |
+| `third_party/llama-cpp-2` | The `llama-cpp-2` crate with one addition (see `PROVENANCE.md`). |
+| `web/` | The interface, in plain HTML, CSS and JavaScript, with no build step and nothing loaded from the web. |
+| `content/` | The guides (`topics/*.json`) and what curators looked for and did not find (`gaps.json`). |
+| `packaging/rust/` | The installers for macOS, Windows and Linux. |
+| `docs/` | The setup contract (`SETUP-API.md`) and the state of the work (`EUROPE-STATUS.md`). |
+
+## Build and run from source
+
+You need Rust (stable, 1.85 or later), CMake and a C/C++ compiler (llama.cpp is built from source).
+
+- **macOS:** the Xcode command line tools.
+- **Windows:** Visual Studio's C++ tools and LLVM (for `libclang`); for the installer, [Inno Setup](https://jrsoftware.org/isinfo.php).
+- **Linux (Debian, Ubuntu):** `sudo apt install build-essential cmake libclang-dev libwebkit2gtk-4.1-dev libgtk-3-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev`
+
+```bash
+cargo build --release
+cargo run --release -p lastbook-app                                   # opens setup when there is no library
+cargo run --release -p lastbook-app -- --data /path/to/LastbookData   # opens this library
+```
+
+Without `--data`, the app opens the library named by `LASTBOOK_DATA`, else the one chosen last time, else its own; with
+none, it opens setup. The runner is built as `target/release/lastbook-llm`, beside the app, where the app looks for it.
+
+The installers:
+
+```bash
+bash packaging/rust/package_macos.sh                         # dist/LastbookEurope-<version>-macos-arm64.dmg
+bash packaging/rust/package_linux.sh                         # dist/lastbook-europe_<version>_amd64.deb and a .tar.gz
+powershell -File packaging\rust\package_windows.ps1          # dist\LastbookEurope-<version>-windows-x64-setup.exe and a .zip
+```
+
+## Tests
+
+```bash
+cargo test --workspace
+LASTBOOK_TEST_MODEL=/path/to/a-small-model.gguf cargo test -p lastbook-llm --release   # the runner with a real model
+```
+
+The tests make their own small data: the setup tests run whole downloads against a local HTTPS server, and need no
+library and no model. GitHub Actions runs them on macOS, Windows and Ubuntu at every push
+([.github/workflows/tests.yml](.github/workflows/tests.yml)).
+
+What a person sees is also checked in the running app: `lastbook --snapshot shot.png [--eval JS]...` drives the page and
+saves a picture of it (macOS for now).
+
+## What is not in this repository
+
+- **The library**: manuals, videos and encyclopedias, each under its own terms, published as packs with a Sources and
+  permissions page in each.
+- **Maps and models**: large, and built from public data or published by their makers. Setup fetches them and checks them.
+- **Generated data and builds** (`derived/`, `dist/`, `target/`), and **signing material**.
+
+## Credits and licence
+
+Lastbook Europe started from [Lastbook](https://github.com/Immortal-Protocols/lastbook), whose interface and guides it
+keeps, and is rewritten in Rust for Europe. Its code and documentation use the [MIT License](LICENSE), which keeps
+Lastbook's notice. Third-party software keeps its own licence: see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The
+regions' boxes are made from Eurostat's NUTS 2024 boundaries, © EuroGeographics for the administrative boundaries.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).

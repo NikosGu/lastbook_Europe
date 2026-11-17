@@ -1,0 +1,28 @@
+---
+name: Bug report
+about: Something in Lastbook does not work as it should
+title: ''
+labels: bug
+---
+
+**What happened**
+What you did, what you expected, and what you saw instead.
+
+**Steps to reproduce**
+1.
+2.
+3.
+
+**Your computer**
+- Lastbook version (About page):
+- System: macOS / Windows, and its version
+- Library: Small / Medium / All, or your own
+- Local AI on or off:
+
+**Screenshots or log**
+If you can, add a screenshot or the last lines of `LastbookData/derived/logs/lastbook.log`.
+
+Before you post, remove anything personal: your name, your home area or address, folder paths with your user name,
+and the names of your computers.
+
+A security or privacy problem? Don't post it here: report it privately at https://github.com/NikosGu/lastbook_Europe/security/advisories/new.

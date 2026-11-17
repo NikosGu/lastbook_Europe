@@ -1,0 +1,14 @@
+# Source only. Libraries, maps, models, generated data and builds stay out.
+/target
+/dist/
+/derived/
+/library-data/
+*.gguf
+*.zim
+*.onnx
+*.dmg
+*.exe
+*.zip
+.DS_Store
+.env*
+*.env
