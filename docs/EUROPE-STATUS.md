@@ -42,24 +42,27 @@ None of these blocks the work: each has a placeholder.
 | Prompt formats | Qwen 3.5/3.6 (ChatML, XML tool calls) and Gemma 4, chosen by the model file's header | tests against the chat templates |
 | Installers and releases | `.dmg` (6.5 MB), Inno Setup installer and `.zip`, `.deb` and `.tar.gz`; a draft release on each push | the `.dmg` opened and photographed here; the release workflow on GitHub |
 | Windows | downloads, paths and file locks fixed after the first run on GitHub's Windows machines | CI |
+| The map | vector tiles, terrain, buildings, help pins, the nearest help in metres, place and lake search with both spellings of a name, and address search for the 31 countries (word order, postcodes, street words, house numbers) ([ADDRESSES.md](ADDRESSES.md)) | 62 tests, one per country; the app photographed on a small Vaduz data folder ("Aeulestr. 10, 9490 Vaduz" found) |
+| The library | catalog, guides, search with the interface's language preferred (words for six languages in `content/search/`), shelves and videos, PDF pages through PDFium, saved pages and encyclopedias (ZIM) cleaned, the library's files with their checks | 47 tests; the app photographed on a small library (search, a PDF page, an article) |
+| The local AI in the engine | the model files the catalogue offers, their SHA-256, the three-way fit with a disk speed test, the runner started on a question and stopped when unused | tests, among them a whole cycle with a small real model |
+| The assistant and the chat | the question searched at once, tools (search, read pages, transcripts, places and nearest help), every citation checked against what the tools returned, the answer in the person's language; the chat streamed to the page by polls | tests with a scripted model |
+| Check for updates | only when asked; nothing while the download site is the placeholder | tests against a local HTTPS server |
+| Pictures on all three systems | `--snapshot` with WKWebView, WebView2 and WebKitGTK; CI photographs the app on each | the pictures from GitHub's Windows and Ubuntu machines, looked at |
 
 ## Being done now
 
-- The map, places and European address search (`crates/engine/src/map/`), with per-country address tests for all 31
-  countries.
-- The library: catalog, search, shelves, videos, PDF pages, encyclopedias, saved pages (`crates/engine/src/library/`).
+- The data tools in Rust (`crates/tools`) for the map: the detailed map, places, water, buildings, terrain and the
+  address index of a region, and the region map and address index as setup installs them; first Liechtenstein.
+- The library's tools: a library and its search index from a list of documents, the pack setup installs; a small
+  starter library in Italian, German and English.
 - The interface in six languages (`web/i18n.js`, `web/locales/`), metric only, 112.
 
 ## Left, in order
 
-1. The local AI in the engine: model files, checks, the three-way fit (in memory, from the disk, too big) with the disk
-   measurement, the runner's process; then the assistant with citations, and the chat by polling.
-2. The data tools in Rust and the four test regions (Liechtenstein, Malta, Luxembourg, Bremen): map, places, addresses,
-   terrain, and a small European library.
-3. The whole path in Italian with Liechtenstein: setup, map, addresses, chat, photographed in the app.
-4. Snapshots on Windows and Linux, so CI photographs the app on all three systems; the update check; the release
-   checks (pinned roots cover the hosts, nothing that must not ship).
-5. A faster "from the disk": experts kept in memory by use, only the missing ones read (BigMoeOnEdge, llama.cpp's expert
+1. The whole path in Italian with Liechtenstein: setup, map, addresses, chat, photographed in the app.
+2. The other test regions (Malta, Luxembourg, Bremen), then all regions built by the tools on GitHub's machines.
+3. The release checks: the pinned roots cover the download hosts, nothing ships that must not.
+4. A faster "from the disk": experts kept in memory by use, only the missing ones read (BigMoeOnEdge, llama.cpp's expert
    streaming).
 
 ## Test models

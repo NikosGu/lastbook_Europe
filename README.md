@@ -9,9 +9,10 @@ It covers the 31 countries of the EU and EFTA (the 27 EU countries, Switzerland,
 
 The app is written in Rust; the interface is plain HTML, CSS and JavaScript.
 
-> **Status: under construction.** The window, setup, the region choice, the local AI runner and the installers work.
-> The map, the library and the chat are being rewritten in Rust now, and the European library packs, region maps and
-> models are not published yet. What is done, what is left and what is waiting for a decision is in
+> **Status: under construction.** The window, setup with the region choice, the map with European address search,
+> the library, the local AI with its chat, and the installers are written in Rust and tested on macOS, Windows and Linux.
+> The tools that build the European map data and a first small library are being written now; the library packs,
+> region maps and models are not published yet. What is done, what is left and what is waiting for a decision is in
 > [docs/EUROPE-STATUS.md](docs/EUROPE-STATUS.md).
 
 ## Download and install
