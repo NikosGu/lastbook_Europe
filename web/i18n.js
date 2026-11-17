@@ -30,7 +30,7 @@
 
   let lang = chosen(), EN = {}, CUR = {}, F = null;
   const cache = {};   // locale files already read: switching back costs nothing
-  const read = l => cache[l] || (cache[l] = fetch(`/ui/locales/${l}.json?v=${VERSION}`)
+  const read = l => cache[l] || (cache[l] = fetch(`/ui/locales/${l}.json?v=${VERSION}`, { cache: 'no-store' })
     .then(r => r.ok ? r.json() : {}).catch(() => ({})).then(d => (d && typeof d === 'object' ? d : {})));
 
   // Formatters for the current language, made once per language
@@ -92,6 +92,18 @@
     if (type === 'conjunction' && F.lf) return F.lf.format(a);
     try { return new Intl.ListFormat(lang, { style: 'long', type }).format(a) } catch { return a.join(', ') }
   }
+  /* A message the engine sends as {code, params} beside its English sentence: in the interface's language when the table
+     (code → key) knows the code, else the engine's own English. A param named *_bytes is a size and *_mb_s a speed;
+     opts.size formats sizes another way (setup counts in 1024s on Windows). */
+  function said(table, msg, english, opts = {}) {
+    const m = msg && typeof msg === 'object' ? msg : {};
+    const key = typeof m.code === 'string' && Object.hasOwn(table, m.code) ? table[m.code] : null;
+    if (!key) return english == null ? '' : String(english);
+    const p = {};
+    for (const [k, v] of Object.entries(m.params && typeof m.params === 'object' ? m.params : {}))
+      p[k] = typeof v !== 'number' ? v : /_bytes$/.test(k) ? (opts.size || size)(v) : /_mb_s$/.test(k) ? unit(v, 'megabyte-per-second') : v;
+    return t(key, p);
+  }
   const date = (d, opts) => { try { return new Intl.DateTimeFormat(lang, opts).format(d instanceof Date ? d : new Date(d)) } catch { return String(d) } };
   const compare = (a, b) => F.col ? F.col.compare(String(a), String(b)) : String(a).localeCompare(String(b));
   const country = cc => { try { return (F.regions && F.regions.of(cc)) || cc } catch { return cc } };
@@ -148,7 +160,7 @@
 
   window.I18N = Object.freeze({
     LANGS, NAME, get lang() { return lang }, ready, set, apply, picker,
-    t, th, raw, esc, num, unit, size, list, date, compare, country,
+    t, th, raw, esc, num, unit, size, list, date, compare, country, said,
   });
   window.t = t;
   window.th = th;

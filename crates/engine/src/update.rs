@@ -19,6 +19,15 @@ use std::time::Duration;
 const MAX_BODY: usize = 4096;
 const OFFLINE: &str = "Lastbook could not reach the internet. Everything else in Lastbook still works without it; try again when you are online.";
 
+/// What the check can say, each a code the interface words in the person's language (web/locales: update.code.<code>), with
+/// its params; the English sentence stays beside them, for logs and for an interface that does not know the code.
+pub const CODES: [&str; 10] = ["unsupported", "no_site", "network", "certificate", "refused", "offline", "not_published", "server", "bad_info", "too_old_os"];
+
+/// A state that says something: its code and params beside the English.
+fn said(state: &str, code: &str, params: Value, message: impl Into<String>) -> Value {
+    json!({"state": state, "code": code, "params": params, "message": message.into()})
+}
+
 /// This system's key in the update information.
 pub fn platform_key() -> Option<&'static str> {
     if cfg!(target_os = "macos") {
@@ -103,10 +112,10 @@ impl Updater {
 
     pub fn check(&self) -> Value {
         let Some(key) = self.0.key else {
-            return json!({"error": "Updates are for the Mac, Windows and Linux app.", "code": "unsupported"});
+            return json!({"error": "Updates are for the Mac, Windows and Linux app.", "code": "unsupported", "params": {}});
         };
         let Some(url) = self.0.url.clone() else {
-            self.set(json!({"state": "no_site", "message": "This copy has no download site to check for updates yet."}));
+            self.set(said("no_site", "no_site", json!({}), "This copy has no download site to check for updates yet."));
             return self.state(); // nothing to ask, so nothing is asked
         };
         if self.0.state.lock().unwrap()["state"] == "checking" {
@@ -125,12 +134,12 @@ impl Updater {
     fn fetch(&self, url: &str) -> Result<(u16, Vec<u8>), Value> {
         let tls = match &self.0.tls {
             Some(t) => t.clone(),
-            None => Tls::product().map_err(|m| json!({"state": "error", "code": "network", "message": m}))?,
+            None => Tls::product().map_err(|m| said("error", "network", json!({}), m))?,
         };
         let mut r = net::get(url, 0, None, &self.0.allow, &tls, Duration::from_secs(15)).map_err(|e| match e {
-            NetError::Certificate(_) => json!({"state": "error", "code": "network", "message": "Lastbook could not confirm it was talking to the real download site, so it stopped. A network that intercepts secure connections (some offices, hotels) can cause this."}),
-            NetError::Refused(m) => json!({"state": "error", "code": "network", "message": m}),
-            NetError::Io(_) => json!({"state": "error", "code": "offline", "message": OFFLINE}),
+            NetError::Certificate(_) => said("error", "certificate", json!({}), "Lastbook could not confirm it was talking to the real download site, so it stopped. A network that intercepts secure connections (some offices, hotels) can cause this."),
+            NetError::Refused(m) => said("error", "refused", json!({}), m),
+            NetError::Io(_) => said("error", "offline", json!({}), OFFLINE),
         })?;
         if r.status != 200 {
             return Ok((r.status, Vec::new()));
@@ -138,7 +147,7 @@ impl Updater {
         match r.read_limited(MAX_BODY) {
             Ok(Some(b)) => Ok((200, b)),
             Ok(None) => Ok((200, vec![0; MAX_BODY + 1])), // larger than any real answer
-            Err(_) => Err(json!({"state": "error", "code": "offline", "message": OFFLINE})),
+            Err(_) => Err(said("error", "offline", json!({}), OFFLINE)),
         }
     }
 
@@ -148,17 +157,17 @@ impl Updater {
             Err(state) => return state,
         };
         if status == 403 || status == 404 {
-            return json!({"state": "not_published", "message": "No update information yet. Try again later."});
+            return said("not_published", "not_published", json!({}), "No update information yet. Try again later.");
         }
         if status != 200 || data.len() > MAX_BODY {
-            return json!({"state": "error", "code": "server", "message": "The download site did not answer properly. Try again later."});
+            return said("error", "server", json!({}), "The download site did not answer properly. Try again later.");
         }
         let m: Value = serde_json::from_slice(&data).unwrap_or(Value::Null);
         let Some((version, min_os)) = validate(&m, key) else {
             if m["version"] == 1 && m.get(key).is_none() {
-                return json!({"state": "not_published", "message": "No update information yet. Try again later."}); // this system not listed yet
+                return said("not_published", "not_published", json!({}), "No update information yet. Try again later."); // this system not listed yet
             }
-            return json!({"state": "error", "code": "bad_info", "message": "The update information on the download site could not be read. Try again later."});
+            return said("error", "bad_info", json!({}), "The update information on the download site could not be read. Try again later.");
         };
         if ver(&self.0.version).is_some_and(|mine| ver(&version).is_some_and(|v| v <= mine)) {
             return json!({"state": "up_to_date", "latest": version});
@@ -170,7 +179,10 @@ impl Updater {
                     "windows" => "Windows",
                     _ => "Linux",
                 };
-                return json!({"state": "too_old_os", "version": version, "message": format!("Version {version} needs {name} {} or later.", min_os.unwrap_or_default())});
+                let min = min_os.unwrap_or_default();
+                let mut s = said("too_old_os", "too_old_os", json!({"version": version, "os": name, "min_os": min}), format!("Version {version} needs {name} {min} or later."));
+                s["version"] = json!(version);
+                return s;
             }
         }
         json!({"state": "available", "version": version})
@@ -218,6 +230,8 @@ mod tests {
         assert!(dist::update_url().is_none(), "the download site is still the placeholder");
         let s = u.check();
         assert_eq!(s["state"], "no_site");
+        assert_eq!((s["code"].as_str(), &s["params"]), (Some("no_site"), &json!({})));
+        assert!(s["message"].as_str().is_some_and(|m| m.contains("no download site")), "the English stays beside the code");
         assert_eq!(s["current"], env!("CARGO_PKG_VERSION"));
         assert_eq!(u.handle("GET", "nothing").0, 404);
     }
@@ -237,11 +251,36 @@ mod tests {
         assert_eq!(check(info, "0.2.0", Some("15.1"))["state"], "up_to_date");
         let s = check(info, "0.1.0", Some("13.6"));
         assert_eq!((s["state"].as_str(), s["message"].as_str()), (Some("too_old_os"), Some("Version 0.2.0 needs macOS 14.0 or later.")));
-        assert_eq!(check(r#"{"version": 1, "windows": {"version": "0.2.0"}}"#, "0.1.0", None)["state"], "not_published");
-        assert_eq!(check("not json", "0.1.0", None)["code"], "bad_info");
+        assert_eq!((s["code"].as_str(), &s["params"]), (Some("too_old_os"), &json!({"version": "0.2.0", "os": "macOS", "min_os": "14.0"})));
+        let s = check(r#"{"version": 1, "windows": {"version": "0.2.0"}}"#, "0.1.0", None);
+        assert_eq!((s["state"].as_str(), s["code"].as_str(), &s["params"]), (Some("not_published"), Some("not_published"), &json!({})));
+        let s = check("not json", "0.1.0", None);
+        assert_eq!((s["state"].as_str(), s["code"].as_str(), &s["params"]), (Some("error"), Some("bad_info"), &json!({})));
+        srv.put("app-v1.json", vec![b'x'; MAX_BODY + 1]);
+        let u = Updater::new(Some(url.clone()), srv.allow(), Some(srv.tls.clone()), Some("mac"), "0.1.0", None);
+        u.check();
+        assert_eq!(wait(&u)["code"], "server");
         // a host it does not know is never asked
         let u = Updater::new(Some("https://example.com/app-v1.json".into()), srv.allow(), Some(srv.tls.clone()), Some("mac"), "0.1.0", None);
         u.check();
-        assert_eq!(wait(&u)["code"], "network");
+        let s = wait(&u);
+        assert_eq!((s["state"].as_str(), s["code"].as_str(), &s["params"]), (Some("error"), Some("refused"), &json!({})));
+        assert!(s["message"].as_str().is_some_and(|m| !m.is_empty()));
+        // a server that is not there: offline, said as such
+        let gone = format!("https://127.0.0.1:{}/app-v1.json", std::net::TcpListener::bind("127.0.0.1:0").unwrap().local_addr().unwrap().port());
+        let u = Updater::new(Some(gone), srv.allow(), Some(srv.tls.clone()), Some("mac"), "0.1.0", None);
+        u.check();
+        assert_eq!(wait(&u)["code"], "offline");
+        let s = Updater::new(None, srv.allow(), None, None, "0.1.0", None).check();
+        assert_eq!((s["code"].as_str(), &s["params"]), (Some("unsupported"), &json!({})));
+    }
+
+    #[test]
+    fn every_code_has_words_in_the_interface() {
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web/locales/en.json");
+        let words: Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+        for code in CODES {
+            assert!(words[format!("update.code.{code}")].is_string(), "web/locales/en.json has no update.code.{code}");
+        }
     }
 }
