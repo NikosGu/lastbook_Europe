@@ -254,16 +254,16 @@ The neighbours, and the rule for fetching them:
   neighbour's strip when it is built after that neighbour in the same week: `CH AT LI` gives Liechtenstein the Swiss
   bank of the Rhine.
 
-Large regions on the runner. A runner has 16 GB of memory and, by GitHub's account, 14 GB of disk. The job removes
-toolchains it does not use, puts the sources and the build on whichever disk then has more room (the system disk or
-`/mnt`, always under the name `/mnt/lastbook`, where the cache puts them back), adds 16 GB of swap there when 40 GB
-are free, so that a region needing more memory than the runner has slows down rather than stops, and prints both
-disks at its start. From Geofabrik's sizes of 17 November 2026, and the test regions' memory of about five times
-their PBF:
+Large regions on the runner. A runner has 16 GB of memory and, by GitHub's account, 14 GB of disk; the first runs'
+logs (17 November 2026) showed 108 GB free on its system disk once the toolchains a job does not use were removed.
+The job puts the sources and the build on whichever disk has more room (the system disk or `/mnt`, always under the
+name `/mnt/lastbook`, where the cache puts them back), adds 16 GB of swap there when 40 GB are free, so that a region
+needing more memory than the runner has slows down rather than stops, and prints both disks at its start. From
+Geofabrik's sizes of 17 November 2026, and the test regions' memory of about five times their PBF:
 
 - Norway: PBFs 1.4 GB, GeoPackages 3.4 GB (some 7.5 GB unpacked), 420 DEM tiles listed (fewer exist, 15 to 30 MB
-  each so far north): some 20 GB of disk, which a runner whose disks are smaller cannot give. Some 7 GB of memory
-  for the PBFs and GeoPackages, then at most 2 GB of DEM files for the terrain, one after the other.
+  each so far north): some 20 GB of disk. Some 7 GB of memory for the PBFs and GeoPackages, then at most 2 GB of DEM
+  files for the terrain, one after the other.
 - The Netherlands (PBFs 1.4 GB, nearly every building and address mapped), Sweden (1.0 GB), Czechia and
   Nordrhein-Westfalen (0.9 GB) and Bayern: 4 to 7 GB of memory.
 - Elevation to zoom 12 over Norway's, Sweden's and Finland's boxes would make maps of several GB, past the 2 GiB a
