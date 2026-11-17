@@ -4,7 +4,7 @@
 //!
 //! Each subcommand lives in its own module and prints its own usage with --help.
 
-use lastbook_tools::{library, map};
+use lastbook_tools::{library, map, release};
 
 const USAGE: &str = "lastbook-tools <subcommand> [options]
 
@@ -16,6 +16,8 @@ const USAGE: &str = "lastbook-tools <subcommand> [options]
   build-terrain   a region's elevation tiles alone, from Copernicus DEM
   region-sources  what to download for a region: its extracts, its neighbours', the DEM tiles, Natural Earth
   check-map       a region's zips checked as setup takes them and as a person uses them
+  check-roots     every host setup downloads from verified through the app's own roots, and a site outside them refused
+  scan-package    a built package looked through for what must not ship
 
 Run a subcommand with --help for its options.";
 
@@ -31,6 +33,8 @@ fn main() {
         Some("build-terrain") => map::cli::build_terrain(rest),
         Some("region-sources") => map::cli::region_sources(rest),
         Some("check-map") => map::cli::check_map(rest),
+        Some("check-roots") => release::check_roots(rest),
+        Some("scan-package") => release::scan_package(rest),
         _ => {
             eprintln!("{USAGE}");
             2

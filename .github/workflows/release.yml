@@ -77,6 +77,26 @@ jobs:
       # A library of one PDF page of our own (packaging/rust/check-library), built with lastbook-tools and the PDFium the
       # package holds, then the packaged app opened on that page, finding its PDFium by itself: a picture to look at, and
       # the page's drawing in the library's cache, which only PDFium makes.
+      # The release checks (crates/tools/src/release.rs): nothing in the package that must not ship, the local AI's runner
+      # and llama.cpp's libraries unable to reach the network; and, once, every download host verified through the
+      # app's own roots alone.
+      - name: Nothing ships that must not, and the download hosts verify through the app's roots
+        shell: bash
+        run: |
+          TOOLS="$CARGO_TARGET_DIR/release/lastbook-tools"
+          case "$RUNNER_OS" in
+            macOS)
+              hdiutil attach -nobrowse -readonly dist/*.dmg -mountpoint /tmp/lb-scan
+              if "$TOOLS" scan-package "/tmp/lb-scan/Lastbook Europe.app"; then ok=1; else ok=0; fi
+              hdiutil detach /tmp/lb-scan
+              [ "$ok" = 1 ] ;;
+            Linux)
+              "$TOOLS" scan-package /opt/lastbook-europe
+              "$TOOLS" check-roots ;;
+            Windows)
+              pwsh -NoProfile -Command "Expand-Archive -Path (Get-Item dist/*-windows-x64.zip).FullName -DestinationPath '$RUNNER_TEMP\lb-scan'"
+              "$TOOLS" scan-package "$(cygpath -u "$RUNNER_TEMP")/lb-scan" ;;
+          esac
       - name: The packaged app draws a PDF page (a picture of it)
         shell: bash
         run: |

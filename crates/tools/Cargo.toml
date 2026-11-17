@@ -22,3 +22,4 @@ regex = "1"
 osmpbf = "0.3"
 tiff = "0.11"
 flate2 = "1"
+object = { version = "0.41.0", default-features = false, features = ["read"] }

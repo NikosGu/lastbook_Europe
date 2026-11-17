@@ -69,6 +69,8 @@ None of these blocks the work: each has a placeholder.
 | Storage anywhere | a library and its models on this computer, an external disk, a USB stick or a NAS (SMB, NFS, mapped drives, UNC paths); disk kinds shown in setup; SQLite read immutable; a library out of reach said plainly at start and while running; models beside the library or on this computer; a library on a read-only share or stick keeps its local AI, whose choices and log go to the app's own folder | tests on each system, and a library read through a network path on Windows in CI |
 | The map's data tools | `lastbook-tools build-map`, `pack-map`, `pack-addresses`, `build-terrain`: the detailed map from Geofabrik's GeoPackage, addresses and buildings from OpenStreetMap's PBF, places and water, elevation from Copernicus DEM GLO-30, the zoomed-out base from Natural Earth ([MAPS.md](MAPS.md)); Liechtenstein built in 3 seconds: 32,191 map features, 441 help points, 12,499 addresses, 12 MB to download | 23 tools tests; packs checked by setup's own zip check; the map, an address and a postcode photographed |
 | Regions on GitHub's machines | `.github/workflows/regions.yml`, run by hand with a list of region codes: one job per region, its Geofabrik extracts from a table of all 110 (`crates/tools/data/region-sources.json`), its DEM tiles and Natural Earth, then build, pack and `check-map` (setup's own checks on the zips, the region's town found, addresses above a floor, the first address found as typed, detail in every box); the neighbours' extracts read only inside the region's boxes; the place search ranks another name as the place's own ("Gozo" finds Għawdex first) and brings no lakes for a postcode | 33 tools tests and 222 engine tests; the script run here without downloads for Liechtenstein and Malta, all checks passed |
+| The release checks | `lastbook-tools check-roots`: every host setup downloads from (Hugging Face and its CDN hosts) verified through the app's own roots alone, and a site outside them (DigiCert's) refused; `lastbook-tools scan-package`: the local AI's runner and llama.cpp's libraries import no network function (sockets, name look-ups, Windows' network libraries, libcurl) and no RPC backend ships, no person's folder or home network address in the app's files, no development files, a bundled manifest naming only allowed hosts | tests; both run here (all hosts verified; the draft release's Mac app clean), and in the release workflow on each system |
+| Regions built on GitHub's machines | Liechtenstein, Malta, Luxembourg and Bremen, each with its neighbours' extracts: every check passed (Luxembourg: 653,753 map features, 277,880 addresses, 788,455 buildings, built in 3.5 minutes) | the regions workflow's runs |
 | The test regions | Liechtenstein, Malta (36 islands from OpenStreetMap's coastline, postcodes as "VLT 1117", streets found in Maltese and English), Luxembourg ("2, place Guillaume II, L-1648 Luxembourg", streets in French, Luxembourgish and German) and Bremen (two pieces, Bremerhaven's 22,679 addresses in): maps 8 to 66 MB to download, address indexes 0.3 to 15 MB | 30 tools tests, among them 31 real questions asked of the three built regions; each region photographed in Italian |
 | The library's tools | `lastbook-tools build-library` and `build-pack`: each document checked against its size and SHA-256, page texts through PDFium (words split at a line end joined again), and on a page with few words of its own (an infographic) what a tagged PDF says its pictures show, its alt text, marked "[Alt text: …]" in the page texts and searched without the mark; the search index, a Sources page; the starter library: 22 public documents in the six languages (BWL, Protezione Civile, BBK, Zivilschutz, SGDSN, Protección Civil, the Polish government and RCB, IFRC, WHO), 930 pages, 82 MB to download; PDFium in each installer, pinned by SHA-256 | tests with and without PDFium, one on a tagged PDF the test makes; the release photographs each packaged app drawing a PDF page; a Spanish search for a word only an infographic's alt text carries, followed to its page, photographed |
 | The whole path in Italian with Liechtenstein | setup finds the three packs on this computer, suggests the starter library, Liechtenstein chosen, installed and opened; the map of Vaduz with relief, help points and the nearest help in metres; "Städtle 11, Vaduz" and "9490" found; the chat with Qwen3.6-35B-A3B Q8_0 (37.8 GB) from the disk on a 16 GB Mac, offered after its file was checked and chosen by a click: "how much water per person" answered in Italian with each point cited to the Swiss federal leaflet's pages (9 litres a person, for 3 days), and "the nearest pharmacy to Städtle 11" through the offline map (Schloss Apotheke, 0.27 km south) | photographed in the app on this Mac |
@@ -77,18 +79,17 @@ None of these blocks the work: each has a placeholder.
 
 ## Being done now
 
-- The regions workflow's first runs on GitHub's machines: the four test regions with their neighbours' extracts, then
-  large regions (Bavaria, Lombardy, a Nordic country) to find the limits of a runner's memory and disk.
+- The regions workflow on large regions (Bavaria, Lombardy, a Nordic country), to find the limits of a runner's memory
+  and disk.
 
 ## Left, in order
 
 1. All 110 regions run through the regions workflow, their packs published where the maintainer chooses to host them.
-2. The release checks: the pinned roots cover the download hosts, nothing ships that must not.
-3. "From the disk" faster: about a word a second is slow for long answers. Next, the same model at 4 bits (about 21 GB,
+2. "From the disk" faster: about a word a second is slow for long answers. Next, the same model at 4 bits (about 21 GB,
    closer to a 16 GB Mac's memory), the graphics processor for the layers that fit, and a cache of experts kept by use,
    as BigMoeOnEdge does; each measured as above.
-4. Native-speaker review of the five translations of the interface and the guides.
-5. Pictures with no alt text: of the ten Spanish readings on infographic pages, seven now have the infographics' alt
+3. Native-speaker review of the five translations of the interface and the guides.
+4. Pictures with no alt text: of the ten Spanish readings on infographic pages, seven now have the infographics' alt
    text; the three on the weather guide (Fenómenos meteorológicos, pages 17 and 20), a PDF with no tags, need OCR.
 
 ## Test models

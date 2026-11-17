@@ -196,6 +196,11 @@ The tests make their own small data: the setup tests run whole downloads against
 library and no model. GitHub Actions runs them on macOS, Windows and Ubuntu at every push
 ([.github/workflows/tests.yml](.github/workflows/tests.yml)).
 
+Before a release, two checks run on GitHub's machines (the release workflow): `lastbook-tools check-roots`, which
+connects to every host setup downloads from through the app's own pinned roots and makes sure a site outside them is
+refused, and `lastbook-tools scan-package <package>`, which fails if the local AI's runner or llama.cpp's libraries
+could reach the network, or if anything that must not ship is in the package.
+
 What a person sees is also checked in the running app: `lastbook --snapshot shot.png [--eval JS]...` drives the page and
 saves a picture of it, on macOS, Windows and Linux; CI photographs the app on each.
 
