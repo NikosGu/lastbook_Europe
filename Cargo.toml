@@ -1,7 +1,7 @@
-# Lastbook Europe, in Rust: the engine (crates/engine), the desktop app (crates/app) and the data tools (crates/tools).
-# The interface is in web/.
+# Lastbook Europe, in Rust: the engine (crates/engine), the desktop app (crates/app), the local AI runner (crates/llm) and
+# the data tools (crates/tools). The interface stays in web/.
 [workspace]
-members = ["crates/engine", "crates/app", "crates/tools"]
+members = ["crates/engine", "crates/app", "crates/llm", "crates/tools"]
 resolver = "2"
 
 [workspace.package]
@@ -19,3 +19,6 @@ lto = "thin"
 codegen-units = 1
 strip = true
 
+# llama-cpp-2 with one addition (third_party/llama-cpp-2/PROVENANCE.md).
+[patch.crates-io]
+llama-cpp-2 = { path = "third_party/llama-cpp-2" }
