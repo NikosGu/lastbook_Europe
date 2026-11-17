@@ -11,9 +11,9 @@ on:
         required: true
         default: "LI"
       neighbours:
-        description: "Take the neighbours' extracts too, read only inside each region's boxes (larger downloads)"
+        description: "Take the neighbours' extracts too, read only inside each region's boxes, so the strip around the region is mapped (larger downloads)"
         type: boolean
-        default: false
+        default: true
 
 permissions:
   contents: read
