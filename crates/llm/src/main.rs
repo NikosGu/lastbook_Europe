@@ -3,6 +3,10 @@
 //! Ported from the original Lastbook's packaging/llm/lastbook_llm.cpp; the protocol is the same.
 //!
 //!   lastbook-llm --model FILE [--ctx N] [--threads N] [--cpu-only] [--no-mmap] [--measure]
+//!   lastbook-llm --devices
+//!
+//! --devices prints {"ev":"devices","list":[{"name","description","backend","memory_total","memory_free"},...]}: what
+//! llama.cpp found to run on (the processor, a graphics card through Metal or Vulkan), and leaves.
 //!
 //! --no-mmap reads the whole file into memory once instead of mapping it: for a model on a network share or an external
 //! disk, which fits in memory. --from-disk runs the model from the disk even if it would fit in memory (for tests).
@@ -347,6 +351,15 @@ fn model_params(inbox: &Arc<Inbox>) -> LlamaModelParams {
 
 fn main() {
     let _ = OUT.set(Mutex::new(take_stdout()));
+    if std::env::args().skip(1).eq(["--devices"]) {
+        load_backends();
+        let _backend = LlamaBackend::init();
+        let list: Vec<Value> = llama_cpp_2::list_llama_ggml_backend_devices().into_iter().map(|d| {
+            json!({"name": d.name, "description": d.description, "backend": d.backend, "memory_total": d.memory_total, "memory_free": d.memory_free})
+        }).collect();
+        send(&json!({"ev": "devices", "list": list}));
+        std::process::exit(0);
+    }
     let args = match parse_args() {
         Ok(a) => a,
         Err(msg) => {

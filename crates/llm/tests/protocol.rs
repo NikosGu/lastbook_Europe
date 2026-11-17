@@ -23,6 +23,16 @@ fn usage_errors_are_one_json_line() {
 }
 
 #[test]
+fn the_devices_it_can_run_on() {
+    let out = Command::new(RUNNER).arg("--devices").output().unwrap();
+    assert!(out.status.success());
+    let ev = &lines(&out.stdout)[0];
+    assert_eq!(ev["ev"], "devices");
+    // the processor is always there: on Windows and Linux built with Vulkan, its backend is loaded from beside the runner
+    assert!(ev["list"].as_array().unwrap().iter().any(|d| d["backend"] == "CPU"), "{ev}");
+}
+
+#[test]
 fn a_file_that_is_not_a_model() {
     let dir = std::env::temp_dir().join(format!("lb-llm-{}", std::process::id()));
     std::fs::create_dir_all(&dir).unwrap();
