@@ -4,7 +4,7 @@
   "mode": "learn",
   "title": "Prendre soin de la santé quand l’aide est loin",
   "short": "Médicaments, trousse de secours, stress, enfants, personnes qui ont besoin de soins",
-  "intro": "Des lectures pour prendre soin de la santé quand les médecins et les pharmacies sont difficiles à joindre : les médicaments et la pharmacie de la maison, la peur et le stress après une catastrophe, les enfants dans une crise, et les personnes qui ont besoin de soins particuliers. Pour les blessures et les maladies soudaines, consultez le guide « Blessures et maladies ».",
+  "intro": "Des lectures pour prendre soin de la santé quand les médecins et les pharmacies sont difficiles à joindre : les médicaments et la pharmacie de la maison, la peur et le stress après une catastrophe, les enfants dans une crise, et les personnes qui ont besoin de soins particuliers. Pour les blessures et les malaises, consultez le guide « Blessures et maladies ».",
   "keywords": ["santé", "médicament", "médicaments", "pharmacie", "pharmacie familiale", "pharmacie de la maison", "armoire à pharmacie", "ordonnance", "insuline", "trousse de secours", "trousse de premiers secours", "formation aux premiers secours", "cours de secourisme", "PSC1", "stress", "peur", "angoisse", "anxiété", "panique", "inquiétude", "deuil", "chagrin", "traumatisme", "sommeil", "insomnie", "enfants", "enfant", "handicap", "personnes âgées", "soins", "aidant", "proche aidant", "premiers secours psychologiques", "soutien psychologique", "suicide", "santé mentale"],
   "choices": [
     {
@@ -52,7 +52,7 @@
       "hint": "Un handicap, une perte d’audition ou de vue, une personne âgée qui vit seule",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Se préparer quand on a un handicap",
-         "note": "En allemand. Aides techniques, batteries de rechange et chargeurs, un plan de médication, un animal d’assistance, des contacts."},
+         "note": "En allemand. Aides techniques, batteries de rechange et chargeurs, un plan de prise des médicaments, un animal d’assistance, des contacts."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Communiquer avec les secours",
          "note": "En allemand. Une carte d’urgence, un stylo et du papier, et des voisins qui savent comment aider."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Les voisins qui ont besoin d’aide",
@@ -75,7 +75,7 @@
     {"text": "Faites appel à un spécialiste si une personne n’a pas dormi depuis une semaine, ne parvient plus à faire face à la vie quotidienne, ou menace de se faire du mal ou d’en faire à d’autres.", "doc": "ifrc-first-aid-guidelines-2020", "page": 118},
     {"text": "Une seule séance de débriefing après un événement traumatisant peut être nuisible.", "doc": "ifrc-first-aid-guidelines-2020", "page": 366},
     {"text": "Ne poussez pas un enfant à parler de la crise.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 21},
-    {"text": "Si vous êtes très inquiet pour un enfant, demandez conseil à un pédiatre, à un service de consultation ou à un psychothérapeute pour enfants.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 20}
+    {"text": "Si vous êtes très inquiet pour un enfant, adressez-vous à un pédiatre, à un service de conseil ou à un psychothérapeute pour enfants.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 20}
   ],
   "prepare": [
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Liste de contrôle de la pharmacie de la maison", "note": "En allemand."},
@@ -88,7 +88,7 @@
     {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Se préparer aux crises et aux catastrophes", "note": "En allemand. Médicaments, peur et inquiétude, enfants, et personnes en situation de handicap."}
   ],
   "route": [
-    {"title": "Étape 1 : avoir une pharmacie à la maison et vos propres médicaments", "goal": "Assez de vos médicaments habituels pour tenir des jours sans pharmacie, rangés en sécurité",
+    {"title": "Étape 1 : une pharmacie à la maison et vos propres médicaments", "goal": "Assez de vos médicaments habituels pour tenir des jours sans pharmacie, rangés en sécurité",
      "read": [
        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Des médicaments pour dix jours", "note": "En allemand."},
        {"doc": "oezsv-bevorratungsratgeber", "page": 13, "label": "Les ranger et les vérifier", "note": "En allemand."}

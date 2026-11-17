@@ -13,7 +13,7 @@
       "hint": "Un séisme, à l’intérieur ou dehors",
       "read": [
         {"doc": "sgdsn-agissons-falc", "page": 18, "label": "Pendant un séisme",
-         "note": "À l’intérieur : près d’un mur ou sous un meuble solide, loin des fenêtres. Dehors : loin des bâtiments et des lignes électriques. En voiture : s’arrêter loin des bâtiments et y rester."}
+         "note": "Du guide de l’État français, en version facile à lire. À l’intérieur : près d’un mur ou sous un meuble solide. Dehors : loin des bâtiments et des lignes électriques."}
       ]
     },
     {
@@ -134,7 +134,7 @@
   "limits": [
     {"text": "Pendant un séisme, ne vous précipitez pas dehors : attendez que les secousses s’arrêtent.", "doc": "dpc-io-non-rischio", "page": 12},
     {"text": "Après un séisme, ne prenez pas l’ascenseur, et faites attention dans les escaliers.", "doc": "dpc-io-non-rischio", "page": 13},
-    {"text": "Il n’y a pas toujours d’alerte officielle au tsunami : un fort séisme ou la mer qui se retire soudainement est le signal pour gagner les hauteurs.", "doc": "dpc-io-non-rischio", "page": 18},
+    {"text": "Il n’y a pas toujours d’alerte officielle de tsunami : un fort séisme ou la mer qui se retire soudainement est le signal pour gagner les hauteurs.", "doc": "dpc-io-non-rischio", "page": 18},
     {"text": "En cas de tsunami, ne prenez pas votre voiture.", "doc": "sgdsn-tous-responsables", "page": 8},
     {"text": "D’autres vagues dangereuses peuvent suivre la première : ne revenez pas tant que vous n’y êtes pas autorisé.", "doc": "dpc-io-non-rischio", "page": 21},
     {"text": "Pendant une inondation, ne descendez pas dans les sous-sols ni dans les parkings souterrains.", "doc": "sgdsn-tous-responsables", "page": 7},
@@ -167,7 +167,7 @@
       "Tempêtes, grêle et vents violents : seulement le guide espagnol sur les phénomènes météorologiques dangereux, quelques lignes dans le guide national français et une page autrichienne sur les orages en montagne.",
       "Aucun guide sur les glissements de terrain, ni sur les avalanches au-delà du sauvetage entre alpinistes.",
       "Aucun guide pour nettoyer et sécher un logement après une inondation.",
-      "Sur les accidents chimiques et nucléaires, seulement où se mettre à l’abri, la mise en garde sur l’iode et, dans le guide polonais du RCB, combien de temps rester à l’intérieur (au moins 24 heures) : rien sur le nettoyage.",
+      "Sur les accidents chimiques et nucléaires, seulement où se mettre à l’abri, la mise en garde sur l’iode et, dans le guide polonais du RCB, combien de temps rester à l’intérieur (au moins 24 heures) : rien sur le nettoyage.",
       "Les pages sur chaque risque sont écrites pour un seul pays (Italie, Allemagne, Autriche, France, Espagne ou Pologne), avec ses propres numéros et alertes ; les sirènes et les systèmes d’alerte sont expliqués pour l’Italie, l’Allemagne, l’Autriche, la France et la Pologne."
     ],
     "disagree": [

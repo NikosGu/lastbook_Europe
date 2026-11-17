@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Toilettes, déchets et hygiène quand l’eau est coupée",
   "short": "Des toilettes sans eau, des mains propres, les ordures",
-  "intro": "Des lectures pour quand la chasse d’eau ne marche plus ou que l’eau est coupée : des toilettes de fortune, garder les mains propres, et les ordures. La bibliothèque n’a que de courts passages sur ce sujet ; ce qui manque est indiqué ci-dessous.",
+  "intro": "Des lectures pour le cas où la chasse d’eau ne marche plus ou que l’eau est coupée : des toilettes de fortune, garder les mains propres, et les ordures. La bibliothèque n’a que de courts passages sur ce sujet ; ce qui manque est indiqué ci-dessous.",
   "keywords": ["toilettes", "WC", "cabinets", "chasse d’eau", "plus de chasse d’eau", "eaux usées", "égout", "égouts", "canalisations", "évacuation", "toilettes seau", "seau", "toilettes de camping", "toilettes sèches", "sacs pour toilettes", "sacs poubelle", "déchets", "ordures", "poubelle", "poubelles", "hygiène", "se laver", "lavage des mains", "se laver les mains", "mains", "savon", "gel hydroalcoolique", "désinfectant", "couches", "protections hygiéniques", "serviettes hygiéniques", "mouches"],
   "choices": [
     {
@@ -19,7 +19,7 @@
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Des toilettes de fortune si l’eau ou les égouts ne fonctionnent plus",
          "note": "En allemand. Fait partie des premières mesures à la maison lors d’un black-out."},
         {"doc": "who-tn09-how-much-water", "page": 2, "label": "Combien d’eau utilise une chasse d’eau",
-         "note": "En anglais. Jusqu’à 7 litres à chaque fois ; des toilettes plus simples en demandent beaucoup moins. Rédigé pour ceux qui organisent l’aide d’urgence."}
+         "note": "En anglais. Jusqu’à 7 litres à chaque fois ; des toilettes plus simples en demandent beaucoup moins. Rédigé pour ceux qui organisent l’aide d’urgence."}
       ]
     },
     {

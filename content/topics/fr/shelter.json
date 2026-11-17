@@ -26,7 +26,7 @@
       "hint": "Le monoxyde de carbone des chauffages, des poêles, des grils, des groupes électrogènes ou des bougies",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Monoxyde de carbone : ce qui est sûr à l’intérieur",
-         "note": "En allemand. Seulement des appareils autorisés pour l’intérieur ; un feu ouvert à l’intérieur peut produire du monoxyde de carbone ; installer un détecteur de CO."},
+         "note": "En allemand. Seulement des appareils autorisés pour l’intérieur ; un foyer ouvert à l’intérieur peut produire du monoxyde de carbone ; installer un détecteur de CO."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Pas de groupe électrogène ni de chauffage d’extérieur à l’intérieur",
          "note": "En anglais. Ne pas utiliser de groupe électrogène, ni de chauffages ou de réchauds prévus pour l’extérieur, à l’intérieur de la maison."},
         {"doc": "ifrc-extreme-cold", "page": 1, "label": "Pourquoi les chauffages et les cheminées augmentent le risque",
@@ -90,13 +90,13 @@
   ],
   "limits": [
     {"text": "À l’intérieur, n’utilisez que des chauffages et des poêles autorisés pour l’intérieur.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
-    {"text": "L’intoxication au monoxyde de carbone peut tuer, et un feu ouvert à l’intérieur peut aussi la provoquer. Un détecteur de CO testé vous avertit.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "L’intoxication au monoxyde de carbone peut tuer, et un foyer ouvert à l’intérieur peut aussi la provoquer. Un détecteur de CO testé vous avertit.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "N’utilisez pas de groupe électrogène, ni de chauffages ou de réchauds prévus pour l’extérieur, à l’intérieur de la maison.", "doc": "ifrc-extreme-cold", "page": 5},
     {"text": "Demandez une aide médicale si des signes d’hypothermie ou de gelures apparaissent.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Évitez les efforts excessifs dans le froid, comme déblayer la neige : ils peuvent provoquer un arrêt cardiaque.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Gardez les fenêtres et les portes fermées contre le froid, mais aérez les pièces brièvement et régulièrement.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
     {"text": "Si vous êtes bloqué en voiture pendant une tempête d’hiver, restez à l’intérieur.", "doc": "ifrc-extreme-cold", "page": 5},
-    {"text": "La glace grise est trop fine : la glace doit être bleue et transparente, et faire plus de 12 cm d’épaisseur, avant que vous marchiez dessus.", "doc": "ifrc-extreme-cold", "page": 5}
+    {"text": "La glace grise est trop fine : la glace doit être bleue et transparente, et faire plus de 12 cm d’épaisseur, avant que vous marchiez dessus.", "doc": "ifrc-extreme-cold", "page": 5}
   ],
   "prepare": [
     {"doc": "ifrc-extreme-cold", "page": 3, "label": "Provisions, source de chaleur et équipement de la voiture pour les tempêtes d’hiver", "note": "En anglais."},

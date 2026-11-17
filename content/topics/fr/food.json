@@ -15,7 +15,7 @@
         {"doc": "bwl-provisions-providentielles", "page": 8, "label": "Une liste de contrôle pour une bonne semaine",
          "note": "Du dépliant fédéral suisse. Boissons, aliments, articles d’hygiène et médicaments, radio à piles, lampe de poche, bougies, un réchaud et un peu d’argent liquide."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Ce qui fait de bonnes provisions d’urgence",
-         "note": "En allemand. 10 jours si possible, au moins 3 : des aliments qui se passent de réfrigérateur, se mangent sans cuisson ou cuisent vite ; allergies, enfants, animaux domestiques."},
+         "note": "En allemand. 10 jours si possible, au moins 3 : des aliments qui se passent de réfrigérateur, se mangent sans cuisson ou cuisent vite ; allergies, enfants, animaux domestiques."},
         {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Une liste de courses par groupe d’aliments",
          "note": "En allemand. Boissons, céréales, conserves, légumineuses, lait longue conservation et plus encore ; vérifier les dates et remplacer ce que l’on consomme."}
       ]
@@ -30,7 +30,7 @@
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Légumineuses, fruits à coque, huile, viande et le congélateur",
          "note": "En allemand. Les températures de stockage, et combien de mois les aliments se conservent au congélateur."},
         {"doc": "bwl-provisions-providentielles", "page": 6, "label": "Consommer et remplacer, dans un endroit frais, sec et sombre",
-         "note": "Du dépliant fédéral suisse. Utiliser les provisions au quotidien et vérifier les dates ; après une panne de courant, manger vite les aliments du congélateur, sans les recongeler."}
+         "note": "Du dépliant fédéral suisse. Utiliser les provisions au quotidien, les remplacer et vérifier les dates."}
       ]
     },
     {
@@ -84,14 +84,14 @@
   ],
   "limits": [
     {"text": "À l’intérieur, ne cuisinez qu’avec des appareils autorisés pour l’intérieur ; les réchauds de camping et les grils s’utilisent uniquement dehors.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
-    {"text": "L’intoxication au monoxyde de carbone peut tuer, et un feu ouvert à l’intérieur peut aussi la provoquer.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
+    {"text": "L’intoxication au monoxyde de carbone peut tuer, et un foyer ouvert à l’intérieur peut aussi la provoquer.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "Jetez une boîte de conserve dont le couvercle est bombé vers l’extérieur.", "doc": "oezsv-bevorratungsratgeber", "page": 10},
     {"text": "Jetez les fruits à coque qui ont un goût bizarre ou des traces de moisissure, et la viande gluante ou qui sent fort.", "doc": "oezsv-bevorratungsratgeber", "page": 11},
     {"text": "Ne mangez pas d’aliments touchés par l’eau d’inondation : ils peuvent être contaminés.", "doc": "dpc-io-non-rischio", "page": 31}
   ],
   "prepare": [
     {"doc": "bwl-provisions-providentielles", "page": 8, "label": "Une liste de contrôle pour une bonne semaine", "note": "Du dépliant fédéral suisse."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Liste de contrôle : nourriture et eau pour 3, 5, 7 ou 10 jours", "note": "En allemand."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Liste de contrôle : nourriture et eau pour 3, 5, 7 ou 10 jours", "note": "En allemand."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Constituer ses provisions petit à petit", "note": "En allemand."},
     {"doc": "sgdsn-agissons-falc", "page": 13, "label": "Vérifier le kit d’urgence chaque année", "note": "Du guide de l’État français, en version facile à lire : vérifier par exemple que la nourriture et les médicaments sont encore bons."},
     {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Une liste par groupe d’aliments", "note": "En allemand."}
@@ -104,11 +104,11 @@
   "gaps": {
     "missing": [
       "Aucun guide de sécurité alimentaire d’une autorité sanitaire sur ce qu’il faut jeter après une longue coupure de courant ou une inondation ; les règles données ici viennent de dépliants de la protection civile.",
-      "Rien sur combien de temps les aliments du réfrigérateur et du congélateur restent sûrs sans électricité, en dehors de manger d’abord les aliments périssables et de garder les portes fermées.",
+      "Rien sur la durée pendant laquelle les aliments du réfrigérateur et du congélateur restent sûrs sans électricité, en dehors du conseil de manger d’abord les aliments périssables et de garder les portes fermées.",
       "Aucun guide pour cuisiner sur un feu ou sur un gril, en dehors de la mise en garde : les grils et les réchauds de camping s’utilisent dehors."
     ],
     "disagree": [
-      "Pour combien de temps prévoir : 72 heures (le guide national français), au moins 3 jours (le guide du gouvernement polonais), environ une semaine (les dépliants suisses, le guide autrichien des provisions et le guide polonais du RCB), 10 jours si possible et au moins 3 (le guide allemand), une à deux semaines (le guide styrien sur le black-out), au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out).",
+      "Pour combien de temps prévoir : 72 heures (le guide national français), au moins 3 jours (le guide du gouvernement polonais), environ une semaine (les dépliants suisses, le guide autrichien des provisions et le guide polonais du RCB), 10 jours si possible et au moins 3 (le guide allemand), une à deux semaines (le guide styrien sur le black-out), au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out).",
       "Cuisiner sur un gril pendant un black-out : les guides autrichiens proposent un gril de jardin sans dire où l’utiliser ; le guide allemand dit que les grils et les réchauds de camping ne s’utilisent que dehors.",
       "À quelle fréquence vérifier les provisions : une fois par an (le guide autrichien des provisions et la version facile à lire du guide national français), deux fois par an (le guide national français), à intervalles de quelques mois (le guide du gouvernement polonais)."
     ]

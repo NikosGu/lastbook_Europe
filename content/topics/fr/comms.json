@@ -4,12 +4,12 @@
   "mode": "now",
   "title": "Recevoir les alertes, appeler les secours et garder le contact",
   "short": "Alertes, 112, téléphone coupé, radio",
-  "intro": "Des lectures sur la façon dont les alertes officielles vous parviennent, sur ce qu’il faut dire quand vous appelez les secours, et sur la façon de rester informé quand le téléphone, Internet ou l’électricité sont coupés.",
+  "intro": "Des lectures sur la façon dont les alertes officielles vous parviennent, sur ce qu’il faut dire quand vous appelez les secours, et sur la façon de rester informé quand le téléphone, internet ou l’électricité sont coupés.",
   "keywords": ["alerte", "alertes", "avertissement", "sirène", "sirènes", "radio", "radio à piles", "radio à manivelle", "téléphone coupé", "pas de réseau", "plus de réseau", "Internet coupé", "réseau mobile", "112", "911", "999", "appel d’urgence", "numéro d’urgence", "appeler les secours", "pompiers", "IT-alert", "NINA", "FR-Alert", "application d’alerte", "batterie externe", "power bank", "rumeurs", "fausses nouvelles", "fake news", "infox", "désinformation", "sourd", "malentendant", "carte d’urgence"],
   "choices": [
     {
       "id": "warnings",
-      "label": "Je veux les alertes et les informations officielles",
+      "label": "Je veux recevoir les alertes et les informations officielles",
       "hint": "Sirènes, alertes sur le téléphone, applications d’alerte, radio",
       "read": [
         {"doc": "sgdsn-tous-responsables", "page": 9, "label": "Comment les alertes vous parviennent, et ce que signifient les sirènes",
@@ -22,7 +22,7 @@
     },
     {
       "id": "phones-down",
-      "label": "Le téléphone ou Internet ne marche plus",
+      "label": "Le téléphone ou internet ne marche plus",
       "hint": "Les appels ne passent pas, plus de données mobiles, la batterie est presque vide",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Quand le 112 ne fonctionne pas, et pourquoi une radio est utile",
@@ -38,7 +38,7 @@
       "label": "Appeler les secours : que dire",
       "hint": "112, un accident, un incendie, une inondation, quelqu’un en danger",
       "read": [
-        {"doc": "zsv-steiermark-notfallratgeber", "page": 3, "label": "Que dire lors de tout appel d’urgence",
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 3, "label": "Que dire lors d’un appel d’urgence",
          "note": "En allemand. Où, ce qui s’est passé, combien de blessés, qui appelle ; avec le 112 et les numéros propres à l’Autriche."},
         {"doc": "vvf-acqua-e-vita", "page": 2, "label": "Appeler les secours pendant une inondation",
          "note": "En italien. Ce qu’il faut dire à l’opérateur, et rester en ligne jusqu’à ce qu’il mette fin à l’appel. Donne les numéros italiens."}
@@ -61,7 +61,7 @@
         {"doc": "sgdsn-tous-responsables", "page": 9, "label": "Pourquoi les fausses informations sont dangereuses en temps de crise",
          "note": "Du guide de l’État français : un adversaire peut profiter d’une crise pour aggraver le désordre ; quatre questions à se poser, à commencer par qui a envoyé l’information."},
         {"doc": "sgdsn-tous-responsables", "page": 8, "label": "Vérifier une information avant de la transmettre",
-         "note": "Du guide de l’État français : vérifier la source, l’auteur et la date avant de rediffuser, et signaler un contenu illicite sur la plateforme Pharos."}
+         "note": "Du guide de l’État français : vérifier la source, l’auteur et la date d’une information avant de la rediffuser."}
       ]
     }
   ],
@@ -74,7 +74,7 @@
   ],
   "prepare": [
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Les numéros sur papier, une batterie externe, des cartes hors ligne", "note": "En allemand."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Une radio de voiture, à manivelle ou à piles", "note": "En allemand. La radio fonctionne encore quand Internet et l’électricité sont coupés."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Un autoradio, une radio à manivelle ou à piles", "note": "En allemand. La radio fonctionne encore quand internet et l’électricité sont coupés."},
     {"doc": "bwl-provisions-providentielles", "page": 4, "label": "Une radio à piles dans les provisions de la maison", "note": "Du dépliant fédéral suisse : une radio à piles, une lampe de poche et des piles de réserve parmi ce qu’il faut avoir à la maison pour une panne de courant."},
     {"doc": "zsv-steiermark-notfallratgeber", "page": 42, "label": "Garder les numéros d’urgence sur soi", "note": "En allemand. Une carte autrichienne, au format portefeuille, avec les numéros d’urgence."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Une carte d’urgence pour communiquer avec les secours", "note": "En allemand."}

@@ -13,17 +13,17 @@
       "hint": "Une coupure de courant ou un black-out : plus de lumière chez vous ni chez les voisins, sans savoir pour combien de temps",
       "read": [
         {"doc": "oezsv-blackout-checkliste", "page": 5, "label": "Que faire lors d’un black-out, dans l’ordre",
-         "note": "En allemand. Garder son calme, vérifier si seule votre rue est touchée, allumer la radio, prévenir la famille, débrancher les appareils, laisser une lampe allumée."},
+         "note": "En allemand. Rester calme, vérifier si seule votre rue est touchée, allumer la radio, prévenir la famille, débrancher les appareils, laisser une lampe allumée."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Les premiers gestes à la maison",
          "note": "En allemand. La famille, les appareils, la radio, l’eau, l’éclairage, l’ascenseur, le congélateur, les médicaments vitaux, les déchets et des toilettes de fortune."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Comment se comporter pendant un black-out",
-         "note": "En italien. Éteindre les appareils, garder le réfrigérateur fermé, écouter la radio, éviter les ascenseurs, et la sécurité avec les groupes électrogènes."}
+         "note": "En italien. Éteindre les appareils, garder le réfrigérateur fermé, écouter la radio, éviter les ascenseurs, et la sécurité des groupes électrogènes."}
       ]
     },
     {
       "id": "food-link",
       "goto": "food/cook",
-      "label": "Cuisiner et garder le réfrigérateur sans électricité",
+      "label": "La cuisine et le réfrigérateur sans électricité",
       "hint": "Dans le guide « Manger et cuisiner »"
     },
     {
@@ -35,14 +35,14 @@
     {
       "id": "medical",
       "label": "Quelqu’un a besoin d’électricité ou de froid pour un médicament ou un appareil",
-      "hint": "Insuline, un appareil respiratoire, oxygène, un fauteuil roulant électrique",
+      "hint": "De l’insuline, un appareil respiratoire, de l’oxygène, un fauteuil roulant électrique",
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Les médicaments vitaux pendant un black-out",
          "note": "En allemand. Vérifier combien de temps ils dureront ; l’insuline doit être gardée au frais ; s’ils ne suffisent pas pour une semaine, qui prévenir."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Les appareils de maintien en vie qui ont besoin d’électricité",
          "note": "En italien. Demander de l’aide tôt : pour l’Italie, la page cite le 118 et les services sociaux."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Batteries de rechange et chargeurs pour les aides techniques",
-         "note": "En allemand. Les aides techniques qui ont besoin d’électricité, un plan de médication et une réserve de médicaments, et qui peut vous aider à partir s’il le faut."}
+         "note": "En allemand. Les aides techniques qui ont besoin d’électricité, un plan de prise des médicaments et une réserve de médicaments, et qui peut vous aider à partir s’il le faut."}
       ]
     },
     {
@@ -63,7 +63,7 @@
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 18, "label": "Groupes électrogènes : où les faire tourner, carburant, risque d’incendie",
          "note": "En allemand. Jamais dans une pièce fermée ; environ un litre de carburant par heure ; le carburant stocké présente un risque d’incendie. Explique aussi pourquoi les panneaux solaires s’arrêtent en général eux aussi."},
-        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Brancher les appareils sur le groupe électrogène, pas sur la maison",
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Brancher les appareils sur le groupe électrogène, pas sur l’installation électrique",
          "note": "En italien. Ne pas le raccorder à l’installation électrique de la maison, et ne jamais le démarrer dans la maison ou le garage."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Pas de groupe électrogène ni de chauffage d’extérieur dans la maison",
          "note": "En anglais. Tiré des messages hivernaux de la FICR."}
@@ -77,15 +77,15 @@
         {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Ce que signifie un long black-out",
          "note": "En allemand. Les magasins ferment, les soins médicaux deviennent plus difficiles d’heure en heure, les logements se refroidissent, plus d’ascenseur ni de téléphone, les déchets s’accumulent."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 7, "label": "Ce qui ne fonctionne plus sans électricité",
-         "note": "En allemand. Téléphone et Internet, paiements par carte et distributeurs de billets, réfrigérateur, cuisinière, eau du robinet, éclairage, chauffage."},
+         "note": "En allemand. Téléphone et internet, paiements par carte et distributeurs de billets, réfrigérateur, cuisinière, eau du robinet, éclairage, chauffage."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Rester chez soi et veiller les uns sur les autres",
-         "note": "En allemand. Rester chez soi sauf si l’on a besoin de vous, économiser le carburant, parler avec les voisins, repérer qui a besoin d’aide."}
+         "note": "En allemand. Rester chez soi sauf si sa présence est nécessaire ailleurs, économiser le carburant, parler avec les voisins, repérer qui a besoin d’aide."}
       ]
     },
     {
       "id": "back-on",
       "label": "Le courant est revenu",
-      "hint": "Quoi rallumer, les appels téléphoniques, le chauffage",
+      "hint": "Ce qu’il faut rallumer, les appels téléphoniques, le chauffage",
       "read": [
         {"doc": "oezsv-blackout-checkliste", "page": 7, "label": "Après un black-out",
          "note": "En allemand. Vérifier que la cuisinière et le fer à repasser sont éteints, n’allumer que ce dont on a besoin, éviter les appels qui ne sont pas urgents."},
@@ -100,13 +100,13 @@
     {"text": "Ne raccordez pas un groupe électrogène à l’installation électrique de la maison, et ne le démarrez jamais dans la maison ou le garage.", "doc": "ravenna-rischio-blackout", "page": 1},
     {"text": "Évitez les ascenseurs tant que le retour du courant n’a pas été annoncé : il peut aller et venir pendant les réparations.", "doc": "ravenna-rischio-blackout", "page": 1},
     {"text": "Si des médicaments vitaux comme l’insuline ne suffisent pas pour une semaine, prévenez une pharmacie, un médecin ou le service d’ambulances.", "doc": "zsv-steiermark-blackout", "page": 26},
-    {"text": "Ne laissez jamais des bougies ou d’autres flammes nues sans surveillance.", "doc": "zsv-steiermark-notfallratgeber", "page": 7},
+    {"text": "Ne laissez jamais de bougies ni d’autres flammes nues sans surveillance.", "doc": "zsv-steiermark-notfallratgeber", "page": 7},
     {"text": "Quand le courant revient, vérifiez que la cuisinière et le fer à repasser sont bien éteints : ils peuvent provoquer un incendie.", "doc": "zsv-steiermark-blackout", "page": 27}
   ],
   "prepare": [
-    {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "Ce qu’il faut garder à la maison en prévision d’un black-out", "note": "En allemand. Eau, nourriture, une radio à piles ou à manivelle, éclairage, médicaments, un moyen de cuisiner, de l’argent liquide en petites coupures ; prévoir pour 10 à 14 jours."},
+    {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "Ce qu’il faut garder à la maison en prévision d’un black-out", "note": "En allemand. Eau, nourriture, une radio à piles ou à manivelle, éclairage, médicaments, un moyen de cuisiner, de l’argent liquide en petites coupures ; prévoir pour 10 à 14 jours."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Se préparer comme pour partir en camping", "note": "En allemand. Les robinets d’arrêt, ce que votre commune a prévu, une à deux semaines de nourriture et d’eau."},
-    {"doc": "sgdsn-tous-responsables", "page": 5, "label": "La liste de contrôle du kit pour 72 heures", "note": "Du guide de l’État français : eau et nourriture, médicaments et trousse de secours, radio et piles, éclairage, vêtements chauds, papiers et clés."},
+    {"doc": "sgdsn-tous-responsables", "page": 5, "label": "La liste de contrôle du kit pour 72 heures", "note": "Du guide de l’État français : eau et nourriture, médicaments et trousse de secours, radio et piles, éclairage, vêtements chauds, papiers et clés."},
     {"doc": "sgdsn-tous-responsables", "page": 6, "label": "En parler avec ses proches avant une crise", "note": "Du guide de l’État français : qui pourrait avoir besoin d’aide, comment rester en contact, de préférence par messages, les risques à envisager en famille, et l’entraide entre voisins."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Les numéros sur papier et une batterie externe", "note": "En allemand."},
     {"doc": "bwl-provisions-providentielles", "page": 4, "label": "Radio, lampe de poche, bougies et un peu d’argent liquide", "note": "Du dépliant fédéral suisse : ce qu’il faut sous la main pendant une panne de courant, et de l’argent liquide en petites coupures, car les cartes peuvent ne plus fonctionner."}
@@ -123,7 +123,7 @@
       "Aucun guide sur les appareils médicaux qui ont besoin d’électricité, comme l’oxygène ou les appareils respiratoires, en dehors du conseil de demander de l’aide tôt."
     ],
     "disagree": [
-      "Pour combien de temps se préparer à un black-out : au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out), une à deux semaines (le guide styrien sur le black-out), 10 jours (le guide allemand), environ une semaine (le dépliant suisse) ; pour toute crise, 72 heures (le guide national français) ou au moins 3 jours (le guide du gouvernement polonais)."
+      "Pour combien de temps se préparer à un black-out : au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out), une à deux semaines (le guide styrien sur le black-out), 10 jours (le guide allemand), environ une semaine (le dépliant suisse) ; pour toute crise, 72 heures (le guide national français) ou au moins 3 jours (le guide du gouvernement polonais)."
     ]
   }
 }
