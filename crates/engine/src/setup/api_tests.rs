@@ -770,7 +770,8 @@ fn busy_is_said_by_its_code() {
     std::fs::write(lib.join("pack.json"), b"{\"name\": \"small\"}").unwrap();
     let s = env.setup(Mode::Manage, Some(lib.clone()), None);
     let j = s.start(Some("small"), None, Some(&env.dir.join("elsewhere").to_string_lossy()), Map::new(), false, false, None, None);
-    assert_eq!(j["state"], "waiting", "{j}");
+    // under way: still waiting, or (on a busy machine, its worker quicker than this answer) already downloading
+    assert!(matches!(j["state"].as_str(), Some("waiting" | "downloading")), "{j}");
     let busy = json!({"error": "A download is already under way. Pause or cancel it first.", "code": "busy", "params": {}});
     assert_eq!(s.handle("POST", "start", &json!({"pack": "small"})), (409, busy.clone()));
     assert_eq!(s.handle("POST", "start", &json!({"repair": true})), (409, busy));
