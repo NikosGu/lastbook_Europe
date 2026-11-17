@@ -59,11 +59,13 @@ Place and lake names are searched by keys that both spellings of a name share (S
 Muenchen, Łódź and Lodz; `map::text::fold` and `loose`, described in [ADDRESSES.md](ADDRESSES.md)), written with
 `map::text::place_key`:
 
-- `places.sqlite`: `place(id, name, kind, detail, lat, lon, rank, source, country, key, area)` and
+- `places.sqlite`: `place(id, name, kind, detail, lat, lon, rank, source, country, key, area, names)` and
   `place_fts USING fts5(key, area, content='place', content_rowid='id', tokenize='unicode61 remove_diacritics 0')`.
   `key` holds the place's names: its name, and from the PBF its names in its country's languages and the app's six
   (Lussemburgo for an Italian, Luksemburg for a Pole), and its alternative, old, official and short names. Not every
   language: Luxembourg's 150 names made its key so long that the search ranked villages lying in it above the capital.
+  `names` holds those other names, a line each: a query that is one of them ranks as the place's own name does (`Gozo`
+  is the island Għawdex before the shops called "Gozo …"). A file without the column ranks by `name` alone.
   `area` holds the words that say where it is (its municipality or district, and its country in its own languages and
   English). A postcode's names are the postcode as written and its key (`1012 AB`, `1012AB`). Places mapped only as
   areas (Malta's islands, some suburbs and localities) are there too, at their middle. `rank`: 1 a city or town, 2 a
@@ -102,12 +104,24 @@ subcommand prints its options with `--help`. Everything kept lies inside the reg
 (`crates/engine/src/regions.rs`); the DEM tiles given must cover them (Liechtenstein's box reaches 46.90°N, so it
 needs N46 as well as N47).
 
-The detail is what the two extracts hold, and Geofabrik's extracts stop at the border. A region's boxes reach into its
-neighbours, so that strip has only the base map and the elevation: Liechtenstein's map has no streets on the Swiss bank
-of the Rhine and a handful near Feldkirch, and its address index only the few Austrian addresses the extract has.
-Bremen's one box holds the city, Bremerhaven 50 km down the Weser and the Lower Saxony land between them; the extract
-has the two cities, so only they have detail. Filling the strip needs the neighbours' extracts as well; `build-map`
-takes one of each for now.
+The detail is what the extracts hold, and Geofabrik's extracts stop at the border. A region's boxes reach into its
+neighbours, so with its own extract alone that strip has only the base map and the elevation: Liechtenstein's map has
+no streets on the Swiss bank of the Rhine, Bremen's none in the Lower Saxony land between the city and Bremerhaven
+50 km down the Weser. `--gpkg` and `--pbf` take a region's own extracts (as many as it has: Grand Est is Alsace,
+Champagne-Ardenne and Lorraine), read whole; `--neighbour-gpkg` and `--neighbour-pbf` take its neighbours', read only
+inside its boxes, at a small cost:
+
+- A neighbour's GeoPackage is scanned once (Geofabrik's carry no spatial index), and a row is decoded only if its
+  header's envelope reaches into a box.
+- A neighbour's PBF gets one more pass, which finds its nodes inside the boxes; a way is kept only if one of its nodes
+  is, so memory grows with the boxes, not with Switzerland.
+- A feature two extracts hold (a road across the border) comes once, from the region's own. Only the region's own
+  extracts say which country an address lies in: a neighbour's national outline is larger and would otherwise be
+  taken, so a neighbour's addresses in the strip come only when they say their country.
+
+Tried here without downloading a neighbour: Liechtenstein with Malta as its "neighbour" (nothing of it in the box, 0.7 s
+more) and with its own extract twice (everything held twice, once) both give the same zips, byte for byte, as
+Liechtenstein alone. The four test regions below were built from their own extracts only.
 
 How each file is made (`crates/tools/src/map/`):
 
@@ -155,20 +169,56 @@ What the regions showed, besides the addresses ([ADDRESSES.md](ADDRESSES.md), "W
   OpenStreetMap; cut at the state's edges, it is closed across the river.
 - The PBF read once for every builder showed in Bremen: its city boundary, kept for the place finder, was drawn as one
   34 km building over the city from zoom 15, until buildings took only buildings.
+- Two answers of the place finder, fixed in the engine: `Gozo` listed the shops called "Gozo …" before the island
+  Għawdex (another name now ranks as the place's own, through `names`), and `L-1648` brought, after the postcode, every
+  lake with a word starting with `l` (a query read as a postcode no longer searches the lakes, and the lake search
+  never loosens a query down to lone letters).
 
-Not covered yet, in the place finder of the engine (not the tools):
+## Regions on GitHub's machines
 
-- An exact match on a place's other name ranks below names that only start with the query: `Gozo` lists shops called
-  "Gozo …" before the island Għawdex.
-- `L-1648` lists, after the postcode, every lake with a word starting with `l` (the prefix read as a word when the
-  query is loosened).
+`.github/workflows/regions.yml` builds regions only when asked (Actions, Regions, Run workflow): the region codes,
+separated by spaces or commas, and whether to take the neighbours' extracts. Each region is a job of its own, at most
+four at once, which runs `packaging/regions/build-region.sh REGION [yes]`:
+
+1. `lastbook-tools region-sources --region R [--neighbours yes]` says what to fetch: the region's Geofabrik extracts
+   from `crates/tools/data/region-sources.json`, its neighbours', the Copernicus DEM tiles its zoom-9 terrain tiles
+   reach (a tile over open sea does not exist and is left out) and Natural Earth's six zips.
+2. The script fetches them (a file already there is kept; `OFFLINE=1` fetches nothing), then runs `build-map`,
+   `pack-map` and `pack-addresses`.
+3. `lastbook-tools check-map --region R --packs DIR` takes the zips as setup does: the entries through setup's manifest
+   check, their sizes and SHA-256, `install::check_zip`, the unpacking with setup's member rules. Then it asks the engine
+   what a person would: the region's town (the table's `capital`) found by the place search inside its boxes, the
+   addresses above a floor (100, or the table's `min_addresses`), the index's first address found as typed, detail in
+   every box (an extract missing for one of Portugal's boxes would leave it empty), elevation tiles. A failed check
+   fails the job.
+4. The zips, their entries (`map-entry-R.json`, `addresses-entry-R.json`), the check (`check-R.json`) and the build's
+   report come back as the job's artifact, `region-R`.
+
+`region-sources.json` maps each of the 110 regions to its Geofabrik extracts, as paths under the site. Several regions
+share one, which their boxes clip: Italy's extracts are its five macro-regions (Lombardy is `italy/nord-ovest` with
+Piedmont, Aosta and Liguria), France's are its old regions, two or three to a new one; Spain's Canaries come from
+`africa/canary-islands`, and Portugal's Azores from their own extract. A test checks the file against `regions.rs`:
+every region once, an extract shared only within one country. A region's neighbours are named in the file where boxes
+alone would mislead (Liechtenstein: Switzerland and Austria, not Bayern, whose box reaches its corner; Malta: none,
+though Sicily's box reaches Lampedusa; Luxembourg; Bremen: Lower Saxony). For the others they are the regions whose
+boxes, without their margin, meet the region's: every extract of such a region, so a French neighbour may bring an old
+region that does not touch the strip, a download for nothing.
+
+Tried here, offline, on what was already downloaded: Malta, and Liechtenstein with its neighbours asked for and not
+there (left out, with a note); both built, packed and passed every check. Not tried here: anything that needs a new
+download. What to expect on the larger regions, from `region-sources`: the DEM tiles listed (fewer exist, open sea has
+none) are 2 for Liechtenstein, 12 for Luxembourg, 28 for Bayern, 36 for Nouvelle-Aquitaine, 180 for Finland, 240 for
+Sweden and 420 for Norway. A tile is 30 to 45 MB to download, and the terrain builder holds every tile a region needs in
+memory: 52 MB south of 50°N, narrower further north (35, 26, then 17 MB above 70°N). Norway's would take some 7 GB of
+a runner's 16, to be measured on the first run.
 
 ## Checking a map change
 
 - `cargo test -p lastbook-tools`: each builder against small sources made in the test, and a whole region from them to
   what setup installs and what the engine answers. With a region's zips unpacked into
   `derived/app-check/<REGION>/LastbookData`, `real.rs` also asks it what people there type and checks the first answer
-  (31 queries for Malta, Luxembourg and Bremen).
+  (31 queries for Malta, Luxembourg and Bremen), and that Luxembourg's postcodes bring no lakes.
+- `lastbook-tools check-map` on a region's zips: what the workflow checks after each build.
 - A change people see is checked in the running app: `lastbook --data <a LastbookData with the map> --snapshot
   FILE.png --eval ...`, and the picture looked at.
 - Nothing a contributor adds may make the app open a connection. New data comes in through a build tool and ships as a
