@@ -310,6 +310,21 @@ fn parse_args() -> Result<Args, String> {
     Ok(a)
 }
 
+/// Windows and Linux: llama.cpp's backends (Vulkan, and the CPU variants) are libraries of their own, loaded from beside
+/// this program in a package, else from the build's own folder; each loads only where it can run, so a computer without a
+/// graphics driver simply uses its processor. On a Mac, Metal is built in.
+fn load_backends() {
+    #[cfg(any(windows, target_os = "linux"))]
+    {
+        let here = std::env::current_exe().ok().and_then(|e| e.parent().map(std::path::Path::to_path_buf));
+        let beside = here.filter(|d| std::fs::read_dir(d).into_iter().flatten().flatten().any(|e| e.file_name().to_string_lossy().contains("ggml-cpu")));
+        match beside {
+            Some(d) => llama_cpp_2::llama_backend::load_backends_from_path(&d),
+            None => llama_cpp_2::llama_backend::load_backends(),
+        }
+    }
+}
+
 /// Memory left for the system and the rest of Lastbook when deciding whether a model file fits in memory.
 const DISK_RESERVE: u64 = 5 << 29; // 2.5 GiB
 
@@ -339,6 +354,7 @@ fn main() {
             std::process::exit(2);
         }
     };
+    load_backends();
     let backend = match LlamaBackend::init() {
         Ok(b) => b,
         Err(e) => {
