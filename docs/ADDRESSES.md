@@ -1,7 +1,7 @@
 # Address indexes and address search
 
-How "Find a place" finds a street address in Europe, and the file a builder must write for it. The search is in
-`crates/engine/src/map/address/`; the builder is a later step and writes the file described here. Nothing here
+How "Find a place" finds a street address in Europe, and the file that holds the addresses. The search is in
+`crates/engine/src/map/address/`; the builder is `map-data` in `crates/tools` (see "Building one"). Nothing here
 opens a connection: an index is a file installed with a region map, and the search only reads it.
 
 ## The file
@@ -76,7 +76,22 @@ The engine gives the builder what it needs, so the keys are the ones the search 
 3. Run `lastbook_engine::map::address::FINISH`: the indexes and the `area` table.
 4. Write `meta`.
 
-The tests in `crates/engine/src/map/address/tests.rs` build their tiny indexes exactly this way.
+The tests in `crates/engine/src/map/address/tests.rs` build their tiny indexes exactly this way, and so does the
+builder, `crates/tools/src/addresses.rs`, run by `map-data region <REGION>` ([MAPS.md](MAPS.md), "Building a region"),
+from the `addr:*` tags of the region's OpenStreetMap PBF:
+
+- An address is a node, or a building: the middle of its outline. One mapped on both, close together, is kept once.
+- The country is `addr:country`; without it, the region's own country when the address lies inside it (else the
+  address is left to its own country's index).
+- The town is `addr:city`, written as the region's own municipality or place of that name (`MAuren` is Mauren). A rare
+  name the region does not know (`Balzers (FL)`, a street typed in the wrong field), used fewer than three times, gives
+  way to the municipality the address lies in, as does a missing one.
+- One row per number: each of `12;14`; a Czech or Slovak `846/1` also as `846` and `1`.
+- After `FINISH`, a postcode–town pair given by fewer than three addresses, under 2% of the postcode's main town, is
+  taken out of `area` (a postcode typed for the wrong town would otherwise be offered as a town of it). The addresses
+  themselves stay.
+
+`meta.publisher` is `OpenStreetMap`, `meta.source` names the Geofabrik extract and its date.
 
 ## The keys
 
