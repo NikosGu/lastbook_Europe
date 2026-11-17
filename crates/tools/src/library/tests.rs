@@ -196,8 +196,10 @@ fn a_library_built_is_what_the_engine_reads() {
         let s = get(&l, "/api/library");
         assert_eq!((s["pdfs"].as_u64(), s["pdf_pages"].as_u64()), (Some(1), Some(2)));
     }
-    // the engine's open files go with it: Windows cannot remove a folder that holds open files, and --replace below does
+    // the engine's open files closed, its shared database connections too: Windows cannot remove a folder that holds open
+    // files, and --replace below does
     drop(l);
+    lastbook_engine::db::close_all();
     // pack.json and pack-manifest.tsv: every file, at its size and hash
     let pack: Value = serde_json::from_slice(&std::fs::read(data.join("pack.json")).unwrap()).unwrap();
     assert_eq!((pack["name"].as_str(), pack["content_revision"].as_str(), pack["map"].as_str()), (Some("test-pack"), Some("2026-11-17-test"), Some("base")));
@@ -216,7 +218,8 @@ fn a_library_built_is_what_the_engine_reads() {
     assert_eq!(std::fs::read(data.join("pack-manifest.tsv")).unwrap(), std::fs::read(again.join("pack-manifest.tsv")).unwrap());
     // and not over a folder that is there, unless asked
     assert!(build(&list, &dir.join("docs"), &data, false, "2026-11-17").unwrap_err().contains("--replace"));
-    assert!(build(&list, &dir.join("docs"), &data, true, "2026-11-18").is_ok());
+    let replaced = build(&list, &dir.join("docs"), &data, true, "2026-11-18");
+    assert!(replaced.is_ok(), "{replaced:?}");
     cleanup(&dir);
 }
 

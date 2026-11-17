@@ -63,6 +63,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-2022, ubuntu-24.04]
+    env:
+      # short on Windows: the shader generator's build lies deep inside llama.cpp's, past Windows' 260-character paths
+      CARGO_TARGET_DIR: ${{ matrix.os == 'windows-2022' && 'C:/t' || 'target' }}
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -87,7 +90,7 @@ jobs:
       - name: Build the runner with Vulkan (Linux)
         if: runner.os == 'Linux'
         run: |
-          mkdir -p target/debug/build/deps
+          mkdir -p "$CARGO_TARGET_DIR/debug/build/deps"
           cargo build -p lastbook-llm --features vulkan --locked
       - name: Build the runner with Vulkan (Windows)
         if: runner.os == 'Windows'
@@ -96,19 +99,20 @@ jobs:
         env:
           CMAKE_GENERATOR: Ninja
         run: |
-          New-Item -ItemType Directory -Force -Path target\debug\build\deps | Out-Null
+          New-Item -ItemType Directory -Force -Path "$env:CARGO_TARGET_DIR/debug/build/deps" | Out-Null
           cargo build -p lastbook-llm --features vulkan --locked
       - name: llama.cpp's libraries beside the runner, as the installers put them
         shell: bash
         run: |
-          for d in $(find target/debug/build -type d -path '*llama-cpp-sys-2*/out' -prune); do
-            if ls "$d"/lib/libggml-base.so* "$d"/bin/ggml-base.dll >/dev/null 2>&1; then OUT="$d"; fi
+          T="$CARGO_TARGET_DIR/debug"
+          for d in $(find "$T/build" -type d -path '*llama-cpp-sys-2*/out' -prune); do
+            if [ -n "$(ls "$d"/lib/libggml-base.so* "$d"/bin/ggml-base.dll 2>/dev/null)" ]; then OUT="$d"; fi
           done
           echo "llama.cpp's output: $OUT"
-          cp -P "$OUT"/lib/*.so* target/debug/ 2>/dev/null || true
-          cp "$OUT"/bin/*.dll target/debug/ 2>/dev/null || true
-          if [ -d "$OUT/backends" ]; then cp -P "$OUT"/backends/* target/debug/; fi
-          ls target/debug | grep -Ei 'ggml|llama' || true
+          cp -P "$OUT"/lib/*.so* "$T/" 2>/dev/null || true
+          cp "$OUT"/bin/*.dll "$T/" 2>/dev/null || true
+          if [ -d "$OUT/backends" ]; then cp -P "$OUT"/backends/* "$T/"; fi
+          ls "$T" | grep -Ei 'ggml|llama' || true
       - name: The runner answers
         shell: bash
-        run: ./target/debug/lastbook-llm || test $? -eq 2
+        run: '"$CARGO_TARGET_DIR/debug/lastbook-llm" || test $? -eq 2'
