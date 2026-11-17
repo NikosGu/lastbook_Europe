@@ -1,0 +1,2 @@
+# Files whose bytes are checked by their SHA-256 stay exactly as committed on every system (no line-end conversion).
+*.pdf binary

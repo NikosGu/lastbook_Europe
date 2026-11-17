@@ -59,13 +59,42 @@ jobs:
         run: |
           sudo apt-get install -y ./dist/*.deb
           /opt/lastbook-europe/lastbook-llm || test $? -eq 2
+      # A library of one PDF page of our own (packaging/rust/check-library), built with lastbook-tools and the PDFium the
+      # package holds, then the packaged app opened on that page, finding its PDFium by itself: a picture to look at, and
+      # the page's drawing in the library's cache, which only PDFium makes.
+      - name: The packaged app draws a PDF page (a picture of it)
+        shell: bash
+        run: |
+          cargo build --release --locked -p lastbook-tools --bin lastbook-tools
+          TMP_SH="$RUNNER_TEMP"; RUN=""
+          case "$RUNNER_OS" in
+            macOS)
+              hdiutil attach -nobrowse -readonly dist/*.dmg -mountpoint /tmp/lb
+              APP="/tmp/lb/Lastbook Europe.app/Contents/MacOS/lastbook"; PDFIUM="/tmp/lb/Lastbook Europe.app/Contents/Frameworks" ;;
+            Linux)
+              sudo apt-get install -y -qq xvfb >/dev/null
+              APP=/opt/lastbook-europe/lastbook; PDFIUM=/opt/lastbook-europe; RUN="xvfb-run -a" ;;
+            Windows)
+              pwsh -NoProfile -Command "Expand-Archive -Path (Get-Item dist/*-windows-x64.zip).FullName -DestinationPath '$RUNNER_TEMP\lb-app'"
+              TMP_SH="$(cygpath -u "$RUNNER_TEMP")"
+              APP="$TMP_SH/lb-app/lastbook.exe"; PDFIUM="$RUNNER_TEMP\lb-app" ;;
+          esac
+          LASTBOOK_PDFIUM="$PDFIUM" target/release/lastbook-tools build-library --sources packaging/rust/check-library/sources.json \
+            --docs packaging/rust/check-library --out "$RUNNER_TEMP/check/LastbookData"
+          mkdir -p shots
+          T=""; if command -v timeout >/dev/null; then T="timeout 180"; fi   # macOS has no timeout; the app quits after its picture anyway
+          $T $RUN "$APP" --data "$RUNNER_TEMP/check/LastbookData" --home "$RUNNER_TEMP/lb-check" --size 1000x800 --after 4 \
+            --eval "location.hash='#/read/pdf-page-check?p=1&view=page'" --eval 0 --eval 0 --snapshot "shots/$RUNNER_OS-pdf-page.png"
+          if [ "$RUNNER_OS" = macOS ]; then hdiutil detach /tmp/lb; fi
+          test -s "shots/$RUNNER_OS-pdf-page.png"
+          ls "$TMP_SH/check/LastbookData/derived/cache" | grep '^pdf-page-check-1-[0-9]*\.png$'
       - uses: actions/upload-artifact@v4
         with:
           name: installers-${{ matrix.os }}
           path: dist/*
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
-        if: always() && runner.os == 'macOS'
+        if: always()
         with:
           name: shots-${{ matrix.os }}
           path: shots/*

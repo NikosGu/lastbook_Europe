@@ -128,6 +128,27 @@ fn the_sources_list_is_checked() {
     assert!(starter.docs.iter().map(|d| d.bytes.unwrap()).sum::<u64>() <= 100_000_000);
 }
 
+/// The release workflow builds the check library in packaging/rust/check-library: its list names the PDF beside it.
+#[test]
+fn the_release_check_library_is_whole() {
+    let folder = repo().join("packaging/rust/check-library");
+    let list = sources::load(&folder.join("sources.json")).unwrap();
+    assert_eq!(list.docs.len(), 1);
+    for d in &list.docs {
+        let file = folder.join(&d.file);
+        assert_eq!(std::fs::metadata(&file).unwrap().len(), d.bytes.unwrap(), "{}", d.file);
+        assert_eq!(super::sha256_file(&file).unwrap(), d.sha256.clone().unwrap(), "{} (a .pdf must stay binary in git)", d.file);
+    }
+    if !pdfium_here() {
+        return;
+    }
+    let dir = temp("check");
+    build(&list, &folder, &dir.join("LastbookData"), false, "2026-11-17").unwrap();
+    let text = std::fs::read_to_string(dir.join("LastbookData/library-data/text/pdf-page-check.txt")).unwrap();
+    assert!(text.contains("A PDF page, drawn by PDFium") && text.contains("found the PDFium library installed beside it"), "{text}");
+    cleanup(&dir);
+}
+
 #[test]
 fn a_library_built_is_what_the_engine_reads() {
     let dir = temp("build");

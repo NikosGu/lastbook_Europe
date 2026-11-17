@@ -1,0 +1,27 @@
+{
+  "about": "A library of one page of our own, for the release workflow: it builds this library with lastbook-tools, opens it in each packaged app and takes a picture of the PDF page, which shows that the app found the PDFium installed beside it.",
+  "pack": {
+    "id": "release-check",
+    "title": "Release check",
+    "summary": "One PDF page, to see that the packaged app draws PDF pages.",
+    "revision": "release-check-1",
+    "map": "base"
+  },
+  "documents": [
+    {
+      "id": "pdf-page-check",
+      "file": "pdf-page-check.pdf",
+      "sha256": "ebee25f675ab8e7c39866ff05a9115051d5edb2977acf0d88d1e1b41e6549718",
+      "bytes": 1723,
+      "title": "A PDF page, drawn by PDFium",
+      "publisher": "Lastbook Europe",
+      "year": 2026,
+      "lang": "en",
+      "licence": "MIT, as the rest of this repository.",
+      "source": "This repository, packaging/rust/check-library",
+      "collection": "Release check",
+      "category": "check",
+      "notes": "Made for the release check; it belongs to no library people install."
+    }
+  ]
+}
