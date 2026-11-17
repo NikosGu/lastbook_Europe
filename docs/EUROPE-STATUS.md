@@ -28,6 +28,7 @@ None of these blocks the work: each has a placeholder.
 | Signing certificates (Apple Developer ID, Windows Authenticode) | builds signed ad hoc on a Mac, unsigned on Windows | `packaging/rust/` |
 | Native-speaker review of the Italian, German, French, Spanish and Polish text | translations marked for review | `web/locales/`, `content/` |
 | Publishing the first release | each push makes a **draft** release | GitHub's Releases page |
+| How all 110 regions are built: Geofabrik, free and shared, refused GitHub's machines' connections for Finland and Lombardy, even after eight tries over several minutes (the four test regions and Bavaria got their extracts) | the regions workflow, one region at a time | a schedule kind to Geofabrik (extracts kept between runs, regions spread over days), a machine of the project's own, or another source of the same extracts |
 | Whether the starter library may be published: many documents state no licence, the eight French, Spanish and Polish ones among them (BBK and WHO reserve their rights, BBK allowing quotations; IFRC allows non-commercial copies) | built here, not published | `content/library/starter.json` (`about`, and each document's terms) |
 
 ## Decisions taken along the way

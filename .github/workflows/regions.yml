@@ -42,7 +42,7 @@ jobs:
     timeout-minutes: 360
     strategy:
       fail-fast: false
-      max-parallel: 2   # two at a time: the download sites are shared by everyone
+      max-parallel: 1   # one at a time: Geofabrik, shared by everyone, turns away GitHub's machines when they ask too much
       matrix:
         region: ${{ fromJSON(needs.plan.outputs.regions) }}
     steps:
