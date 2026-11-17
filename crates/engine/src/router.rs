@@ -10,6 +10,7 @@ use crate::map::Map;
 use crate::paths::Paths;
 use crate::setup::api::Setup;
 use crate::static_files;
+use crate::update::Updater;
 use serde_json::{json, Value};
 use std::sync::Arc;
 
@@ -27,12 +28,14 @@ pub struct Engine {
     pub chats: Chats,
     /// What the assistant reads: the library and the map.
     pub knowledge: Arc<dyn Knowledge>,
+    /// Check for updates, when the person asks.
+    pub updater: Updater,
 }
 
 impl Engine {
     pub fn new(paths: Paths) -> Engine {
         Engine { map: Map::new(paths.clone()), library: Library::new(paths.clone()), paths, setup: None, ai: None, chats: Chats::default(),
-                 knowledge: Arc::new(NoKnowledge) }
+                 knowledge: Arc::new(NoKnowledge), updater: Updater::product() }
     }
 
     pub fn with_ai(mut self, ai: Local) -> Engine {
@@ -53,6 +56,10 @@ impl Engine {
         }
         if let Some(name) = path.strip_prefix("/api/setup/") {
             return self.setup_route(method, name.trim_matches('/'), req);
+        }
+        if let Some(name) = path.strip_prefix("/api/update/") {
+            let (status, out) = self.updater.handle(if method == "HEAD" { "GET" } else { method }, name.trim_matches('/'));
+            return Response::json_status(status, &out);
         }
         if let Some(r) = self.ai_route(method, path, req) {
             return r;

@@ -14,3 +14,4 @@ pub mod regions;
 pub mod router;
 pub mod setup;
 pub mod static_files;
+pub mod update;
