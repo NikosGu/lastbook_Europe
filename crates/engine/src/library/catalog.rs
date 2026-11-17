@@ -231,7 +231,7 @@ impl Catalog {
         self.thumbs.get(video_path).map(String::as_str)
     }
 
-    /// The fields the interface needs, with friendly labels (server.py public): `trust` with its code beside it, `trust_code`,
+    /// The fields the interface needs, with friendly labels: `trust` with its code beside it, `trust_code`,
     /// and `kindLabel` beside `kind`, which the interface says them by. Never local sign-in or worker state.
     pub fn public(&self, r: &Record, full: bool, lib: &Path) -> Value {
         let pages = if r.truthy("pages") { r.get("pages").clone() } else { r.get("slides").clone() };
