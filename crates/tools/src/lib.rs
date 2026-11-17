@@ -4,7 +4,10 @@
 //! The map's files (docs/MAPS.md) and the address index (docs/ADDRESSES.md) are built by the `map-data` command
 //! (src/bin/map-data.rs) from Geofabrik's GeoPackage and OSM PBF of a region, Copernicus DEM GLO-30 and Natural Earth.
 
+pub mod addresses;
+pub mod buildings;
 pub mod detail;
 pub mod geo;
 pub mod gpkg;
 pub mod library;
+pub mod osm;
