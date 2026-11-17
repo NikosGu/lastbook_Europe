@@ -30,7 +30,7 @@
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Numery na papierze i naładowany powerbank",
          "note": "Po niemiecku. Spisana lista ważnych numerów, powerbank do telefonu i mapy zapisane do użytku offline."},
         {"doc": "rcb-badz-gotowy", "page": 8, "label": "Nie blokuj linii telefonicznych",
-         "note": "Z poradnika RCB „Bądź gotowy!”: w kryzysie łączność telefoniczna może być ograniczona; słuchaj radia, ogranicz rozmowy z bliskimi, a o tym, że jesteś bezpieczny, daj znać SMS-em."}
+         "note": "Z poradnika RCB „Bądź gotowy!”: w kryzysie łączność telefoniczna może być ograniczona; słuchaj radia, ogranicz rozmowy z bliskimi, a o tym, że nic ci nie grozi, daj znać SMS-em."}
       ]
     },
     {
@@ -70,7 +70,7 @@
     {"text": "Słuchaj komunikatów służb, mediów i Alertu RCB oraz stosuj się do ich poleceń: to może uratować ci życie.", "doc": "rcb-badz-gotowy", "page": 8},
     {"text": "Gdy numery alarmowe nie działają, idź, jeśli możesz, na najbliższy posterunek policji lub do szpitala.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 15},
     {"text": "Nie rozpowszechniaj niesprawdzonych informacji: najpierw sprawdź je w kilku niezależnych źródłach.", "doc": "pl-poradnik-bezpieczenstwa", "page": 39},
-    {"text": "W kryzysie ogranicz rozmowy z bliskimi: przeciążone linie utrudniają pracę policji, straży i pogotowia. Słuchaj radia, a o tym, że jesteś bezpieczny, daj znać SMS-em.", "doc": "rcb-badz-gotowy", "page": 8}
+    {"text": "W kryzysie ogranicz rozmowy z bliskimi: przeciążone linie utrudniają pracę policji, straży i pogotowia. Słuchaj radia, a o tym, że nic ci nie grozi, daj znać SMS-em.", "doc": "rcb-badz-gotowy", "page": 8}
   ],
   "prepare": [
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Numery na papierze, powerbank, mapy offline", "note": "Po niemiecku."},

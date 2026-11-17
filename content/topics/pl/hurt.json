@@ -5,7 +5,7 @@
   "title": "Ktoś jest ranny albo nagle zachorował",
   "short": "Pierwsza pomoc: krwawienie, oparzenia, oddech, urazy, nagłe zachorowania",
   "intro": "Materiały o pierwszej pomocy na czas, zanim dotrą ratownicy: sprawdzanie stanu poszkodowanego, wzywanie pomocy, krwawienie, oparzenia, oddech i resuscytacja krążeniowo-oddechowa (RKO), urazy i nagłe zachorowania. Większość stron pochodzi z międzynarodowych wytycznych pierwszej pomocy IFRC (Międzynarodowej Federacji Czerwonego Krzyża i Czerwonego Półksiężyca) z 2020 roku, napisanych dla instruktorów pierwszej pomocy; część z polskich poradników rządowych oraz z austriackich i niemieckich poradników ochrony ludności.",
-  "keywords": ["pierwsza pomoc", "uraz", "ranny", "poszkodowany", "rana", "skaleczenie", "rozcięcie", "krwawienie", "krew", "krwotok", "opaska uciskowa", "staza", "opatrunek uciskowy", "oparzenie", "oparzenie wrzątkiem", "poparzenie", "złamanie", "złamana kość", "skręcenie", "zwichnięcie", "szyna", "unieruchomienie", "uraz głowy", "wstrząśnienie mózgu", "kręgosłup", "szyja", "RKO", "resuscytacja", "reanimacja", "nie oddycha", "nieprzytomny", "utrata przytomności", "nie reaguje", "pozycja boczna", "pozycja bezpieczna", "defibrylator", "AED", "zadławienie", "zakrztuszenie", "wstrząs", "udar cieplny", "porażenie słoneczne", "odwodnienie", "biegunka", "wymioty", "hipotermia", "wychłodzenie", "odmrożenie", "reakcja alergiczna", "alergia", "anafilaksja", "wstrząs anafilaktyczny", "adrenalina", "epinefryna", "astma", "zawał serca", "zawał", "ból w klatce piersiowej", "udar", "udar mózgu", "napad padaczkowy", "drgawki", "padaczka", "niski cukier", "hipoglikemia", "cukrzyca", "zatrucie", "trucizna", "tlenek węgla", "czad", "ugryzienie", "pogryzienie", "użądlenie", "kleszcz", "wąż", "żmija", "112", "911", "999", "karetka", "pogotowie", "nagły wypadek"],
+  "keywords": ["pierwsza pomoc", "uraz", "ranny", "poszkodowany", "rana", "skaleczenie", "rozcięcie", "krwawienie", "krew", "krwotok", "opaska uciskowa", "staza", "opatrunek uciskowy", "oparzenie", "oparzenie wrzątkiem", "poparzenie", "złamanie", "złamana kość", "skręcenie", "zwichnięcie", "szyna", "unieruchomienie", "uraz głowy", "wstrząśnienie mózgu", "kręgosłup", "szyja", "RKO", "resuscytacja", "reanimacja", "nie oddycha", "nieprzytomny", "utrata przytomności", "nie reaguje", "pozycja boczna", "pozycja boczna ustalona", "pozycja bezpieczna", "defibrylator", "AED", "zadławienie", "zakrztuszenie", "wstrząs", "udar cieplny", "porażenie słoneczne", "odwodnienie", "biegunka", "wymioty", "hipotermia", "wychłodzenie", "odmrożenie", "reakcja alergiczna", "alergia", "anafilaksja", "wstrząs anafilaktyczny", "adrenalina", "epinefryna", "astma", "zawał serca", "zawał", "ból w klatce piersiowej", "udar", "udar mózgu", "napad padaczkowy", "drgawki", "padaczka", "niski cukier", "hipoglikemia", "cukrzyca", "zatrucie", "trucizna", "tlenek węgla", "czad", "ugryzienie", "pogryzienie", "użądlenie", "kleszcz", "wąż", "żmija", "112", "911", "999", "karetka", "pogotowie", "nagły wypadek"],
   "choices": [
     {
       "id": "check",
@@ -15,7 +15,7 @@
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Sprawdź stan poszkodowanego po kolei",
          "note": "Po angielsku. Czy jest bezpiecznie? Czy poszkodowany reaguje, czy drogi oddechowe są drożne, czy oddycha prawidłowo, czy mocno krwawi?"},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Zadbaj o swoje bezpieczeństwo, dzwoń wcześnie, najpierw pomóż najciężej rannym",
-         "note": "Po angielsku. Kiedy trzymać się z daleka i powiadomić odpowiednie służby, rozmowa przez telefon na głośniku i kilku rannych naraz."},
+         "note": "Po angielsku. Kiedy trzymać się z daleka i powiadomić odpowiednie służby, rozmowa przez telefon z włączonym głośnikiem, kilku rannych naraz."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 103, "label": "Co powiedzieć służbom ratunkowym",
          "note": "Po angielsku. Zachowaj spokój i odpowiadaj na pytania; lepiej zadzwonić wcześnie, nawet wiedząc niewiele, niż czekać."},
         {"doc": "rcb-badz-gotowy", "page": 33, "label": "Co robi osoba udzielająca pierwszej pomocy",
@@ -58,7 +58,7 @@
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 223, "label": "Traktuj to jak złamanie i unieruchom",
          "note": "Po angielsku. Podtrzymaj kończynę w pozycji, w jakiej ją zastaniesz, schładzaj do 20 minut, załóż szynę, jeśli czeka was wyboista droga."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 224, "label": "Kiedy wezwać pomoc",
-         "note": "Po angielsku. Silny ból lub obrzęk, kończyna w dziwnym położeniu; okład z lodu zawsze owijaj w tkaninę."},
+         "note": "Po angielsku. Silny ból lub obrzęk, kończyna w nienaturalnym położeniu; okład z lodu zawsze owijaj w tkaninę."},
         {"doc": "zsv-steiermark-notfallratgeber", "page": 20, "label": "Urazy kości i stawów",
          "note": "Po niemiecku. Unieruchom, przykryj rany, wcześnie zdejmij pierścionki i zegarek, schładzaj, żeby zmniejszyć obrzęk."}
       ]
@@ -70,7 +70,7 @@
       "read": [
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 42, "label": "Nie reaguje, ale oddycha: pozycja boczna ustalona",
          "note": "Z rządowego „Poradnika bezpieczeństwa”: poproś kogoś o defibrylator (AED), sprawdź, czy poszkodowany oddycha; jeśli tak, ułóż go w pozycji bocznej ustalonej i obserwuj oddech do przyjazdu ratowników."},
-        {"doc": "pl-poradnik-bezpieczenstwa", "page": 43, "label": "Nie oddycha: zacznij resuscytację (RKO)",
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 43, "label": "Nie oddycha prawidłowo: zacznij resuscytację (RKO)",
          "note": "Z rządowego „Poradnika bezpieczeństwa”: uciskaj środek klatki piersiowej mocno, na 5–6 cm, 2 razy na sekundę; po 30 uciśnięciach 2 wdechy; użyj defibrylatora (AED), gdy ktoś go przyniesie."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 171, "label": "Zadławienie: uderzenia w plecy i uciśnięcia nadbrzusza",
          "note": "Po angielsku. Do pięciu uderzeń między łopatki, potem do pięciu uciśnięć nadbrzusza, na zmianę."},
@@ -84,7 +84,7 @@
       "hint": "Po silnym krwawieniu, ciężkich oparzeniach lub ciężkiej reakcji alergicznej",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 288, "label": "Połóż poszkodowanego i chroń go przed utratą ciepła",
-         "note": "Po angielsku. Na plecach, z uniesionymi nogami, jeśli nie są zranione i to pomaga, bez utraty ciepła; wezwij służby ratunkowe."},
+         "note": "Po angielsku. Na plecach, z uniesionymi nogami, jeśli nie są zranione i to pomaga; chroń przed utratą ciepła; wezwij służby ratunkowe."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 289, "label": "Objawy wstrząsu",
          "note": "Po angielsku. Blada skóra, sinawe usta, chłodna lub lepka od potu skóra, szybkie tętno; koc i coś między poszkodowanym a zimnym podłożem."}
       ]
@@ -95,9 +95,9 @@
       "hint": "Upadek, wypadek samochodowy, uderzenie w głowę",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 233, "label": "Niepokojące objawy po uderzeniu w głowę",
-         "note": "Po angielsku. Kiedy od razu wezwać służby ratunkowe i obserwowanie poszkodowanego przez następne 24 godziny."},
+         "note": "Po angielsku. Kiedy od razu wezwać służby ratunkowe; obserwacja poszkodowanego przez kolejne 24 godziny."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 228, "label": "Możliwy uraz kręgosłupa",
-         "note": "Po angielsku. Po wypadkach drogowych lub upadkach z wysokości: utrzymuj poszkodowanego bez ruchu, bez kołnierza i bez przypinania pasami, zawsze wezwij pomoc."},
+         "note": "Po angielsku. Po wypadkach drogowych lub upadkach z wysokości: utrzymuj poszkodowanego bez ruchu, bez kołnierza szyjnego i bez przypinania pasami, zawsze wezwij pomoc."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 230, "label": "Nie przemieszczaj poszkodowanego",
          "note": "Po angielsku. Chyba że grozi mu niebezpieczeństwo; wtedy z pomocą dwóch osób."}
       ]
@@ -155,7 +155,7 @@
     {
       "id": "diarrhoea",
       "label": "Biegunka, wymioty lub odwodnienie",
-      "hint": "Infekcja żołądkowa, nieczysta woda, odwadniające się niemowlę lub starsza osoba",
+      "hint": "Grypa żołądkowa, zanieczyszczona woda, odwodnione niemowlę lub starsza osoba",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Picie płynów albo doustne sole nawadniające",
          "note": "Po angielsku. Łagodne odwodnienie: pij wystarczająco dużo; ciężkie: doustne sole nawadniające; nie przerywaj karmienia piersią; kiedy szukać pomocy."},
@@ -198,7 +198,7 @@
       "label": "Pomoc jest daleko albo jest wielu rannych",
       "hint": "Katastrofa, telefony nie działają, pomoc może dotrzeć dopiero po godzinach lub dniach",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Gdy na pomoc trzeba czekać dniami",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Gdy pomoc może nadejść dopiero po kilku dniach",
          "note": "Po angielsku. W czasie katastrof służby ratunkowe mogą dotrzeć dopiero po godzinach, dniach lub tygodniach: skup się na krwawieniu, drogach oddechowych i wstrząsie."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Kilka rannych osób",
          "note": "Po angielsku. Zadzwoń wcześnie, zadzwoń ponownie ze szczegółami i najpierw zajmij się tymi, których życie jest najbardziej zagrożone."},
@@ -216,7 +216,7 @@
     {"text": "Wezwij pomoc przy dużych lub głębokich oparzeniach, oparzeniach w okolicy twarzy, gardła lub narządów płciowych oraz przy oparzeniach chemicznych, elektrycznych lub płomieniem.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
     {"text": "Jeśli oddech nie jest prawidłowy (chwytanie powietrza, nieregularny oddech albo jego brak), od razu zacznij RKO.", "doc": "ifrc-first-aid-guidelines-2020", "page": 130},
     {"text": "Nie dotykaj poszkodowanego, gdy defibrylator wykonuje wyładowanie.", "doc": "ifrc-first-aid-guidelines-2020", "page": 158},
-    {"text": "Nie przeczesuj na ślepo palcem ust osoby, która się dławi.", "doc": "ifrc-first-aid-guidelines-2020", "page": 170},
+    {"text": "Nie wymiataj na ślepo palcem jamy ustnej osoby, która się dławi.", "doc": "ifrc-first-aid-guidelines-2020", "page": 170},
     {"text": "Nie stosuj uciśnięć nadbrzusza u niemowlęcia.", "doc": "ifrc-first-aid-guidelines-2020", "page": 173},
     {"text": "Od razu wezwij służby ratunkowe, jeśli ktoś ma objawy wstrząsu.", "doc": "ifrc-first-aid-guidelines-2020", "page": 288},
     {"text": "Po uderzeniu w głowę dzwoń od razu, jeśli poszkodowany choćby na chwilę stracił przytomność, wymiotował więcej niż raz, ma drgawki albo krwawi z nosa lub uszu.", "doc": "ifrc-first-aid-guidelines-2020", "page": 233},
@@ -230,7 +230,7 @@
     {"text": "Przy ukąszeniu węża nie zakładaj opaski uciskowej.", "doc": "ifrc-first-aid-guidelines-2020", "page": 254}
   ],
   "prepare": [
-    {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Co jest w domowej apteczce", "note": "Po niemiecku. Lista zgodna z austriacką normą."},
+    {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Co zawiera domowa apteczka", "note": "Po niemiecku. Lista zgodna z austriacką normą."},
     {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Lista kontrolna domowej apteczki", "note": "Z rządowego „Poradnika bezpieczeństwa”."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Leki na 10 dni i kurs pierwszej pomocy", "note": "Po niemiecku."},
     {"doc": "ifrc-first-aid-guidelines-2020", "page": 106, "label": "Zapisz numery alarmowe w telefonie", "note": "Po angielsku."},

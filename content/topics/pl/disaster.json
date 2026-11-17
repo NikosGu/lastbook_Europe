@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Trzęsienie ziemi, powódź, pożar i inne klęski",
   "short": "Trzęsienie ziemi, tsunami, powódź, pożar, pozostanie w budynku, opuszczenie domu",
-  "intro": "Materiały o zagrożeniach, z którymi ludzie w Europie spotykają się najczęściej: trzęsienia ziemi, tsunami na wybrzeżu, powodzie, pożary w domu i w lesie oraz awarie, przy których trzeba zostać w budynku albo opuścić dom. Większość stron pochodzi od włoskich, niemieckich i austriackich służb ochrony ludności, część z polskich poradników rządowych.",
+  "intro": "Materiały o zagrożeniach, z którymi ludzie w Europie spotykają się najczęściej: trzęsienia ziemi, tsunami na wybrzeżu, powodzie, pożary w domu i w lesie oraz awarie, przy których trzeba zostać w budynku albo opuścić dom. Większość stron pochodzi z materiałów włoskich, niemieckich i austriackich służb ochrony ludności, część z polskich poradników rządowych.",
   "keywords": ["trzęsienie ziemi", "wstrząsy", "wstrząs wtórny", "drgania", "tsunami", "powódź", "zalanie", "podtopienie", "powódź błyskawiczna", "ulewa", "ulewny deszcz", "rzeka", "wezbranie", "burza", "nawałnica", "wichura", "piorun", "błyskawica", "pożar", "pożar domu", "pożar mieszkania", "dym", "czujnik dymu", "pożar lasu", "pożar lasów", "pożar roślinności", "ewakuacja", "ewakuować się", "plecak ewakuacyjny", "torba ewakuacyjna", "dokumenty", "schronienie na miejscu", "zostań w domu", "chemikalia", "skażenie chemiczne", "promieniowanie", "awaria jądrowa", "jod", "tabletki z jodem", "wybuch", "eksplozja", "syrena", "syreny alarmowe"],
   "choices": [
     {
@@ -119,8 +119,8 @@
     },
     {
       "id": "leave",
-      "label": "Być może będziemy musieli opuścić dom",
-      "hint": "Torba ewakuacyjna, dokumenty, osoby potrzebujące pomocy, zwierzęta domowe",
+      "label": "Może trzeba będzie opuścić dom",
+      "hint": "Plecak ewakuacyjny, dokumenty, osoby potrzebujące pomocy, zwierzęta domowe",
       "read": [
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 26, "label": "Co spakować do plecaka ewakuacyjnego",
          "note": "Z rządowego „Poradnika bezpieczeństwa”: plecak dla każdego domownika, także dziecka; woda, apteczka i leki, dokumenty i gotówka, latarka, radio, powerbank. Dalsza część listy na następnej stronie."},
@@ -165,7 +165,7 @@
   "gaps": {
     "missing": [
       "Burze, grad i silny wiatr: tylko hiszpański poradnik o niebezpiecznych zjawiskach pogodowych, kilka linijek we francuskim poradniku państwowym i austriacka strona o burzach w górach.",
-      "Brak poradnika o osuwiskach ani o lawinach, poza ratowaniem się nawzajem przez wspinaczy.",
+      "Brak poradnika o osuwiskach ani o lawinach, poza ratownictwem koleżeńskim wśród wspinaczy.",
       "Brak poradnika o sprzątaniu i osuszaniu domu po powodzi.",
       "O awariach chemicznych i jądrowych tylko to, gdzie się schronić, ostrzeżenie dotyczące jodu, a w poradniku RCB „Bądź gotowy!” to, jak długo zostać w budynku (co najmniej 24 godziny): nic o sprzątaniu.",
       "Strony o każdym zagrożeniu są napisane dla jednego kraju (Włoch, Niemiec, Austrii, Francji, Hiszpanii lub Polski), z jego własnymi numerami i alertami; syreny i systemy alarmowania są wyjaśnione dla Włoch, Niemiec, Austrii, Francji i Polski."

@@ -17,7 +17,7 @@
         {"doc": "ifrc-extreme-cold", "page": 4, "label": "Ubierz się na cebulkę, napij się czegoś ciepłego",
          "note": "Po angielsku. Ubranie na zimno, ciepłe napoje i żadnego alkoholu, przebieranie się z mokrych ubrań i kiedy szukać pomocy medycznej."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Ogrzewanie bez prądu",
-         "note": "Po niemiecku. Przy braku prądu przestaje działać nawet ogrzewanie olejowe i gazowe; piecyki turystyczne lub naftowe, zaplanowane z wentylacją i odprowadzeniem spalin."}
+         "note": "Po niemiecku. Przy braku prądu przestaje działać nawet ogrzewanie olejowe i gazowe; piecyki turystyczne lub naftowe, z zaplanowaną wentylacją i odprowadzeniem spalin."}
       ]
     },
     {
@@ -27,7 +27,7 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Tlenek węgla: co jest bezpieczne w pomieszczeniach",
          "note": "Po niemiecku. Tylko urządzenia dopuszczone do użytku w pomieszczeniach; otwarty ogień w pomieszczeniu może wytwarzać tlenek węgla; zamontuj czujnik czadu."},
-        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Nie używaj w środku agregatu ani grzejnika przeznaczonego na zewnątrz",
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Nie używaj w domu agregatu ani grzejnika przeznaczonego na zewnątrz",
          "note": "Po angielsku. Nie używaj w domu agregatu ani grzejników i kuchenek przeznaczonych do użytku na zewnątrz."},
         {"doc": "ifrc-extreme-cold", "page": 1, "label": "Dlaczego grzejniki i kominki zwiększają ryzyko",
          "note": "Po angielsku. Podczas fali mrozów przenośne grzejniki i kominki w domu zwiększają ryzyko zatrucia tlenkiem węgla i pożaru domu."}

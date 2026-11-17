@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Zdobądź bezpieczną wodę pitną",
   "short": "Przechowuj ją, uzdatniaj i chroń przed zabrudzeniem",
-  "intro": "Materiały na czas, gdy woda z kranu przestaje płynąć albo może nie być bezpieczna: ile wody trzymać w zapasie, jak sprawić, by była bezpieczniejsza do picia, i jak utrzymać ją w czystości. Strony pochodzą z polskich poradników rządowych, od WHO oraz od szwajcarskich, austriackich i włoskich służb ochrony ludności.",
+  "intro": "Materiały na czas, gdy woda z kranu przestaje płynąć albo może nie być bezpieczna: ile wody trzymać w zapasie, jak sprawić, by była bezpieczniejsza do picia, i jak utrzymać ją w czystości. Strony pochodzą z polskich poradników rządowych, z materiałów WHO oraz szwajcarskich, austriackich i włoskich służb ochrony ludności.",
   "keywords": ["woda", "woda pitna", "woda z kranu", "kranówka", "gotowanie", "zagotować", "przegotować", "przegotowana woda", "gotowanie wody", "chlor", "tabletki", "tabletki do uzdatniania wody", "oczyszczanie wody", "uzdatnianie wody", "uzdatnić", "dezynfekcja", "odkażanie", "filtr", "filtr piaskowy", "SODIS", "słońce", "światło słoneczne", "woda butelkowana", "woda mineralna", "przechowywanie", "przechowywanie wody", "zapas wody", "pojemnik", "kanister", "baniak", "wanna", "ile wody", "litry", "pragnienie", "brudna woda", "powódź", "pęknięta rura", "awaria wodociągu", "skażona woda", "zanieczyszczona woda", "blackout", "brak prądu"],
   "choices": [
     {
@@ -22,12 +22,12 @@
     },
     {
       "id": "boil",
-      "label": "Mogę zagotować wodę",
+      "label": "Mogę przegotować wodę",
       "hint": "Kuchenka gazowa, kuchenka turystyczna, ogień",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Gotowanie, chlor i słońce",
+        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Przegotowanie, chlor i słońce",
          "note": "Po angielsku. Zagotuj wodę, aż zacznie mocno wrzeć; to skuteczne, ale zużywa dużo paliwa. Strona omawia też chlor i dezynfekcję słońcem."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "Prosty filtr, a potem zagotuj wodę",
+        {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "Prosty filtr, a potem przegotuj wodę",
          "note": "Po niemiecku. Prowizoryczny filtr piaskowy do mętnej wody, po którym wodę gotuje się przez około minutę."}
       ]
     },
@@ -106,7 +106,7 @@
     {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Ile wody trzymać: co najmniej 3 litry na osobę na dobę", "note": "Z rządowego „Poradnika bezpieczeństwa”, ze spisu domowych zapasów na co najmniej 3 dni."},
     {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litrów wody na każdego domownika", "note": "Z poradnika RCB „Bądź gotowy!”: tyle wystarczy, by przetrwać tydzień bez bieżącego źródła wody."},
     {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Zapasy na co najmniej 3 dni, przeglądane co kilka miesięcy", "note": "Z rządowego „Poradnika bezpieczeństwa”: zapasy trwałe i takie, które zużywasz i regularnie uzupełniasz; sprawdzaj terminy przydatności."},
-    {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Wiedz, gdzie zakręca się wodę, i zapytaj w swojej gminie", "note": "Po niemiecku. Także woda do mycia i spłukiwania, nie tylko do picia."},
+    {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Sprawdź, gdzie zakręca się wodę, i zapytaj w swojej gminie", "note": "Po niemiecku. Także woda do mycia i spłukiwania, nie tylko do picia."},
     {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Pojemniki, w których woda pozostaje czysta", "note": "Po angielsku."}
   ],
   "learn": [
@@ -119,7 +119,7 @@
     "missing": [
       "Brak poradnika o wodzie, w której mogą być paliwo, chemikalia lub ścieki, poza uwagą WHO, że uzdatnianie wody w domu nie usuwa chemikaliów.",
       "Nic o szukaniu wody w terenie (źródła, strumienie, deszcz) ani o tym, czy wodę z rzeki lub jeziora można bezpiecznie pić.",
-      "Brak komunikatu wodociągów o konieczności gotowania wody i nic o tym, jak długo podczas blackoutu woda leci z kranów w wysokim budynku.",
+      "Brak komunikatu wodociągów o konieczności przegotowania wody i nic o tym, jak długo podczas blackoutu woda leci z kranów w wysokim budynku.",
       "Żadne źródło nie porównuje tabletek do uzdatniania wody ani filtrów; jeden austriacki poradnik podaje jedną markę."
     ],
     "disagree": [

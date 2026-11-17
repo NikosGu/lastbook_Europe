@@ -13,7 +13,7 @@
       "hint": "Brak prądu albo blackout: ciemno w domu i u sąsiadów, nie wiadomo, na jak długo",
       "read": [
         {"doc": "oezsv-blackout-checkliste", "page": 5, "label": "Co robić podczas blackoutu, po kolei",
-         "note": "Po niemiecku. Zachowaj spokój, sprawdź, czy prądu nie ma tylko na twojej ulicy, włącz radio, daj znać rodzinie, wyłącz urządzenia z gniazdek, zostaw włączoną jedną lampę."},
+         "note": "Po niemiecku. Zachowaj spokój, sprawdź, czy prądu nie ma tylko na twojej ulicy, włącz radio, daj znać rodzinie, odłącz urządzenia od gniazdek, zostaw włączoną jedną lampę."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Pierwsze kroki w domu",
          "note": "Po niemiecku. Rodzina, urządzenia, radio, woda, światło, winda, zamrażarka, leki niezbędne do życia, odpady i toaleta zastępcza."},
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Jak się zachować podczas długiego braku prądu",
@@ -78,7 +78,7 @@
          "note": "Po niemiecku. Sklepy się zamykają, z każdą godziną trudniej o pomoc medyczną, mieszkania się wychładzają, nie działają windy ani telefony, piętrzą się śmieci."},
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Co przestaje działać bez prądu",
          "note": "Z rządowego „Poradnika bezpieczeństwa”: brak prądu może potrwać nawet kilka dni; tracisz wtedy dostęp do wody, ogrzewania, internetu i telefonu oraz możliwość płacenia kartą."},
-        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Zostać w domu i wspierać się nawzajem",
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Pozostanie w domu i wzajemna pomoc",
          "note": "Po niemiecku. Zostań w domu, chyba że cię potrzebują, oszczędzaj paliwo, rozmawiaj z sąsiadami, sprawdź, kto potrzebuje pomocy."}
       ]
     },
