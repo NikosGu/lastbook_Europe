@@ -1,0 +1,21 @@
+# Lastbook Europe, in Rust: the engine (crates/engine), the desktop app (crates/app) and the data tools (crates/tools).
+# The interface is in web/.
+[workspace]
+members = ["crates/engine", "crates/app", "crates/tools"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+rust-version = "1.85"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+

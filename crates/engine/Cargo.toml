@@ -1,0 +1,31 @@
+[package]
+name = "lastbook-engine"
+description = "Lastbook Europe's engine: the library, the map, setup, the local AI and the requests the window sends."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "lastbook_engine"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+rustls-pki-types = { version = "1", features = ["std"] }
+url = "2"
+sha2 = "0.10"
+hex = "0.4"
+zip = { version = "9", default-features = false, features = ["deflate"] }
+filetime = "0.2"
+uuid = { version = "1", features = ["v4"] }
+libc = "0.2"
+rusqlite = { version = "0.43", features = ["bundled"] }
+png = "0.18"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_Storage_FileSystem", "Win32_System_SystemInformation", "Win32_System_LibraryLoader"] }
+
+[dev-dependencies]
+rcgen = "0.14"

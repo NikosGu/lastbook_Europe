@@ -1,0 +1,29 @@
+[package]
+name = "lastbook-app"
+description = "Lastbook Europe's desktop window: the interface in a system webview, talking to the engine with no network port."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "lastbook"
+path = "src/main.rs"
+
+[dependencies]
+lastbook-engine = { path = "../engine" }
+tao = "0.37"
+wry = "0.57"
+rfd = "0.18"
+pollster = "0.4"
+serde_json.workspace = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6"
+block2 = "0.6"
+objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSData", "NSDictionary", "NSError", "NSString", "NSGeometry"] }
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphics", "objc2-core-foundation"] }
+objc2-web-kit = { version = "0.3.2", default-features = false, features = ["std", "WKWebView", "WKSnapshotConfiguration", "objc2-app-kit", "block2"] }
+
+[target.'cfg(windows)'.build-dependencies]
+winresource = "0.1"

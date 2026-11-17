@@ -1,0 +1,12 @@
+[package]
+name = "lastbook-tools"
+description = "Lastbook Europe's build tools: region boxes, region maps, address indexes, library packs. Never shipped."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+lastbook-engine = { path = "../engine" }
+serde_json.workspace = true
