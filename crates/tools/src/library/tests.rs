@@ -119,12 +119,12 @@ fn the_sources_list_is_checked() {
     assert!(sources::parse(&twice).unwrap_err().contains("used twice"));
     assert!(sources::parse(&json!({"pack": {"id": "p", "title": "P"}, "documents": []})).is_err());
     assert!(sources::parse(&json!({"pack": {"id": "p q", "title": "P"}, "documents": [ok]})).is_err());
-    // the starter list in the repository is well formed
+    // the starter list in the repository is well formed: documents in the interface's six languages, under 100 MB
     let starter = sources::load(&repo().join("content/library/starter.json")).unwrap();
-    assert!((10..=20).contains(&starter.docs.len()));
+    assert!((10..=30).contains(&starter.docs.len()));
     assert!(starter.docs.iter().all(|d| d.sha256.is_some() && d.bytes.is_some() && d.url.as_deref().is_some_and(|u| u.starts_with("https://"))));
     let langs: std::collections::BTreeSet<&str> = starter.docs.iter().map(|d| d.lang.as_str()).collect();
-    assert_eq!(langs.into_iter().collect::<Vec<_>>(), ["de", "en", "it"]);
+    assert_eq!(langs.into_iter().collect::<Vec<_>>(), ["de", "en", "es", "fr", "it", "pl"]);
     assert!(starter.docs.iter().map(|d| d.bytes.unwrap()).sum::<u64>() <= 100_000_000);
 }
 
