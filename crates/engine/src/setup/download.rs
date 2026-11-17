@@ -63,6 +63,14 @@ impl Control {
     }
 }
 
+/// A failure whose sentence has numbers or names: they go beside the English as params (the job's error carries them to
+/// the interface, which says the failure by its code in the person's language). Sizes in params named *_bytes.
+pub fn failed_with(code: &str, params: Value, message: impl Into<String>) -> SetupError {
+    let mut extra = serde_json::Map::new();
+    extra.insert("params".into(), params);
+    SetupError::Failed { code: code.into(), message: message.into(), extra }
+}
+
 pub fn disk_full(e: &io::Error) -> bool {
     match e.raw_os_error() {
         #[cfg(unix)]
@@ -232,7 +240,7 @@ impl Download {
             if (500..600).contains(&r.status) {
                 return Err(Fetch::Io(io::Error::other(format!("HTTP {}", r.status))));
             }
-            return Err(Fetch::Err(SetupError::failed("network", format!("The download server refused the file (HTTP {}).", r.status))));
+            return Err(Fetch::Err(failed_with("network", json!({"status": r.status}), format!("The download server refused the file (HTTP {}).", r.status))));
         }
         let new_etag = r.header("ETag").map(str::to_string);
         match r.status {
@@ -450,7 +458,13 @@ mod tests {
         let mut evil = Download::new(&format!("{}/evil.zip", srv.base), &d.join("e.zip"), 1000, &sha(&data), Control::new(), Box::new(|_, _, _| {}), srv.allow(), Some(srv.tls.clone()));
         assert!(matches!(evil.run(), Err(SetupError::Failed { code, .. }) if code == "network"));
         let mut missing = Download::new(&format!("{}/nothing.zip", srv.base), &d.join("n.zip"), 1000, &sha(&data), Control::new(), Box::new(|_, _, _| {}), srv.allow(), Some(srv.tls.clone()));
-        assert!(matches!(missing.run(), Err(SetupError::Failed { message, .. }) if message.contains("HTTP 404")));
+        match missing.run() {
+            Err(SetupError::Failed { code, message, extra }) => {
+                assert_eq!((code.as_str(), message.as_str()), ("network", "The download server refused the file (HTTP 404)."));
+                assert_eq!(extra["params"], json!({"status": 404}), "the status beside the English, for the interface");
+            }
+            other => panic!("{other:?}"),
+        }
         // a certificate the roots do not hold: refused, not trusted from the system
         let other = testserver::start();
         other.put("x.zip", data.clone());

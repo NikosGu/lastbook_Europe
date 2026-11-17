@@ -359,26 +359,42 @@ fn gbs(n: u64) -> String {
     }
 }
 
+/// Why the local AI fits this computer or not (hardware.ai.why_codes, and each of hardware.ai_models): codes the interface
+/// words in the person's language (web/locales: setup.ai.<code>), with params; the English `why` stays beside them, for logs
+/// and for an interface that does not know a code. fits, fits_graphics, too_big and ram_unknown: estimate_ai; none_offered:
+/// no model is offered (api.rs); measured_*: the AI's own measure of a model file here (api.rs, model_fit). Memory in
+/// params named *_bytes.
+pub const AI_CODES: [&str; 8] = ["fits", "fits_graphics", "too_big", "ram_unknown", "none_offered", "measured_fits", "measured_from_disk", "measured_too_big"];
+
+/// One reason in a list of them (why_codes): its code and params.
+pub fn reason(code: &str, params: Value) -> Value {
+    json!({"code": code, "params": params})
+}
+
 /// Before the model file is here to measure: the model and its context need memory_bytes, plus RESERVE. On a Mac that is
 /// all one memory; elsewhere the part that fits on the graphics card does not count against the computer's own.
 pub fn estimate_ai(ram: Option<u64>, gpus: &[Value], unified: bool, memory_bytes: u64) -> Value {
     let needs = memory_bytes + RESERVE;
     let Some(ram) = ram else {
-        return json!({"fits": false, "needs_bytes": needs, "estimate": true, "why": "Lastbook could not tell how much memory this computer has."});
+        return json!({"fits": false, "needs_bytes": needs, "estimate": true, "why": "Lastbook could not tell how much memory this computer has.",
+                      "why_codes": [reason("ram_unknown", json!({}))]});
     };
-    let in_ram = if unified || gpus.is_empty() {
+    let shared = unified || gpus.is_empty();
+    let in_ram = if shared {
         needs
     } else {
         let vram = gpus.iter().filter_map(|g| g["vram_bytes"].as_u64()).max().unwrap_or(0);
         memory_bytes.saturating_sub(vram.saturating_sub(VRAM_KEPT)) + RESERVE
     };
     let fits = ram >= in_ram;
-    let why = if fits {
-        format!("The local AI needs about {} of memory, and this computer has {}{}", gbs(needs), gbs(ram), if unified || gpus.is_empty() { "." } else { " plus its graphics memory." })
+    let (why, code) = if fits {
+        (format!("The local AI needs about {} of memory, and this computer has {}{}", gbs(needs), gbs(ram), if shared { "." } else { " plus its graphics memory." }),
+         reason(if shared { "fits" } else { "fits_graphics" }, json!({"need_bytes": needs, "ram_bytes": ram})))
     } else {
-        format!("The local AI needs about {} of this computer’s memory, and it has {}. Lastbook works without it: search and reading are the same.", gbs(in_ram), gbs(ram))
+        (format!("The local AI needs about {} of this computer’s memory, and it has {}. Lastbook works without it: search and reading are the same.", gbs(in_ram), gbs(ram)),
+         reason("too_big", json!({"need_bytes": in_ram, "ram_bytes": ram})))
     };
-    json!({"fits": fits, "needs_bytes": needs, "estimate": true, "why": why})
+    json!({"fits": fits, "needs_bytes": needs, "estimate": true, "why": why, "why_codes": [code]})
 }
 
 /// Everything but the AI's fit, which the caller adds.
@@ -437,13 +453,36 @@ mod tests {
 
     #[test]
     fn estimates() {
+        let needs = 19_027_384_256 + RESERVE;
         let fits = estimate_ai(Some(32 * GIB), &[], true, 19_027_384_256);
         assert_eq!(fits["fits"], true);
+        assert_eq!(fits["why"], "The local AI needs about 22 GB of memory, and this computer has 34 GB.");
+        assert_eq!(fits["why_codes"], json!([{"code": "fits", "params": {"need_bytes": needs, "ram_bytes": 32 * GIB}}]));
         let small = estimate_ai(Some(16 * GIB), &[], true, 19_027_384_256);
         assert_eq!(small["fits"], false);
         assert!(small["why"].as_str().unwrap().contains("works without it"));
+        assert_eq!(small["why_codes"], json!([{"code": "too_big", "params": {"need_bytes": needs, "ram_bytes": 16 * GIB}}]));
         let card = [json!({"name": "NVIDIA", "vram_bytes": 12 * GIB})];
-        assert_eq!(estimate_ai(Some(16 * GIB), &card, false, 19_027_384_256)["fits"], true);   // the card takes most of it
-        assert_eq!(estimate_ai(None, &[], true, 1)["fits"], false);
+        let with_card = estimate_ai(Some(16 * GIB), &card, false, 19_027_384_256);
+        assert_eq!(with_card["fits"], true);   // the card takes most of it
+        assert!(with_card["why"].as_str().unwrap().ends_with("plus its graphics memory."));
+        assert_eq!(with_card["why_codes"], json!([{"code": "fits_graphics", "params": {"need_bytes": needs, "ram_bytes": 16 * GIB}}]));
+        // too big for a small card: the part that does not fit on it counts against the computer's own memory
+        let little = [json!({"name": "NVIDIA", "vram_bytes": 2 * GIB})];
+        let in_ram = 19_027_384_256 - GIB + RESERVE;
+        let r = estimate_ai(Some(8 * GIB), &little, false, 19_027_384_256);
+        assert_eq!((r["fits"].as_bool(), &r["why_codes"]), (Some(false), &json!([{"code": "too_big", "params": {"need_bytes": in_ram, "ram_bytes": 8 * GIB}}])));
+        let unknown = estimate_ai(None, &[], true, 1);
+        assert_eq!(unknown["fits"], false);
+        assert_eq!((unknown["why"].as_str(), &unknown["why_codes"]), (Some("Lastbook could not tell how much memory this computer has."), &json!([{"code": "ram_unknown", "params": {}}])));
+    }
+
+    #[test]
+    fn every_code_has_words_in_the_interface() {
+        let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web/locales/en.json");
+        let words: Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+        for code in AI_CODES {
+            assert!(words[format!("setup.ai.{code}")].is_string(), "web/locales/en.json has no setup.ai.{code}");
+        }
     }
 }

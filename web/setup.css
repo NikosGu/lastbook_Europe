@@ -154,6 +154,44 @@ html.plat-mac.in-app .s-top{padding-top:30px}   /* below the traffic lights of a
 .s-mapnote svg{flex:none;width:22px;height:22px;color:var(--accent);margin-top:1px}
 .s-hint{margin:8px 0 0;font-size:15.5px;color:var(--ink2)}
 
+/* the library remembered from last time cannot be reached: a card at the top, with what to do */
+.s-missing{display:flex;gap:12px;margin:14px 0 4px;padding:16px;border-radius:var(--r);background:var(--warn-bg);border:1px solid var(--warn-line)}
+.s-missing>svg{flex:none;width:24px;height:24px;margin-top:2px;color:var(--warn)}
+.s-missing>div{min-width:0;flex:1}
+.s-main .s-missing h2{margin:0;font:650 19px/1.3 var(--display)}
+.s-missing p{margin:6px 0 0;font-size:16.5px;overflow-wrap:anywhere}
+.s-missing .s-note{background:var(--paper)}
+.s-missing .s-note.ok{background:var(--accent-soft)}
+
+/* the disks a library can go on, each with its kind; and a plain word beside "Saves to" when it is not this computer's own disk */
+.s-disks,.s-place{margin:16px 0 0;padding:0;border:0;min-width:0}
+.s-list{display:grid;gap:8px}
+.s-disks legend{padding:0;margin-bottom:8px;font-size:14px;color:var(--ink2)}
+.s-disk{display:flex;align-items:center;gap:10px 12px;padding:10px 14px;border-radius:var(--r2);background:var(--paper);border:1.5px solid var(--line);cursor:default;-webkit-user-select:none;user-select:none}
+.s-disk:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,var(--paper))}
+.s-disk:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:2px}
+.s-disk input{flex:none;width:20px;height:20px;margin:0;accent-color:var(--accent)}
+.s-disk input:focus-visible{outline:none}
+.s-disk>svg{flex:none;width:24px;height:24px;color:var(--ink3);stroke-width:1.7}
+.s-disk>span:not(.s-disk-free){flex:1;min-width:0}
+.s-disk b{display:block;font-size:16px;font-weight:650;overflow-wrap:anywhere}
+.s-disk small{display:block;font-size:14px;color:var(--ink2);line-height:1.3}
+.s-disk-free{flex:none;font-size:14.5px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.s-kind{display:flex;gap:8px;align-items:flex-start;margin:10px 0 0;padding:10px 12px;border-radius:var(--r2);background:var(--warn-bg);border:1px solid var(--warn-line);font-size:15.5px;line-height:1.4}
+.s-kind svg{flex:none;width:20px;height:20px;margin-top:1px;color:var(--warn)}
+.s-row .s-where{display:flex;align-items:center;gap:6px;margin-top:3px}
+.s-where svg{flex:none;width:17px;height:17px;color:var(--ink3)}
+.s-row .s-where.s-ext{color:var(--ink);font-weight:600}
+.s-where.s-ext svg{color:var(--warn)}
+
+/* where a new AI model goes: on this computer, or beside the library */
+.s-place{margin-top:12px}
+.s-place legend{padding:0;margin-bottom:8px;font:650 16.5px/1.3 var(--display)}
+.s-place .s-opt{padding:12px 16px}
+.s-place .s-opt-in{display:grid;grid-template-columns:1fr;gap:2px}
+.s-place .s-opt b{font:650 17px/1.25 var(--display)}
+.s-place .s-hint{margin:10px 0 0}
+
 /* The state map is a required setup choice, ahead of library size. */
 .s-map-panel{margin-top:22px;padding:20px;border:2px solid var(--accent);border-radius:var(--r);background:var(--accent-soft)}
 .s-main .s-map-panel h2{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:24px}

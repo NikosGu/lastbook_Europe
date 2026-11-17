@@ -2,8 +2,9 @@
 /* Lastbook setup: choose a library and the local AI, then download, check, unpack and switch. The contract is docs/SETUP-API.md.
    Works on its own page in setup mode (no library, so none of /api/topics and the rest) and inside the app (Library → Library and local AI).
    Views: manage (what is here now), choose (what to get), job (progress, pause, errors), done. Plain fetch: in the app the bridge adds the key.
-   Words: t() and th() from web/i18n.js, keys setup.* in web/locales/. The engine's errors carry a code, translated here (ERRS, errorBox);
-   an unknown code shows the engine's own English sentence. */
+   Words: t() and th() from web/i18n.js, keys setup.* in web/locales/. What the engine says comes as a code with params beside its English
+   sentence (CODE, REC_WHY, AI_WHY; a job's error in errorBox), said here in the person's language; an unknown code shows the engine's English.
+   A library can live on this computer's own disk, an external disk or USB stick, or a network share (a NAS): each disk shows its kind. */
 (() => {
   const $ = s => document.querySelector(s);
   const main = $('#main'), live = $('#live');
@@ -33,6 +34,8 @@
     up: '<path d="M12 19V5M5 12l7-7 7 7"/>',
     map: '<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
     trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+    usb: '<path d="M9 2h6v5H9z"/><rect x="7" y="7" width="10" height="15" rx="2"/><path d="M11 4.5h.01M13 4.5h.01"/>',
+    nas: '<rect x="4" y="3" width="16" height="7" rx="2"/><rect x="4" y="14" width="16" height="7" rx="2"/><path d="M8 6.5h.01M8 17.5h.01M12 10v4"/>',
   };
   const ico = (k, cls) => `<svg viewBox="0 0 24 24" aria-hidden="true"${cls ? ` class="${cls}"` : ''}>${ICO[k] || ''}</svg>`;
 
@@ -61,26 +64,54 @@
   }
   const errCode = e => e && (typeof e === 'object' ? e.code : null);
   const errText = e => e && (typeof e === 'object' ? e.message || e.error : e);
-  /* An error answer {error, code} (docs/SETUP-API.md), said in the person's language by its code; what one code means depends on
-     the action asked. A code not listed here shows the engine's own sentence. */
-  const ERRS = {
-    start: { busy: 'setup.err.busy', unavailable: 'setup.err.start_unavailable', nothing: 'setup.err.start_nothing', folder: 'setup.err.start_folder' },
-    repair: { busy: 'setup.err.busy', nothing: 'setup.err.repair_nothing', unavailable: 'setup.err.repair_unknown', folder: 'setup.err.start_folder' },
-    use: { busy: 'setup.err.busy', missing: 'setup.err.use_missing', not_library: 'setup.err.use_not_library', folder: 'setup.err.use_folder', size: 'setup.err.use_size', unavailable: 'setup.err.use_unavailable', unknown: 'setup.err.use_unknown' },
-    finish: { not_done: 'setup.err.finish_not_done' },
-    'remove-ai': { busy: 'setup.err.busy', nothing: 'setup.err.remove_ai_nothing', folder: 'setup.err.remove_ai_folder' },
-    'delete-old': { unknown: 'setup.err.delete_old_unknown' },
+  /* What the engine says, as a code with params beside its English (crates/engine/src/setup/api.rs CODES and WHY_CODES,
+     hardware.rs AI_CODES): each code to its whole key. A code not listed here shows the engine's own sentence. */
+  const CODE = {   // an answer that refused: {error, code, params}
+    busy: 'setup.code.busy', pack_unavailable: 'setup.code.pack_unavailable', no_ai_offered: 'setup.code.no_ai_offered',
+    model_unavailable: 'setup.code.model_unavailable', map_unavailable: 'setup.code.map_unavailable', addresses_unavailable: 'setup.code.addresses_unavailable',
+    choose_library: 'setup.code.choose_library', nothing_to_add: 'setup.code.nothing_to_add', cannot_make_folder: 'setup.code.cannot_make_folder',
+    cannot_save_there: 'setup.code.cannot_save_there', too_deep: 'setup.code.too_deep', not_library_there: 'setup.code.not_library_there',
+    no_space: 'setup.code.no_space', cannot_save_progress: 'setup.code.cannot_save_progress', nothing_to_repair: 'setup.code.nothing_to_repair',
+    repair_unknown: 'setup.code.repair_unknown', missing: 'setup.code.missing', not_library: 'setup.code.not_library',
+    library_read_only: 'setup.code.library_read_only', wrong_size: 'setup.code.wrong_size', pack_not_in_version: 'setup.code.pack_not_in_version',
+    wrong_size_model: 'setup.code.wrong_size_model', unknown_file: 'setup.code.unknown_file', not_done: 'setup.code.not_done',
+    no_ai_to_remove: 'setup.code.no_ai_to_remove', cannot_remove_model: 'setup.code.cannot_remove_model', not_moved_aside: 'setup.code.not_moved_aside',
+    not_old_library: 'setup.code.not_old_library',
   };
-  const said = (action, r, params) => { const k = r && (ERRS[action] || {})[r.code]; return k ? t(k, params) : (r && r.error) || '' };
-  /* Sentences the engine sends without a code (recommend.why, hardware.ai.why, pack titles and summaries): in English its own words,
-     which say the most; in another language the interface's sentence for the same facts. */
+  const REC_WHY = {   // why setup suggests what it does: recommend.why_codes
+    none_ready: 'setup.rec.none_ready', none_fits: 'setup.rec.none_fits', other_disk: 'setup.rec.other_disk', other_disk_network: 'setup.rec.other_disk_network',
+    start_small: 'setup.rec.start_small', default_folder: 'setup.rec.default_folder', ai_no_room: 'setup.rec.ai_no_room',
+  };
+  const AI_WHY = {   // why the local AI fits this computer or not: hardware.ai.why_codes, and after recommend's own reasons
+    fits: 'setup.ai.fits', fits_graphics: 'setup.ai.fits_graphics', too_big: 'setup.ai.too_big', ram_unknown: 'setup.ai.ram_unknown',
+    none_offered: 'setup.ai.none_offered', measured_fits: 'setup.ai.measured_fits', measured_from_disk: 'setup.ai.measured_from_disk',
+    measured_too_big: 'setup.ai.measured_too_big',
+  };
+  // a code's params as this page shows them: a pack by its name in the person's language, a folder as home() writes it
+  function shown(m) {
+    const p = Object.assign({}, m && m.params);
+    if (typeof p.pack === 'string') p.pack = packTitle(packById(p.pack) || { id: p.pack, title: p.pack });
+    if (typeof p.folder === 'string') p.folder = home(p.folder);
+    return { code: m && m.code, params: p };
+  }
+  // an answer that refused, in the person's language (sizes as this system counts them)
+  const sayErr = r => I18N.said(CODE, shown(r), r && r.error, { size });
+  /* reasons, a list of {code, params}: each in the person's language, memory counted as the tiles above count it. The engine's
+     English (why) when there is no list, or it holds a code this page does not know: then the whole stays one language. */
+  function sayWhy(codes, english) {
+    const known = c => c && (Object.hasOwn(REC_WHY, c.code) || Object.hasOwn(AI_WHY, c.code));
+    if (!Array.isArray(codes) || !codes.length || !codes.every(known)) return String(english || '');
+    return codes.map(c => Object.hasOwn(AI_WHY, c.code) ? I18N.said(AI_WHY, c, '', { size: ram }) : I18N.said(REC_WHY, shown(c), '', { size })).join(' ');
+  }
+  /* Pack titles and summaries come from the manifest, in English: shown as they are in English, else in the interface's words */
   const english = () => I18N.lang === 'en';
 
   /* ------------------------------------------------------------ state */
   let S = null;           // GET state
   let view = 'choose';
-  let choice = { pack: null, ai: false, country: null, map: null };   // country: ISO 3166-1 code; map: the region code (crates/engine/src/regions.rs)
+  let choice = { pack: null, ai: false, country: null, map: null, place: null };   // country: ISO 3166-1 code; map: the region code (crates/engine/src/regions.rs); place: where a new model goes, 'computer' or 'library' (null: the default)
   let folder = '';
+  let missing = { dismissed: false, note: '', opening: false };   // the library remembered from last time cannot be reached (state.missing)
   let shortfall = null;   // the answer to a start that had no room: {need_bytes, free_bytes}
   let pollT = 0;
   let confirmCancel = false, confirmRemove = false, confirmOld = false;
@@ -130,7 +161,7 @@
   const foundFor = (kind, id) => (S.found || []).find(f => f.kind === kind && (f.size_ok !== false) && (kind === 'model' || f.id === id || f.pack === id));
   const aiFits = () => !!(S.hardware && S.hardware.ai && S.hardware.ai.fits);
   // why the local AI does not fit this computer
-  const aiWhy = () => { const a = (S.hardware && S.hardware.ai) || {}; return english() && a.why ? a.why : t(S.hardware && S.hardware.ram_bytes ? 'setup.ai.no_memory' : 'setup.ai.ram_unknown') };
+  const aiWhy = () => { const a = (S.hardware && S.hardware.ai) || {}; return sayWhy(a.why_codes, a.why) };
 
   function diskFor(path) {
     const ds = (S.hardware && S.hardware.disks) || [];
@@ -145,6 +176,13 @@
     const name = d && (d.name || (WIN ? (String(d.path).match(/^[A-Z]:/i) || [''])[0].toUpperCase() : /^\/Volumes\/[^/]+/.test(d.path) ? d.path.split('/')[2] : ''));
     return name ? t('setup.disk.on', { name }) : t(!d || WIN ? 'setup.disk.on_this_disk' : /Linux/.test(navigator.platform || '') ? 'setup.disk.on_this_computer' : 'setup.disk.on_this_mac');
   }
+  /* Each disk's kind (hardware.disks[].kind, current.disk_kind): this computer's own disk, an external disk or USB stick (it must stay
+     connected), or a network share on a NAS (the network must stay on, and it is slower). */
+  const KIND = { local: 'setup.disk.kind_local', removable: 'setup.disk.kind_removable', network: 'setup.disk.kind_network' };
+  const LIVES = { local: 'setup.disk.lives_local', removable: 'setup.disk.lives_removable', network: 'setup.disk.lives_network' };
+  const diskName = d => d.name || baseName(d.path) || d.path;
+  // the disks a new library can go on, as the engine lists them (not the places the person picked, which add only their free space)
+  const disksShown = () => ((S.hardware && S.hardware.disks) || []).filter(d => !d.picked);
 
   function plan() {   // what the current choice adds: bytes to download, space it needs (download + unpacked + 2 GB, as the engine counts)
     const c = cur() || {};
@@ -209,28 +247,38 @@
     }
     return `<section class="s-pc" aria-label="${th('setup.pc.label')}">${tiles.map(x => `<div class="s-tile">${x[0]}<b>${x[1]}</b><small>${x[2]}</small></div>`).join('')}</section>`;
   }
+  const refreshComputer = () => { const pc = main.querySelector('.s-pc'); if (pc) pc.outerHTML = computer() };
+  // what setup suggests, and why (recommend.why_codes; the AI's own reasons follow when no model fits)
   function recommendLine() {
-    const r = S.recommend || {}, p = packById(r.pack);
-    if (!p) { const why = noPackWhy(r); return why ? `<p class="s-rec bad">${ico('warn')}<span>${why}</span></p>` : '' }
+    const r = S.recommend || {}, p = packById(r.pack), why = sayWhy(r.why_codes, r.why);
+    if (!p) return why ? `<p class="s-rec bad">${ico('warn')}<span>${esc(why)}</span></p>` : '';
     const what = r.ai && aiFits() ? th('setup.rec.pack_with_ai', { pack: packTitle(p) }) : esc(packTitle(p));
-    return `<p class="s-rec">${ico('ok')}<span><b>${th('setup.rec.suggested', { what: I18N.raw(what) })}</b> ${recWhy(r, p)}</span></p>`;
+    return `<p class="s-rec">${ico('ok')}<span><b>${th('setup.rec.suggested', { what: I18N.raw(what) })}</b> ${esc(why)}</span></p>`;
   }
-  // recommend.why, in another language than English: the library goes on another disk, or a larger one can be chosen; the AI has no room
-  function recWhy(r, p) {
-    if (english()) return esc(r.why || '');
-    const ds = (S.hardware && S.hardware.disks) || [], norm = s => String(s).toLowerCase().replace(/[\\/]+$/, '');
-    const other = r.folder && ds.find((d, i) => i > 0 && norm(d.path) === norm(r.folder));   // the engine names the other disk's own folder
-    const parts = [other ? th('setup.rec.other_disk', { pack: packTitle(p), where: diskWhere(other) }) : th('setup.rec.larger')];
-    if (model() && aiFits() && !r.ai) parts.push(th('setup.rec.ai_no_room'));
-    return parts.join(' ');
+  /* The library remembered from last time cannot be reached (state.missing): its disk is unplugged or its network share is away.
+     Try again uses it if it is back (the app then starts again on it); or choose another library folder, or set up a new one. */
+  function missingCard() {
+    const m = S.missing;
+    if (!m || !m.folder || cur() || missing.dismissed) return '';
+    return `<section class="s-missing" aria-labelledby="missH">${ico('warn')}<div>
+      <h2 id="missH">${th('setup.missing.title')}</h2>
+      <p>${th(m.here ? 'setup.missing.back' : 'setup.missing.text', { folder: home(m.folder) })}</p>
+      <p class="s-acts"><button class="btn" id="missTry"${missing.opening ? ' disabled' : ''}>${m.here ? ico('ok') + th('setup.missing.open') : ico('retry') + th('setup.try_again')}</button>
+        <button class="btn plain" id="missOther"${missing.opening ? ' disabled' : ''}>${ico('folder')}${th('setup.missing.choose_other')}</button>
+        <button class="btn plain" id="missNew"${missing.opening ? ' disabled' : ''}>${th('setup.missing.new')}</button></p>
+      <p class="s-note${missing.opening ? ' ok' : ''}" id="missNote"${missing.note ? '' : ' hidden'}>${esc(missing.note)}</p></div></section>`;
   }
-  function noPackWhy(r) {
-    if (!r.why) return '';
-    if (english()) return esc(r.why);
-    const ready = packs().filter(x => x.available !== false), need = r.need_bytes || {};
-    if (!ready.length) return th('setup.rec.none_ready');
-    const small = ready.slice().sort((a, b) => (need[a.id] || packDl(a)) - (need[b.id] || packDl(b)))[0], d = diskFor(folder);
-    return need[small.id] && d ? th('setup.rec.none_fits', { pack: packTitle(small), need: size(need[small.id]), free: size(d.free_bytes) }) : th('setup.rec.none_fits_plain', { pack: packTitle(small) });
+  async function missingTry() {
+    const b = $('#missTry'); if (b) b.disabled = true;
+    const r = await call('use', { path: S.missing.folder }).catch(e => ({ error: e.message }));
+    if (!r || r.error) missing.note = r && r.code === 'missing' ? t('setup.missing.still') : (r && sayErr(r)) || t('setup.missing.still');
+    else {
+      const f = await call('finish', {}).catch(e => ({ error: e.message }));   // on {ok} the app starts again on the library
+      if (!f || f.error) missing.note = (f && sayErr(f)) || t('setup.done.open_failed');
+      else { missing.note = t('setup.done.opening'); missing.opening = true; live.textContent = missing.note }
+    }
+    chooseView();
+    const n = $('#missNote'); if (n) { n.tabIndex = -1; n.focus() }
   }
 
   /* ---- choose */
@@ -261,7 +309,7 @@
       : f.size_ok === false ? '' : `<div class="s-found">${ico(f.kind === 'library' ? 'folder' : 'file')}<span><b>${esc(f.kind === 'library' ? t('setup.found.library') : f.kind === 'model' ? t('setup.found.model') : (packById(f.id) ? t('setup.item.library', { name: packTitle(packById(f.id)) }) : f.title || f.name))}</b><small>${esc(home(f.path))}${f.size ? ' · ' + size(f.size) : ''}</small></span>
         <button class="btn plain" data-use="${i}">${th('setup.found.use')}</button></div>`).join('');
 
-    main.innerHTML = `${c ? `<button class="s-link" id="toManage">${ico('back')}<span>${th('setup.manage.title')}</span></button>` : ''}
+    main.innerHTML = `${missingCard()}${c ? `<button class="s-link" id="toManage">${ico('back')}<span>${th('setup.manage.title')}</span></button>` : ''}
       <h1>${c ? th('setup.choose.change_title') : th('setup.choose.title')}</h1>
       ${c ? '' : `<p class="lead">${th('setup.choose.lead')}</p>`}
       ${computer()}
@@ -270,7 +318,7 @@
       <section id="mapBox" class="s-map-panel" aria-label="${th('setup.map.title')}"></section>
       <h2 id="packH">${th('setup.choose.library')}</h2>
       <div class="s-opts" role="radiogroup" aria-labelledby="packH">${packCards}</div>
-      ${ai ? `<h2>${th('setup.ai.title')}</h2>${ai}` : ''}
+      ${ai ? `<h2>${th('setup.ai.title')}</h2>${ai}<div id="placeBox"></div>` : ''}
       <section class="s-sum" id="sum" aria-live="polite"></section>
       <div class="s-go">
         <button class="btn big" id="start"></button>
@@ -279,14 +327,37 @@
       </div>
       <p class="s-note" id="haveNote" hidden></p>`;
     main.querySelectorAll('input[name=pack]').forEach(r => r.onchange = () => { choice.pack = r.value; shortfall = null; mapSection(); summary() });
-    const box = $('#aiBox'); if (box && !box.disabled) box.onchange = () => { choice.ai = box.checked; shortfall = null; summary() };
+    const box = $('#aiBox'); if (box && !box.disabled) box.onchange = () => { choice.ai = box.checked; shortfall = null; placeSection(); summary() };
     main.querySelectorAll('[data-use]').forEach(b => b.onclick = () => useFile((S.found || [])[+b.dataset.use].path, b));
     $('#start').onclick = start;
     if ($('#toManage')) $('#toManage').onclick = () => go('manage');
     if ($('#haveLib')) $('#haveLib').onclick = () => haveLibrary(false);
     $('#haveFile').onclick = () => haveLibrary(true);
+    if ($('#missTry')) $('#missTry').onclick = missingTry;
+    if ($('#missOther')) $('#missOther').onclick = () => haveLibrary(false);
+    if ($('#missNew')) $('#missNew').onclick = () => { missing.dismissed = true; chooseView(); const h = main.querySelector('h1'); h.tabIndex = -1; h.focus() };
     mapSection();
+    placeSection();
     summary();
+  }
+  /* Where a new AI model goes (start's model_place): on this computer, in the app's own folder, or beside the library. A model
+     read from a network share or a USB stick loads slowly, so for a library there the engine suggests this computer
+     (recommend.model_place); the person decides. */
+  const placeAsked = () => !!(S.recommend || {}).model_place && !!model() && choice.ai && aiFits() && !(cur() || {}).model;
+  function place() {
+    if (choice.place) return choice.place;
+    const r = S.recommend || {}, d = diskFor(folder);
+    if (cur() || !d || !d.kind || (r.folder && asData(r.folder) === folder)) return r.model_place || 'library';
+    return d.kind === 'local' ? 'library' : 'computer';   // another folder than the suggested one: the engine's rule, for its disk
+  }
+  function placeSection() {
+    const el = $('#placeBox'); if (!el) return;
+    const p = place();
+    el.innerHTML = !placeAsked() ? '' : `<fieldset class="s-place"><legend>${th('setup.place.title')}</legend><div class="s-list">
+      <label class="s-opt"><input type="radio" name="place" value="computer"${p === 'computer' ? ' checked' : ''}><span class="s-opt-in"><b>${th('setup.place.computer')}</b><small>${th('setup.place.computer_note')}</small></span></label>
+      <label class="s-opt"><input type="radio" name="place" value="library"${p === 'library' ? ' checked' : ''}><span class="s-opt-in"><b>${th('setup.place.library')}</b><small>${th('setup.place.library_note')}</small></span></label></div>
+      <p class="s-hint">${th('setup.place.slow')}</p></fieldset>`;
+    el.querySelectorAll('input[name=place]').forEach(r => r.onchange = () => { choice.place = r.value });
   }
   /* Map geometry and address indexes are separate downloads, chosen by region: the country first, then, in a country made of
      several regions, the region. A country that is one region needs one choice only. */
@@ -343,8 +414,13 @@
       <div class="s-nums"><span><small>${th('setup.sum.download')}</small><b>${dl ? size(dl) : th('setup.sum.none')}</b></span><span><small>${th('setup.sum.space')}</small><b>${size(short ? short.need_bytes : need)}</b></span><span><small>${th('setup.sum.free', { where: diskWhere(d) })}</small><b>${short ? size(short.free_bytes) : free != null ? size(free) : th('setup.sum.checked_at_start')}</b></span></div>
       ${free == null && !short ? '' : `<div class="s-meter${short ? ' bad' : ''}" role="img" aria-label="${th('setup.sum.meter', { pct: Math.round(pct) })}"><i style="width:${pct}%"></i></div>`}
       ${short ? `<p class="s-short">${ico('warn')}<span>${th('setup.sum.short', { need: size(short.need_bytes), free: size(short.free_bytes), where: diskWhere(d) })}</span></p>` : ''}
-      ${folderRow()}`
-      : `<p class="s-nothing">${c ? th('setup.sum.have_now') : th('setup.sum.pick')}</p>${c ? '' : folderRow()}`;
+      ${disksRow()}${folderRow()}`
+      : `<p class="s-nothing">${c ? th('setup.sum.have_now') : th('setup.sum.pick')}</p>${c ? '' : disksRow() + folderRow()}`;
+    main.querySelectorAll('input[name=disk]').forEach(r => r.onchange = () => {
+      folder = asData(disksShown()[+r.value].path); shortfall = null;
+      refreshComputer(); placeSection(); summary();
+      const again = main.querySelector(`input[name=disk][value="${r.value}"]`); if (again) again.focus();
+    });
     const b = $('#start');
     b.disabled = !need || !!short || mapMissing();
     const newPack = c && packNeedsInstall(packById(choice.pack)), newAi = c && choice.ai && !c.model, newMap = c && mapAdds(), newAddresses = c && addressAdds();
@@ -353,7 +429,23 @@
     if (newPack && choice.pack === c.pack && !mapMissing()) b.textContent = t('setup.go.install_update');
     const ch = $('#chFolder'); if (ch) ch.onclick = pickFolder;
   }
-  const folderRow = () => `<div class="s-folder">${ico('folder')}<span><small>${th('setup.folder.saves_to')}</small><b title="${esc(folder)}">${esc(home(folder))}</b></span>${cur() ? '' : `<button class="btn plain" id="chFolder">${th('setup.folder.change')}</button>`}</div>`;
+  // where the library goes; on an external disk, a USB stick or a network share, said plainly beside it
+  const folderRow = () => {
+    const k = (diskFor(folder) || {}).kind;
+    return `<div class="s-folder">${ico('folder')}<span><small>${th('setup.folder.saves_to')}</small><b title="${esc(folder)}">${esc(home(folder))}</b></span>${cur() ? '' : `<button class="btn plain" id="chFolder">${th('setup.folder.change')}</button>`}</div>
+      ${k === 'removable' || k === 'network' ? `<p class="s-kind">${ico(k === 'network' ? 'nas' : 'usb')}<span>${th(k === 'network' ? 'setup.disk.saves_network' : 'setup.disk.saves_removable')}</span></p>` : ''}`;
+  };
+  /* The disks a new library can go on, each with its kind; choosing one puts the library at its top, in LastbookData. Shown when
+     there is more than one; Change… picks any folder. */
+  function disksRow() {
+    const ds = disksShown();
+    if (cur() || ds.length < 2) return '';
+    const at = diskFor(folder), on = at && !at.picked ? at : at && ds.find(d => d.name && d.name === at.name);
+    return `<fieldset class="s-disks"><legend>${th('setup.disk.title')}</legend><div class="s-list">${ds.map((d, i) => `<label class="s-disk">
+        <input type="radio" name="disk" value="${i}"${d === on ? ' checked' : ''}>${ico(d.kind === 'network' ? 'nas' : d.kind === 'removable' ? 'usb' : 'disk')}
+        <span><b>${esc(diskName(d))}</b><small>${th(KIND[d.kind] || KIND.local)}</small></span>
+        <span class="s-disk-free">${th('setup.disk.free', { size: size(d.free_bytes) })}</span></label>`).join('')}</div></fieldset>`;
+  }
 
   async function pickFolder() {
     const b = $('#chFolder'); b.disabled = true;
@@ -361,9 +453,9 @@
       const r = await call('pick', {});
       if (r && r.path) {
         folder = asData(r.path);
-        if (r.free_bytes != null) (S.hardware.disks = S.hardware.disks || []).push({ path: r.path, name: r.disk, free_bytes: r.free_bytes });   // the chosen place's own disk
+        if (r.free_bytes != null) (S.hardware.disks = S.hardware.disks || []).push({ path: r.path, name: r.disk, free_bytes: r.free_bytes, kind: r.kind, picked: true });   // the chosen place's own disk
         shortfall = null;
-        const pc = main.querySelector('.s-pc'); if (pc) pc.outerHTML = computer();
+        refreshComputer(); placeSection();
       }
       summary();
     } catch { b.disabled = false; b.textContent = t('setup.folder.cant_change') }
@@ -384,7 +476,7 @@
     if (btn) btn.disabled = true;
     try {
       const r = await call('use', { path });
-      if (r && r.error) throw new Error(said('use', r, { name: baseName(path) }));
+      if (r && r.error) throw new Error(sayErr(r));
       if (r && r.noted) { S = await call('state').catch(() => S); choice.ai = true; chooseView(); const n = $('#haveNote'); n.hidden = false; n.textContent = t('setup.use.model_noted'); return }
       S.job = r; go(r.state === 'done' ? 'done' : 'job'); poll();
     } catch (e) {
@@ -395,9 +487,10 @@
   async function start() {
     if (mapMissing()) { ($('#mapSel') || $('#mapCountry'))?.focus(); return }
     const b = $('#start'); b.disabled = true;
-    const r = await call('start', { pack: packNeedsInstall(packById(choice.pack)) ? choice.pack : null, ai: !!choice.ai && aiFits() && !(cur() || {}).model, map: mapAdds() ? choice.map : null, address_id: addressById(selectedRegion())?.available !== false && addressById(selectedRegion()) ? selectedRegion() : null, folder }).catch(e => ({ error: e.message }));
+    const r = await call('start', { pack: packNeedsInstall(packById(choice.pack)) ? choice.pack : null, ai: !!choice.ai && aiFits() && !(cur() || {}).model, map: mapAdds() ? choice.map : null, address_id: addressById(selectedRegion())?.available !== false && addressById(selectedRegion()) ? selectedRegion() : null, folder,
+      model_place: placeAsked() ? place() : undefined }).catch(e => ({ error: e.message }));
     if (r && r.need_bytes) { shortfall = r; summary(); return }
-    if (!r || r.error) { b.disabled = false; const n = $('#haveNote'); n.hidden = false; n.textContent = (r && r.error && said('start', r)) || t('setup.err.could_not_start'); return }
+    if (!r || r.error) { b.disabled = false; const n = $('#haveNote'); n.hidden = false; n.textContent = (r && r.error && sayErr(r)) || t('setup.err.could_not_start'); return }
     S.job = r; go('job'); poll();
   }
 
@@ -410,7 +503,7 @@
     const bigger = larger.filter(x => x.available !== false), later = larger.find(x => x.available === false);
     main.innerHTML = `<h1>${th('setup.manage.title')}</h1>
       <div class="s-have">
-        <div class="s-row">${ico('book', 's-ri')}<span><b>${p || c.pack ? th('setup.item.library', { name: p ? packTitle(p) : c.pack }) : th('setup.manage.library')}</b><small>${libraryUpdate ? th('setup.manage.update_available') + ' · ' : p ? size(p.installed_bytes) + ' · ' : ''}${esc(home(c.folder))}</small></span>
+        <div class="s-row">${ico('book', 's-ri')}<span><b>${p || c.pack ? th('setup.item.library', { name: p ? packTitle(p) : c.pack }) : th('setup.manage.library')}</b><small>${libraryUpdate ? th('setup.manage.update_available') + ' · ' : p ? size(p.installed_bytes) + ' · ' : ''}${esc(home(c.folder))}</small>${LIVES[c.disk_kind] ? `<small class="s-where${c.disk_kind === 'local' ? '' : ' s-ext'}">${ico(c.disk_kind === 'network' ? 'nas' : c.disk_kind === 'removable' ? 'usb' : 'disk')}${th(LIVES[c.disk_kind])}</small>` : ''}</span>
           ${libraryUpdate ? `<button class="btn" id="libraryUpdate">${th('setup.manage.update', { name: packTitle(p) })}</button>` : bigger.length ? `<button class="btn" id="upgrade">${ico('up')}${th('setup.manage.get', { name: packTitle(bigger[0]) })}</button>` : later ? `<span class="s-badge later">${th('setup.manage.comes_later', { name: packTitle(later) })}</span>` : `<span class="s-badge here">${th('setup.manage.largest')}</span>`}</div>
         ${m && m.available !== false ? `<div class="s-row">${ico('ai', 's-ri')}<span><b>${th('setup.ai.title')}</b><small>${c.model ? th('setup.manage.ai_here', { size: size(m.size) }) : aiFits() ? th('setup.manage.ai_absent', { size: size(m.size) }) : esc(aiWhy())}</small></span>
           ${c.model ? (!CAN.removeAi ? '' : confirmRemove ? `<span class="s-confirm"><button class="btn danger" id="rmYes">${th('setup.manage.remove')}</button><button class="btn plain" id="rmNo">${th('setup.manage.keep')}</button></span>` : `<button class="btn plain" id="rmAi">${th('setup.manage.remove')}</button>`) : aiFits() ? `<button class="btn" id="addAi">${th('setup.manage.add')}</button>` : ''}</div>` : ''}
@@ -434,7 +527,7 @@
     if ($('#oldYes')) $('#oldYes').onclick = () => act('delete-old', t('setup.manage.old_deleting'), { path: old.path });
     if ($('#repair')) $('#repair').onclick = async () => {
       const r = await call('start', { repair: true, ai: !!c.model }).catch(e => ({ error: e.message }));
-      if (!r || r.error) { note = (r && r.error && said('repair', r)) || t('setup.err.repair_could_not_start'); manageView(); return }
+      if (!r || r.error) { note = (r && r.error && sayErr(r)) || t('setup.err.repair_could_not_start'); noteOk = false; manageView(); return }
       repair = { fixed: false }; S.job = r; go('job'); poll();
     };
   }
@@ -442,7 +535,7 @@
     const r = await call(path, body || {}).catch(e => ({ error: e.status === 404 ? t('setup.err.cannot_yet') : e.message }));
     confirmRemove = confirmOld = false;
     noteOk = !(r && r.error);
-    if (r && r.error) note = said(path, r);
+    if (r && r.error) note = sayErr(r);
     else { note = done; S = await call('state').catch(() => S) }
     manageView();
     const n = $('#haveNote'); if (n) { n.tabIndex = -1; n.focus() }
@@ -457,16 +550,20 @@
   const ACTIVE = new Set(['waiting', 'downloading', 'verifying', 'unpacking', 'activating']);
   let shapeKey = '', lastAct = null;   // lastAct: the button just pressed, so focus lands on what replaced it
 
+  /* A job's error {code, message, params} (crates/engine/src/setup/api.rs JOB_CODES), said by its code with its params */
   function errorBox(j) {
-    const e = j.error, code = errCode(e) || j.code, c = cur();
+    const e = j.error, code = errCode(e) || j.code, c = cur(), p = (e && typeof e === 'object' && e.params) || {};
     const safe = c ? th('setup.job.safe_library') : th('setup.job.safe_nothing');
     const d = diskFor(j.folder || folder);
     const T = {
       found_mismatch: (() => {   // a file of the person's own that did not match: nothing was downloaded, and their file is left alone
-        const f = String((e && e.file) || ''), name = f.split(/[\\/]/).pop(), at = f.split(/[\\/]/).slice(-2, -1)[0];
+        const f = String((e && e.file) || ''), name = p.name || f.split(/[\\/]/).pop(), at = p.folder || f.split(/[\\/]/).slice(-2, -1)[0];
         return [name ? th(at ? 'setup.job.mismatch_in' : 'setup.job.mismatch', { name, folder: at }) : th('setup.job.mismatch_plain'), th('setup.job.mismatch_next'), 'download'];
       })(),
-      no_space: [e && e.need_bytes ? th('setup.job.no_space_need', { where: diskWhere(d), need: size(e.need_bytes), free: size(e.free_bytes) }) : th('setup.job.no_space', { where: diskWhere(d) }), th('setup.job.no_space_next'), 'retry'],
+      no_space: (() => {   // the room it needs and the room there is, when the engine counted them
+        const need = p.need_bytes ?? (e && e.need_bytes), free = p.free_bytes ?? (e && e.free_bytes);
+        return [need && free != null ? th('setup.job.no_space_need', { where: diskWhere(d), need: size(need), free: size(free) }) : th('setup.job.no_space', { where: diskWhere(d) }), th('setup.job.no_space_next'), 'retry'];
+      })(),
       network: [th('setup.job.network'), th('setup.job.network_next'), 'retry'],
       checksum: [th('setup.job.checksum'), th('setup.job.checksum_next'), 'retry'],
       unpack: [th('setup.job.unpack'), th('setup.job.unpack_next'), 'retry'],
@@ -589,7 +686,7 @@
     $('#open').onclick = async () => {
       const b = $('#open'); b.disabled = true; b.textContent = t('setup.done.opening');
       const r = await call('finish', {}).catch(e => ({ error: e.message }));   // on {ok} the app relaunches itself into the library
-      if (!r || r.error) { b.disabled = false; b.textContent = t('setup.done.open'); const n = $('#openNote'); n.hidden = false; n.textContent = (r && r.error && said('finish', r)) || t('setup.done.open_failed') }
+      if (!r || r.error) { b.disabled = false; b.textContent = t('setup.done.open'); const n = $('#openNote'); n.hidden = false; n.textContent = (r && r.error && sayErr(r)) || t('setup.done.open_failed') }
       else live.textContent = t('setup.done.opening');
     };
   }

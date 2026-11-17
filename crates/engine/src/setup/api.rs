@@ -27,6 +27,26 @@ pub const ACTIVE: [&str; 5] = ["waiting", "downloading", "verifying", "unpacking
 pub const WINDOWS_MAX_PATH: usize = 259;
 pub const LONGEST_INSIDE: usize = 190; // the longest file path inside LastbookData in any pack (measured for Medium and All)
 
+/// What setup's answers say when they refuse ({error, code, params}): one code per sentence, which the interface words in
+/// the person's language (web/locales: setup.code.<code>), with its params (sizes in params named *_bytes, names as
+/// strings); the English sentence stays beside them, for logs and for an interface that does not know the code. busy and
+/// not_done are answered with 409, no_space with 507, the rest with 400.
+pub const CODES: [&str; 28] = ["busy", "pack_unavailable", "no_ai_offered", "model_unavailable", "map_unavailable", "addresses_unavailable",
+                               "choose_library", "nothing_to_add", "cannot_make_folder", "cannot_save_there", "too_deep", "not_library_there",
+                               "no_space", "cannot_save_progress", "nothing_to_repair", "repair_unknown", "missing", "not_library",
+                               "library_read_only", "wrong_size", "pack_not_in_version", "wrong_size_model", "unknown_file", "not_done",
+                               "no_ai_to_remove", "cannot_remove_model", "not_moved_aside", "not_old_library"];
+
+/// Why setup suggests what it does (recommend.why_codes, a list of {code, params} beside the English recommend.why), each
+/// worded in web/locales as setup.rec.<code>. The local AI's own reasons (hardware::AI_CODES) can follow them.
+pub const WHY_CODES: [&str; 7] = ["none_ready", "none_fits", "other_disk", "other_disk_network", "start_small", "default_folder", "ai_no_room"];
+
+/// The codes of a job's error ({code, message, params}, on the job and on the item that stopped), with the key the
+/// interface's error box (web/setup.js errorBox) says each one with. The params name what the sentence names.
+pub const JOB_CODES: [(&str, &str); 8] = [("no_space", "setup.job.no_space"), ("network", "setup.job.network"), ("checksum", "setup.job.checksum"),
+                                          ("found_mismatch", "setup.job.mismatch"), ("unpack", "setup.job.unpack"), ("activate", "setup.job.activate"),
+                                          ("folder", "setup.job.folder"), ("cancelled", "setup.job.cancelled")];
+
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Mode {
     FirstRun,
@@ -111,8 +131,29 @@ fn u(v: &Value) -> u64 {
     v.as_u64().unwrap_or(0)
 }
 
-fn err(code: &str, message: impl Into<String>) -> Value {
-    json!({"error": message.into(), "code": code})
+/// An answer that refuses: the English sentence, its code (CODES) and the params the sentence has.
+fn err(code: &str, params: Value, message: impl Into<String>) -> Value {
+    json!({"error": message.into(), "code": code, "params": params})
+}
+
+/// The name of a file or folder, as a sentence names it.
+fn file_name(p: &Path) -> String {
+    p.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default()
+}
+
+/// The AI's own measure of a model file here, with setup's reasons beside the AI's English: it fits, it can run only from
+/// the disk (much more slowly), or it does not fit.
+fn measured(m: &Value) -> Value {
+    let mut m = m.clone();
+    let code = if m["fits"].as_bool().unwrap_or(false) {
+        "measured_fits"
+    } else if m["from_disk"].as_bool().unwrap_or(false) {
+        "measured_from_disk"
+    } else {
+        "measured_too_big"
+    };
+    m["why_codes"] = json!([hardware::reason(code, json!({}))]);
+    m
 }
 
 fn names_of(entry: Option<&Value>) -> Vec<String> {
@@ -162,7 +203,8 @@ fn map_need(mp: Option<&Value>, have: &HashSet<String>) -> u64 {
 }
 
 fn sha256_file(path: &Path, control: &Control, progress: &mut dyn FnMut(u64, u64)) -> Result<String, SetupError> {
-    let mut f = std::fs::File::open(path).map_err(|e| SetupError::failed("network", format!("Lastbook could not read {} ({e}).", path.display())))?;
+    let mut f = std::fs::File::open(path)
+        .map_err(|e| download::failed_with("network", json!({"name": file_name(path)}), format!("Lastbook could not read {} ({e}).", path.display())))?;
     let total = f.metadata().map(|m| m.len()).unwrap_or(0);
     let mut h = Sha256::new();
     let mut buf = vec![0u8; 8 * 1024 * 1024];
@@ -565,7 +607,7 @@ impl Setup {
     pub fn model_fit(&self, hw: &Value, model: &Value) -> Value {
         let id = s(&model["id"]).to_string();
         if let Some(m) = self.0.ai_measure.lock().unwrap().get(&id) {
-            return m.clone();
+            return measured(m);
         }
         if let (Some(path), Some(ai)) = (self.model_path_here(&id), self.o().ai.clone()) {
             if self.0.measuring.lock().unwrap().insert(id.clone()) {
@@ -590,12 +632,9 @@ impl Setup {
     }
 
     pub fn hardware(&self) -> Value {
-        let mut extra = vec![self.o().default_parent.clone()];
-        if let Some(cur) = &self.o().current {
-            if let Some(p) = cur.parent() {
-                extra.push(p.to_path_buf());
-            }
-        }
+        // the open library's folder first: one entry per disk, and the window finds a library's disk by its path
+        let mut extra: Vec<PathBuf> = self.o().current.as_ref().and_then(|c| c.parent()).map(Path::to_path_buf).into_iter().collect();
+        extra.push(self.o().default_parent.clone());
         let mut hw = hardware::detect(&extra);
         let mut fits = Map::new();
         for m in self.manifest().models().iter().filter(|m| m["available"].as_bool().unwrap_or(false)) {
@@ -613,7 +652,8 @@ impl Setup {
                 f["model"] = m["id"].clone();
                 f
             }
-            None => json!({"fits": false, "needs_bytes": null, "estimate": true, "why": "No local AI is offered for this version."}),
+            None => json!({"fits": false, "needs_bytes": null, "estimate": true, "why": "No local AI is offered for this version.",
+                           "why_codes": [hardware::reason("none_offered", json!({}))]}),
         };
         hw["ai_models"] = Value::Object(fits);
         hw
@@ -638,7 +678,7 @@ impl Setup {
             .map(|x| (s(&x["id"]).to_string(), json!(map_need(Some(x), &none)))).collect();
         if packs.is_empty() {
             return json!({"pack": null, "ai": false, "model": null, "folder": parent.to_string_lossy(), "need_bytes": need, "map_need_bytes": map_needs,
-                          "address_need_bytes": address_need, "why": "No library is ready to download yet."});
+                          "address_need_bytes": address_need, "why": "No library is ready to download yet.", "why_codes": [hardware::reason("none_ready", json!({}))]});
         }
         let mut choice: Option<&Value> = None;
         let mut folder = parent.clone();
@@ -664,10 +704,12 @@ impl Setup {
         }
         let Some(choice) = choice else {
             let small = packs.last().unwrap();
+            let need_small = u(&need[s(&small["id"])]);
             return json!({"pack": null, "ai": false, "model": null, "folder": parent.to_string_lossy(), "need_bytes": need, "map_need_bytes": map_needs,
                           "address_need_bytes": address_need,
                           "why": format!("The smallest library, {}, needs {} free, with room left for the system, and this computer has {} free.",
-                                         s(&small["title"]), gb(u(&need[s(&small["id"])]) + margin(total)), gb(free))});
+                                         s(&small["title"]), gb(need_small + margin(total)), gb(free)),
+                          "why_codes": [hardware::reason("none_fits", json!({"pack": small["id"], "need_bytes": need_small + margin(total), "free_bytes": free}))]});
         };
         let (mut free2, mut margin2) = (free, margin(total));
         if let Some(d) = &elsewhere {
@@ -676,25 +718,40 @@ impl Setup {
         }
         let left = free2.saturating_sub(u(&need[s(&choice["id"])]));
         let ai = model.as_ref().is_some_and(|m| left >= u(&m["size"]) + margin2);
+        let mut codes = Vec::new();
         let mut why = match &elsewhere {
             Some(d) => {
                 let name = d["name"].as_str().map(str::to_string).unwrap_or_else(|| s(&d["path"]).to_string());
-                format!("This computer’s own disk has {} free, not enough for any library, so {} goes on {name}. Keep that disk connected: Lastbook reads the library from it.", gb(free), s(&choice["title"]))
+                let params = json!({"free_bytes": free, "pack": choice["id"], "disk": name});
+                if s(&d["kind"]) == "network" {     // a NAS: the network, not a cable, keeps it there
+                    codes.push(hardware::reason("other_disk_network", params));
+                    format!("This computer’s own disk has {} free, not enough for any library, so {} goes on {name}, a network share. Keep this computer on that network: Lastbook reads the library from it.", gb(free), s(&choice["title"]))
+                } else {
+                    codes.push(hardware::reason("other_disk", params));
+                    format!("This computer’s own disk has {} free, not enough for any library, so {} goes on {name}. Keep that disk connected: Lastbook reads the library from it.", gb(free), s(&choice["title"]))
+                }
             }
-            None => format!("{} is selected to get started. You can choose a larger library.", s(&choice["title"])),
+            None => {
+                codes.push(hardware::reason("start_small", json!({"pack": choice["id"]})));
+                format!("{} is selected to get started. You can choose a larger library.", s(&choice["title"]))
+            }
         };
         if let (Some(dw), None, None) = (&self.o().default_why, &elsewhere, &self.o().current) {
+            // the app's note on its default folder (appdirs::default_choice: the user folder's path is too long on Windows)
             why = format!("{dw} {why}");
+            codes.insert(0, hardware::reason("default_folder", json!({"folder": self.o().default_parent.to_string_lossy()})));
         }
         if model.is_some() && !ai {
             why.push_str(" The local AI fits this computer’s memory, but not on the disk as well.");
+            codes.push(hardware::reason("ai_no_room", json!({})));
         } else if model.is_none() && !self.manifest().models().is_empty() {
             why.push(' ');
             why.push_str(s(&hw["ai"]["why"]));
+            codes.extend(hw["ai"]["why_codes"].as_array().cloned().unwrap_or_default());
         }
         json!({"pack": choice["id"], "ai": ai, "model": if ai { model.map(|m| m["id"].clone()) } else { None }, "folder": folder.to_string_lossy(),
                "model_place": self.default_model_place(&folder),
-               "need_bytes": need, "map_need_bytes": map_needs, "address_need_bytes": address_need, "why": why})
+               "need_bytes": need, "map_need_bytes": map_needs, "address_need_bytes": address_need, "why": why, "why_codes": codes})
     }
 
     pub fn state(&self) -> Value {
@@ -753,12 +810,12 @@ impl Setup {
         }
         let _g = self.0.action.lock().unwrap();
         if self.busy() {
-            return err("busy", "A download is already under way. Pause or cancel it first.");
+            return err("busy", json!({}), "A download is already under way. Pause or cancel it first.");
         }
         let mut pack = match pack_id {
             Some(id) => match self.manifest().pack(id) {
                 Some(p) if p["available"].as_bool().unwrap_or(false) => Some(p),
-                _ => return err("unavailable", "That library is not available yet."),
+                _ => return err("pack_unavailable", json!({}), "That library is not available yet."),
             },
             None => None,
         };
@@ -783,18 +840,18 @@ impl Setup {
                 let rec = self.recommend(&hw);
                 match rec["model"].as_str().and_then(|id| self.manifest().model(Some(id))).or_else(|| self.manifest().model(None)) {
                     Some(m) => Some(m),
-                    None => return err("unavailable", "No local AI is offered for this version."),
+                    None => return err("no_ai_offered", json!({}), "No local AI is offered for this version."),
                 }
             }
             Some(id) => match self.manifest().model(Some(id)) {
                 Some(m) => Some(m),
-                None => return err("unavailable", "That local AI is not offered for this version."),
+                None => return err("model_unavailable", json!({}), "That local AI is not offered for this version."),
             },
         };
         let mut mp = match map_id {
             Some(id) => match self.manifest().map(id) {
                 Some(m) if m["available"].as_bool().unwrap_or(false) => Some(m),
-                _ => return err("unavailable", "That region’s map is not available yet."),
+                _ => return err("map_unavailable", json!({}), "That region’s map is not available yet."),
             },
             None => None,
         };
@@ -809,7 +866,7 @@ impl Setup {
         let mut addresses = address_key.as_deref().and_then(|id| self.manifest().address_index(id));
         if !addresses.as_ref().is_some_and(|a| a["available"].as_bool().unwrap_or(false)) {
             if requested_address {
-                return err("unavailable", "That region’s address search is not available yet.");
+                return err("addresses_unavailable", json!({}), "That region’s address search is not available yet.");
             }
             addresses = None;
         }
@@ -835,23 +892,23 @@ impl Setup {
             }
         }
         if self.o().mode == Mode::FirstRun && pack.is_none() {
-            return err("nothing", "Choose a library first.");
+            return err("choose_library", json!({}), "Choose a library first.");
         }
         if pack.is_none() && model.is_none() && mp.is_none() && addresses.is_none() {
-            return err("nothing", "Nothing to add: this library and the local AI are already here.");
+            return err("nothing_to_add", json!({}), "Nothing to add: this library and the local AI are already here.");
         }
         if let Err(e) = std::fs::create_dir_all(&parent) {
-            return err("folder", format!("Lastbook cannot make a folder there ({e})."));
+            return err("cannot_make_folder", json!({}), format!("Lastbook cannot make a folder there ({e})."));
         }
         if tempfile_in(&parent).is_err() {
-            return err("folder", "Lastbook cannot save in that folder. Choose another.");
+            return err("cannot_save_there", json!({}), "Lastbook cannot save in that folder. Choose another.");
         }
         if path_too_deep(&target, self.o().windows_paths) {
             let room = WINDOWS_MAX_PATH - LONGEST_INSIDE - 1 - DATA_NAME.len() - 1;
-            return err("folder", format!("That folder is too deep for Windows: the library’s longest file name would not fit. Choose a folder whose path is at most {room} characters long, such as Documents."));
+            return err("too_deep", json!({"room": room}), format!("That folder is too deep for Windows: the library’s longest file name would not fit. Choose a folder whose path is at most {room} characters long, such as Documents."));
         }
         if self.o().mode == Mode::FirstRun && target.exists() && !install::is_library(&target) && std::fs::read_dir(&target).map(|mut d| d.next().is_some()).unwrap_or(false) {
-            return err("folder", format!("There is already a folder called {DATA_NAME} there that is not a library. Choose another place."));
+            return err("not_library_there", json!({"name": DATA_NAME}), format!("There is already a folder called {DATA_NAME} there that is not a library. Choose another place."));
         }
         let work = work_for(&target);
         let mut srcs: Map<String, Value> = self.0.sources.lock().unwrap().iter().map(|(k, v)| (k.clone(), json!(v))).collect();
@@ -888,8 +945,11 @@ impl Setup {
         let need = need.max(0) as u64;
         let (free, _) = self.disk_of(&parent);
         if free < need {
-            return json!({"error": format!("This needs {} free on that disk, and it has {}. Free some space or choose another disk.", gb(need), gb(free)),
-                          "code": "no_space", "need_bytes": need, "free_bytes": free});
+            let mut out = err("no_space", json!({"need_bytes": need, "free_bytes": free}),
+                              format!("This needs {} free on that disk, and it has {}. Free some space or choose another disk.", gb(need), gb(free)));
+            out["need_bytes"] = json!(need); // as before, for a window that reads them here
+            out["free_bytes"] = json!(free);
+            return out;
         }
         let mut items = Vec::new();
         if let Some(p) = &pack {
@@ -920,7 +980,7 @@ impl Setup {
         self.save_settings(&st);
         tag_sources(&mut job);
         if let Err(e) = self.save_job(&job) {
-            return err("folder", format!("Setup could not save its progress ({e})."));
+            return err("cannot_save_progress", json!({}), format!("Setup could not save its progress ({e})."));
         }
         *self.0.job.lock().unwrap() = Some(job);
         self.run();
@@ -932,15 +992,15 @@ impl Setup {
     fn start_repair(&self, ai: bool) -> Value {
         let _g = self.0.action.lock().unwrap();
         if self.busy() {
-            return err("busy", "A download is already under way. Pause or cancel it first.");
+            return err("busy", json!({}), "A download is already under way. Pause or cancel it first.");
         }
         let cur = self.current_info();
         let Some(current) = self.o().current.clone().filter(|_| self.o().mode == Mode::Manage) else {
-            return err("nothing", "There is no library to repair yet.");
+            return err("nothing_to_repair", json!({}), "There is no library to repair yet.");
         };
         let pack = cur["pack"].as_str().and_then(|id| self.manifest().pack(id));
         let Some(pack) = pack.filter(|p| p["available"].as_bool().unwrap_or(false)) else {
-            return err("unavailable", "Lastbook cannot tell which library this is, so it cannot repair it. Download a library instead.");
+            return err("repair_unknown", json!({}), "Lastbook cannot tell which library this is, so it cannot repair it. Download a library instead.");
         };
         let model = if ai || !cur["models"].as_array().map(|a| a.is_empty()).unwrap_or(true) {
             cur["model"].as_str().and_then(|id| self.manifest().model(Some(id))).or_else(|| ai.then(|| self.manifest().model(None)).flatten())
@@ -1064,7 +1124,7 @@ impl Setup {
                 let _ = std::fs::remove_file(pending_file(&self.o().settings_dir));
                 self.with_job(|j| {
                     j["state"] = json!("failed");
-                    j["error"] = json!({"code": "cancelled", "message": "Cancelled. Nothing was changed."});
+                    j["error"] = json!({"code": "cancelled", "message": "Cancelled. Nothing was changed.", "params": {}});
                     for it in j["items"].as_array_mut().into_iter().flatten() {
                         if s(&it["state"]) != "done" {
                             it["state"] = json!("failed");
@@ -1079,7 +1139,7 @@ impl Setup {
     pub fn use_path(&self, path: &str) -> Value {
         let p = expand(path);
         if path.trim().is_empty() || !p.exists() {
-            return err("missing", "Lastbook cannot find that file or folder.");
+            return err("missing", json!({}), "Lastbook cannot find that file or folder.");
         }
         if p.is_dir() {
             let lib = if install::is_library(&p) { p.clone() } else { p.join(DATA_NAME) };
@@ -1095,14 +1155,16 @@ impl Setup {
                 if let Some(first) = inside.first() {
                     return self.use_path(&first.to_string_lossy()); // the person explicitly chose this folder
                 }
-                return err("not_library", format!("“{}” is not a Lastbook library. Choose the folder called {DATA_NAME}.", p.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default()));
+                let name = file_name(&p);
+                return err("not_library", json!({"name": name}), format!("“{name}” is not a Lastbook library. Choose the folder called {DATA_NAME}."));
             }
             if tempfile_in(&lib).is_err() {
-                return err("folder", format!("Lastbook cannot save in “{}”. Move it somewhere you can save to, then choose it there.", lib.file_name().unwrap().to_string_lossy()));
+                let name = file_name(&lib);
+                return err("library_read_only", json!({"name": name}), format!("Lastbook cannot save in “{name}”. Move it somewhere you can save to, then choose it there."));
             }
             let _g = self.0.action.lock().unwrap();
             if self.0.job.lock().unwrap().as_ref().is_some_and(|j| ACTIVE.contains(&s(&j["state"]))) {
-                return err("busy", "A download is under way. Pause or cancel it first.");
+                return err("busy", json!({}), "A download is under way. Pause or cancel it first.");
             }
             let job = json!({"id": uuid::Uuid::new_v4().simple().to_string()[..12].to_string(), "state": "done", "error": null, "started": now(),
                              "folder": lib.to_string_lossy(),
@@ -1119,10 +1181,11 @@ impl Setup {
             for f in pk["files"].as_array().into_iter().flatten() {
                 if s(&f["name"]) == name {
                     if size != u(&f["size"]) {
-                        return err("size", format!("That file is {}, not the {} of the published {name}. The download may not have finished.", gb(size), gb(u(&f["size"]))));
+                        return err("wrong_size", json!({"name": name, "size_bytes": size, "expected_bytes": u(&f["size"])}),
+                                   format!("That file is {}, not the {} of the published {name}. The download may not have finished.", gb(size), gb(u(&f["size"]))));
                     }
                     if !pk["available"].as_bool().unwrap_or(false) {
-                        return err("unavailable", "That library is not available in this version.");
+                        return err("pack_not_in_version", json!({}), "That library is not available in this version.");
                     }
                     self.0.sources.lock().unwrap().insert(name.clone(), p.to_string_lossy().to_string());
                     let mut src = Map::new();
@@ -1138,7 +1201,8 @@ impl Setup {
                         continue;
                     }
                     if size != u(&f["size"]) {
-                        return err("size", format!("That file is {}, not the {} of the published {name}. The download may not have finished.", gb(size), gb(u(&f["size"]))));
+                        return err("wrong_size", json!({"name": name, "size_bytes": size, "expected_bytes": u(&f["size"])}),
+                                   format!("That file is {}, not the {} of the published {name}. The download may not have finished.", gb(size), gb(u(&f["size"]))));
                     }
                     self.0.sources.lock().unwrap().insert(name.clone(), p.to_string_lossy().to_string());
                     if self.o().mode == Mode::Manage {
@@ -1159,7 +1223,8 @@ impl Setup {
         for model in self.manifest().models() {
             if s(&model["file"]) == name {
                 if size != u(&model["size"]) {
-                    return err("size", format!("That file is {}, not the {} of the model. The download may not have finished.", gb(size), gb(u(&model["size"]))));
+                    return err("wrong_size_model", json!({"size_bytes": size, "expected_bytes": u(&model["size"])}),
+                               format!("That file is {}, not the {} of the model. The download may not have finished.", gb(size), gb(u(&model["size"]))));
                 }
                 self.0.sources.lock().unwrap().insert(name.clone(), p.to_string_lossy().to_string());
                 if self.o().mode == Mode::Manage {
@@ -1171,7 +1236,7 @@ impl Setup {
                 return if j.is_null() { json!({"job": null, "noted": true}) } else { j };
             }
         }
-        err("unknown", "That is not a file Lastbook knows. Choose a Lastbook library zip or the model file.")
+        err("unknown_file", json!({}), "That is not a file Lastbook knows. Choose a Lastbook library zip or the model file.")
     }
 
     pub fn finish(&self) -> Value {
@@ -1179,7 +1244,7 @@ impl Setup {
             let g = self.0.job.lock().unwrap();
             match g.as_ref() {
                 Some(j) if s(&j["state"]) == "done" => j["plan"]["use_library"].as_str().or(j["plan"]["target"].as_str()).unwrap_or("").to_string(),
-                _ => return err("not_done", "Setup has not finished yet."),
+                _ => return err("not_done", json!({}), "Setup has not finished yet."),
             }
         };
         let me = self.clone();
@@ -1202,23 +1267,25 @@ impl Setup {
             None => json!({"path": null, "cancelled": true}),
             Some(p) => {
                 let (free, _) = self.disk_of(&p);
-                json!({"path": p.to_string_lossy(), "free_bytes": free, "disk": hardware::disk_name(&p)})
+                json!({"path": p.to_string_lossy(), "free_bytes": free, "disk": hardware::disk_name(&p), "kind": super::volumes::kind(&p)})
             }
         }
     }
 
-    /// Manage mode: the model files go from the open library (the one named, or every one). The library is not touched.
+    /// Manage mode: the model files go from the open library and from this computer's own folder for models (the one named,
+    /// or every one). The library is not touched.
     pub fn remove_ai(&self, model_id: Option<&str>) -> Value {
         let Some(cur) = self.o().current.clone().filter(|_| self.o().mode == Mode::Manage) else {
-            return err("nothing", "There is no local AI in this library to remove.");
+            return err("no_ai_to_remove", json!({}), "There is no local AI in this library to remove.");
         };
         if self.0.job.lock().unwrap().as_ref().is_some_and(|j| ACTIVE.contains(&s(&j["state"]))) {
-            return err("busy", "A download is under way. Pause or cancel it first.");
+            return err("busy", json!({}), "A download is under way. Pause or cancel it first.");
         }
+        let folders: Vec<PathBuf> = std::iter::once(cur.join("models")).chain(self.o().models_here.clone()).collect();
         let targets: Vec<PathBuf> = self.manifest().models().iter().filter(|m| model_id.is_none_or(|id| s(&m["id"]) == id))
-            .map(|m| cur.join("models").join(s(&m["file"]))).filter(|p| p.is_file()).collect();
+            .flat_map(|m| folders.iter().map(|f| f.join(s(&m["file"]))).collect::<Vec<_>>()).filter(|p| p.is_file()).collect();
         if targets.is_empty() {
-            return err("nothing", "There is no local AI in this library to remove.");
+            return err("no_ai_to_remove", json!({}), "There is no local AI in this library to remove.");
         }
         if let Some(ai) = &self.o().ai {
             ai.stop("removed");
@@ -1227,7 +1294,7 @@ impl Setup {
         for p in targets {
             let n = std::fs::metadata(&p).map(|m| m.len()).unwrap_or(0);
             if let Err(e) = std::fs::remove_file(&p) {
-                return err("folder", format!("Lastbook could not remove the model file ({e}). Quit anything using it, then try again."));
+                return err("cannot_remove_model", json!({}), format!("Lastbook could not remove the model file ({e}). Quit anything using it, then try again."));
             }
             freed += n;
         }
@@ -1242,11 +1309,11 @@ impl Setup {
         let st = self.settings();
         let olds: Vec<String> = st["old"].as_array().into_iter().flatten().filter_map(|v| v.as_str().map(str::to_string)).collect();
         if !olds.contains(&path.to_string()) {
-            return err("unknown", "Lastbook only deletes an old library it moved aside itself.");
+            return err("not_moved_aside", json!({}), "Lastbook only deletes an old library it moved aside itself.");
         }
         let p = PathBuf::from(path);
         if !p.file_name().is_some_and(|n| n.to_string_lossy().contains(".old-")) {
-            return err("unknown", "That is not an old library.");
+            return err("not_old_library", json!({}), "That is not an old library.");
         }
         self.0.deleting.lock().unwrap().insert(path.to_string());
         let me = self.clone();
@@ -1275,8 +1342,9 @@ impl Setup {
         });
     }
 
+    /// The job stops: {code, message, params} (and anything more the failure carries) on the job and on its item.
     fn fail(&self, cur: Option<(String, String)>, e: &SetupError) {
-        let mut errv = json!({"code": e.code(), "message": e.message()});
+        let mut errv = json!({"code": e.code(), "message": e.message(), "params": {}});
         if let SetupError::Failed { extra, .. } = e {
             for (k, v) in extra {
                 errv[k] = v.clone();
@@ -1410,6 +1478,7 @@ impl Setup {
                 let folder = src.parent().and_then(|p| p.file_name()).map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
                 let mut extra = Map::new();
                 extra.insert("file".into(), json!(src.to_string_lossy()));
+                extra.insert("params".into(), json!({"name": name, "folder": folder}));
                 return Err(SetupError::Failed { code: "found_mismatch".into(), message: format!("The {name} in {folder} doesn’t match the published file, so it was not used. It was left as it is. Download it instead?"), extra });
             }
             eprintln!("setup: {} does not match; downloading instead", src.display());
@@ -1422,6 +1491,7 @@ impl Setup {
                 let mut extra = Map::new();
                 extra.insert("need_bytes".into(), json!(still));
                 extra.insert("free_bytes".into(), json!(free));
+                extra.insert("params".into(), json!({"name": name, "need_bytes": still, "free_bytes": free}));
                 return Err(SetupError::Failed { code: "no_space".into(), message: format!("Downloading {name} needs {} free, and the disk has {}. Free some space, then try again.", gb(still), gb(free)), extra });
             }
         }
@@ -1438,7 +1508,8 @@ impl Setup {
                 Err(SetupError::BadChecksum(_)) => {
                     let tries = self.plan()["retried"][&name].as_u64().unwrap_or(0);
                     if tries >= 1 {
-                        return Err(SetupError::failed("checksum", format!("{name} did not match its published checksum twice. The file on the server may be damaged; try again later.")));
+                        return Err(download::failed_with("checksum", json!({"name": name}),
+                                                         format!("{name} did not match its published checksum twice. The file on the server may be damaged; try again later.")));
                     }
                     self.set_plan(|p| p["retried"][&name] = json!(tries + 1));
                     eprintln!("setup: {name} failed its checksum; downloading it once more");
@@ -1508,7 +1579,8 @@ impl Setup {
             let need = install::need_bytes(Some(&pack), None, &have);
             let (free, _) = self.disk_of(work.parent().unwrap_or(work));
             if free < need {
-                return Err(SetupError::failed("no_space", format!("Some files need fetching again. That needs {} free, and the disk has {}.", gb(need), gb(free))));
+                return Err(download::failed_with("no_space", json!({"need_bytes": need, "free_bytes": free}),
+                                                 format!("Some files need fetching again. That needs {} free, and the disk has {}.", gb(need), gb(free))));
             }
             self.with_job(|j| {
                 if let Some(it) = j["items"].as_array_mut().and_then(|a| a.iter_mut().find(|i| s(&i["kind"]) == kind)) {
@@ -1533,7 +1605,8 @@ impl Setup {
         let still = total.saturating_sub(install::tree_size(&staged));
         let (free, _) = self.disk_of(work);
         if free < still + 512 * 1024 * 1024 {
-            return Err(SetupError::failed("no_space", format!("Unpacking needs {} free, and the disk has {}. Free some space, then try again.", gb(still), gb(free))));
+            return Err(download::failed_with("no_space", json!({"need_bytes": still, "free_bytes": free}),
+                                             format!("Unpacking needs {} free, and the disk has {}. Free some space, then try again.", gb(still), gb(free))));
         }
         let mut prog = self.progress_fn(kind, id, 0);
         let mut lib = PathBuf::new();
@@ -1585,7 +1658,8 @@ impl Setup {
             lib = install::unpack(path, &staged, installed, control, &mut |d, t| prog(d, t, "unpacking"), Some(allowed), None)?;
         }
         if install::map_name(&lib) != s(&mp["id"]) {
-            return Err(SetupError::refused("unpack", format!("The map file says it is {}, not {}.", install::map_name(&lib), s(&mp["id"]))));
+            let found = install::map_name(&lib);
+            return Err(download::failed_with("unpack", json!({"found": found, "expected": mp["id"]}), format!("The map file says it is {found}, not {}.", s(&mp["id"]))));
         }
         if plan["switch"].as_bool().unwrap_or(false) {
             install::replace_map_in(&work.join("unpack").join(DATA_NAME), &lib)?;
