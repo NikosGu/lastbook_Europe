@@ -258,3 +258,11 @@ fn a_pack_is_what_setup_installs() {
     assert!(build_pack(&data, &dir.join("out3"), "https://downloads.example.org/v1").unwrap_err().contains("has changed"));
     cleanup(&dir);
 }
+
+#[test]
+fn page_text_is_cleaned_as_the_library_keeps_it() {
+    use super::extract::clean;
+    assert_eq!(clean("l’approvvi\u{2}\r\ngionamento\r\nè garantito"), "l’approvvigionamento\nè garantito");
+    assert_eq!(clean("Wasser\u{2}vorrat\u{c}x\0y\u{1b}z  \n\n"), "Wasservorrat\nx y z");
+    assert_eq!(clean("a\tb\rc"), "a\tb\nc");
+}

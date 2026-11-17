@@ -11,10 +11,12 @@ use std::rc::Rc;
 /// What is left out of a saved page's text.
 const NOT_TEXT: &str = "script, style, nav, footer, header, form, noscript, template";
 
-/// One page's text as the library keeps it: lines as they came, no form feed (it separates pages), no NUL, and the
-/// line ends of every system as "\n".
-fn clean(s: &str) -> String {
-    s.replace("\r\n", "\n").replace(['\r', '\u{c}'], "\n").replace('\0', "").trim_end().to_string()
+/// One page's text as the library keeps it: lines as they came, with the line ends of every system as "\n", no form
+/// feed (it separates pages), and no other control character. PDFium marks a word hyphenated at the end of a line with
+/// U+0002: the word is joined again, so "approvvi-gionamento" is found as approvvigionamento.
+pub fn clean(s: &str) -> String {
+    let s = s.replace("\r\n", "\n").replace(['\r', '\u{c}'], "\n").replace("\u{2}\n", "").replace('\u{2}', "");
+    s.chars().map(|c| if c.is_control() && c != '\n' && c != '\t' { ' ' } else { c }).collect::<String>().trim_end().to_string()
 }
 
 /// Each page's text. An error says what is wrong in words: no PDFium here, or a file PDFium cannot open.
