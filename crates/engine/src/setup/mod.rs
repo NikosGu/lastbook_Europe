@@ -8,6 +8,7 @@ pub mod hardware;
 pub mod install;
 pub mod manifest;
 pub mod net;
+pub mod volumes;
 #[cfg(test)]
 pub mod testserver;
 #[cfg(test)]

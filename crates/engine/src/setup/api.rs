@@ -74,12 +74,17 @@ pub struct Options {
     pub windows_paths: bool,
     /// (free, total) bytes of the disk holding a path; tests give a disk of their own, so the machine's free space does not matter.
     pub disk_space: Option<Arc<dyn Fn(&Path) -> (u64, u64) + Send + Sync>>,
+    /// The library remembered from last time, when it cannot be reached (its disk unplugged, its network share away).
+    pub missing: Option<PathBuf>,
+    /// The app's own folder for AI models on this computer: a model can live there instead of beside the library, which
+    /// is the better place when the library is on a network share or an external disk.
+    pub models_here: Option<PathBuf>,
 }
 
 impl Options {
     pub fn new(mode: Mode, settings_dir: PathBuf, default_parent: PathBuf, current: Option<PathBuf>) -> Options {
         Options { mode, settings_dir, default_parent, current, manifest: Manifest::product(), allow: Allow::Product, tls: None, default_why: None,
-                  on_finish: None, pick_folder: None, look_for_libraries: None, ai: None, backoff: None, windows_paths: cfg!(windows), disk_space: None }
+                  on_finish: None, pick_folder: None, look_for_libraries: None, ai: None, backoff: None, windows_paths: cfg!(windows), disk_space: None, missing: None, models_here: None }
     }
 }
 
@@ -363,9 +368,13 @@ impl Setup {
             }
         }
         let switch = plan["switch"].as_bool().unwrap_or(false) && pack.is_some();
+        let model_dir = match (&self.o().models_here, plan["model_dir"].as_str()) {
+            (Some(here), Some(d)) if Path::new(d) == here.as_path() => json!(d), // only the app's own folder, never a path from disk
+            _ => Value::Null,
+        };
         let mut clean = json!({"pack": pack, "model": model, "map": mp, "addresses": addresses, "parent": parent.to_string_lossy(),
                                "target": target.to_string_lossy(), "work": work.to_string_lossy(), "sources": sources,
-                               "explicit": plan["explicit"].as_bool().unwrap_or(false), "retried": {}, "switch": switch,
+                               "explicit": plan["explicit"].as_bool().unwrap_or(false), "retried": {}, "switch": switch, "model_dir": model_dir,
                                "repair": plan["repair"].as_bool().unwrap_or(false)});
         if let Some(d) = plan["damaged"].as_array() {
             clean["damaged"] = json!(d.iter().filter_map(|x| x.as_str()).collect::<Vec<_>>());
@@ -440,9 +449,20 @@ impl Setup {
     /// Ids of the manifest's models whose file is here, at its size.
     pub fn models_here(&self) -> Vec<String> {
         let Some(cur) = &self.o().current else { return vec![] };
+        let folders: Vec<PathBuf> = std::iter::once(cur.join("models")).chain(self.o().models_here.clone()).collect();
         self.manifest().models().iter().filter(|m| {
-            std::fs::metadata(cur.join("models").join(s(&m["file"]))).map(|md| md.len() == u(&m["size"])).unwrap_or(false)
+            folders.iter().any(|f| std::fs::metadata(f.join(s(&m["file"]))).map(|md| md.len() == u(&m["size"])).unwrap_or(false))
         }).map(|m| s(&m["id"]).to_string()).collect()
+    }
+
+    /// Where a new model goes by default: on this computer when the library is on a network share or an external disk (a
+    /// model read over the network or from a stick is slow, and may be unplugged), else beside the library.
+    pub fn default_model_place(&self, library: &Path) -> &'static str {
+        if self.o().models_here.is_some() && super::volumes::kind(library) != "local" {
+            "computer"
+        } else {
+            "library"
+        }
     }
 
     pub fn current_info(&self) -> Value {
@@ -451,7 +471,7 @@ impl Setup {
         let pack = meta["name"].as_str().map(str::to_string);
         let revision = meta["content_revision"].as_str().unwrap_or("").to_string();
         let models = self.models_here();
-        json!({"folder": cur.to_string_lossy(), "pack": pack, "content_revision": revision, "map_bytes": install::map_bytes(cur),
+        json!({"folder": cur.to_string_lossy(), "disk_kind": super::volumes::kind(cur), "pack": pack, "content_revision": revision, "map_bytes": install::map_bytes(cur),
                "model": models.first(), "models": models, "map": install::map_name(cur), "address_indexes": self.address_indexes(),
                "old": self.settings()["old"].clone().as_array().cloned().unwrap_or_default()})
     }
@@ -665,6 +685,7 @@ impl Setup {
             why.push_str(s(&hw["ai"]["why"]));
         }
         json!({"pack": choice["id"], "ai": ai, "model": if ai { model.map(|m| m["id"].clone()) } else { None }, "folder": folder.to_string_lossy(),
+               "model_place": self.default_model_place(&folder),
                "need_bytes": need, "map_need_bytes": map_needs, "address_need_bytes": address_need, "why": why})
     }
 
@@ -672,8 +693,9 @@ impl Setup {
         self.manifest().fetch_once();
         let hw = self.hardware();
         let rec = self.recommend(&hw);
+        let missing = self.o().missing.as_ref().map(|m| json!({"folder": m.to_string_lossy(), "here": m.exists()}));
         json!({"mode": self.o().mode.as_str(), "hardware": hw, "manifest": self.manifest().public(), "current": self.current_info(),
-               "found": self.found(), "recommend": rec, "job": self.public_job()})
+               "found": self.found(), "recommend": rec, "job": self.public_job(), "missing": missing})
     }
 
     pub fn public_job(&self) -> Value {
@@ -710,6 +732,14 @@ impl Setup {
     #[allow(clippy::too_many_arguments)]
     pub fn start(&self, pack_id: Option<&str>, model_id: Option<&str>, folder: Option<&str>, sources: Map<String, Value>, explicit: bool,
                  repair: bool, map_id: Option<&str>, address_id: Option<&str>) -> Value {
+        self.start_with(pack_id, model_id, folder, sources, explicit, repair, map_id, address_id, None)
+    }
+
+    /// As start, and model_place: "library" (beside it) or "computer" (the app's own folder on this computer); None for
+    /// the default (default_model_place).
+    #[allow(clippy::too_many_arguments)]
+    pub fn start_with(&self, pack_id: Option<&str>, model_id: Option<&str>, folder: Option<&str>, sources: Map<String, Value>, explicit: bool,
+                      repair: bool, map_id: Option<&str>, address_id: Option<&str>, model_place: Option<&str>) -> Value {
         if repair {
             return self.start_repair(model_id.is_some());
         }
@@ -867,11 +897,16 @@ impl Setup {
             items.push(item(s(&m["id"]), "model", s(&m["title"]), u(&m["size"]), "waiting"));
         }
         let sources: Map<String, Value> = srcs.into_iter().filter(|(k, _)| names.contains(k)).collect();
+        let place = model_place.filter(|p| *p == "computer" || *p == "library").unwrap_or_else(|| self.default_model_place(&parent));
+        let model_dir = match (&model, place, &self.o().models_here) {
+            (Some(_), "computer", Some(dir)) => json!(dir.to_string_lossy()),
+            _ => Value::Null,
+        };
         let mut job = json!({"id": uuid::Uuid::new_v4().simple().to_string()[..12].to_string(), "state": "waiting", "items": items, "error": null,
                              "started": now(), "folder": target.to_string_lossy(),
                              "plan": {"pack": pack, "model": model, "map": mp, "addresses": addresses, "parent": parent.to_string_lossy(),
                                       "target": target.to_string_lossy(), "work": work.to_string_lossy(), "sources": sources, "explicit": explicit,
-                                      "retried": {}, "switch": pack.is_some()}});
+                                      "retried": {}, "switch": pack.is_some(), "model_dir": model_dir}});
         let mut st = self.settings();
         st["work"] = json!(work.to_string_lossy());
         self.save_settings(&st);
@@ -1612,7 +1647,8 @@ impl Setup {
         let (path, ours) = self.get_file(kind, id, &f, work, control, 0)?;
         let switch = plan["switch"].as_bool().unwrap_or(false);
         let lib = if switch { work.join("unpack").join(DATA_NAME) } else { self.o().current.clone().unwrap_or(PathBuf::from(s(&plan["target"]))) };
-        let dest = lib.join("models").join(s(&m["file"]));
+        let on_computer = plan["model_dir"].as_str().map(PathBuf::from); // this computer's own folder, whatever the library does
+        let dest = on_computer.clone().unwrap_or_else(|| lib.join("models")).join(s(&m["file"]));
         std::fs::create_dir_all(dest.parent().unwrap()).map_err(|e| SetupError::refused("activate", e.to_string()))?;
         self.set(kind, id, "activating", &[]);
         if ours || hardware::same_disk(&path, &dest) {
@@ -1621,13 +1657,13 @@ impl Setup {
             let tmp = dest.with_file_name(format!("{}.partial", s(&m["file"])));
             std::fs::copy(&path, &tmp).and_then(|_| std::fs::rename(&tmp, &dest)).map_err(|e| SetupError::refused("activate", e.to_string()))?;
         }
-        let model_file = if switch { PathBuf::from(s(&plan["target"])).join("models").join(s(&m["file"])) } else { dest.clone() };
+        let model_file = if switch && on_computer.is_none() { PathBuf::from(s(&plan["target"])).join("models").join(s(&m["file"])) } else { dest.clone() };
         let sha = m["sha256"].clone();
         self.set_plan(|p| {
             p["model_file"] = json!(model_file.to_string_lossy());
             p["model_sha256"] = sha; // what get_file just matched
         });
-        if !switch && self.o().current.is_some() {
+        if (!switch || on_computer.is_some()) && self.o().current.is_some() {
             if let Some(ai) = &self.o().ai {
                 ai.mark_checked(&dest, s(&m["sha256"]));
                 ai.rediscover();
@@ -1668,7 +1704,8 @@ impl Setup {
             ("POST", "start") => {
                 // model: an id; ai: true for the suggested one (as the window sent before the model choice)
                 let model = opt("model").map(str::to_string).or(if body["ai"].as_bool().unwrap_or(false) { Some(String::new()) } else { None });
-                self.start(opt("pack"), model.as_deref(), opt("folder"), Map::new(), false, body["repair"].as_bool().unwrap_or(false), opt("map"), opt("address_id"))
+                self.start_with(opt("pack"), model.as_deref(), opt("folder"), Map::new(), false, body["repair"].as_bool().unwrap_or(false), opt("map"),
+                                opt("address_id"), opt("model_place"))
             }
             ("POST", "pause") => self.pause(),
             ("POST", "resume") => self.resume(),

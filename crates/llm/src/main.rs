@@ -2,7 +2,10 @@
 //! one JSON object per line, and never opens a socket, a port or a web address. It reads one file, the model it is given.
 //! Ported from the original Lastbook's packaging/llm/lastbook_llm.cpp; the protocol is the same.
 //!
-//!   lastbook-llm --model FILE [--ctx N] [--threads N] [--cpu-only] [--measure]
+//!   lastbook-llm --model FILE [--ctx N] [--threads N] [--cpu-only] [--no-mmap] [--measure]
+//!
+//! --no-mmap reads the whole file into memory once instead of mapping it: for a model on a network share or an external
+//! disk, which fits in memory.
 //!
 //! On start it fits the model to this computer's memory with llama.cpp's own fitting (common/fit.cpp, the same as
 //! llama-server's default --fit), prints {"ev":"fit",...} with what it found, then loads the model and prints
@@ -276,10 +279,11 @@ struct Args {
     threads: i32,
     cpu_only: bool,
     measure: bool,
+    no_mmap: bool,
 }
 
 fn parse_args() -> Result<Args, String> {
-    let mut a = Args { model: String::new(), n_ctx: 16384, threads: 0, cpu_only: false, measure: false };
+    let mut a = Args { model: String::new(), n_ctx: 16384, threads: 0, cpu_only: false, measure: false, no_mmap: false };
     let mut it = std::env::args().skip(1);
     while let Some(arg) = it.next() {
         match arg.as_str() {
@@ -288,6 +292,7 @@ fn parse_args() -> Result<Args, String> {
             "--threads" => a.threads = it.next().and_then(|v| v.parse().ok()).ok_or("--threads needs a number")?,
             "--cpu-only" => a.cpu_only = true,
             "--measure" => a.measure = true,
+            "--no-mmap" => a.no_mmap = true,
             other => return Err(format!("unknown option {other}")),
         }
     }
@@ -395,6 +400,9 @@ fn main() {
         return;
     }
 
+    if args.no_mmap && !from_disk {
+        mp = Box::pin(std::pin::Pin::into_inner(mp).with_use_mmap(false));
+    }
     let reader_inbox = inbox.clone();
     std::thread::spawn(move || read_requests(reader_inbox));
     let t_load = Instant::now();

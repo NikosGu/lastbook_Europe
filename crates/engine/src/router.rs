@@ -13,7 +13,8 @@ use crate::setup::api::Setup;
 use crate::static_files;
 use crate::update::Updater;
 use serde_json::{json, Value};
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
+use std::time::{Duration, Instant};
 
 const MAX_BODY: usize = 64 * 1024;
 /// A chat request carries the conversation so far.
@@ -31,6 +32,8 @@ pub struct Engine {
     pub knowledge: Arc<dyn Knowledge>,
     /// Check for updates, when the person asks.
     pub updater: Updater,
+    /// Whether the library's folder answered, and when that was asked.
+    reach: Mutex<(Option<Instant>, bool)>,
 }
 
 impl Engine {
@@ -43,7 +46,8 @@ impl Engine {
         } else {
             Arc::new(NoKnowledge)
         };
-        Engine { map, library, paths, setup: None, ai: None, chats: Chats::default(), knowledge, updater: Updater::product() }
+        Engine { map, library, paths, setup: None, ai: None, chats: Chats::default(), knowledge, updater: Updater::product(),
+                 reach: Mutex::new((None, true)) }
     }
 
     pub fn with_ai(mut self, ai: Local) -> Engine {
@@ -72,6 +76,13 @@ impl Engine {
         if let Some(r) = self.ai_route(method, path, req) {
             return r;
         }
+        if path == "/api/health" {
+            return Response::json(&json!({"service": "survival-library", "offline": true, "ok": true, "engine": "rust",
+                                         "data": self.paths.data.is_some(), "library": self.library_here()}));
+        }
+        if self.paths.data.is_some() && !self.library_here() && library_request(path) {
+            return Response::json_status(503, &self.unreachable());
+        }
         if self.paths.data.is_some() {
             if let Some(r) = self.map.route(req) {
                 return r;
@@ -89,7 +100,6 @@ impl Engine {
                 }
             }
             ("GET" | "HEAD", "/sw.js") => static_files::serve(&self.paths.web(), "sw.js"),
-            ("GET" | "HEAD", "/api/health") => Response::json(&json!({"ok": true, "engine": "rust", "data": self.paths.data.is_some()})),
             ("GET" | "HEAD", p) if p.starts_with("/ui/") => static_files::serve(&self.paths.web(), &p["/ui/".len()..]),
             _ => Response::not_found(),
         }
@@ -140,6 +150,28 @@ impl Engine {
         })
     }
 
+    /// Whether the library's folder answers. A disk unplugged or a network share gone (a NAS out of reach) makes every
+    /// library request fail: the page is then told so plainly. Asked at most every two seconds.
+    pub fn library_here(&self) -> bool {
+        let Some(d) = &self.paths.data else { return true };
+        let mut r = self.reach.lock().unwrap_or_else(|e| e.into_inner());
+        if r.0.is_some_and(|t| t.elapsed() < Duration::from_secs(2)) {
+            return r.1;
+        }
+        let ok = d.join("library-data").is_dir();
+        if !ok && r.1 {
+            eprintln!("library: {} is not reachable", d.display());
+        }
+        *r = (Some(Instant::now()), ok);
+        ok
+    }
+
+    fn unreachable(&self) -> Value {
+        let folder = self.paths.data.as_ref().map(|d| d.to_string_lossy().into_owned()).unwrap_or_default();
+        json!({"error": format!("The library in {folder} cannot be reached. Connect its disk or its network, then try again."),
+               "code": "library_unreachable", "folder": folder})
+    }
+
     /// /api/library's `pins`: whether the map has help points to show (a library without a pack always offers them).
     fn with_pins(&self, r: Response) -> Response {
         let Ok(mut v) = serde_json::from_slice::<Value>(&r.body) else { return r };
@@ -186,6 +218,13 @@ impl Engine {
     }
 }
 
+/// Requests that read the library: its own files and the routes of the map and the library (not setup, the update check,
+/// the AI's status, the interface's own files).
+fn library_request(path: &str) -> bool {
+    let own = ["/api/setup/", "/api/update/", "/api/assistant/", "/api/chat", "/api/health", "/ui/", "/sw.js"];
+    path != "/" && path != "/index.html" && !own.iter().any(|o| path.starts_with(o))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -205,6 +244,54 @@ mod tests {
         assert_eq!(e.handle(&Request::get("/ui/%2e%2e/Cargo.toml")).status, 404);
         assert_eq!(e.handle(&Request::get("/nothing")).status, 404);
         assert_eq!(e.handle(&Request::get("/api/setup/state")).status, 404, "no setup configured");
+    }
+
+    #[test]
+    fn a_library_out_of_reach_says_so() {
+        let d = std::env::temp_dir().join(format!("lb-reach-{}", std::process::id()));
+        std::fs::create_dir_all(d.join("library-data")).unwrap();
+        std::fs::write(d.join("library-data/catalog.json"), b"[]").unwrap();
+        let e = engine(Some(d.clone()));
+        assert!(e.library_here());
+        assert_ne!(e.handle(&Request::get("/api/topics")).status, 503);
+        // the disk is unplugged (here: the folder goes away), and two seconds pass
+        std::fs::remove_dir_all(&d).unwrap();
+        *e.reach.lock().unwrap() = (None, true);
+        let r = e.handle(&Request::get("/api/topics"));
+        assert_eq!(r.status, 503);
+        assert_eq!(serde_json::from_slice::<Value>(&r.body).unwrap()["code"], "library_unreachable");
+        assert_eq!(e.handle(&Request::get("/api/map/info")).status, 503);
+        assert_eq!(e.handle(&Request::get("/ui/setup.js")).status, 200, "the interface still loads");
+        assert_eq!(serde_json::from_slice::<Value>(&e.handle(&Request::get("/api/health")).body).unwrap()["library"], false);
+    }
+
+    /// A library on a network share: on Windows, the same folder reached as \\localhost\D$\... (the drive's
+    /// administrative share). Skipped where that share is closed.
+    #[cfg(windows)]
+    #[test]
+    fn a_library_on_a_network_path() {
+        let local = std::env::temp_dir().join(format!("lb-unc-{}", std::process::id()));
+        std::fs::create_dir_all(local.join("library-data")).unwrap();
+        std::fs::write(local.join("library-data/catalog.json"), b"[]").unwrap();
+        {
+            let c = rusqlite::Connection::open(local.join("library-data/t.sqlite")).unwrap();
+            c.execute_batch("CREATE TABLE t(x); INSERT INTO t VALUES (42);").unwrap();
+        }
+        let s = local.canonicalize().unwrap().to_string_lossy().trim_start_matches(r"\\?\").to_string();
+        let unc = PathBuf::from(format!(r"\\localhost\{}${}", &s[..1], &s[2..]));
+        if !unc.join("library-data").is_dir() {
+            eprintln!("{} cannot be reached here: skipped", unc.display());
+            return;
+        }
+        assert_eq!(crate::setup::volumes::kind(&unc), "network");
+        let e = engine(Some(unc.clone()));
+        assert!(e.library_here());
+        assert_eq!(e.handle(&Request::get("/api/topics")).status, 200);
+        let c = crate::db::open_ro(&unc.join("library-data/t.sqlite")).expect("SQLite opens over the network path");
+        assert_eq!(c.query_row("SELECT x FROM t", [], |r| r.get::<_, i64>(0)).unwrap(), 42);
+        drop(c);
+        crate::db::close_all();
+        let _ = std::fs::remove_dir_all(&local);
     }
 
     #[test]

@@ -208,7 +208,7 @@ pub fn linux_ai_runtime() -> &'static str {
 }
 
 // ------------------------------------------------------------------------------------------------------------- disks --
-fn existing(path: &Path) -> PathBuf {
+pub(crate) fn existing(path: &Path) -> PathBuf {
     let mut p = path.to_path_buf();
     while !p.exists() {
         match p.parent() {
@@ -317,11 +317,19 @@ fn device_of(p: &Path) -> Option<u64> {
     Some(drive.to_ascii_uppercase() as u64)
 }
 
-/// Disk capacity for app-owned or explicitly chosen paths only, one entry per disk.
+/// The disks a library could go on, one entry per disk: the app's own folders and the person's choices first, then the
+/// disks mounted now (external disks, USB sticks, network shares), each with its kind (local, removable, network).
 pub fn candidate_disks(extra: &[PathBuf]) -> Vec<Value> {
     let mut seen = Vec::new();
     let mut out = Vec::new();
-    for p in extra {
+    let mut mounted = super::volumes::mounted();
+    let rank = |p: &PathBuf| match super::volumes::kind(p) {
+        "local" => 0,
+        "removable" => 1,
+        _ => 2,
+    };
+    mounted.sort_by_key(rank);
+    for p in extra.iter().chain(mounted.iter()) {
         let q = existing(p);
         let Some(dev) = device_of(&q) else { continue };
         if seen.contains(&dev) {
@@ -329,7 +337,10 @@ pub fn candidate_disks(extra: &[PathBuf]) -> Vec<Value> {
         }
         seen.push(dev);
         let (free, total) = disk_of(&q);
-        out.push(json!({"path": p.to_string_lossy(), "name": disk_name(&q), "free_bytes": free, "total_bytes": total}));
+        if total == 0 {
+            continue; // not answering (a share that went away)
+        }
+        out.push(json!({"path": p.to_string_lossy(), "name": disk_name(&q), "free_bytes": free, "total_bytes": total, "kind": super::volumes::kind(&q)}));
     }
     out
 }

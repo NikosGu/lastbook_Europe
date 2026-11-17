@@ -184,10 +184,19 @@ fn main() {
     let mode = if data.is_some() { Mode::Manage } else { Mode::FirstRun };
     let (parent, why) = appdirs::default_choice(&appdata);
     let mut opts = Options::new(mode, settings.clone(), parent, data.clone());
+    if data.is_none() {
+        opts.missing = appdirs::remembered_missing(&settings); // its disk or network share is away: setup says so
+    }
     // the local AI, when a library is open: the models are the ones setup's catalogue offers
+    // models live beside the library or in the app's own folder on this computer (the better place for a library on a
+    // network share or an external disk)
+    let models_here = appdata.join("models");
+    opts.models_here = Some(models_here.clone());
     let ai = data.as_ref().map(|d| {
         let manifest = opts.manifest.clone();
-        Local::new(d.clone(), Box::new(move || manifest.models()), local::runner_path())
+        let local = Local::new(d.clone(), Box::new(move || manifest.models()), local::runner_path());
+        local.add_place(models_here.clone());
+        local
     });
     if data.is_some() && (given.is_none() || note.is_some()) {
         setup_api::opened(&settings, note.as_ref(), ai.as_ref().map(|a| a as &dyn AiHooks));

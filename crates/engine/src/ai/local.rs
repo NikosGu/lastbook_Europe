@@ -167,6 +167,8 @@ struct Inner {
     started: AtomicBool,
     serial: AtomicU64,
     idle_stop: Duration,
+    /// More folders to look in for model files: the app's own on this computer.
+    more_places: Mutex<Vec<PathBuf>>,
 }
 
 /// One model process at a time, for one library.
@@ -190,6 +192,7 @@ impl Local {
             started: AtomicBool::new(false),
             serial: AtomicU64::new(0),
             idle_stop: Duration::from_secs(idle),
+            more_places: Mutex::new(Vec::new()),
         }))
     }
 
@@ -218,12 +221,19 @@ impl Local {
         self.saved("enabled").as_bool().unwrap_or(true)
     }
 
-    /// The folders searched for model files: LASTBOOK_MODEL_DIR, the library's models/, the library itself.
+    /// The folders searched for model files: LASTBOOK_MODEL_DIR, the library's models/ (wherever the library is: this
+    /// computer, an external disk, a network share), the library itself, and the app's own model folder on this computer.
     pub fn places(&self) -> Vec<PathBuf> {
         let mut out: Vec<PathBuf> = std::env::var_os("LASTBOOK_MODEL_DIR").map(|v| std::env::split_paths(&v).collect()).unwrap_or_default();
         out.push(self.0.data.join("models"));
         out.push(self.0.data.clone());
+        out.extend(self.0.more_places.lock().unwrap().iter().cloned());
         out
+    }
+
+    /// Another folder to look in for model files (the app's own on this computer).
+    pub fn add_place(&self, folder: PathBuf) {
+        self.0.more_places.lock().unwrap().push(folder);
     }
 
     /// Answering, or able to start when asked.
@@ -503,7 +513,10 @@ impl Local {
         std::fs::create_dir_all(&logs)?;
         let mut log = std::fs::OpenOptions::new().create(true).append(true).open(logs.join("local-ai.log"))?;
         let _ = writeln!(log, "\n--- {} start", crate::setup::api::now());
-        let mut child = self.argv(&path, &[]).stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::from(log)).spawn()?;
+        // a model on a network share or an external disk is read once into memory: mapped, every page it needs later would
+        // travel again (and a share can go away); from the disk, it has to stay mapped
+        let mapped = crate::setup::volumes::kind(&path) == "local" || st.fit.as_ref().is_some_and(|f| f["verdict"] == "from_disk");
+        let mut child = self.argv(&path, if mapped { &[] } else { &["--no-mmap"] }).stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::from(log)).spawn()?;
         tie_to_this_process(&mut child);
         let stdout = child.stdout.take().expect("stdout");
         let stdin = child.stdin.take().expect("stdin");

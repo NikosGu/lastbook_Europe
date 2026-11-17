@@ -65,6 +65,13 @@ pub fn check(folder: &Path) -> (Option<PathBuf>, Option<String>) {
     (None, Some(format!("“{name}” is not a Lastbook library. Choose the folder called LastbookData, inside the library you unzipped.")))
 }
 
+/// The library remembered from last time when it cannot be reached now: its folder is not there at all, as when its disk
+/// is unplugged or its network share (a NAS) is away. The app then says so, instead of starting setup as if there were none.
+pub fn remembered_missing(settings: &Path) -> Option<PathBuf> {
+    let r = remembered(settings)?;
+    (check(&r).0.is_none() && !r.exists()).then_some(r)
+}
+
 /// The remembered selection and app-owned data only.
 pub fn places(settings: &Path, data: &Path) -> Vec<PathBuf> {
     remembered(settings).into_iter().chain(std::iter::once(data.join(DATA_NAME))).collect()
@@ -162,6 +169,11 @@ mod tests {
         assert_eq!(data_folder(None, &settings, &data).as_deref(), Some(other.as_path()));
         assert_eq!(libraries_here(&settings, &data), vec![other.clone(), lib.clone()]);
         assert_eq!(data_folder(Some(Path::new("/given")), &settings, &data).as_deref(), Some(Path::new("/given")));
+        assert_eq!(remembered_missing(&settings), None, "the remembered library is here");
+        let gone = d.join("unplugged-disk").join(DATA_NAME);
+        remember(&settings, &gone);
+        assert_eq!(remembered_missing(&settings).as_deref(), Some(gone.as_path()));
+        assert_eq!(data_folder(None, &settings, &data).as_deref(), Some(lib.as_path()), "the app's own library opens meanwhile");
         if !path_too_deep(&data.join(DATA_NAME), cfg!(windows)) {
             assert_eq!(default_choice(&data).0, data); // a deep one (Windows' long temporary folders) moves to C:\\Lastbook Europe
         }

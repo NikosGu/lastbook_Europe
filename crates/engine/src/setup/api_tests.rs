@@ -111,6 +111,10 @@ impl Env {
     }
 
     fn setup(&self, mode: Mode, current: Option<PathBuf>, ai: Option<Arc<dyn AiHooks>>) -> Setup {
+        self.setup_with(mode, current, ai, None)
+    }
+
+    fn setup_with(&self, mode: Mode, current: Option<PathBuf>, ai: Option<Arc<dyn AiHooks>>, models_here: Option<PathBuf>) -> Setup {
         let m = manifest::validate(&self.manifest, &self.srv.allow()).expect("manifest");
         let mut o = Options::new(mode, self.settings.clone(), self.parent.clone(), current);
         o.manifest = Manifest::new(m, None, self.srv.allow(), Some(self.srv.tls.clone()));
@@ -119,6 +123,7 @@ impl Env {
         o.backoff = Some(vec![0.05; 6]);
         o.windows_paths = false;
         o.disk_space = Some(Arc::new(|_: &Path| (500_000_000_000, 1_000_000_000_000))); // a disk of our own
+        o.models_here = models_here;
         o.ai = ai;
         Setup::new(o)
     }
@@ -351,6 +356,27 @@ fn models_are_chosen_downloaded_and_removed() {
     assert!(!lib.join("models/gemma-small.gguf").exists());
     assert_eq!(*ai.stopped.lock().unwrap(), 1);
     assert_eq!(s.handle("POST", "start", &json!({"model": "nope"})).1["code"], "unavailable");
+}
+
+#[test]
+fn a_model_can_live_on_this_computer_while_the_library_is_elsewhere() {
+    let mut env = Env::new("model-here");
+    let small = env.add_model("gemma-small", 200_000, 1);
+    let lib = env.library(DATA_NAME);
+    std::fs::write(lib.join("pack.json"), b"{\"name\": \"small\"}").unwrap();
+    let here = env.dir.join("this-computer").join("models");
+    let ai = Arc::new(FakeAi::default());
+    let s = env.setup_with(Mode::Manage, Some(lib.clone()), Some(ai.clone()), Some(here.clone()));
+    // the library is on this computer's own disk in the test: the default is beside it
+    assert_eq!(s.default_model_place(&lib), "library");
+    let (status, j) = s.handle("POST", "start", &json!({"model": "gemma-small", "model_place": "computer"}));
+    assert_eq!(status, 200, "{j}");
+    assert_eq!(wait(&s, &["done", "failed"])["state"], "done", "{}", s.public_job());
+    assert_eq!(std::fs::read(here.join("gemma-small.gguf")).unwrap(), small, "on this computer");
+    assert!(!lib.join("models/gemma-small.gguf").exists(), "not beside the library");
+    assert_eq!(s.current_info()["models"], json!(["gemma-small"]), "found in either place");
+    assert_eq!(ai.checked.lock().unwrap()[0].0, here.join("gemma-small.gguf"));
+    assert_eq!(s.current_info()["disk_kind"], "local");
 }
 
 #[test]
