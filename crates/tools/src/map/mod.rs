@@ -1,5 +1,6 @@
 //! The map's data tools: `build-map` makes a region's map files and address index from public data, `pack-map` and
-//! `pack-addresses` turn them into the zips setup downloads (cli.rs). What they write is what the engine reads
+//! `pack-addresses` turn them into the zips setup downloads, and `build-manifest` lists them for setup in the data
+//! release's manifest-v1.json (cli.rs). What they write is what the engine reads
 //! (crates/engine/src/map/; docs/MAPS.md, docs/ADDRESSES.md) and what setup checks and unpacks
 //! (crates/engine/src/setup/install.rs). They do the work of the original Lastbook's map builders.
 //!
@@ -19,6 +20,7 @@ pub mod coast;
 pub mod detail;
 pub mod geo;
 pub mod gpkg;
+pub mod manifest;
 pub mod mapset;
 pub mod osm;
 pub mod pack;

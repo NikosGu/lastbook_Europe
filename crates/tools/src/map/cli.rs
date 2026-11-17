@@ -9,7 +9,7 @@
 //!   lastbook-tools pack-addresses --index derived/maps/LI/addresses/LI.sqlite --out derived/packs
 //!   lastbook-tools build-terrain --region LI --dem FILE [--dem FILE]... --out terrain.sqlite
 
-use super::{check, mapset, pack, sources, terrain};
+use super::{check, manifest, mapset, pack, sources, terrain};
 use lastbook_engine::{dist, regions};
 use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
@@ -71,6 +71,17 @@ const CHECK_MAP: &str = "lastbook-tools check-map --region REGION --packs FOLDER
   --min-addresses  the least the address index may hold (default: the table's, else 100)
   --work           where to unpack them (default: <packs>/check, removed after)
 Prints every check, passed or not; fails if one does.";
+
+const BUILD_MANIFEST: &str = "lastbook-tools build-manifest --base FILE --entries FOLDER [--assets FILE] --out FILE
+
+  --base     the manifest to start from: packaging/data/manifest-base.json, the model catalogue
+  --entries  a folder of entries as the packers print them: map-entry-<REGION>.json, addresses-entry-<REGION>.json,
+             and the starter pack's starter-entry.json; other files are passed over
+  --assets   the data release's files, as `gh release view data-v1 --json assets` prints them: an entry whose zip is
+             not there whole, at its size, is left out
+  --out      the manifest-v1.json to write
+Prints what the manifest holds and what was left out. Fails, writing nothing, if setup would refuse it: every address
+must be a file of the data release (crates/engine/src/dist.rs), every entry kept and offered.";
 
 /// A subcommand's options: `--name value` pairs, a name given once or, as --dem, more than once.
 struct Opts(Vec<(String, String)>);
@@ -158,6 +169,20 @@ pub fn build_terrain(args: &[String]) -> i32 {
         }
         let n = terrain::write(Path::new(o.need("out")?), &mut dems, boxes, *terrain::ZOOMS.start()..=zoom, mapset::TERRAIN_SOURCE, mapset::TERRAIN_LICENCE)?;
         Ok(json!({"tiles": n.tiles, "not_covered": n.skipped, "dem_reads": dems.reads}))
+    })
+}
+
+pub fn build_manifest(args: &[String]) -> i32 {
+    run("build-manifest", BUILD_MANIFEST, args, |o| {
+        let read = |p: &str| -> Result<Value, String> { serde_json::from_slice(&std::fs::read(p).map_err(|e| format!("{p}: {e}"))?).map_err(|e| format!("{p}: {e}")) };
+        let base = read(o.need("base")?)?;
+        let assets = o.get("assets").map(read).transpose()?;
+        let (m, held) = manifest::build(&base, Path::new(o.need("entries")?), assets.as_ref())?;
+        let out = PathBuf::from(o.need("out")?);
+        let part = out.with_extension("part");
+        std::fs::write(&part, serde_json::to_string_pretty(&m).map_err(|e| e.to_string())? + "\n").map_err(|e| format!("{}: {e}", part.display()))?;
+        std::fs::rename(&part, &out).map_err(|e| format!("{}: {e}", out.display()))?;
+        Ok(held)
     })
 }
 

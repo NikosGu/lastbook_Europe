@@ -16,6 +16,7 @@ const USAGE: &str = "lastbook-tools <subcommand> [options]
   build-terrain   a region's elevation tiles alone, from Copernicus DEM
   region-sources  what to download for a region: its extracts, its neighbours', the DEM tiles, Natural Earth
   check-map       a region's zips checked as setup takes them and as a person uses them
+  build-manifest  the data release's manifest-v1.json: the model catalogue, every region's entries and the starter pack's
   check-roots     every host setup downloads from verified through the app's own roots, and a site outside them refused
   scan-package    a built package looked through for what must not ship
 
@@ -33,6 +34,7 @@ fn main() {
         Some("build-terrain") => map::cli::build_terrain(rest),
         Some("region-sources") => map::cli::region_sources(rest),
         Some("check-map") => map::cli::check_map(rest),
+        Some("build-manifest") => map::cli::build_manifest(rest),
         Some("check-roots") => release::check_roots(rest),
         Some("scan-package") => release::scan_package(rest),
         _ => {
