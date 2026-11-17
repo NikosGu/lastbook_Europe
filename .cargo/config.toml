@@ -1,0 +1,5 @@
+# Every build of llama.cpp in this workspace leaves out its model downloader: the local AI runner must not be able to
+# reach the network (crates/llm/llama/no-download.cmake explains why and how). llama-cpp-sys-2 passes CMAKE_* variables
+# on to llama.cpp's CMake.
+[env]
+CMAKE_PROJECT_INCLUDE = { value = "crates/llm/llama/no-download.cmake", relative = true }

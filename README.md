@@ -132,7 +132,7 @@ streaming work do.
 |---|---|
 | `crates/engine` | The engine: the request router, setup (manifest, downloader, installer, hardware), the European regions, the map, the library, the local AI and the assistant. |
 | `crates/app` | The desktop window and the app's start: which library opens, setup when there is none, the system's file picker. |
-| `crates/llm` | `lastbook-llm`, the local AI runner. |
+| `crates/llm` | `lastbook-llm`, the local AI runner, and `llama/`: how llama.cpp is built without its model downloader. |
 | `crates/tools` | The data tools, one command, `lastbook-tools`: a region's map and address index (`build-map`, `pack-map`, `pack-addresses`, `build-terrain`), a library and its pack (`build-library`, `build-pack`), and the regions' boxes from Eurostat's NUTS boundaries (`region-boxes`). |
 | `third_party/llama-cpp-2` | The `llama-cpp-2` crate with one addition (see `PROVENANCE.md`). |
 | `web/` | The interface, in plain HTML, CSS and JavaScript, with no build step and nothing loaded from the web. |
