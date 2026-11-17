@@ -17,7 +17,10 @@ cp target/release/lastbook target/release/lastbook-llm "$OPT/"
 # llama.cpp's libraries and its backends (Vulkan, and the CPU variants), which the runner loads from beside itself
 # (built only with the runner's "vulkan" feature; Cargo puts the crate's output in build/llama-cpp-sys-2-<hash>/out, or in
 # build/llama-cpp-sys-2/<hash>/out in its newer layout)
-SYSOUT="$(find target/release/build -type d -path '*llama-cpp-sys-2*/out' -prune 2>/dev/null | while read -r d; do [ -d "$d/lib" ] && ls "$d"/lib/lib*.so* >/dev/null 2>&1 && echo "$d"; done | head -1)"
+SYSOUT=""
+for d in $(find target/release/build -type d -path '*llama-cpp-sys-2*/out' -prune 2>/dev/null); do
+  if [ -n "$(ls "$d"/lib/lib*.so* 2>/dev/null)" ]; then SYSOUT="$d"; fi
+done
 if [ -n "$SYSOUT" ]; then
   cp -P "$SYSOUT"/lib/libllama*.so* "$SYSOUT"/lib/libggml*.so* "$OPT/" 2>/dev/null || true
   if [ -d "$SYSOUT/backends" ]; then cp -P "$SYSOUT"/backends/* "$OPT/"; fi
