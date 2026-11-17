@@ -11,10 +11,10 @@
 //!
 //! `map/` is what the region map zip holds (pack.rs); the address index is zipped on its own.
 
-use crate::admin::Admin;
-use crate::detail::{self, MapWriter};
-use crate::osm::{self, Kind};
-use crate::{addresses, base, buildings, gpkg, places, terrain, water};
+use crate::map::admin::Admin;
+use crate::map::detail::{self, MapWriter};
+use crate::map::osm::{self, Kind};
+use crate::map::{addresses, base, buildings, gpkg, places, terrain, water};
 use lastbook_engine::regions;
 use rusqlite::{Connection, OpenFlags};
 use serde_json::{json, Map, Value};
@@ -129,9 +129,9 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gpkg::write::{row, table};
-    use crate::gpkg::Kind as Geom;
-    use crate::osm::write::{pbf, El};
+    use crate::map::gpkg::write::{row, table};
+    use crate::map::gpkg::Kind as Geom;
+    use crate::map::osm::write::{pbf, El};
     use lastbook_engine::setup::{download::Control, install};
 
     /// Small sources for Liechtenstein, made here: a GeoPackage, a PBF, a GeoTIFF and a Natural Earth zip.
@@ -161,8 +161,8 @@ mod tests {
         let pbf_path = dir.join("li.osm.pbf");
         std::fs::write(&pbf_path, pbf(&els)).unwrap();
         let dem = dir.join("dem.tif");
-        crate::terrain::write::geotiff(&dem, 9.40, 47.30, 0.002, 150, 150, false);
-        crate::shp::write::zip(&dir.join("ne/ne_10m_roads.zip"), crate::shp::Kind::Line, &[(vec![vec![(9.0, 47.0), (9.6, 47.2), (10.0, 47.5)]],
+        crate::map::terrain::write::geotiff(&dem, 9.40, 47.30, 0.002, 150, 150, false);
+        crate::map::shp::write::zip(&dir.join("ne/ne_10m_roads.zip"), crate::map::shp::Kind::Line, &[(vec![vec![(9.0, 47.0), (9.6, 47.2), (10.0, 47.5)]],
             vec![("type", "Major Highway"), ("expressway", "0"), ("min_zoom", "5"), ("name", "13")])]);
         Sources { gpkg, pbf: pbf_path, dem: vec![dem], ne: Some(dir.join("ne")) }
     }
@@ -183,8 +183,8 @@ mod tests {
         // packed and unpacked as setup does, with the address index beside the map
         let packs = dir.join("packs");
         let base = lastbook_engine::dist::download_base();
-        let m = crate::pack::map(&out.join("map"), &packs, &base).unwrap();
-        crate::pack::addresses(&out.join("addresses/LI.sqlite"), &packs, &base).unwrap();
+        let m = crate::map::pack::map(&out.join("map"), &packs, &base).unwrap();
+        crate::map::pack::addresses(&out.join("addresses/LI.sqlite"), &packs, &base).unwrap();
         let lib = install::unpack(&packs.join("Lastbook-Map-LI.zip"), &dir.join("unpack"), m["installed_bytes"].as_u64(), &Control::new(), &mut |_, _| {},
                                   Some(&install::map_member), None).unwrap();
         std::fs::create_dir_all(lib.join("derived/geo/addresses")).unwrap();
@@ -200,7 +200,7 @@ mod tests {
         assert_eq!(map.places("Gampriner Seele", 20, None)[0]["kind"], "Lake");
         assert_eq!(map.near(47.1400, 9.5209, &["pharmacy"], 1)[0]["name"], "Apotheke am Städtle");
         let tile = |z: u32| -> Value {
-            let (x, y) = crate::geo::tile_of(z, 9.5209, 47.1400);
+            let (x, y) = crate::map::geo::tile_of(z, 9.5209, 47.1400);
             serde_json::from_slice(&map.tile(z, x, y)).unwrap()
         };
         assert_eq!(tile(6)["layers"]["road"][0][0], "trunk", "the base zoomed out");

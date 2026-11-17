@@ -8,7 +8,7 @@
 //! A tile is written only where every one of its pixels has data: half a tile would show a cliff at the edge of the DEM.
 //! A pixel is the mean of the DEM over its footprint (one sample at zoom 12, up to 8 by 8 at zoom 9).
 
-use crate::geo;
+use crate::map::geo;
 use lastbook_engine::map::terrain::terrain_png;
 use rusqlite::{params, Connection};
 use std::f64::consts::PI;

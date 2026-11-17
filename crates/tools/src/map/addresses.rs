@@ -5,9 +5,9 @@
 //! An address is a node, or a building (the middle of its outline). Its country is `addr:country`, else the region's
 //! country when the point lies inside it; its town is `addr:city`, else the municipality it lies in.
 
-use crate::admin::Admin;
-use crate::geo;
-use crate::osm::{Kind, Thing};
+use crate::map::admin::Admin;
+use crate::map::geo;
+use crate::map::osm::{Kind, Thing};
 use lastbook_engine::map::address::{self, countries, Address};
 use lastbook_engine::map::text::name_key;
 use lastbook_engine::regions;
@@ -32,7 +32,7 @@ pub struct Row {
 }
 
 /// The numbers an address is filed under: each of "12;14", and a Czech or Slovak "846/1" also as 846 and 1.
-fn numbers(t: &crate::osm::Tags, country: &str) -> Vec<String> {
+fn numbers(t: &crate::map::osm::Tags, country: &str) -> Vec<String> {
     fn add(out: &mut Vec<String>, n: &str) {
         let n = n.trim();
         if !n.is_empty() && !out.iter().any(|o| o == n) {
@@ -168,7 +168,7 @@ pub fn write(path: &Path, region: &str, rows: &[Row], source: &str) -> rusqlite:
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::osm::write::{pbf, El};
+    use crate::map::osm::write::{pbf, El};
 
     #[test]
     fn addresses_from_the_pbf_found_by_the_engine() {
@@ -189,7 +189,7 @@ mod tests {
         els.extend(b(10, 9.5100, 47.1650));
         els.push(El::Way(100, &[10, 11, 12, 13, 10], &[("building", "yes"), ("addr:housenumber", "7"), ("addr:street", "Landstrasse"), ("addr:postcode", "9494"), ("addr:city", "Schaan")]));
         std::fs::write(&src, pbf(&els)).unwrap();
-        let things = crate::osm::read(&src, &wanted).unwrap();
+        let things = crate::map::osm::read(&src, &wanted).unwrap();
         let li = vec![vec![(9.47, 47.04), (9.64, 47.04), (9.64, 47.28), (9.47, 47.28), (9.47, 47.04)]];
         let vaduz = vec![vec![(9.50, 47.12), (9.54, 47.12), (9.54, 47.15), (9.50, 47.15), (9.50, 47.12)]];
         let areas = Admin { country: Some(("LI".into(), li)), towns: vec![("Vaduz".into(), vaduz)], districts: Vec::new() };
@@ -241,7 +241,7 @@ mod tests {
 
     #[test]
     fn numbers_of_one_address() {
-        let t = |v: &[(&str, &str)]| crate::osm::Tags(v.iter().map(|(a, b)| (a.to_string(), b.to_string())).collect());
+        let t = |v: &[(&str, &str)]| crate::map::osm::Tags(v.iter().map(|(a, b)| (a.to_string(), b.to_string())).collect());
         assert_eq!(numbers(&t(&[("addr:housenumber", "12;14")]), "LI"), vec!["12", "14"]);
         assert_eq!(numbers(&t(&[("addr:housenumber", "846/1")]), "CZ"), vec!["846/1", "846", "1"]);
         assert_eq!(numbers(&t(&[("addr:conscriptionnumber", "846"), ("addr:streetnumber", "1")]), "CZ"), vec!["846/1", "846", "1"]);

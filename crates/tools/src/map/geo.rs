@@ -177,11 +177,11 @@ mod tests {
         assert!((c.0 - 0.0005).abs() < 1e-12 && (c.1 - 0.0005).abs() < 1e-12);
         let a = ring_area_m2(&sq);
         assert!((a - 12_305.0).abs() < 50.0, "about 111 m by 111 m: {a}");
-        assert!(contains(&[sq.clone()], 0.0005, 0.0005));
-        assert!(!contains(&[sq.clone()], 0.002, 0.0005));
+        assert!(contains(std::slice::from_ref(&sq), 0.0005, 0.0005));
+        assert!(!contains(std::slice::from_ref(&sq), 0.002, 0.0005));
         let hole = vec![(0.0004, 0.0004), (0.0006, 0.0004), (0.0006, 0.0006), (0.0004, 0.0006)];
         assert!(!contains(&[sq.clone(), hole], 0.0005, 0.0005), "a hole is outside");
-        let b = bbox(&[sq.clone()]).unwrap();
+        let b = bbox(std::slice::from_ref(&sq)).unwrap();
         assert_eq!((b.minx, b.maxy), (0.0, 0.001));
         assert_eq!(area_z(&b, 9), 14);
         assert_eq!(area_z(&BBox { minx: 0.0, maxx: 1.0, miny: 0.0, maxy: 1.0 }, 7), 7);

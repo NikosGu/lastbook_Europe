@@ -1,8 +1,8 @@
 //! The region's administrative areas, from the GeoPackage's `gis_osm_adminareas_a_free`: the outline of its own country
 //! (or, in a regional extract, of the region), its municipalities (admin level 8) and its districts (level 6).
 
-use crate::geo::{self, Part};
-use crate::gpkg;
+use crate::map::geo::{self, Part};
+use crate::map::gpkg;
 use rusqlite::Connection;
 
 #[derive(Debug, Default, Clone)]

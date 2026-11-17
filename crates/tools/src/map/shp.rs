@@ -1,7 +1,7 @@
 //! Reads an ESRI shapefile from its zip, as Natural Earth publishes them: the shapes of the `.shp` (points, lines,
 //! polygon rings) and the attributes of the `.dbf`, as text.
 
-use crate::geo::Part;
+use crate::map::geo::Part;
 use std::collections::HashMap;
 use std::io::Read;
 use std::path::Path;

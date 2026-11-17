@@ -7,12 +7,12 @@
 //!
 //! rank: 1 a city or town, 2 a village, municipality or postcode, 3 a smaller place or a peak, 4 a named point.
 
-use crate::addresses::Row as Address;
-use crate::admin::Admin;
-use crate::detail::POI_KEEP;
-use crate::geo;
-use crate::gpkg::{self, Kind as Geom};
-use crate::osm::{Kind, Tags, Thing};
+use crate::map::addresses::Row as Address;
+use crate::map::admin::Admin;
+use crate::map::detail::POI_KEEP;
+use crate::map::geo;
+use crate::map::gpkg::{self, Kind as Geom};
+use crate::map::osm::{Kind, Tags, Thing};
 use lastbook_engine::map::address::countries;
 use lastbook_engine::map::text::place_key;
 use lastbook_engine::regions;
@@ -172,7 +172,7 @@ pub fn write(path: &Path, places: &[Place], source: &str) -> rusqlite::Result<us
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gpkg::write::{row, table};
+    use crate::map::gpkg::write::{row, table};
 
     #[test]
     fn towns_municipalities_postcodes_and_points_found_by_the_engine() {

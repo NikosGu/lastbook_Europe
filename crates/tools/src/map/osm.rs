@@ -4,7 +4,7 @@
 //! Three passes, so memory grows with what is kept, not with the file: relations first (which member ways they need),
 //! then ways (which nodes they need), then nodes (only those positions).
 
-use crate::geo::{self, Part};
+use crate::map::geo::{self, Part};
 use osmpbf::{Element, ElementReader, RelMemberType};
 use std::collections::{HashMap, HashSet};
 use std::path::Path;

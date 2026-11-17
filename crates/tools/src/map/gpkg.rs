@@ -2,7 +2,7 @@
 //! A layer's rows come with their geometry as parts (a point, a line, or every ring of a polygon, holes included) and the
 //! columns asked for, as text.
 
-use crate::geo::Part;
+use crate::map::geo::Part;
 use rusqlite::types::ValueRef;
 use rusqlite::Connection;
 use std::io::Read;

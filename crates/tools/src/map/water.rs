@@ -6,10 +6,10 @@
 //!   water_fts USING fts5(key)                                              rowid = resource id, key = place_key of its names
 //!   feat, feat_idx (empty here), meta
 
-use crate::admin::Admin;
-use crate::geo;
-use crate::gpkg;
-use crate::osm::{Kind, Thing};
+use crate::map::admin::Admin;
+use crate::map::geo;
+use crate::map::gpkg;
+use crate::map::osm::{Kind, Thing};
 use lastbook_engine::map::text::place_key;
 use lastbook_engine::regions;
 use rusqlite::{params, Connection};
@@ -99,9 +99,9 @@ pub fn write(path: &Path, records: &[Record], admin: &Admin, region: &str, sourc
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gpkg::write::{row, table};
-    use crate::gpkg::Kind as Geom;
-    use crate::osm::Tags;
+    use crate::map::gpkg::write::{row, table};
+    use crate::map::gpkg::Kind as Geom;
+    use crate::map::osm::Tags;
 
     #[test]
     fn lakes_reservoirs_ponds_and_dams() {

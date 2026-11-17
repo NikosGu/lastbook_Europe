@@ -6,9 +6,9 @@
 //! ne_10m_roads, ne_10m_populated_places_simple, ne_10m_lakes, ne_10m_lakes_europe, ne_10m_rivers_lake_centerlines,
 //! ne_10m_rivers_europe.
 
-use crate::detail::MapWriter;
-use crate::geo::{bbox, simplify};
-use crate::shp::{self, Shape};
+use crate::map::detail::MapWriter;
+use crate::map::geo::{bbox, simplify};
+use crate::map::shp::{self, Shape};
 use lastbook_engine::regions;
 use std::path::Path;
 
@@ -91,8 +91,8 @@ pub fn write(w: &mut MapWriter, ne: &Path) -> Result<Counts, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::geo;
-    use crate::shp::{write::zip, Kind};
+    use crate::map::geo;
+    use crate::map::shp::{write::zip, Kind};
 
     #[test]
     fn the_base_shows_zoomed_out_and_gives_way_to_the_detail() {

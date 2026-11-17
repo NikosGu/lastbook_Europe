@@ -8,8 +8,8 @@
 //!                                 [npts, height_dm, min_height_dm, is_part, X0, Y0, dX1, dY1, ...]
 //!   meta(key, value)
 
-use crate::geo;
-use crate::osm::{Kind, Tags, Thing};
+use crate::map::geo;
+use crate::map::osm::{Kind, Tags, Thing};
 use flate2::write::ZlibEncoder;
 use rusqlite::{params, Connection};
 use std::collections::BTreeMap;
@@ -78,7 +78,7 @@ pub fn write(path: &Path, things: &[Thing], boxes: &[[f64; 4]], source: &str) ->
         if !boxes.iter().any(|b| b[0] <= lon && lon <= b[2] && b[1] <= lat && lat <= b[3]) {
             continue;
         }
-        let part = t.tags.get("building:part").is_some_and(|v| v != "no") && !t.tags.get("building").is_some_and(|v| v != "no");
+        let part = t.tags.get("building:part").is_some_and(|v| v != "no") && !matches!(t.tags.get("building"), Some(v) if v != "no");
         let h = heights(&t.tags);
         for ring in &t.rings {
             if ring.len() < 4 || ring[0] != ring[ring.len() - 1] {
@@ -139,7 +139,7 @@ pub fn write(path: &Path, things: &[Thing], boxes: &[[f64; 4]], source: &str) ->
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::osm::write::{pbf, El};
+    use crate::map::osm::write::{pbf, El};
 
     #[test]
     fn heights_from_tags() {
@@ -167,7 +167,7 @@ mod tests {
         els.push(El::Way(101, &[20, 21, 22, 23, 20], &[("building", "church"), ("building:levels", "4")]));
         els.push(El::Way(102, &[30, 31, 32, 33, 30], &[("building:part", "yes"), ("height", "30"), ("min_height", "10")]));
         std::fs::write(&src, pbf(&els)).unwrap();
-        let things = crate::osm::read(&src, &wanted).unwrap();
+        let things = crate::map::osm::read(&src, &wanted).unwrap();
         let path = dir.join("buildings.sqlite");
         let li = lastbook_engine::regions::boxes("LI").unwrap();
         assert_eq!(write(&path, &things, li, "OpenStreetMap").unwrap(), (2, 2), "two outlines; the church and the part have heights");
@@ -176,11 +176,11 @@ mod tests {
         std::fs::create_dir_all(data.join("derived/geo")).unwrap();
         std::fs::copy(&path, data.join("derived/geo/buildings.sqlite")).unwrap();
         std::fs::write(data.join("derived/geo/national-status.json"), r#"{"state":"complete","features":0}"#).unwrap();
-        crate::detail::MapWriter::create(&data.join("derived/geo/national.sqlite")).unwrap().finish().unwrap();
+        crate::map::detail::MapWriter::create(&data.join("derived/geo/national.sqlite")).unwrap().finish().unwrap();
         let map = lastbook_engine::map::Map::new(lastbook_engine::paths::Paths::new(dir.clone(), Some(data)));
         let (x, y) = geo::tile_of(16, 9.5218, 47.1398);
         let t: serde_json::Value = serde_json::from_slice(&map.tile(16, x, y)).unwrap();
-        assert!(t["layers"]["bldg"].as_array().unwrap().len() >= 1, "{t}");
+        assert!(!t["layers"]["bldg"].as_array().unwrap().is_empty(), "{t}");
         let (x14, y14) = geo::tile_of(14, 9.5216, 47.1396);
         let b = map.bldg3d(x14, y14);
         let ints: Vec<i32> = b.chunks(4).map(|c| i32::from_le_bytes([c[0], c[1], c[2], c[3]])).collect();

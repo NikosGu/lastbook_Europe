@@ -2,7 +2,7 @@
 
 Which files the map reads, what is in them, and how a region's files are built and packed from public data. The app
 draws only from files on the computer and never asks the network for a tile, a place or an address. The tools that
-build the files (`crates/tools`, the `map-data` command) run on a build machine and read sources downloaded
+build the files (`lastbook-tools` in `crates/tools`, its map subcommands) run on a build machine and read sources downloaded
 beforehand; they are never part of the app.
 
 ## What the app reads
@@ -74,7 +74,7 @@ Resource details are metric: `area_ha` (and `region`, `country`); records carryi
 
 ## Building a region
 
-`map-data` builds a region's files from four public sources, read from local files:
+`lastbook-tools build-map` builds a region's files from four public sources, read from local files:
 
 | Source | What it gives | Licence |
 |---|---|---|
@@ -84,25 +84,26 @@ Resource details are metric: `area_ha` (and `region`, `country`); records carryi
 | Natural Earth 1:10m (https://naciscdn.org/naturalearth/10m/): `ne_10m_roads`, `ne_10m_populated_places_simple`, `ne_10m_lakes`, `ne_10m_lakes_europe`, `ne_10m_rivers_lake_centerlines`, `ne_10m_rivers_europe` | the zoomed-out base: Europe's main roads, towns, lakes and rivers, zoom 3 to 9 | public domain |
 
 ```
-cargo run --release -p lastbook-tools --bin map-data -- region LI \
+cargo run --release -p lastbook-tools -- build-map --region LI \
     --gpkg derived/sources/LI/liechtenstein-free.gpkg.zip --pbf derived/sources/LI/liechtenstein.osm.pbf \
     --dem derived/sources/dem/Copernicus_DSM_COG_10_N47_00_E009_00_DEM.tif \
     --dem derived/sources/dem/Copernicus_DSM_COG_10_N46_00_E009_00_DEM.tif \
     --ne derived/sources/ne --out derived/maps/LI
-cargo run --release -p lastbook-tools --bin map-data -- pack-map derived/maps/LI/map --out derived/packs
-cargo run --release -p lastbook-tools --bin map-data -- pack-addresses derived/maps/LI/addresses/LI.sqlite --out derived/packs
+cargo run --release -p lastbook-tools -- pack-map --map derived/maps/LI/map --out derived/packs
+cargo run --release -p lastbook-tools -- pack-addresses --index derived/maps/LI/addresses/LI.sqlite --out derived/packs
 ```
 
-`region` writes `<out>/map/` (the map set: `map-set.json` and `derived/geo/*`) and `<out>/addresses/<REGION>.sqlite`,
-and prints what it made. Everything kept lies inside the region's boxes (`crates/engine/src/regions.rs`); the DEM
+`build-map` writes `<out>/map/` (the map set: `map-set.json` and `derived/geo/*`) and
+`<out>/addresses/<REGION>.sqlite`, and prints what it made; `build-terrain` writes the elevation tiles alone. Each
+subcommand prints its options with `--help`. Everything kept lies inside the region's boxes (`crates/engine/src/regions.rs`); the DEM
 tiles given must cover them (Liechtenstein's box reaches 46.90°N, so it needs N46 as well as N47).
 
 The detail is what the two extracts hold, and Geofabrik's country extracts stop at the border. A region's boxes reach
 into its neighbours, so that strip has only the base map and the elevation: Liechtenstein's map has no streets on the
 Swiss bank of the Rhine and a handful near Feldkirch, and its address index only the few Austrian addresses the extract
-has. Filling the strip needs the neighbours' extracts as well; `region` takes one of each for now.
+has. Filling the strip needs the neighbours' extracts as well; `build-map` takes one of each for now.
 
-How each file is made:
+How each file is made (`crates/tools/src/map/`):
 
 - `detail.rs`: the original Lastbook's layers, classes and zooms from the GeoPackage; an area appears from the zoom
   where it spans about a sixteenth of a tile. `base.rs` adds the Natural Earth base with each feature's own `min_zoom`.
@@ -112,8 +113,8 @@ How each file is made:
 `pack-map` and `pack-addresses` make `Lastbook-Map-<REGION>.zip` (the map set at the top of the zip, deflated, the
 elevation tiles stored) and `Lastbook-Addresses-<REGION>.zip` (`derived/geo/addresses/<REGION>.sqlite` alone), check
 each with setup's own `install::check_zip`, and print the entry for `maps` or `address_indexes` in
-`manifest-v1.json` ([SETUP-API.md](SETUP-API.md)), with the download address under `--url-base` (by default the
-placeholder host of `crates/engine/src/dist.rs`).
+`manifest-v1.json` ([SETUP-API.md](SETUP-API.md)), with the download address in the `maps/` or `addresses/` folder of
+`--base` (by default the placeholder host of `crates/engine/src/dist.rs`).
 
 Liechtenstein, built on 17 November 2026 from Geofabrik's extract of 16 November (about 3 seconds):
 

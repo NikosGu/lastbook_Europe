@@ -8,8 +8,8 @@
 //!
 //! A feature shows from zoom `minz` to zoom `maxz`. The layers, classes and zooms are the original Lastbook's.
 
-use crate::geo::{self, area_z, bbox, simplify, Part};
-use crate::gpkg::{self, Kind};
+use crate::map::geo::{self, area_z, bbox, simplify, Part};
+use crate::map::gpkg::{self, Kind};
 use lastbook_engine::map::tiles::pack;
 use rusqlite::{params, Connection};
 use std::path::Path;
@@ -198,7 +198,7 @@ pub fn detail(w: &mut MapWriter, g: &Connection, boxes: &[[f64; 4]]) -> rusqlite
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gpkg::write::{row, table};
+    use crate::map::gpkg::write::{row, table};
 
     /// A tiny GeoPackage around Vaduz, with the layers the detail reads.
     pub fn vaduz_gpkg() -> Connection {
