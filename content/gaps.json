@@ -1,113 +1,118 @@
 {
- "water": {
-  "missing": [
-   "No current CDC or EPA page on disinfecting drinking water. Every bleach dose here assumes 5–6% bleach, and today's stronger US bleach labels are not covered.",
-   "No guidance on choosing certified filters or tablets, storing water in large barrels, or treating pool or spa water.",
-   "No local water utility's boil-water notice material.",
-   "No source on how tall buildings get their water (roof tanks, booster pumps), or how long taps keep running on upper floors in a blackout.",
-   "No official guide to water in an apartment or high-rise when the power is out; the readings for it here are general.",
-   "No source on how salty or polluted particular city rivers, harbors or canals are, or what home treatment does to a mix of sewage and chemicals beyond the general warnings here."
-  ],
-  "disagree": [
-   "Sources give different bleach drop counts. Each card states the bleach strength its own source assumes — follow one source's method fully rather than mixing them.",
-   "Water-heater water: the FEMA/Red Cross booklet (2004) lists the hot-water tank among safe water sources in the home; the Norwegian civil protection guide (2024) says water from the water heater should not be used for drinking."
-  ]
- },
- "sanitation": {
-  "missing": [
-   "No US (CDC, FEMA or Red Cross) guide to bucket or bag emergency toilets, or to cleaning up sewage backups. The closest are a Norwegian civil-protection guide, WHO notes written for camps and a 1987 book.",
-   "Almost no sanitation videos."
-  ]
- },
- "food": {
-  "missing": [
-   "No USDA FSIS “Keeping Food Safe During an Emergency” or FoodKeeper chart.",
-   "No current guide to long-term bulk storage (grains, oxygen absorbers).",
-   "No CDC carbon monoxide fact sheet in English (the US Fire Administration generator flyer here is in Spanish)."
-  ]
- },
- "preserve": {
-  "missing": [
-   "The book “So Easy to Preserve” is not in the library; NCHFP web pages and the USDA canning guide are."
-  ]
- },
  "hurt": {
   "missing": [
-   "No simple mass-casualty triage method (such as START) written for the public.",
-   "No stand-alone psychological first aid guide.",
-   "No agency videos on carbon monoxide or burns.",
-   "“New Where There Is No Doctor” is incomplete here: some chapters listed in its contents (mental health, older people, disasters, medicines) were not available."
+   "No first aid manual written for the public: the IFRC guidelines are written for trainers, and the Austrian and German guides have only a few first aid pages.",
+   "The IFRC guidelines name no emergency number; 112 and the national numbers come from the Austrian, German and Italian guides.",
+   "No simple method for sorting many injured people (triage) written for the public.",
+   "Some medicines the IFRC guidelines name, such as aspirin, adrenaline or an inhaler, may be given only where local rules allow; no source here gives those rules for any country."
   ],
   "disagree": [
-   "Heat stroke: the CERT manual says give no fluids; New Where There Is No Doctor says give drinks once the person is alert. Follow trained help if you can reach it.",
-   "CPR: the 2025 Red Cross/Red Crescent guidelines say checking for a pulse is unreliable for first aiders; New Where There Is No Doctor says to check for a pulse.",
-   "Poisoning: this guide follows the 2025 Red Cross/Red Crescent guidelines: do not induce vomiting, and give no milk, water or charcoal unless a poison centre says to. The First Aid chapter of New Where There Is No Doctor (2020) instead advises water and activated charcoal for most poisons."
+   "Cooling a burn: the IFRC guidelines say cool running water for at least ten minutes, ideally twenty, but not ice-cold; the Austrian guide says to rinse with lukewarm water and to stop if the person shivers."
   ]
  },
  "health": {
   "missing": [
-   "The full WHO mhGAP mental-health guide is only here in Arabic; the English item is a one-page update.",
-   "No pharmacy or compounding manual; medicine references (MSF Essential Drugs) are written for clinicians."
+   "No guide to caring for a sick person at home over days or weeks.",
+   "Nothing on long-term illness without a doctor (diabetes, high blood pressure, heart disease), on pregnancy and birth, or on teeth.",
+   "No guide to medicines: what to take for what, doses, or how long medicines keep.",
+   "Helplines are named only for Germany and for Styria in Austria."
   ]
  },
- "shelter": {
+ "water": {
   "missing": [
-   "No EPA or CDC wildfire smoke health guide and no Air Quality Index explainer.",
-   "Most outdoor-shelter videos are hobbyist channels without captions.",
-   "No city guidance on cooling centers or on heat in apartments without air conditioning."
+   "No guide for water that may hold fuel, chemicals or sewage, beyond the WHO note that treating water at home does not remove chemicals.",
+   "Nothing on finding water outdoors (springs, streams, rain) or on how safe a river or lake is to drink from.",
+   "No boil-water notice from a water utility, and nothing on how long taps keep running in a tall building during a blackout.",
+   "No source compares water tablets or filters; one Austrian guide names a single brand."
   ],
   "disagree": [
-   "Heat stroke: CERT says no fluids; New Where There Is No Doctor says drinks once alert."
+   "How much water to keep: the German guide says 2 litres a person a day (half a litre for cooking); the Swiss leaflet at least 9 litres a person, enough to drink and cook for three days; the Austrian supplies guide 1.5 litres to drink plus 3.5 for washing a day, and seven 1.5-litre bottles a person; the WHO note 2.5 to 3 litres a day to drink and eat, and 7.5 to 15 in all. Each page states its own figure.",
+   "Sun disinfection (SODIS): the WHO note says about a day of sun near the equator, two if it is cloudy; the Austrian supplies guide says about 6 hours of full sun, about three days under cloud, and that it kills 30 to 80 per cent of germs."
+  ]
+ },
+ "food": {
+  "missing": [
+   "No food-safety guide from a health authority on what to throw away after a long power cut or a flood; the rules here come from civil-protection leaflets.",
+   "Nothing on how long fridge and freezer food stays safe without power, beyond eating perishable food first and keeping the doors shut.",
+   "No guide to cooking over a fire or on a grill beyond the warning that grills and camping stoves belong outside."
+  ],
+  "disagree": [
+   "How long to plan for: about a week (the Swiss leaflet and the Austrian supplies guide), 10 days if possible and at least 3 (the German guide), one to two weeks (the Styrian blackout guide), at least 10 to 14 days (the Austrian blackout checklist).",
+   "Cooking on a grill in a blackout: the Austrian guides suggest a garden grill without saying where to use it; the German guide says grills and camping stoves are for outdoors only."
   ]
  },
  "power": {
   "missing": [
-   "No manual for EcoFlow, Jackery or similar battery power stations.",
-   "Nothing from FDA or health agencies on keeping CPAP or oxygen machines running in an outage beyond Red Cross/FEMA planning advice.",
-   "No local utility's material on gas meters, seismic shut-off valves or planned power shut-offs.",
-   "No power outage guide written for people living in apartment or high-rise buildings, and nothing for residents on being stuck in an elevator.",
-   "Nothing on camp stoves or generators on apartment balconies specifically; the general 20-foot rule is in the FEMA outage sheet. U.S. Fire Administration guidance says not to store or use a grill on a porch or balcony."
-  ]
- },
- "energy": {
-  "missing": [
-   "Micro-hydro and wind material is mostly old or utility-scale."
-  ]
- },
- "comms": {
-  "missing": [
-   "No text of the FCC amateur radio rules (Part 97) or current GMRS licence guidance; the ham study guide covers the 2014–2018 question pool.",
-   "No modern civilian land-navigation manual."
+   "No manual for generators or portable power stations: only the warnings in this guide.",
+   "Nothing for people in tall buildings beyond checking the lift: water pressure, long stairs, neighbours who cannot get down.",
+   "No guide to medical devices that need power, such as oxygen or breathing machines, beyond asking for help early."
   ],
   "disagree": [
-   "Sources disagree on the GMRS licence term (ARES 2015 vs TACDA)."
+   "How long to prepare for a blackout: at least 10 to 14 days (the Austrian blackout checklist), one to two weeks (the Styrian blackout guide), 10 days (the German guide), about a week (the Swiss leaflet)."
+  ]
+ },
+ "shelter": {
+  "missing": [
+   "No guide to heat waves at home: keeping rooms cool, cooling people down, help for older people living alone.",
+   "No guide to judging whether a building damaged by an earthquake, a storm or a fire is safe to stay in.",
+   "Nothing on shelters run by the authorities, or on sheltering outdoors."
+  ]
+ },
+ "sanitation": {
+  "missing": [
+   "No step-by-step guide to an emergency toilet: setting up a bag or bucket toilet and getting rid of the waste safely.",
+   "Nothing on keeping clean with very little water, beyond when to wash hands.",
+   "No guide to cleaning a home after sewage or flood water got in.",
+   "Nothing on stopping an illness such as diarrhoea spreading in a household."
   ]
  },
  "disaster": {
   "missing": [
-   "No California tsunami inundation maps or local tsunami zone guide.",
-   "No EPA/CDC wildfire smoke guide.",
-   "No guidance on getting out of a subway or other transit during an emergency, or on what to do when transit stops running.",
-   "No fire department guidance on when to stay inside a fire-resistant apartment building during a fire elsewhere in it.",
-   "City guides such as NYC Emergency Management's Ready New York series are not in the library."
+   "No guide to storms, hail or strong winds, except an Austrian page on thunderstorms in the mountains.",
+   "No guide to landslides, or to avalanches beyond rescue among mountaineers.",
+   "No guide to cleaning up and drying a home after a flood.",
+   "On chemical and nuclear accidents, only where to shelter and the iodine warning: nothing on how long to stay inside or on cleaning up.",
+   "The earthquake, tsunami, flood and forest-fire pages are written for Italy; alerts and sirens are explained only for Italy, Germany and Austria."
+  ]
+ },
+ "comms": {
+  "missing": [
+   "No guide to radios for talking to each other, such as PMR walkie-talkies, CB or amateur radio.",
+   "No guide to a family plan: where to meet and whom to call when the phones are down.",
+   "Warning systems are explained only for Germany, Austria and Italy.",
+   "No guide to reading a map or using a compass."
   ]
  },
  "grow": {
   "missing": [
-   "No current coastal Southern California planting calendar in text form (the UC Ventura chart is a scanned image).",
-   "No extension guides for dry beans, winter squash or home-scale grains; the sweet potato guide is for hotter Sacramento."
+   "No guide to growing food: soil, planting times for European climates, staple crops such as potatoes and beans, or watering.",
+   "No guide to saving seed, or to growing in pots or on a balcony."
   ]
  },
- "land": {
+ "preserve": {
   "missing": [
-   "No California Geological Survey liquefaction or fault-zone maps, tsunami inundation maps or FEMA flood maps.",
-   "No regional guide to edible or poisonous wild plants."
+   "No guide to preserving food at home: bottling in jars, drying, pickling, fermenting or freezing.",
+   "No guide to telling whether home-preserved food is safe to eat."
   ]
  },
  "repair": {
   "missing": [
-   "No general home-repair guide (drywall, outlets, doors and windows); plumbing comes from a Navy manual.",
-   "No modern welding safety standard (ANSI Z49.1 / OSHA); the Steelworker manual is historical."
+   "No guide to hand tools, sharpening or a basic tool kit.",
+   "No guide to repairs in the home (taps, toilets, windows, simple electrical work) or to small engines."
+  ]
+ },
+ "energy": {
+  "missing": [
+   "No guide to batteries, power banks or portable power stations.",
+   "No guide to solar panels or other home power systems.",
+   "No generator manual: the power guide has only the warnings that the civil-protection leaflets give."
+  ]
+ },
+ "land": {
+  "missing": [
+   "No hazard maps (floods, earthquakes, landslides) for any area.",
+   "Nothing on finding water in nature (springs, wells, rain), or on wild plants and mushrooms.",
+   "Nothing on reading a map or using a compass."
   ]
  }
 }

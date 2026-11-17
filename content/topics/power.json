@@ -1,391 +1,118 @@
 {
- "id": "power",
- "mode": "now",
- "title": "Power is out — light, phones & power",
- "short": "Outages, generators, batteries and gas safety",
- "intro": "Help for the first hours and days without electricity: safe lighting, keeping phones charged, running a generator or battery station without poisoning or shocking anyone, power-dependent medical needs, apartment buildings where the elevator stops, and what to do if you smell gas.",
- "keywords": [
-  "power outage",
-  "power cut",
-  "blackout",
-  "electricity",
-  "generator",
-  "carbon monoxide",
-  "flashlight",
-  "torch",
-  "candles",
-  "phone charging",
-  "battery",
-  "solar",
-  "power station",
-  "gas leak",
-  "gas meter",
-  "shut off",
-  "breaker",
-  "backfeed",
-  "CPAP",
-  "oxygen",
-  "medical device",
-  "apartment",
-  "high-rise",
-  "elevator",
-  "stairs",
-  "building manager"
- ],
- "choices": [
-  {
-   "id": "first-hours",
-   "label": "The power just went out",
-   "hint": "Lights out, fridge off, no idea how long it will last",
-   "read": [
+  "id": "power",
+  "mode": "now",
+  "title": "The power is out",
+  "short": "First steps, light, medicines, lifts, generators",
+  "intro": "Readings for a power cut that may last hours or days: the first steps at home, staying informed, medicines that need power or cold, lifts, generators, and what to do when the power comes back.",
+  "keywords": ["power cut", "power outage", "blackout", "outage", "electricity", "no power", "no electricity", "lights out", "torch", "flashlight", "candles", "batteries", "power bank", "radio", "generator", "lift", "elevator", "stuck in a lift", "insulin", "medical device", "oxygen", "fridge", "freezer", "cash", "fuse", "power back", "neighbours"],
+  "choices": [
     {
-     "doc": "18bf4604bf28c4",
-     "page": 2,
-     "label": "FEMA: what to do during and after an outage",
-     "note": "One-page FEMA sheet (2023): flashlights not candles, keep fridge and freezer closed, carbon monoxide warnings, unplugging against surges, and when to throw out food and medicine."
+      "id": "first-hours",
+      "label": "The power just went out",
+      "hint": "A power cut or a blackout: dark at home and next door, no idea for how long",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 5, "label": "What to do in a blackout, in order",
+         "note": "In German. Stay calm, check whether it is only your street, radio on, tell the family, unplug devices, leave one lamp on."},
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "First steps at home",
+         "note": "In German. Family, devices, the radio, water, light, the lift, the freezer, vital medicines, waste and a substitute toilet."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "How to behave during a blackout",
+         "note": "In Italian. Switch off appliances, keep the fridge shut, listen to the radio, avoid lifts, and generator safety."}
+      ]
     },
     {
-     "doc": "cecc1671ae4d02",
-     "page": 14,
-     "label": "Are You Ready: power outage checklist",
-     "note": "FEMA's 2020 guide: use only flashlights, avoid candles, backup charging such as a car charger, and never run the car in a garage."
+      "id": "food-link",
+      "goto": "food/cook",
+      "label": "Cooking and the fridge without power",
+      "hint": "In the food guide"
     },
     {
-     "doc": "e4bfed4b6afd6d",
-     "page": 1,
-     "label": "Keeping food safe while the power is out",
-     "note": "FDA fact sheet: thermometers, keeping doors closed, how long the fridge and freezer stay cold, and checking food once power returns. See also the Food section."
+      "id": "cold-link",
+      "goto": "shelter/cold",
+      "label": "Staying warm without heating",
+      "hint": "In the guide on heat and cold"
+    },
+    {
+      "id": "medical",
+      "label": "Someone needs power or cold for a medicine or a device",
+      "hint": "Insulin, a breathing machine, oxygen, a powered wheelchair",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Vital medicines in a blackout",
+         "note": "In German. Check how long they will last; insulin must be kept cool; if they will not last a week, whom to tell."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Life-sustaining devices that need power",
+         "note": "In Italian. Ask for help early: in Italy the page names 118 and the social services."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Spare batteries and chargers for aids",
+         "note": "In German. Aids that need power, a medicines plan and stock, and who can help you leave if you must."}
+      ]
+    },
+    {
+      "id": "lift",
+      "label": "A lift has stopped, or I live high up",
+      "hint": "Someone may be trapped, stairs only",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Check the lift for trapped people",
+         "note": "In German. Among the steps for the building and the street: the lift, neighbours, and people who need help."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Do not use the lift until power is back for good",
+         "note": "In Italian. Power may come and go while repairs are made."}
+      ]
+    },
+    {
+      "id": "generator",
+      "label": "I want to run a generator",
+      "hint": "A portable generator, fuel, where to put it",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 18, "label": "Generators: where to run them, fuel, fire risk",
+         "note": "In German. Never in closed rooms; about a litre of fuel an hour; stored fuel is a fire risk. Also why solar panels usually stop too."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Plug devices into the generator, not the house",
+         "note": "In Italian. Do not connect it to the home's wiring, and never start it in the house or the garage."},
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "No generator or outdoor heater inside the home",
+         "note": "From the IFRC's winter messages."}
+      ]
+    },
+    {
+      "id": "long",
+      "label": "It could last for days",
+      "hint": "Shops shut, no cash machines, no phones, staying at home",
+      "read": [
+        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "What a long blackout means",
+         "note": "In German. Shops close, medical care gets harder by the hour, homes cool down, no lift or phone, waste piles up."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 7, "label": "What stops working without power",
+         "note": "In German. Phones and internet, card payments and cash machines, fridge, stove, tap water, lights, heating."},
+        {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Stay at home and look after each other",
+         "note": "In German. Stay home unless you are needed, save fuel, talk with neighbours, find who needs help."}
+      ]
+    },
+    {
+      "id": "back-on",
+      "label": "The power is back",
+      "hint": "What to switch on, phone calls, heating",
+      "read": [
+        {"doc": "oezsv-blackout-checkliste", "page": 7, "label": "After a blackout",
+         "note": "In German. Check the stove and iron are off, switch on only what you need, avoid calls that are not urgent."},
+        {"doc": "zsv-steiermark-blackout", "page": 27, "label": "When the power returns",
+         "note": "In German. Devices, heating, fridge, sewage pumps, cash, staying at home, and waiting before restarting computers."}
+      ]
     }
-   ]
-  },
-  {
-   "id": "food-link",
-   "label": "Cooking and keeping food safe without power",
-   "hint": "Fridge and freezer, camp stoves and grills — in the food guide",
-   "goto": "food/cook"
-  },
-  {
-   "id": "generator",
-   "label": "I want to run a generator safely",
-   "hint": "Portable generator, extension cords, refuelling, CO alarm",
-   "read": [
-    {
-     "doc": "equipment-b463000c0e14b4ad",
-     "page": 9,
-     "label": "Generator carbon monoxide danger (Honda manual)",
-     "note": "Model-specific Honda EU2200i manual, but the CO rules apply widely: outside only, far from windows and doors, never in a garage, and CO alarm placement."
-    },
-    {
-     "doc": "equipment-b463000c0e14b4ad",
-     "page": 10,
-     "label": "Shock hazards: wet conditions and house connections",
-     "note": "Keep the generator dry; do not connect it to a building's wiring unless a qualified electrician installed an isolation switch."
-    },
-    {
-     "doc": "equipment-b463000c0e14b4ad",
-     "page": 11,
-     "label": "Fire, burns and refuelling with care",
-     "note": "Hot exhaust and muffler, distance from buildings, and refuelling only with the engine off and cooled, outdoors, in an approved gasoline container."
-    },
-    {
-     "doc": "d2213d245d582c",
-     "page": 1,
-     "label": "U.S. Fire Administration generator one-pager",
-     "note": "Short English flyer (catalog title is Spanish): use outdoors, have CO alarms, not in wet areas, heavy-duty cords, don't refuel while running."
-    }
-   ]
-  },
-  {
-   "id": "batteries-solar",
-   "label": "Charging phones from batteries, a car or solar",
-   "hint": "Power bank, battery station, solar panels, car charger",
-   "read": [
-    {
-     "doc": "cecc1671ae4d02",
-     "page": 14,
-     "label": "Backup charging and car-charging safety",
-     "note": "Keep devices charged, have backup charging such as a car charger, and do not leave a car running in a garage or near the home."
-    },
-    {
-     "doc": "2c619f4fe19187",
-     "page": 1,
-     "label": "Spare phone batteries and solar or hand-crank chargers",
-     "note": "FEMA alerts fact sheet suggests extra batteries and car, solar-powered or hand-crank chargers so you keep receiving warnings."
-    },
-    {
-     "doc": "89c91ae1008675d0",
-     "page": 15,
-     "label": "Looking after a home solar and battery system",
-     "note": "Plain-language checks for appliances, wiring and batteries, including ventilation and the battery fuse. Written for small stand-alone systems in Belize (2023)."
-    },
-    {
-     "doc": "e02dc81261aae7",
-     "page": 358,
-     "label": "Signs a lithium battery may catch fire",
-     "note": "Emergency Response Guidebook 2024: what thermal runaway is and warning signs such as swelling, leaking, odor or burn marks. Written for responders."
-    }
-   ]
-  },
-  {
-   "id": "medical",
-   "label": "Someone needs power for medicine or a medical device",
-   "hint": "CPAP, oxygen, power wheelchair, refrigerated medicine",
-   "read": [
-    {
-     "doc": "e629b2983d95e4",
-     "page": 4,
-     "label": "Red Cross: list everything that needs electricity",
-     "note": "Inventory devices like CPAP or power wheelchairs and refrigerated medicines, and plan battery or generator backup and where you would go."
-    },
-    {
-     "doc": "18bf4604bf28c4",
-     "page": 2,
-     "label": "Refrigerated medicines after a day without power",
-     "note": "FEMA advice on replacing refrigerated medications and calling your doctor or pharmacist; also talk to your doctor before an outage."
-    },
-    {
-     "doc": "cecc1671ae4d02",
-     "page": 14,
-     "label": "Backup and relocation plans for life-sustaining devices",
-     "note": "Are You Ready: take inventory of power-dependent medical equipment and make backup plans, including relocation."
-    }
-   ]
-  },
-  {
-   "id": "apartment",
-   "label": "I live in an apartment or high-rise",
-   "hint": "Elevator out, stairs only, neighbors who can't get down",
-   "read": [
-    {
-     "doc": "9681a68ebd07f5",
-     "page": 58,
-     "label": "Who gets stuck upstairs when the elevator stops",
-     "note": "CERT Hazard Annexes (2019), hurricane section: a wheelchair user in a high-rise may be shut in when power and the elevator fail, and will need food, water and possibly medicine."
-    },
-    {
-     "doc": "5cf2ec3dc27738",
-     "label": "Planning with neighbors and your building",
-     "note": "Ready.gov page (2026): talking with neighbors in apartments and condos, deciding who checks on older or disabled neighbors, and high-rise basics such as not using elevators."
-    },
-    {
-     "doc": "0dfdf1fb4b178f",
-     "page": 17,
-     "label": "If you can't use the stairs: escape chairs and help from management",
-     "note": "Older FEMA Are You Ready? guide (2004): an escape chair for people with limited mobility in high-rises, and asking apartment management to mark accessible exits and help you leave."
-    }
-   ]
-  },
-  {
-   "id": "gas",
-   "label": "I smell gas or need to shut off utilities",
-   "hint": "Rotten-egg smell, hissing, after an earthquake, breaker panel",
-   "read": [
-    {
-     "doc": "ed5bac0a81b009",
-     "page": 177,
-     "label": "CERT: when and how to shut off the gas",
-     "note": "Gas meter inside vs outside, the non-sparking wrench, automatic quake shutoff valves, and why only a licensed technician turns gas back on."
-    },
-    {
-     "doc": "0dfdf1fb4b178f",
-     "page": 14,
-     "label": "If you smell gas: get out first",
-     "note": "Older FEMA Are You Ready section: open a window, get everyone out, shut off at the outside valve if you can, call from a neighbor's home."
-    },
-    {
-     "doc": "ed5bac0a81b009",
-     "page": 175,
-     "label": "Shutting off electricity at the breaker panel",
-     "note": "CERT steps for breakers and fuses, when to call a licensed electrician, and never wading into water to reach the panel."
-    },
-    {
-     "doc": "5cd0b4e41cc479",
-     "page": 66,
-     "label": "After an earthquake: checking gas and propane",
-     "note": "FEMA P-530 checklist: where to check for gas smell, turning the meter valve, and what to do about shifted propane tanks."
-    }
-   ]
-  },
-  {
-   "id": "long-outage",
-   "label": "The outage could last days or weeks",
-   "hint": "Planning, heat or cold, staying put or leaving",
-   "read": [
-    {
-     "doc": "e629b2983d95e4",
-     "page": 5,
-     "label": "Planning to stay home two weeks or leave",
-     "note": "Red Cross planning for extended outages: where you'll go if power sources won't last, a support network, and plans to stay or go."
-    },
-    {
-     "doc": "18bf4604bf28c4",
-     "page": 2,
-     "label": "Staying cool or warm when the power is out",
-     "note": "FEMA tips for extreme heat or winter outages, going to an alternate location, and why multiple disasters can happen at once."
-    },
-    {
-     "doc": "equipment-b463000c0e14b4ad",
-     "page": 67,
-     "label": "Stored gasoline goes bad",
-     "note": "Honda manual (model-specific) explains that gasoline can deteriorate within weeks to months and how storage conditions matter."
-    }
-   ]
-  }
- ],
- "limits": [
-  {
-   "text": "Generator exhaust contains carbon monoxide you cannot see or smell and it can kill in minutes; never run a generator inside a house, garage, basement or any enclosed or partly enclosed space.",
-   "doc": "equipment-b463000c0e14b4ad",
-   "page": 9
-  },
-  {
-   "text": "If you suspect carbon monoxide poisoning, get to fresh air and seek medical attention immediately.",
-   "doc": "equipment-b463000c0e14b4ad",
-   "page": 9
-  },
-  {
-   "text": "Use generators, camp stoves and charcoal grills outdoors at least 20 feet from windows, doors and garages; never heat the home with a gas stove, oven, grill or dryer.",
-   "doc": "18bf4604bf28c4",
-   "page": 2
-  },
-  {
-   "text": "Do not connect a generator to a building's electrical system unless an isolation switch was installed by a qualified electrician.",
-   "doc": "equipment-b463000c0e14b4ad",
-   "page": 10
-  },
-  {
-   "text": "Improper connections can backfeed current into utility lines, which may electrocute utility workers; standby connections must be made by a qualified electrician.",
-   "doc": "equipment-b463000c0e14b4ad",
-   "page": 56
-  },
-  {
-   "text": "For a home standby generator: never connect it to a building unless a licensed electrician has installed an approved transfer switch (Generac manual, model-specific).",
-   "doc": "manual-84b9686f64977869",
-   "page": 6
-  },
-  {
-   "text": "Do not refuel a running generator; let it cool, refuel outdoors, and store gasoline only in an approved container.",
-   "doc": "equipment-b463000c0e14b4ad",
-   "page": 11
-  },
-  {
-   "text": "If you turn off the gas for any reason, a qualified professional must turn it back on; never do it yourself.",
-   "doc": "0dfdf1fb4b178f",
-   "page": 14
-  },
-  {
-   "text": "If the gas meter is inside and you smell gas, evacuate and call 9-1-1; do not try to shut it off from inside if gas may be in the air. Use a flashlight, not a candle.",
-   "doc": "ed5bac0a81b009",
-   "page": 177
-  },
-  {
-   "text": "Do not enter a flooded basement or wade into standing water to shut off electricity; notify a licensed electrician or the utility in an electrical emergency.",
-   "doc": "ed5bac0a81b009",
-   "page": 175
-  },
-  {
-   "text": "Charging batteries give off explosive hydrogen gas: no smoking, sparks or open flames nearby, and never lay metal objects on a battery.",
-   "doc": "47e8a442a2b343f0",
-   "page": 13
-  },
-  {
-   "text": "Damaged, swollen, leaking or recalled lithium batteries are more likely to catch fire through thermal runaway, which can spread to nearby materials.",
-   "doc": "e02dc81261aae7",
-   "page": 358
-  },
-  {
-   "text": "It is advisable to have a skilled technician install a stand-alone solar system; reversed polarity can damage components.",
-   "doc": "89c91ae1008675d0",
-   "page": 18
-  }
- ],
- "prepare": [
-  {
-   "doc": "18bf4604bf28c4",
-   "page": 1,
-   "label": "FEMA power outage sheet: the basics",
-   "note": "Why outages are dangerous and the short list: generators outside, charged phones, medical device plan, unplug to avoid surges."
-  },
-  {
-   "doc": "cecc1671ae4d02",
-   "page": 14,
-   "label": "Power outage supplies: a flashlight per person",
-   "note": "Inventory what runs on electricity, battery-powered smoke and CO detectors, and at least one flashlight with spare batteries per household member."
-  },
-  {
-   "doc": "0dfdf1fb4b178f",
-   "page": 14,
-   "label": "Learn your gas and water shut-offs before you need them",
-   "note": "Older FEMA guide: contact your gas company about your meter, practice without actually turning it off, and label the water valve."
-  },
-  {
-   "doc": "0dfdf1fb4b178f",
-   "page": 15,
-   "label": "Teach everyone to shut off the electricity",
-   "note": "Locating the circuit box and switching off individual circuits before the main breaker."
-  },
-  {
-   "doc": "ed5bac0a81b009",
-   "page": 176,
-   "label": "Gas and carbon monoxide detectors",
-   "note": "CERT on natural gas and CO hazards, and where to place gas and CO detectors in the home."
-  },
-  {
-   "doc": "e629b2983d95e4",
-   "page": 4,
-   "label": "Plan power backup for medical needs",
-   "note": "Red Cross guide for older adults; the device inventory and backup planning helps any household with power-dependent needs."
-  },
-  {
-   "doc": "equipment-b463000c0e14b4ad",
-   "page": 60,
-   "label": "Generator maintenance schedule (Honda EU2200i)",
-   "note": "Model-specific schedule for oil, air filter, spark plug and spark arrester; check your own generator's manual."
-  }
- ],
- "learn": [
-  {
-   "doc": "d0fbb2e051cd46",
-   "page": 22,
-   "label": "FEMA hazard sheets 2024: power outage",
-   "note": "Same FEMA outage advice inside the full 2024 set of hazard information sheets, alongside earthquake, flood, wildfire and tsunami."
-  },
-  {
-   "doc": "equipment-b463000c0e14b4ad",
-   "label": "Honda EU2200i generator owner's manual",
-   "note": "Full 2024 manual for one popular inverter generator: safety, fuel, operation, maintenance, storage. Model-specific; follow your own unit's manual."
-  },
-  {
-   "doc": "video-XOBl14kLx4o",
-   "label": "Honda video: how the CO-MINDER shut-off works",
-   "note": "Manufacturer video on the carbon monoxide shut-off feature of Honda generators. Model-specific; no transcript."
-  },
-  {
-   "doc": "manual-84b9686f64977869",
-   "label": "Generac home standby generator manual",
-   "note": "Owner's manual for 10–26 kW air-cooled standby generators, including safety warnings about transfer switches and backfeed. Model-specific."
-  },
-  {
-   "doc": "1693406275fcc129",
-   "label": "EPA Power Resilience Guide (2023)",
-   "note": "Written for water utilities, but explains generator sizing, fuel planning, connections and maintenance in plain terms."
-  },
-  {
-   "doc": "1b589c901d3982",
-   "label": "Power Outage Ready Business Toolkit",
-   "note": "FEMA toolkit aimed at organizations; useful for thinking through extended outages."
-  },
-  {
-   "zim": "zim/mdwiki_en_all_maxi_2025-11.zim/Carbon_monoxide_poisoning",
-   "title": "Carbon monoxide poisoning",
-   "label": "Encyclopedia: carbon monoxide poisoning",
-   "note": "Medical encyclopedia article on symptoms, causes and prevention of CO poisoning."
-  }
- ],
- "related": [
-  "energy",
-  "food",
-  "comms",
-  "disaster"
- ]
+  ],
+  "limits": [
+    {"text": "Call the emergency numbers only for a life-threatening emergency.", "doc": "oezsv-blackout-checkliste", "page": 5},
+    {"text": "A generator has an engine: it cannot be run in closed rooms, and stored fuel is a fire risk.", "doc": "zsv-steiermark-blackout", "page": 18},
+    {"text": "Do not connect a generator to the home's wiring, and never start it inside the house or the garage.", "doc": "ravenna-rischio-blackout", "page": 1},
+    {"text": "Avoid lifts until the power is declared restored: it may come and go during repairs.", "doc": "ravenna-rischio-blackout", "page": 1},
+    {"text": "If vital medicines such as insulin will not last a week, tell a pharmacy, a doctor or the ambulance service.", "doc": "zsv-steiermark-blackout", "page": 26},
+    {"text": "Never leave candles or other open flames unattended.", "doc": "zsv-steiermark-notfallratgeber", "page": 7},
+    {"text": "When the power returns, check that the stove and the iron are really off: they can start a fire.", "doc": "zsv-steiermark-blackout", "page": 27}
+  ],
+  "prepare": [
+    {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "What to keep at home for a blackout", "note": "In German. Water, food, a battery or crank radio, lights, medicines, a way to cook, cash in small notes; plan for 10 to 14 days."},
+    {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Get ready as for a camping trip", "note": "In German. Shut-off valves, what your town has planned, one to two weeks of food and water."},
+    {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Checklists: light, radio, hygiene, medicines, a bag to grab", "note": "In German."},
+    {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Questions to talk over before it happens", "note": "In German. Getting home from work or school, who to contact, who needs help, neighbours, routines for children."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Numbers on paper and a power bank", "note": "In German."},
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "Radio, torch, candles and some cash", "note": "In German. The Swiss leaflet's list of what a household should have."}
+  ],
+  "learn": [
+    {"doc": "zsv-steiermark-blackout", "label": "Blackout: what to do when the power is gone", "note": "In German. Styrian civil protection: what a blackout is, being ready, first steps, cooking, when the power returns. Some pages are advertisements."},
+    {"doc": "oezsv-blackout-checkliste", "label": "Blackout checklist", "note": "In German. Austrian civil protection (2022): before, during and after, in eight pages."}
+  ],
+  "related": ["food", "shelter", "comms", "water"]
 }

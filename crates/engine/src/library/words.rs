@@ -490,24 +490,27 @@ mod tests {
         }
     }
 
+    /// The English guides are read across Europe and beyond: the words of British and American English, and the
+    /// emergency numbers people bring from home, find the same guides; everyday words find the right situation.
     #[test]
-    fn words_used_outside_the_us_find_the_same_guides() {
+    fn words_from_different_countries_find_the_same_guides() {
         let (stop, topics) = (qstop(), guides());
         let top = |q: &str| rank_topics(q, &topics, &stop);
         let pair = |t: &str, c: &str| (t.to_string(), Some(c.to_string()));
-        for (q, us) in [("torch", "flashlight"), ("rubbish", "garbage"), ("rubbish pickup", "trash pickup"), ("tinned food", "canned food"), ("999", "911"),
-                        ("112", "911"), ("111", "911"), ("adrenaline", "epinephrine"), ("108", "911"), ("geyser", "water heater")] {
+        for (q, us) in [("torch", "flashlight"), ("tinned food", "canned food"), ("999", "911"), ("adrenaline", "epinephrine"), ("sanitiser", "sanitizer"),
+                        ("bushfire", "wildfire")] {
             assert!(!top(us).is_empty(), "{us}");
             assert_eq!(top(q), top(us), "{q} / {us}");
         }
-        for (q, us) in [("bushfire", "wildfire"), ("bushfire smoke", "wildfire smoke"), ("heatwave", "heat wave"), ("barbecue", "grill"), ("bbq", "grill"),
-                        ("sanitiser", "sanitizer"), ("hand sanitiser", "hand sanitizer"), ("heatstroke", "heat stroke")] {
+        for (q, us) in [("rubbish", "garbage"), ("lift", "elevator"), ("power cut", "power outage"), ("diarrhoea", "diarrhea"), ("112", "911"),
+                        ("heatstroke", "heat stroke"), ("forest fire", "wildfire")] {
             assert_eq!(top(q).first().map(|t| t.0.clone()), top(us).first().map(|t| t.0.clone()), "{q} / {us}");
         }
-        for (q, t, c) in [("power cut", "power", "first-hours"), ("cyclone", "disaster", "flood"), ("monsoon", "disaster", "flood"), ("borewell", "water", "outside"),
-                          ("tubewell", "water", "outside"), ("loose motions", "hurt", "diarrhea"), ("bus", "disaster", "no-car"), ("no bus", "disaster", "no-car"),
-                          ("bar soap", "sanitation", "hands"), ("heat wave", "shelter", "heat"), ("grill", "food", "cook"), ("canned food", "food", "cook"),
-                          ("cut", "hurt", "bleeding"), ("well", "land", "water-source"), ("storm", "disaster", "flood")] {
+        for (q, t, c) in [("power cut", "power", "first-hours"), ("blackout", "power", "first-hours"), ("stuck in a lift", "power", "lift"),
+                          ("generator", "power", "generator"), ("cut", "hurt", "bleeding"), ("tick", "hurt", "bites"), ("flood", "disaster", "flood-warning"),
+                          ("earthquake", "disaster", "quake-now"), ("tsunami", "disaster", "tsunami"), ("forest fire", "disaster", "forest-fire"),
+                          ("boil water", "water", "boil"), ("toilet", "sanitation", "no-flush"), ("heating", "shelter", "cold"), ("heat wave", "shelter", "heat"),
+                          ("frozen pipes", "shelter", "home"), ("112", "comms", "call")] {
             assert_eq!(top(q).first(), Some(&pair(t, c)), "{q}");
         }
     }

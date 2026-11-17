@@ -1,316 +1,86 @@
 {
- "id": "comms",
- "mode": "now",
- "title": "Communicate & find your way",
- "short": "Family contact, emergency radio, ham radio, map and compass",
- "intro": "Ways to reach family and get official warnings when phones and internet are down or overloaded, what you need to know before using two-way radios, and how to find your way with a map and compass or signal for help.",
- "keywords": [
-  "phone down",
-  "no signal",
-  "internet down",
-  "text",
-  "family plan",
-  "out-of-state contact",
-  "radio",
-  "NOAA weather radio",
-  "emergency alert",
-  "ham",
-  "amateur radio",
-  "license",
-  "FRS",
-  "GMRS",
-  "CB",
-  "walkie-talkie",
-  "Meshtastic",
-  "compass",
-  "map",
-  "navigation",
-  "signal",
-  "whistle",
-  "rescue"
- ],
- "choices": [
-  {
-   "id": "phones-down",
-   "label": "Phones or internet are down or overloaded",
-   "hint": "Calls won't connect, need to find family",
-   "read": [
+  "id": "comms",
+  "mode": "now",
+  "title": "Get warnings, call for help and stay in touch",
+  "short": "Warnings, 112, phones down, radio",
+  "intro": "Readings on how official warnings reach you, what to say when you call for help, and how to stay informed when the phones, the internet or the power are down.",
+  "keywords": ["warning", "alert", "siren", "sirens", "radio", "battery radio", "crank radio", "phone down", "no signal", "internet down", "mobile network", "112", "911", "999", "emergency call", "emergency number", "IT-alert", "NINA", "warning app", "power bank", "rumours", "fake news", "disinformation", "deaf", "hard of hearing", "emergency card"],
+  "choices": [
     {
-     "doc": "d0fbb2e051cd46",
-     "page": 29,
-     "label": "FEMA: save calls for emergencies, use texts",
-     "note": "FEMA 2024 sheet notes phone systems are often down or busy after disasters and suggests text messages or social media to reach family."
+      "id": "warnings",
+      "label": "I want official warnings and news",
+      "hint": "Sirens, alerts on the phone, warning apps, radio",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 12, "label": "How warnings reach you, and what the sirens mean",
+         "note": "In German. Apps, radio, sirens and phone alerts, and the German siren tones for danger and for all-clear."},
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 4, "label": "Austria's siren signals and what to do for each",
+         "note": "In German. Warning, alarm and all-clear in Austria: switch on the radio, or go to a protected room or cellar."},
+        {"doc": "dpc-io-non-rischio", "page": 59, "label": "IT-alert: emergency messages on mobile phones in Italy",
+         "note": "In Italian. What IT-alert is and the emergencies it is used for today."}
+      ]
     },
     {
-     "doc": "5cd0b4e41cc479",
-     "page": 60,
-     "label": "After an earthquake: text rather than call",
-     "note": "FEMA P-530: stay off the phone except for emergencies, use text messaging, and contact your out-of-area safety contact."
+      "id": "phones-down",
+      "label": "Phones or internet are down",
+      "hint": "Calls don't connect, no mobile data, the battery is running low",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "When 112 doesn't work, and why a radio helps",
+         "note": "In German. Where to go if the emergency numbers fail, and which radios keep working in a power cut."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Numbers on paper and a charged power bank",
+         "note": "In German. A written list of important numbers, a power bank for the phone, and maps saved for use offline."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Keep the phone lines free in a blackout",
+         "note": "In Italian. Among its blackout advice: listen to the radio and use the phone only for emergencies."}
+      ]
     },
     {
-     "doc": "cecc1671ae4d02",
-     "page": 18,
-     "label": "Using your family communication plan",
-     "note": "Are You Ready: the out-of-state point of contact, two ways to reach them, wallet cards and practicing the plan."
+      "id": "call",
+      "label": "Calling for help: what to say",
+      "hint": "112, an accident, a fire, a flood, someone in danger",
+      "read": [
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 3, "label": "What to say on any emergency call",
+         "note": "In German. Where, what happened, how many are hurt, who is calling; with 112 and Austria's own numbers."},
+        {"doc": "vvf-acqua-e-vita", "page": 2, "label": "Calling for help in a flood",
+         "note": "In Italian. What to tell the operator, and staying on the line until they end the call. Gives Italy's numbers."}
+      ]
+    },
+    {
+      "id": "rescuers",
+      "label": "Someone can't hear or speak easily",
+      "hint": "Talking with rescuers, an emergency card",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Plan how you will talk with rescuers",
+         "note": "In German. An emergency card that shows how you communicate, pen and paper, and asking neighbours to help. Names a German app."}
+      ]
+    },
+    {
+      "id": "rumours",
+      "label": "Is this message true?",
+      "hint": "Rumours, chain messages, alarming videos",
+      "read": [
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 16, "label": "Why false information is dangerous in a crisis",
+         "note": "In German. How rumours spread, and the first questions to ask about who sent a message."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 17, "label": "Check a message before you pass it on",
+         "note": "In German. More questions to ask; if one answer is no, do not share it."}
+      ]
     }
-   ]
-  },
-  {
-   "id": "alerts-radio",
-   "label": "I need official warnings and news",
-   "hint": "NOAA Weather Radio, emergency alerts, battery or crank radio",
-   "read": [
-    {
-     "doc": "2c619f4fe19187",
-     "page": 2,
-     "label": "NOAA Weather Radio and local alert sign-ups",
-     "note": "FEMA fact sheet: what NOAA Weather Radio broadcasts, SAME receivers, opt-in text alerts and reverse-911 systems."
-    },
-    {
-     "doc": "2c619f4fe19187",
-     "page": 1,
-     "label": "How emergency alerts reach your phone",
-     "note": "Wireless Emergency Alerts need no sign-up; also EAS broadcasts and keeping spare batteries or chargers."
-    },
-    {
-     "doc": "4bd70335aa10ef",
-     "page": 3,
-     "label": "NOAA Weather Radio frequencies and reception",
-     "note": "NWS brochure: seven frequencies from 162.400 to 162.550 MHz, about 40-mile range, and testing reception where you'll use it."
-    }
-   ]
-  },
-  {
-   "id": "ham",
-   "label": "Ham (amateur) radio — can I use it?",
-   "hint": "Licensing, ARES, getting started",
-   "read": [
-    {
-     "doc": "1403f321ea0a31",
-     "label": "Ham vs GMRS vs FRS: licensing and range",
-     "note": "TACDA overview: ham operators must pass a test and get an FCC license; GMRS needs a license too; FRS does not. Points to local clubs."
-    },
-    {
-     "doc": "46dad12e12e2fe",
-     "label": "Beginner's guide to ham radio",
-     "note": "The Prepared (2017 prepper site): radio types compared, the FCC license and test, and starter equipment. Not an official source."
-    },
-    {
-     "doc": "a922465bee681e",
-     "page": 18,
-     "label": "ARRL: using your license for emergency service",
-     "note": "How licensed hams join emergency communication groups (ARES) and the ARRL's emergency training courses."
-    }
-   ]
-  },
-  {
-   "id": "local-radio",
-   "label": "Talking with neighbors without phones",
-   "hint": "FRS/GMRS walkie-talkies, CB, neighborhood radio plans",
-   "read": [
-    {
-     "doc": "4f6b406c191181",
-     "page": 47,
-     "label": "FRS and GMRS radios for neighborhoods",
-     "note": "ARES Manual (2015): license rules, channel-number confusion between brands, alkaline battery backup and coverage testing. GMRS license term stated here may be outdated."
-    },
-    {
-     "doc": "4f6b406c191181",
-     "page": 46,
-     "label": "Working with neighbors and CERT groups",
-     "note": "How neighborhood groups and licensed hams can plan local communications together."
-    },
-    {
-     "doc": "54221d8bbd84d45b",
-     "label": "Meshtastic: text over a LoRa mesh",
-     "note": "Getting-started page for low-power LoRa radios that pass text messages without cell or internet service. Requires compatible hardware."
-    }
-   ]
-  },
-  {
-   "id": "navigate",
-   "label": "Find my way with a map and compass",
-   "hint": "No GPS or phone, reading a topo map, taking a bearing",
-   "read": [
-    {
-     "doc": "bf9e99715ecdde",
-     "page": 1,
-     "label": "USGS: finding your way with map and compass",
-     "note": "Map scale, symbols, bearings and why the compass points to magnetic, not true, north."
-    },
-    {
-     "doc": "5b0efa0b70cb98",
-     "page": 161,
-     "label": "Finding direction from the sun and shadows",
-     "note": "Army ATP 3-50.21 (2018): using the sun and shadows to find north; following pages cover stars and other methods."
-    },
-    {
-     "doc": "5b0efa0b70cb98",
-     "page": 168,
-     "label": "Walking a compass bearing with steering marks",
-     "note": "Army method for dead reckoning: sight a landmark on your bearing, close the compass, walk to it, repeat."
-    },
-    {
-     "doc": "video-0cF0ovA3FtY",
-     "label": "Video: how to use a compass (REI)",
-     "note": "Seven-minute captioned beginner video on the parts of a baseplate compass and taking a bearing."
-    }
-   ]
-  },
-  {
-   "id": "signal",
-   "label": "Signal for help or rescue",
-   "hint": "Trapped, lost, need to be seen or heard",
-   "read": [
-    {
-     "doc": "d0fbb2e051cd46",
-     "page": 9,
-     "label": "Trapped after an earthquake: text, bang, whistle",
-     "note": "FEMA: send a text or bang on a pipe or wall, cover your mouth, and use a whistle instead of shouting."
-    },
-    {
-     "doc": "ed5bac0a81b009",
-     "page": 32,
-     "label": "CERT: protect your airway and signal rescuers",
-     "note": "If trapped, bang on an object or blow a whistle; yelling is a last resort."
-    },
-    {
-     "doc": "8bb952fd2f238b",
-     "page": 200,
-     "label": "Army signaling techniques (historical FM 21-76)",
-     "note": "1992 Army manual, superseded: getting attention with fire, light, contrast and patterns. Military context; wilderness focus."
-    }
-   ]
-  }
- ],
- "limits": [
-  {
-   "text": "Ham radio operators must pass a test and obtain an FCC license (Technician, General or Extra).",
-   "doc": "1403f321ea0a31"
-  },
-  {
-   "text": "You need an FCC license to communicate on ham radio (the article says the test can be prepared for in days).",
-   "doc": "46dad12e12e2fe"
-  },
-  {
-   "text": "FRS radios may be used without a license, but transmitting on GMRS radios requires a license.",
-   "doc": "4f6b406c191181",
-   "page": 47
-  },
-  {
-   "text": "FCC rules allow an amateur station in distress to use any means at its disposal to attract attention and get help (the rule as printed in the ARES manual).",
-   "doc": "c91b2af6713df7",
-   "page": 70
-  },
-  {
-   "text": "NOAA Weather Radio usually reaches about 40 miles; buildings and valleys can block it, so test a receiver where you will use it.",
-   "doc": "4bd70335aa10ef",
-   "page": 3
-  },
-  {
-   "text": "A compass points to magnetic north, not true north; the difference varies by place and changes over time.",
-   "doc": "bf9e99715ecdde",
-   "page": 1
-  },
-  {
-   "text": "If trapped, shout only as a last resort — it can make you inhale dangerous dust; tap on a pipe or wall or use a whistle.",
-   "doc": "9681a68ebd07f5",
-   "page": 17
-  }
- ],
- "prepare": [
-  {
-   "doc": "e74ed9511d24c6",
-   "page": 1,
-   "label": "FEMA fill-in family communication plan",
-   "note": "Two-page form for household phone numbers, school and work plans, an out-of-town contact and meeting places."
-  },
-  {
-   "doc": "ed5bac0a81b009",
-   "page": 25,
-   "label": "CERT: family check-in contact and meeting places",
-   "note": "Pick two meeting places and an out-of-state check-in contact, carry wallet cards, and practice."
-  },
-  {
-   "doc": "5cd0b4e41cc479",
-   "page": 25,
-   "label": "Earthquake communication plan and emergency radio",
-   "note": "FEMA P-530: a primary safety contact outside the shaking area, contact lists, and a solar or wind-up emergency radio."
-  },
-  {
-   "doc": "e629b2983d95e4",
-   "page": 5,
-   "label": "Plan more than one way to get in touch",
-   "note": "Red Cross: local and out-of-area helpers for communication, and texts, email or internet calls as alternatives."
-  },
-  {
-   "doc": "db4d9783fca34b",
-   "page": 2,
-   "label": "Kit: radio with NOAA tone alerts, whistle, maps",
-   "note": "FEMA 2024 supply list including a battery or crank NOAA radio, whistle, phone charger and local maps."
-  },
-  {
-   "doc": "c91b2af6713df7",
-   "page": 6,
-   "label": "ARES: what a ham does first in an emergency",
-   "note": "ARRL field guide for licensed hams: make sure your own family is safe before responding, then check in."
-  }
- ],
- "learn": [
-  {
-   "doc": "4f6b406c191181",
-   "label": "ARES Manual (2015)",
-   "note": "ARRL's manual for the Amateur Radio Emergency Service: organization, FCC rule definitions, working with agencies and neighbors."
-  },
-  {
-   "doc": "c91b2af6713df7",
-   "label": "ARES Field Resources Manual (2019)",
-   "note": "Pocket reference for licensed emergency communicators: checklists, go-kit, message handling and FCC rules."
-  },
-  {
-   "doc": "a922465bee681e",
-   "label": "ARRL Quickstart Guide",
-   "note": "Booklet for new hams on antennas, FM repeaters, operating practices and a first station. Contains advertising."
-  },
-  {
-   "doc": "ham-reference-50110f1fd49f96af",
-   "label": "ARRL U.S. amateur band chart",
-   "note": "One-page chart of which frequencies each U.S. license class may use."
-  },
-  {
-   "zim": "zim/wikibooks_en_all_maxi_2026-04.zim/FCC_Technician_Class_Exam_Study_Guide_-_2014-2018/Subelement_T1_Group_A",
-   "title": "FCC Technician Class Exam Study Guide - 2014-2018/Subelement T1 Group A",
-   "label": "Wikibooks: Technician license rules study guide",
-   "note": "Study notes on FCC amateur rules for the entry-level license. Written for the 2014–2018 question pool, so check current rules."
-  },
-  {
-   "doc": "e0d32d475cba9e",
-   "label": "TACDA: civil defense communications",
-   "note": "Overview of CB, FRS, GMRS and ham options for emergencies. Older chapter; some channel and rule details may be outdated."
-  },
-  {
-   "doc": "78a5c135618251",
-   "label": "USGS: using a compass with a topographic map",
-   "note": "How to orient a USGS topo map and take bearings, including declination."
-  },
-  {
-   "doc": "c15a248ad9ae45",
-   "label": "Wilderness Navigation lesson",
-   "note": "Great Smoky Mountains Institute teaching unit; page 9 gives a step-by-step for taking a bearing and pacing distance."
-  },
-  {
-   "doc": "5b0efa0b70cb98",
-   "label": "Army ATP 3-50.21 Survival (2018)",
-   "note": "Current Army survival manual; chapter 7 covers movement, finding direction and navigation methods."
-  },
-  {
-   "doc": "433d02ed3ce4d9",
-   "label": "Coast Guard navigation and piloting",
-   "note": "Boat Crew Handbook (2017) on charts, compasses and piloting on the water."
-  }
- ],
- "related": [
-  "power",
-  "disaster"
- ]
+  ],
+  "limits": [
+    {"text": "In a power cut, or when the mobile network fails, many warning channels stop working.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
+    {"text": "Take official warnings seriously: they tell you how to protect yourself and others.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
+    {"text": "If the emergency numbers do not work, go to the nearest police station or hospital, if you can.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 15},
+    {"text": "If a message fails any of the checks, do not pass it on.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 17},
+    {"text": "In a blackout, do not jam the phone lines looking for news: listen to the radio and call only for emergencies.", "doc": "ravenna-rischio-blackout", "page": 1}
+  ],
+  "prepare": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Numbers on paper, a power bank, offline maps", "note": "In German."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "A car, crank or battery radio", "note": "In German. Radio still works when the internet and the power are down."},
+    {"doc": "bwl-kluger-rat-notvorrat", "page": 2, "label": "A battery radio in the household stock", "note": "In German. The Swiss leaflet's list of what to keep at home."},
+    {"doc": "zsv-steiermark-notfallratgeber", "page": 42, "label": "Carry the emergency numbers with you", "note": "In German. An Austrian wallet card with the emergency numbers."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "An emergency card for talking with rescuers", "note": "In German."}
+  ],
+  "learn": [
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Preparing for crises and disasters", "note": "In German. The German federal guide: supplies, warnings, staying informed, fear, first aid, fire, documents, emergency bag, shelter."},
+    {"doc": "zsv-steiermark-notfallratgeber", "label": "Emergency guide: the right conduct in emergencies", "note": "In German. Austrian guide: numbers, sirens, fire, first aid, accidents, mountains and water."}
+  ],
+  "related": ["power", "disaster"]
 }
