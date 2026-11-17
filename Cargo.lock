@@ -1377,6 +1377,7 @@ name = "lastbook-app"
 version = "0.1.0"
 dependencies = [
  "block2",
+ "cairo-rs",
  "lastbook-engine",
  "objc2",
  "objc2-app-kit",
@@ -1386,6 +1387,9 @@ dependencies = [
  "rfd",
  "serde_json",
  "tao",
+ "webkit2gtk",
+ "webview2-com",
+ "windows",
  "winresource",
  "wry",
 ]

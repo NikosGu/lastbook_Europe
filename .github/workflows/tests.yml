@@ -37,3 +37,16 @@ jobs:
         run: cargo build --workspace --locked
       - name: Test
         run: cargo test --workspace --locked
+      - name: Pictures of the app (setup, with no library), to look at
+        shell: bash
+        run: |
+          mkdir -p shots
+          if [ "$RUNNER_OS" = "Linux" ]; then sudo apt-get install -y -qq xvfb >/dev/null; RUN="xvfb-run -a"; else RUN=""; fi
+          timeout 180 $RUN ./target/debug/lastbook --home "$RUNNER_TEMP/lb-home" --size 1000x800 --after 6 --snapshot "shots/$RUNNER_OS-setup.png"
+          ls -la shots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shots-${{ matrix.os }}
+          path: shots/*
+          if-no-files-found: ignore

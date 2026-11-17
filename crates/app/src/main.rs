@@ -9,7 +9,7 @@
 //! anything is open. --home keeps the settings and the app's data in another folder (for tests).
 //!
 //! --snapshot takes a picture of the page after --after seconds (default 3), writes it as PNG and quits: the app's own
-//! screenshot, which needs no screen-recording permission (macOS only for now). Each --eval runs in the page, one a second
+//! screenshot, which needs no screen-recording permission (WKWebView, WebView2 or WebKitGTK's own snapshot). Each --eval runs in the page, one a second
 //! from --after on, before the picture: a test drives the page this way. With --snapshot, the page's script errors are
 //! printed. --url opens another address instead of the app (a local test server, for development); everything else stays
 //! blocked. Without --snapshot the page has no channel to the app at all.
@@ -35,8 +35,12 @@ use tao::event_loop::{ControlFlow, EventLoopBuilder};
 use tao::window::WindowBuilder;
 use wry::{NewWindowResponse, WebViewBuilder};
 
+#[cfg(target_os = "linux")]
+mod snapshot_linux;
 #[cfg(target_os = "macos")]
 mod snapshot_macos;
+#[cfg(windows)]
+mod snapshot_windows;
 
 const SCHEME: &str = "lastbook";
 
@@ -318,7 +322,12 @@ fn take_snapshot(webview: &wry::WebView, path: PathBuf, done: impl FnOnce(Result
     snapshot_macos::take(webview, path, done);
 }
 
-#[cfg(not(target_os = "macos"))]
-fn take_snapshot(_webview: &wry::WebView, _path: PathBuf, done: impl FnOnce(Result<PathBuf, String>) + 'static) {
-    done(Err("snapshots are made on macOS only for now".into()));
+#[cfg(target_os = "linux")]
+fn take_snapshot(webview: &wry::WebView, path: PathBuf, done: impl FnOnce(Result<PathBuf, String>) + 'static) {
+    snapshot_linux::take(webview, path, done);
+}
+
+#[cfg(windows)]
+fn take_snapshot(webview: &wry::WebView, path: PathBuf, done: impl FnOnce(Result<PathBuf, String>) + 'static) {
+    snapshot_windows::take(webview, path, done);
 }
