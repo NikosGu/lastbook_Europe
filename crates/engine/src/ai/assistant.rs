@@ -186,6 +186,8 @@ pub fn tools() -> Vec<Value> {
 #[derive(Default)]
 pub struct Session {
     pub sources: Vec<(String, Value)>,
+    /// The text each key stood for when the model read it, for checking what the answer says against it.
+    pub texts: std::collections::HashMap<String, String>,
     n: usize,
     m: usize,
 }
@@ -208,6 +210,18 @@ impl Session {
         d["key"] = json!(k);
         self.sources.push((k.clone(), d));
         k
+    }
+
+    /// The source's text as the model reads it, remembered under its key.
+    pub fn block(&mut self, key: &str, d: &Value, body: &str) -> String {
+        self.note(key, &format!("{} {} {} {body}", d["title"].as_str().unwrap_or(""), d["year"], d["excerpt"].as_str().unwrap_or("")));
+        src_block(key, d, body)
+    }
+
+    pub fn note(&mut self, key: &str, text: &str) {
+        let t = self.texts.entry(key.to_string()).or_default();
+        t.push(' ');
+        t.push_str(text);
     }
 
     pub fn get(&self, k: &str) -> Option<&Value> {
@@ -272,7 +286,7 @@ pub fn run_tool(name: &str, args: &mut Map<String, Value>, sess: &mut Session, k
             }
             let blocks: Vec<String> = items.iter().map(|it| {
                 let key = sess.add(it.clone());
-                src_block(&key, it, it["excerpt"].as_str().unwrap_or(""))
+                sess.block(&key, it, it["excerpt"].as_str().unwrap_or(""))
             }).collect();
             (blocks.join("\n\n"), json!({"query": q, "count": items.len()}))
         }
@@ -299,7 +313,7 @@ pub fn run_tool(name: &str, args: &mut Map<String, Value>, sess: &mut Session, k
                 let body = if body.is_empty() { "(no text on this page — it may be a picture)".to_string() } else { body };
                 let src = source_of(k, &d, &kind, if kind == "pdf" { Some(*p) } else { None }, None, &body);
                 let key = sess.add(src.clone());
-                out.push(src_block(&key, &src, &body));
+                out.push(sess.block(&key, &src, &body));
             }
             (out.join("\n\n"), json!({"doc_id": d, "title": title, "pages": pages}))
         }
@@ -325,7 +339,7 @@ pub fn run_tool(name: &str, args: &mut Map<String, Value>, sess: &mut Session, k
                 let text = c["text"].as_str().unwrap_or("");
                 let src = source_of(k, &v, "video", None, c["t"].as_f64(), text);
                 let key = sess.add(src.clone());
-                out.push(src_block(&key, &src, &cut(text, 1200)));
+                out.push(sess.block(&key, &src, &cut(text, 1200)));
             }
             (out.join("\n\n"), json!({"video_id": v, "title": title}))
         }
@@ -339,8 +353,10 @@ pub fn run_tool(name: &str, args: &mut Map<String, Value>, sess: &mut Session, k
             for p in pl.iter().take(3) {
                 let key = sess.add(json!({"kind": "place", "title": p["name"], "publisher": p["source"], "lat": p["lat"], "lon": p["lon"],
                                           "excerpt": format!("{} · {}", p["kind"].as_str().unwrap_or(""), p["detail"].as_str().unwrap_or(""))}));
-                lines.push(format!("[{key}] {} ({}, {}) at {:.4},{:.4}{}", p["name"].as_str().unwrap_or(""), p["kind"].as_str().unwrap_or(""), p["detail"].as_str().unwrap_or(""),
-                                   p["lat"].as_f64().unwrap_or(0.0), p["lon"].as_f64().unwrap_or(0.0), if p["onMap"].as_bool().unwrap_or(false) { "" } else { " — outside the offline street map" }));
+                let line = format!("[{key}] {} ({}, {}) at {:.4},{:.4}{}", p["name"].as_str().unwrap_or(""), p["kind"].as_str().unwrap_or(""), p["detail"].as_str().unwrap_or(""),
+                                   p["lat"].as_f64().unwrap_or(0.0), p["lon"].as_f64().unwrap_or(0.0), if p["onMap"].as_bool().unwrap_or(false) { "" } else { " — outside the offline street map" });
+                sess.note(&key, &line);
+                lines.push(line);
             }
             let known = k.help_kinds();
             let kinds: Vec<String> = arg("nearby").split(',').map(|s| s.trim().to_string()).filter(|s| known.contains(s)).collect();
@@ -351,7 +367,9 @@ pub fn run_tool(name: &str, args: &mut Map<String, Value>, sess: &mut Session, k
                     let name = h["name"].as_str().filter(|n| !n.is_empty());
                     let key = sess.add(json!({"kind": "place", "title": name.unwrap_or(label), "publisher": k.map_credit(), "lat": h["lat"], "lon": h["lon"],
                                               "excerpt": format!("{label} · {} km {} of {} (straight line)", h["km"], h["dir"].as_str().unwrap_or(""), pl[0]["name"].as_str().unwrap_or(""))}));
-                    lines.push(format!("[{key}] {label}: {} — {} km {} (straight-line)", name.unwrap_or("(no name recorded)"), h["km"], h["dir"].as_str().unwrap_or("")));
+                    let line = format!("[{key}] {label}: {} — {} km {} (straight-line)", name.unwrap_or("(no name recorded)"), h["km"], h["dir"].as_str().unwrap_or(""));
+                    sess.note(&key, &line);
+                    lines.push(line);
                 }
             }
             (format!("Offline map data (may be outdated; does not show closures or damage):\n{}", lines.join("\n")), json!({"query": q, "count": pl.len()}))
@@ -374,7 +392,7 @@ pub fn context_for(about: &str, sess: &mut Session, k: &dyn Knowledge) -> Option
             let src = source_of(k, d, kind, if kind == "pdf" { Some(p) } else { None }, None, &body);
             let key = sess.add(src.clone());
             Some(format!("The person is looking at this page right now (questions like 'this' refer to it):\n{}\nDocument id for tools: {d}",
-                         src_block(&key, &src, if body.is_empty() { "(no extractable text on this page)" } else { &body })))
+                         sess.block(&key, &src, if body.is_empty() { "(no extractable text on this page)" } else { &body })))
         }
         "video" => {
             let (v, t) = rest.split_once(':').unwrap_or((rest, "0"));
@@ -392,7 +410,7 @@ pub fn context_for(about: &str, sess: &mut Session, k: &dyn Knowledge) -> Option
             let txt = near.iter().filter_map(|c| c["text"].as_str()).collect::<Vec<_>>().join(" ");
             let src = source_of(k, v, "video", None, near[0]["t"].as_f64(), &txt);
             let key = sess.add(src.clone());
-            Some(format!("The person is watching this video (around {}:{:02}):\n{}\nVideo id for tools: {v}", (t / 60.0) as u64, (t % 60.0) as u64, src_block(&key, &src, &cut(&txt, 3000))))
+            Some(format!("The person is watching this video (around {}:{:02}):\n{}\nVideo id for tools: {v}", (t / 60.0) as u64, (t % 60.0) as u64, sess.block(&key, &src, &cut(&txt, 3000))))
         }
         "topic" => {
             let t = k.topics().into_iter().find(|x| x["id"] == rest)?;
@@ -462,6 +480,175 @@ pub fn cited(answer: &str) -> Vec<String> {
     out
 }
 
+/// Numbers written as words, in the six languages, as the sources may write them ("boil for one minute").
+const NUMBER_WORDS: &[(&str, &str)] = &[
+    ("one", "1"), ("two", "2"), ("three", "3"), ("four", "4"), ("five", "5"), ("six", "6"), ("seven", "7"), ("eight", "8"), ("nine", "9"), ("ten", "10"), ("eleven", "11"), ("twelve", "12"), ("fifteen", "15"), ("twenty", "20"), ("thirty", "30"), ("hundred", "100"),
+    ("uno", "1"), ("una", "1"), ("due", "2"), ("tre", "3"), ("quattro", "4"), ("cinque", "5"), ("sei", "6"), ("sette", "7"), ("otto", "8"), ("nove", "9"), ("dieci", "10"), ("undici", "11"), ("dodici", "12"), ("quindici", "15"), ("venti", "20"), ("trenta", "30"), ("cento", "100"),
+    ("eins", "1"), ("ein", "1"), ("eine", "1"), ("einen", "1"), ("einer", "1"), ("zwei", "2"), ("drei", "3"), ("vier", "4"), ("fünf", "5"), ("sechs", "6"), ("sieben", "7"), ("acht", "8"), ("neun", "9"), ("zehn", "10"), ("elf", "11"), ("zwölf", "12"), ("fünfzehn", "15"), ("zwanzig", "20"), ("dreißig", "30"), ("hundert", "100"),
+    ("un", "1"), ("une", "1"), ("deux", "2"), ("trois", "3"), ("quatre", "4"), ("cinq", "5"), ("sept", "7"), ("huit", "8"), ("neuf", "9"), ("dix", "10"), ("onze", "11"), ("douze", "12"), ("quinze", "15"), ("vingt", "20"), ("trente", "30"),
+    ("dos", "2"), ("tres", "3"), ("cuatro", "4"), ("cinco", "5"), ("seis", "6"), ("siete", "7"), ("ocho", "8"), ("nueve", "9"), ("diez", "10"), ("doce", "12"), ("veinte", "20"), ("treinta", "30"), ("cien", "100"),
+    ("jeden", "1"), ("jedna", "1"), ("jedno", "1"), ("dwa", "2"), ("dwie", "2"), ("trzy", "3"), ("cztery", "4"), ("pięć", "5"), ("sześć", "6"), ("siedem", "7"), ("osiem", "8"), ("dziewięć", "9"), ("dziesięć", "10"), ("dwanaście", "12"), ("piętnaście", "15"), ("dwadzieścia", "20"), ("sto", "100"),
+];
+
+/// Numbers that need no source: the European emergency number, which the instructions themselves give.
+const KNOWN_NUMBERS: &[&str] = &["112"];
+
+/// The numbers in a text, as plain decimals: "1,5" and "1.5" are one number; "1.000" and "1 000" are a thousand.
+pub fn numbers_in(text: &str) -> std::collections::HashSet<String> {
+    let mut out = std::collections::HashSet::new();
+    let chars: Vec<char> = text.chars().collect();
+    let mut i = 0;
+    while i < chars.len() {
+        if !chars[i].is_ascii_digit() || (i > 0 && chars[i - 1].is_alphanumeric()) {
+            i += 1;
+            continue;
+        }
+        let mut j = i;
+        let mut s = String::new();
+        // digits, with thousands groups (1.000, 1 000) or one decimal part (1,5 / 1.5)
+        while j < chars.len() && chars[j].is_ascii_digit() {
+            s.push(chars[j]);
+            j += 1;
+        }
+        loop {
+            if j + 1 < chars.len() && matches!(chars[j], '.' | ',' | '\u{a0}' | ' ' | '\'') && chars[j + 1].is_ascii_digit() {
+                let mut k = j + 1;
+                let mut g = String::new();
+                while k < chars.len() && chars[k].is_ascii_digit() {
+                    g.push(chars[k]);
+                    k += 1;
+                }
+                if g.len() == 3 && (k >= chars.len() || !chars[k].is_ascii_digit()) && chars[j] != ' ' || (g.len() == 3 && chars[j] == ' ' && s.len() <= 3) {
+                    s.push_str(&g); // a thousands group
+                    j = k;
+                    continue;
+                }
+                if matches!(chars[j], '.' | ',') {
+                    s.push('.');
+                    s.push_str(&g); // a decimal part
+                    j = k;
+                }
+            }
+            break;
+        }
+        let s = s.trim_start_matches('0').to_string();
+        out.insert(if s.is_empty() || s.starts_with('.') { format!("0{s}") } else { s });
+        i = j;
+    }
+    out
+}
+
+/// The numbers in a source's text, those written as words included.
+fn source_numbers(text: &str) -> std::collections::HashSet<String> {
+    let mut nums = numbers_in(text);
+    for w in text.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()) {
+        let w = w.to_lowercase();
+        if let Some((_, n)) = NUMBER_WORDS.iter().find(|(word, _)| *word == w) {
+            nums.insert(n.to_string());
+        }
+    }
+    nums
+}
+
+/// The sentences of the answer whose numbers (doses, times, quantities) are not in the sources they cite: [{text, numbers}].
+/// The citation says where to look; this says the number really is there. Sentences under the answer's own headings for
+/// what is missing, what disagrees and the model's own reasoning are not checked, and neither are uncited ones (the page
+/// marks those already).
+pub fn numbers_unverified(answer: &str, sess: &Session, valid: &[String]) -> Vec<Value> {
+    let mut out = Vec::new();
+    let mut skip = false;
+    for line in answer.lines() {
+        let low = line.to_lowercase();
+        if low.contains("not found in the library") || low.contains("sources disagree") || low.contains("own reasoning") {
+            skip = true;
+            continue;
+        }
+        if line.trim_start().starts_with('#') || (line.trim().starts_with("**") && line.trim().ends_with("**")) {
+            skip = false; // another heading: back to the answer itself
+            continue;
+        }
+        if skip {
+            continue;
+        }
+        // a list item's own number is not a claim
+        let body = line.trim_start();
+        let body = match body.find(['.', ')']) {
+            Some(i) if i > 0 && i <= 3 && body[..i].chars().all(|c| c.is_ascii_digit()) => &body[i + 1..],
+            _ => body,
+        };
+        for sentence in split_sentences(body) {
+            let keys = cited(&sentence);
+            let keys: Vec<&String> = keys.iter().filter(|k| valid.contains(k)).collect();
+            if keys.is_empty() {
+                continue;
+            }
+            let plain: String = strip_keys(&sentence);
+            let mut said: Vec<String> = numbers_in(&plain).into_iter().filter(|n| !KNOWN_NUMBERS.contains(&n.as_str())).collect();
+            if said.is_empty() {
+                continue;
+            }
+            let mut known = std::collections::HashSet::new();
+            for k in &keys {
+                known.extend(source_numbers(sess.texts.get(k.as_str()).map(String::as_str).unwrap_or("")));
+            }
+            said.retain(|n| !known.contains(n));
+            if !said.is_empty() {
+                said.sort();
+                out.push(json!({"text": sentence.trim(), "numbers": said}));
+            }
+        }
+    }
+    out
+}
+
+fn strip_keys(s: &str) -> String {
+    let mut out = String::new();
+    let mut rest = s;
+    while let Some(i) = rest.find('[') {
+        out.push_str(&rest[..i]);
+        match rest[i..].find(']') {
+            Some(j) if is_key(&rest[i + 1..i + j]) => rest = &rest[i + j + 1..],
+            _ => {
+                out.push('[');
+                rest = &rest[i + 1..];
+            }
+        }
+    }
+    out.push_str(rest);
+    out
+}
+
+/// Sentences, each with the keys written right after its full stop ("… one minute. [S1]").
+fn split_sentences(line: &str) -> Vec<String> {
+    let mut out: Vec<String> = Vec::new();
+    let mut cur = String::new();
+    let chars: Vec<char> = line.chars().collect();
+    let mut i = 0;
+    while i < chars.len() {
+        cur.push(chars[i]);
+        if matches!(chars[i], '.' | '!' | '?') && i + 1 < chars.len() && chars[i + 1] == ' ' {
+            // the keys that follow belong to this sentence
+            let mut j = i + 1;
+            while j < chars.len() && chars[j] == ' ' {
+                j += 1;
+            }
+            if j < chars.len() && chars[j] == '[' {
+                i += 1;
+                continue;
+            }
+            let prev_digit = i > 0 && chars[i - 1].is_ascii_digit() && j < chars.len() && chars[j].is_ascii_digit();
+            if !prev_digit {
+                out.push(std::mem::take(&mut cur));
+            }
+        }
+        i += 1;
+    }
+    if !cur.trim().is_empty() {
+        out.push(cur);
+    }
+    out
+}
+
 /// One assistant turn. emit(event) streams to the page; cancelled() stops early.
 /// Events: found, sources, state (starting/thinking/reading/searching/writing, with pct while loading), tool, delta, reset,
 /// done {answer, sources, consulted, invalid, tools, latency}, error {error, text}, stopped.
@@ -495,7 +682,7 @@ pub fn chat(messages: &[Value], about: Option<&str>, lang: &str, emit: &mut dyn 
                     }
                 }
                 let key = sess.add(h.clone());
-                blocks.push(src_block(&key, h, &body));
+                blocks.push(sess.block(&key, h, &body));
             }
             msgs.push(json!({"role": "system", "content": format!("Initial library search results for the latest question (already retrieved — search again only if these are not enough; use read_pages to check exact wording):\n\n{}", blocks.join("\n\n"))}));
         }
@@ -591,7 +778,8 @@ pub fn chat(messages: &[Value], about: Option<&str>, lang: &str, emit: &mut dyn 
         };
         if ok { valid.push(key.clone()) } else { invalid.push(key.clone()) }
     }
-    emit(json!({"type": "done", "answer": answer, "sources": valid.iter().filter_map(|k| sess.get(k).cloned()).collect::<Vec<_>>(),
+    let unverified = numbers_unverified(&answer, &sess, &valid);
+    emit(json!({"type": "done", "answer": answer, "unverified": unverified, "sources": valid.iter().filter_map(|k| sess.get(k).cloned()).collect::<Vec<_>>(),
                 "consulted": sess.sources.iter().filter(|(k, _)| !valid.contains(k)).map(|(_, v)| v.clone()).collect::<Vec<_>>(),
                 "invalid": invalid, "tools": tool_log,
                 "latency": {"first_token_s": first.map(|f| (f * 100.0).round() / 100.0), "total_s": (t0.elapsed().as_secs_f64() * 100.0).round() / 100.0}}));
@@ -728,6 +916,16 @@ mod tests {
         assert!(context_for("doc:nothing:1", &mut s, &Lib).is_none());
         let (ev, _) = run(vec![("Sì [S1].".into(), vec![])], "Che cosa dice questa pagina?", Some("doc:who-water:2"));
         assert!(!ev.iter().any(|e| e["type"] == "found"), "about a page: no search first");
+    }
+
+    #[test]
+    fn numbers_must_be_in_the_cited_pages() {
+        let (ev, _) = run(vec![("Porta l'acqua a ebollizione per 1 minuto [S1]. Aggiungi 5 gocce di candeggina per litro [S1].\n\n1. Chiama il 112 [S1].\n\n**My own reasoning (not from the library):** di solito bastano 3 minuti.".into(), vec![])], "acqua", None);
+        let done = ev.iter().find(|e| e["type"] == "done").unwrap();
+        // "one minute" in the source counts for 1; 112 needs no source; the list number and the model's own reasoning are not checked
+        assert_eq!(done["unverified"], json!([{"text": "Aggiungi 5 gocce di candeggina per litro [S1].", "numbers": ["5"]}]));
+        assert_eq!(numbers_in("1,5 litri, 1.5 l, 1.000 m, 2 000 m, 0,5 e 30%"), ["1.5", "1000", "2000", "0.5", "30"].iter().map(|s| s.to_string()).collect());
+        assert_eq!(source_numbers("Boil for one minute; zwei Tropfen"), ["1", "2"].iter().map(|s| s.to_string()).collect());
     }
 
     #[test]
