@@ -82,7 +82,8 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     std::fs::write(geo.join("national-status.json"), json!({"state": "complete", "features": features}).to_string()).map_err(|e| e.to_string())?;
     say(&format!("national.sqlite: {features} features ({} detail), {pois} help points", detail.features));
     // addresses first: the place index takes its postcodes from them
-    let rows = addresses::rows(&things, region, &admin);
+    let names: Vec<String> = gpkg::layer(&g, "gis_osm_places_free", &["name"]).iter().filter_map(|r| r.col(0).map(str::to_string)).collect();
+    let rows = addresses::rows(&things, region, &admin, &names);
     let index = out.join("addresses").join(format!("{region}.sqlite"));
     addresses::write(&index, region, &rows, &osm_source).map_err(db)?;
     say(&format!("{} addresses", rows.len()));
