@@ -4,5 +4,6 @@
 [env]
 CMAKE_PROJECT_INCLUDE = { value = "crates/llm/llama/lastbook.cmake", relative = true }
 # llama-cpp-sys-2 rebuilds llama.cpp when a GGML_* variable changes, not when the CMake file above does: change this
-# value whenever crates/llm/llama/ changes. (A build made before this line existed: cargo clean -p llama-cpp-sys-2.)
+# value whenever crates/llm/llama/ changes. A build folder configured with an older version of these files keeps that
+# configuration: cargo clean -p llama-cpp-sys-2 (CI's cache keys follow these files by themselves).
 GGML_LASTBOOK_BUILD = "2"
