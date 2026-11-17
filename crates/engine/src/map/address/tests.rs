@@ -43,8 +43,9 @@ fn every_way_of_writing_one_address() {
               "10 Äulestrasse Vaduz", "Äulestrasse Nr. 10", "Äule 10, Vaduz"] {
         let r = f.map.find_addresses(q, 8, None);
         assert_eq!(names(&r), vec!["Äulestrasse 10"], "{q}");
-        assert_eq!(r[0]["kind"], "Street address");
+        assert_eq!((r[0]["kind"].as_str(), r[0]["kind_code"].as_str()), (Some("Street address"), Some("street_address")));
         assert_eq!(r[0]["detail"], "9490 Vaduz, Liechtenstein");
+        assert_eq!((r[0]["locality"].as_str(), r[0]["country"].as_str()), (Some("9490 Vaduz"), Some("LI")), "the country apart, for the interface to name");
         assert_eq!(r[0]["lat"], 47.1372);
         assert_eq!(r[0]["source"], "Test addresses");
         assert_eq!(f.map.query_kind(q), Kind::Address, "{q}");
@@ -140,6 +141,8 @@ fn the_route_keeps_the_house_number_and_says_what_it_read() {
     assert_eq!(r.header("X-Query-Kind"), Some("address"));
     let v: Value = serde_json::from_slice(&r.body).unwrap();
     assert_eq!(v[0]["name"], "Städtle 5");
+    assert_eq!((v[0]["kind"].as_str(), v[0]["kind_code"].as_str(), v[0]["locality"].as_str(), v[0]["country"].as_str()),
+               (Some("Street address"), Some("street_address"), Some("9490 Vaduz"), Some("LI")), "the page reads them from the route");
     let none = f.get("/api/places?q=St%C3%A4dtle+7");
     assert_eq!((none.header("X-Query-Kind"), none.body.as_slice()), (Some("address"), b"[]".as_slice()), "an exact house or nothing");
     assert_eq!(f.get("/api/places?q=9490").header("X-Query-Kind"), Some("postcode"));
@@ -157,8 +160,9 @@ fn streets_without_a_number() {
                       ("CH", "2", "Bahnhofstrasse", "Bern", "3011", 46.9480, 7.4390)]);
     let r = f.map.places("Bahnhofstrasse Zürich", 20, None);
     assert_eq!(names(&r), vec!["Bahnhofstrasse"]);
-    assert_eq!(r[0]["kind"], "Street");
+    assert_eq!((r[0]["kind"].as_str(), r[0]["kind_code"].as_str()), (Some("Street"), Some("street")));
     assert_eq!(r[0]["detail"], "Zürich, Switzerland");
+    assert_eq!((r[0]["locality"].as_str(), r[0]["country"].as_str()), (Some("Zürich"), Some("CH")));
     assert!((r[0]["lat"].as_f64().unwrap() - 47.36835).abs() < 1e-6, "the middle of its addresses");
     assert_eq!(f.map.places("Bahnhofstr.", 20, None).len(), 2, "one per town");
 }
@@ -226,6 +230,42 @@ fn shown_as_people_there_write_it() {
     assert_eq!(detail("Rīga", "1050", "LV"), "Rīga, LV-1050, Latvia");
     assert_eq!(detail("Luxembourg", "1611", "LU"), "L-1611 Luxembourg, Luxembourg");
     assert_eq!(detail("Vaduz", "", "LI"), "Vaduz, Liechtenstein");
+    // the same without the country, which the interface names in the person's language
+    assert_eq!(locality("Dublin 2", "D02 X285", "IE"), "Dublin 2, D02 X285");
+    assert_eq!(locality("Valletta", "VLT 1117", "MT"), "Valletta VLT 1117");
+    assert_eq!(locality("Luxembourg", "1611", "LU"), "L-1611 Luxembourg");
+    assert_eq!(locality("", "1050", "LV"), "LV-1050");
+    assert_eq!(with_country("", "LV"), "Latvia");
+}
+
+/// Each kind of place found is a code beside its English kind, with its town and postcode and its country apart.
+#[test]
+fn each_kind_is_a_code_beside_its_english() {
+    let f = fx("addr-kinds");
+    index(&f, "LI", LI);
+    let mut said = Vec::new();
+    for (q, kind, code, name, locality, detail) in [
+        ("Städtle 5 Vaduz", "Street address", "street_address", "Städtle 5", "9490 Vaduz", "9490 Vaduz, Liechtenstein"),
+        ("Landstrasse Schaan", "Street", "street", "Landstrasse", "Schaan", "Schaan, Liechtenstein"),
+        ("9490", "Postcode", "postcode", "9490", "Vaduz", "Vaduz, Liechtenstein"),
+        ("Schaan", "Town", "town", "Schaan", "9494", "9494, Liechtenstein"),
+    ] {
+        let r = f.map.places(q, 20, None);
+        let p = r.iter().find(|p| p["kind"] == kind).unwrap_or_else(|| panic!("{q}: {r:?}"));
+        assert_eq!((p["kind_code"].as_str(), p["name"].as_str(), p["locality"].as_str(), p["country"].as_str(), p["detail"].as_str()),
+                   (Some(code), Some(name), Some(locality), Some("LI"), Some(detail)), "{q}");
+        said.push(code);
+    }
+    assert_eq!(said, KIND_CODES, "every kind code is said");
+}
+
+#[test]
+fn every_code_has_words_in_the_interface() {
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web/locales/en.json");
+    let words: Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+    for code in KIND_CODES {
+        assert!(words[format!("map.kind.{code}")].is_string(), "web/locales/en.json has no map.kind.{code}");
+    }
 }
 
 /// One country: its addresses, queries that must find each (in the local way of writing them), a postcode alone and a
@@ -237,14 +277,16 @@ fn country(region: &str, rows: &[Row], queries: &[(&str, &str)], postcode: (&str
         let r = f.map.places(q, 20, None);
         assert_eq!(f.map.query_kind(q), Kind::Address, "{region} {q}");
         assert_eq!(r.first().and_then(|r| r["name"].as_str()), Some(*want), "{region} {q}: {r:?}");
-        assert_eq!(r[0]["kind"], "Street address", "{region} {q}");
+        assert_eq!((r[0]["kind"].as_str(), r[0]["kind_code"].as_str()), (Some("Street address"), Some("street_address")), "{region} {q}");
+        assert_eq!(r[0]["country"].as_str(), Some(regions::country(region)), "{region} {q}");
     }
     let r = f.map.places(postcode.0, 20, None);
     assert_eq!(f.map.query_kind(postcode.0), Kind::Postcode, "{region} {}", postcode.0);
-    assert_eq!((r.first().and_then(|r| r["kind"].as_str()), r.first().and_then(|r| r["name"].as_str())), (Some("Postcode"), Some(postcode.1)), "{region} {}: {r:?}", postcode.0);
+    assert_eq!((r.first().and_then(|r| r["kind"].as_str()), r.first().and_then(|r| r["kind_code"].as_str()), r.first().and_then(|r| r["name"].as_str())),
+               (Some("Postcode"), Some("postcode"), Some(postcode.1)), "{region} {}: {r:?}", postcode.0);
     let r = f.map.places(town.0, 20, None);
     assert_eq!(f.map.query_kind(town.0), Kind::Place, "{region} {}", town.0);
-    assert!(r.iter().any(|p| p["kind"] == "Town" && p["name"] == town.1), "{region} {}: {r:?}", town.0);
+    assert!(r.iter().any(|p| p["kind"] == "Town" && p["kind_code"] == "town" && p["name"] == town.1), "{region} {}: {r:?}", town.0);
 }
 
 #[test]

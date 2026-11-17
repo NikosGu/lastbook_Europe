@@ -130,6 +130,11 @@ fn map_info_has_what_the_ui_reads_and_no_personal_paths() {
         assert!(!datasets.contains(us), "{us}");
     }
     assert!(datasets.contains("This download has only the base map"));
+    assert_eq!(info["datasets"], json!([
+        {"code": "base", "params": {}, "label": "Main roads, towns and water (OpenStreetMap, Natural Earth)", "status": "Shown at every zoom level"},
+        {"code": "no_detail", "params": {}, "label": "No street detail or help points",
+         "status": "This download has only the base map. Hospitals, water taps and side streets are not in it."},
+    ]), "each row a code with its params, the English beside them");
     assert_eq!(info["version"], "n7");
 }
 
@@ -154,8 +159,98 @@ fn map_info_names_what_the_files_hold() {
     assert!(d.contains("Elevation (Copernicus DEM GLO-30)"), "{d}");
     assert!(d.contains("Street addresses (Landesverwaltung Liechtenstein)") && d.contains("house numbers in Liechtenstein"), "{d}");
     assert!(d.contains("Street detail stops at the edge of this area."));
+    assert_eq!(info["datasets"], json!([
+        {"code": "base", "params": {}, "label": "Main roads, towns and water (OpenStreetMap, Natural Earth)", "status": "Shown at every zoom level"},
+        {"code": "streets_detail", "params": {}, "label": "Streets, places and help points (OpenStreetMap) for the area this map details",
+         "status": "Street detail stops at the edge of this area."},
+        {"code": "addresses", "params": {"source": "Landesverwaltung Liechtenstein", "regions": ["LI"], "region_names": ["Liechtenstein"]},
+         "label": "Street addresses (Landesverwaltung Liechtenstein)", "status": "Used by \"Find a place\": house numbers in Liechtenstein"},
+        {"code": "elevation_contours", "params": {"source": "Copernicus DEM GLO-30"}, "label": "Elevation (Copernicus DEM GLO-30)",
+         "status": "Shaded relief. Contour lines only where this map has fine detail."},
+    ]));
     assert!(info["version"].as_str().unwrap().starts_with("n7."), "the water and elevation files are part of the version");
     assert_eq!(f.map.pack_info().unwrap()["map"], "LI");
+}
+
+/// The panel's rows for three more map sets: a region with its places, buildings and crops; a map of everything whose
+/// files name no source, with the address indexes of a country and of a region; and the base map with elevation only.
+/// Between them, every code is said.
+#[test]
+fn map_info_says_each_row_as_a_code() {
+    let base = json!({"code": "base", "params": {}, "label": "Main roads, towns and water (OpenStreetMap, Natural Earth)", "status": "Shown at every zoom level"});
+    let meta = "CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT);";
+    let bldg = "CREATE TABLE bldg(x INT, y INT, part INT, n INT, data BLOB, PRIMARY KEY(x,y,part)) WITHOUT ROWID;";
+    let terrain = "CREATE TABLE tile(z INT, x INT, y INT, png BLOB, PRIMARY KEY(z,x,y)) WITHOUT ROWID; INSERT INTO tile VALUES (11, 1, 1, x'00');";
+    let mut said: Vec<String> = Vec::new();
+    let mut seen = |info: &Value| said.extend(info["datasets"].as_array().unwrap().iter().map(|d| d["code"].as_str().unwrap().to_string()));
+
+    // a region: its own box; buildings that name no source are OpenStreetMap's
+    let f = fx("info-region");
+    vaduz(&f);
+    places_db(&f, &[("Vaduz", "town", "Liechtenstein", 47.14, 9.52, 2, &[])]);
+    f.sqlite("derived/geo/buildings.sqlite", bldg);
+    f.sqlite("derived/geo/crops.sqlite", &format!("{RESOURCE_TABLES} {meta} INSERT INTO meta VALUES ('source', 'EUCROPMAP 2022');"));
+    let info = f.json("/api/map/info");
+    assert_eq!(info["datasets"], json!([base,
+        {"code": "streets_detail", "params": {}, "label": "Streets, places and help points (OpenStreetMap) for the area this map details",
+         "status": "Street detail stops at the edge of this area."},
+        {"code": "places", "params": {}, "label": "Place names and postcodes", "status": "Used by \"Find a place\""},
+        {"code": "buildings_detail", "params": {"source": "OpenStreetMap"}, "label": "Building outlines (OpenStreetMap)",
+         "status": "For the area this map details, shown from street level zoom"},
+        {"code": "crops_detail", "params": {"source": "EUCROPMAP 2022"}, "label": "Orchards, vineyards and olive groves (EUCROPMAP 2022)",
+         "status": "For the area this map details"},
+    ]));
+    seen(&info);
+
+    // everything: help points from one end of the map to the other; a source left unnamed is '' and the English says none
+    let f = fx("info-all");
+    let c = f.sqlite("derived/geo/map.sqlite", MAP_TABLES);
+    c.execute_batch("INSERT INTO poi VALUES (1, 'hospital', 'West', -20.0, 40.0), (2, 'hospital', 'East', 80.0, 60.0);").unwrap();
+    drop(c);
+    f.sqlite("derived/geo/terrain.sqlite", terrain);
+    f.sqlite("derived/geo/buildings.sqlite", &format!("{bldg} {meta} INSERT INTO meta VALUES ('source', 'Overture Maps Foundation');"));
+    f.sqlite("derived/geo/crops.sqlite", RESOURCE_TABLES);
+    f.sqlite("derived/geo/addresses/AT.sqlite", meta);
+    f.sqlite("derived/geo/addresses/DE-BY.sqlite", &format!("{meta} INSERT INTO meta VALUES ('publisher', 'Bayerische Vermessungsverwaltung');"));
+    let info = f.json("/api/map/info");
+    assert!(info["bounds"].is_null(), "a map of everything");
+    assert_eq!(info["datasets"], json!([base,
+        {"code": "streets_whole", "params": {}, "label": "Streets, places and help points (OpenStreetMap) for the whole map", "status": "Shown when you zoom in"},
+        {"code": "addresses", "params": {"source": "", "regions": ["AT", "DE-BY"], "region_names": ["Austria", "Bayern"]},
+         "label": "Street addresses", "status": "Used by \"Find a place\": house numbers in Austria, Bayern"},
+        {"code": "elevation_contours", "params": {"source": ""}, "label": "Elevation", "status": "Shaded relief. Contour lines only where this map has fine detail."},
+        {"code": "buildings_whole", "params": {"source": "Overture Maps Foundation"}, "label": "Building outlines (Overture Maps Foundation)",
+         "status": "For the whole map, shown from street level zoom"},
+        {"code": "crops_whole", "params": {"source": ""}, "label": "Orchards, vineyards and olive groves", "status": "For the whole map"},
+    ]), "the first index's publisher names the source");
+    seen(&info);
+
+    // the base map only: elevation at broad zoom levels
+    let f = fx("info-base");
+    f.sqlite("derived/geo/terrain.sqlite", &format!("{terrain} {meta} INSERT INTO meta VALUES ('source', 'Copernicus DEM GLO-90');"));
+    let info = f.json("/api/map/info");
+    assert_eq!(info["datasets"], json!([base,
+        {"code": "no_detail", "params": {}, "label": "No street detail or help points",
+         "status": "This download has only the base map. Hospitals, water taps and side streets are not in it."},
+        {"code": "elevation_broad", "params": {"source": "Copernicus DEM GLO-90"}, "label": "Elevation (Copernicus DEM GLO-90)", "status": "Shaded relief at broad zoom levels"},
+    ]));
+    seen(&info);
+    said.sort();
+    said.dedup();
+    let mut all: Vec<String> = info::CODES.iter().map(|c| c.to_string()).collect();
+    all.sort();
+    assert_eq!(said, all, "every code is said by some map set");
+}
+
+#[test]
+fn every_code_has_words_in_the_interface() {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web/locales/en.json");
+    let words: Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+    for code in info::CODES {
+        for key in [format!("map.info.{code}"), format!("map.info.{code}_status")] {
+            assert!(words[&key].is_string(), "web/locales/en.json has no {key}");
+        }
+    }
 }
 
 #[test]

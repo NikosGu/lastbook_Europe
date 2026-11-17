@@ -77,6 +77,19 @@ const MapView = (() => {
     fish_stocking: 'map.unnamed.fish_stocking', boat_launch: 'map.unnamed.boat_launch', mineral: 'map.unnamed.mineral', oil_gas_well: 'map.unnamed.oil_gas_well' };
   // The server's direction from the map's centre ("north-east"), with the words each language puts before it
   const DIR = { north: 'map.dir.north', 'north-east': 'map.dir.north_east', east: 'map.dir.east', 'south-east': 'map.dir.south_east', south: 'map.dir.south', 'south-west': 'map.dir.south_west', west: 'map.dir.west', 'north-west': 'map.dir.north_west' };
+  // "What this map covers": each row's code (crates/engine/src/map/info.rs CODES) → its label, and → its status. A row whose code
+  // this page does not know shows the engine's English label and status.
+  const INFO_LABEL = { base: 'map.info.base', streets_detail: 'map.info.streets_detail', streets_whole: 'map.info.streets_whole', no_detail: 'map.info.no_detail',
+    places: 'map.info.places', addresses: 'map.info.addresses', elevation_contours: 'map.info.elevation_contours', elevation_broad: 'map.info.elevation_broad',
+    buildings_detail: 'map.info.buildings_detail', buildings_whole: 'map.info.buildings_whole', crops_detail: 'map.info.crops_detail', crops_whole: 'map.info.crops_whole' };
+  const INFO_STATUS = { base: 'map.info.base_status', streets_detail: 'map.info.streets_detail_status', streets_whole: 'map.info.streets_whole_status', no_detail: 'map.info.no_detail_status',
+    places: 'map.info.places_status', addresses: 'map.info.addresses_status', elevation_contours: 'map.info.elevation_contours_status', elevation_broad: 'map.info.elevation_broad_status',
+    buildings_detail: 'map.info.buildings_detail_status', buildings_whole: 'map.info.buildings_whole_status', crops_detail: 'map.info.crops_detail_status', crops_whole: 'map.info.crops_whole_status' };
+  // A place's kind: by the address search's code (crates/engine/src/map/address KIND_CODES, kind_code), else by the kind the place
+  // files give, lowercased (places.sqlite: city, town, village…; the water file: Lake, Reservoir, Dam, Pond, Water). Another kind shows as it comes.
+  const KIND = { street_address: 'map.kind.street_address', street: 'map.kind.street', postcode: 'map.kind.postcode', town: 'map.kind.town', city: 'map.kind.city',
+    village: 'map.kind.village', hamlet: 'map.kind.hamlet', suburb: 'map.kind.suburb', island: 'map.kind.island', county: 'map.kind.county', region: 'map.kind.region',
+    lake: 'map.kind.lake', reservoir: 'map.kind.reservoir', dam: 'map.kind.dam', pond: 'map.kind.pond', water: 'map.kind.water' };
   let st = null, world = null, geography = null;
 
   const load = (k, d) => { try { return JSON.parse(localStorage.getItem('sg.' + k)) ?? d } catch { return d } };
@@ -93,6 +106,18 @@ const MapView = (() => {
   const layerOf = cls => BY_CLS[cls] || { sym: '•', col: '#555', name: cls };
   const lname = l => l.key ? t(l.key) : l.name || '';   // a layer's name in the interface's language (a class the layers do not know keeps its own)
   const unnamed = p => p.name || p.detail?.reservoir_type || t(UNNAMED[p.cls] || 'map.unnamed.place');
+  // One row of "What this map covers" in the interface's language: the source a map file names after the label; the regions of the
+  // address search as the setup page names them, a country by Intl, a part of one by its own name (Bayern, Lombardia).
+  function covers(d) {
+    const p = d.params && typeof d.params === 'object' ? d.params : {}, names = Array.isArray(p.region_names) ? p.region_names : [];
+    const msg = { code: d.code, params: { ...p, regions: Array.isArray(p.regions) ? I18N.list(p.regions.map((r, i) => /^[A-Z]{2}$/.test(r) ? I18N.country(r) : names[i] || r)) : '' } };
+    const known = typeof d.code === 'string' && Object.hasOwn(INFO_LABEL, d.code), label = I18N.said(INFO_LABEL, msg, d.label);
+    return { label: known && p.source ? t('map.info.with_source', { label, source: String(p.source) }) : label, status: I18N.said(INFO_STATUS, msg, d.status) };
+  }
+  const kindKey = k => typeof k === 'string' && Object.hasOwn(KIND, k) ? KIND[k] : null;
+  const kindName = p => { const k = kindKey(p.kind_code) || kindKey(String(p.kind || '').trim().toLowerCase().replace(/[\s-]+/g, '_')); return k ? t(k) : p.kind || '' };
+  // The line under a place's name: an address's town and postcode with its country in the interface's language (locality, country), else the engine's detail
+  const placeDetail = p => typeof p.locality === 'string' && /^[A-Z]{2}$/.test(p.country || '') ? [p.locality, I18N.country(p.country)].filter(Boolean).join(', ') : p.detail || '';
 
   let askedHome = false;
   async function localHome() {
@@ -186,7 +211,7 @@ const MapView = (() => {
       if (!st) return;
       st.national = info.national; st.ver = info.version; st.aerialDetail = info.aerial_detail; st.aerialRev = info.aerial_rev; st.terrainCircle = info.terrain_circle;
       describe(info); if (openWhole) fit(wholeMap(), 0.92, true); coverage(); draw();
-      $('mdata').innerHTML = info.datasets.map(d => `<li class="row" style="display:block"><b>${escH(d.label)}</b><span class="muted">${escH(d.status)}</span>${d.bytes ? ` · ${I18N.unit(d.bytes / 1073741824, 'gigabyte', 1)}` : ''}</li>`).join('') +
+      $('mdata').innerHTML = info.datasets.map(d => { const c = covers(d); return `<li class="row" style="display:block"><b>${escH(c.label)}</b><span class="muted">${escH(c.status)}</span>${d.bytes ? ` · ${I18N.unit(d.bytes / 1073741824, 'gigabyte', 1)}` : ''}</li>` }).join('') +
         (st.have && !st.have.size ? '' : `<li class="row small muted" style="display:block">${st.have ? '' : th('map.not_drawn') + ' '}${th('map.records_note')}</li>`);
     }).catch(() => { $('mdata').innerHTML = `<li class="muted">${th('map.details_unavailable')}</li>`; if (openWhole && st) fit(EUROPE, 0.92, true) });
     // When map data changes (national build, water import), quietly refresh visible tiles; old tiles stay up until new ones arrive.
@@ -888,8 +913,9 @@ const MapView = (() => {
         box.innerHTML = `<p class="muted small" style="padding:8px">${address ? th('map.find.no_address') + (IN_WINDOW ? ` <a href="/ui/setup.html#manage">${th('map.find.add_addresses')}</a>.` : '') : th('map.find.no_place')}</p>`;
         return;
       }
-      const pick = p => { box.hidden = true; st.mark = { lat: p.lat, lon: p.lon, name: p.name, kind: p.kind, detail: p.detail }; closeCard(); go(p.lat, p.lon, /county/i.test(p.kind) ? 10 : /postcode|postal|city|town|populated|^(Lake|Reservoir)$/i.test(p.kind) ? 13 : 15); st.cv.focus() };
-      box.innerHTML = `<div class="small muted" style="padding:4px 8px">${th('map.find.matches', { n: r.length })}</div>` + r.map((p, i) => `<button data-i="${i}"><b>${escH(p.name)}</b><small>${escH(p.kind)} · ${escH(p.detail)}</small></button>`).join('');
+      // the marker keeps the kind and the line under the name as shown; the zoom goes by the engine's own kind
+      const pick = p => { box.hidden = true; st.mark = { lat: p.lat, lon: p.lon, name: p.name, kind: kindName(p), detail: placeDetail(p) }; closeCard(); go(p.lat, p.lon, /county/i.test(p.kind) ? 10 : /postcode|postal|city|town|populated|^(Lake|Reservoir)$/i.test(p.kind) ? 13 : 15); st.cv.focus() };
+      box.innerHTML = `<div class="small muted" style="padding:4px 8px">${th('map.find.matches', { n: r.length })}</div>` + r.map((p, i) => `<button data-i="${i}"><b>${escH(p.name)}</b><small>${escH([kindName(p), placeDetail(p)].filter(Boolean).join(' · '))}</small></button>`).join('');
       box.querySelectorAll('button').forEach(b => b.onclick = () => pick(r[+b.dataset.i]));
       if (r.length === 1) pick(r[0]);
     } catch { if (st === state) box.innerHTML = `<p class="muted small">${th('map.find.unavailable')}</p>` }

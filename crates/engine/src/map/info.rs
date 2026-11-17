@@ -7,6 +7,20 @@ use serde_json::{json, Value};
 use std::collections::{BTreeSet, HashMap, HashSet};
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
+/// The rows of "What this map covers", each a code the interface words in the person's language (web/locales:
+/// map.info.<code> for the label, map.info.<code>_status for the status), with its params: `source`, the source a map
+/// file names ('' when it names none), and for the address search `regions` (the regions' codes) with `region_names`
+/// (their names as the English says them). An area in a code: `_detail`, the area this map details; `_whole`, the whole
+/// map. The English label and status stay beside them, for logs and for an interface that does not know the code.
+pub const CODES: [&str; 12] = ["base", "streets_detail", "streets_whole", "no_detail", "places", "addresses", "elevation_contours", "elevation_broad",
+    "buildings_detail", "buildings_whole", "crops_detail", "crops_whole"];
+
+/// One row of the panel: its code (one of [`CODES`]) and params beside the English.
+fn row(code: &str, params: Value, label: impl Into<String>, status: impl Into<String>) -> Value {
+    debug_assert!(CODES.contains(&code), "{code} is not in CODES");
+    json!({"code": code, "params": params, "label": label.into(), "status": status.into()})
+}
+
 fn secs(t: SystemTime) -> f64 {
     t.duration_since(UNIX_EPOCH).map(|d| d.as_secs_f64()).unwrap_or(0.0)
 }
@@ -146,37 +160,50 @@ impl Map {
             .unwrap_or_default()
     }
 
-    /// The panel beside the map says only what this map set's files hold, and names the sources they name themselves.
+    /// The panel beside the map says only what this map set's files hold, and names the sources they name themselves:
+    /// each row a code with its params ([`CODES`]), beside its English label and status.
     fn map_datasets(&self, have: &Value) -> Vec<Value> {
         let bounded = !have["bounds"].is_null();
-        let area = if bounded { "the area this map details" } else { "the whole map" };
-        let with = |label: &str, src: String| if src.is_empty() { label.to_string() } else { format!("{label} ({src})") };
-        let mut out = vec![json!({"label": "Main roads, towns and water (OpenStreetMap, Natural Earth)", "status": "Shown at every zoom level"})];
-        if have["detail"] == true {
-            out.push(json!({"label": format!("Streets, places and help points (OpenStreetMap) for {area}"),
-                            "status": if bounded { "Street detail stops at the edge of this area." } else { "Shown when you zoom in" }}));
-        } else {
-            out.push(json!({"label": "No street detail or help points", "status": "This download has only the base map. Hospitals, water taps and side streets are not in it."}));
-        }
+        let detail = have["detail"] == true;
+        let with = |label: &str, src: &str| if src.is_empty() { label.to_string() } else { format!("{label} ({src})") };
+        let mut out = vec![row("base", json!({}), "Main roads, towns and water (OpenStreetMap, Natural Earth)", "Shown at every zoom level")];
+        out.push(match (detail, bounded) {
+            (true, true) => row("streets_detail", json!({}), "Streets, places and help points (OpenStreetMap) for the area this map details", "Street detail stops at the edge of this area."),
+            (true, false) => row("streets_whole", json!({}), "Streets, places and help points (OpenStreetMap) for the whole map", "Shown when you zoom in"),
+            (false, _) => row("no_detail", json!({}), "No street detail or help points", "This download has only the base map. Hospitals, water taps and side streets are not in it."),
+        });
         if self.exists(PLACES) {
-            out.push(json!({"label": "Place names and postcodes", "status": "Used by \"Find a place\""}));
+            out.push(row("places", json!({}), "Place names and postcodes", "Used by \"Find a place\""));
         }
-        let regions: Vec<String> = self.address_files().iter().filter_map(|p| p.file_stem()?.to_str().map(str::to_string)).collect();
-        if let Some(first) = self.address_files().first() {
+        let files = self.address_files();
+        if let Some(first) = files.first() {
             let src = self.db_at(first).and_then(|c| c.query_row("SELECT value FROM meta WHERE key='publisher'", [], |r| r.get::<_, String>(0)).ok()).unwrap_or_default();
-            let names: Vec<String> = regions.iter().map(|r| regions::name(r)).collect();
-            out.push(json!({"label": with("Street addresses", src), "status": format!("Used by \"Find a place\": house numbers in {}", names.join(", "))}));
+            let codes: Vec<String> = files.iter().filter_map(|p| p.file_stem()?.to_str().map(str::to_string)).collect();
+            let names: Vec<String> = codes.iter().map(|r| regions::name(r)).collect();
+            let status = format!("Used by \"Find a place\": house numbers in {}", names.join(", "));
+            out.push(row("addresses", json!({"source": src, "regions": codes, "region_names": names}), with("Street addresses", &src), status));
         }
         if self.exists(TERRAIN) {
-            out.push(json!({"label": with("Elevation", self.meta_source(TERRAIN, "source")),
-                            "status": if have["detail"] == true { "Shaded relief. Contour lines only where this map has fine detail." } else { "Shaded relief at broad zoom levels" }}));
+            let src = self.meta_source(TERRAIN, "source");
+            out.push(if detail {
+                row("elevation_contours", json!({"source": src}), with("Elevation", &src), "Shaded relief. Contour lines only where this map has fine detail.")
+            } else {
+                row("elevation_broad", json!({"source": src}), with("Elevation", &src), "Shaded relief at broad zoom levels")
+            });
         }
         if self.exists(BUILDINGS) {
-            let src = self.meta_source(BUILDINGS, "source");
-            out.push(json!({"label": with("Building outlines", if src.is_empty() { "OpenStreetMap".into() } else { src }), "status": format!("For {area}, shown from street level zoom")}));
+            let src = Some(self.meta_source(BUILDINGS, "source")).filter(|s| !s.is_empty()).unwrap_or_else(|| "OpenStreetMap".into());
+            let (code, status) = if bounded {
+                ("buildings_detail", "For the area this map details, shown from street level zoom")
+            } else {
+                ("buildings_whole", "For the whole map, shown from street level zoom")
+            };
+            out.push(row(code, json!({"source": src}), with("Building outlines", &src), status));
         }
         if self.exists(CROPS) {
-            out.push(json!({"label": with("Orchards, vineyards and olive groves", self.meta_source(CROPS, "source")), "status": format!("For {area}")}));
+            let src = self.meta_source(CROPS, "source");
+            let (code, status) = if bounded { ("crops_detail", "For the area this map details") } else { ("crops_whole", "For the whole map") };
+            out.push(row(code, json!({"source": src}), with("Orchards, vineyards and olive groves", &src), status));
         }
         out
     }

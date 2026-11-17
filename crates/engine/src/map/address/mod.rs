@@ -607,6 +607,12 @@ fn town_of(toks: &[Tok], used: &[bool], house: Option<usize>) -> Option<String> 
     Some(out.join(" "))
 }
 
+/// The kinds of place the address indexes find, each a code (`kind_code`) the interface words in the person's language
+/// (web/locales: map.kind.<code>), beside its English `kind`: an address with its house number ("Street address"), a
+/// street without one, the middle of its addresses in a town ("Street"), a postcode alone ("Postcode"), a town alone
+/// ("Town").
+pub const KIND_CODES: [&str; 4] = ["street_address", "street", "postcode", "town"];
+
 /// The address files to search, with the countries their addresses are in.
 struct Index {
     conn: Rc<Connection>,
@@ -622,11 +628,12 @@ fn shown_country(code: &str) -> String {
     regions::COUNTRIES.iter().find(|c| c.0 == code).map(|c| c.2.to_string()).unwrap_or_else(|| code.to_string())
 }
 
-/// "9490 Vaduz, Liechtenstein", "Dublin 2, D02 X285, Ireland", "Rīga, LV-1050, Latvia".
-fn detail(city: &str, postcode: &str, country: &str) -> String {
+/// The town and the postcode as the country writes them: "9490 Vaduz", "Dublin 2, D02 X285", "Rīga, LV-1050". A result
+/// sends it as `locality`, with `country`, so the interface can name the country in the person's language.
+fn locality(city: &str, postcode: &str, country: &str) -> String {
     let c = countries::get(country);
     let pc = countries::postcode_shown(postcode, country);
-    let place = match (city.is_empty(), pc.is_empty()) {
+    match (city.is_empty(), pc.is_empty()) {
         (true, _) => pc,
         (false, true) => city.to_string(),
         (false, false) if c.is_some_and(|c| c.town_first) => {
@@ -637,8 +644,17 @@ fn detail(city: &str, postcode: &str, country: &str) -> String {
             }
         }
         _ => format!("{pc} {city}"),
-    };
-    [place, shown_country(country)].into_iter().filter(|s| !s.is_empty()).collect::<Vec<_>>().join(", ")
+    }
+}
+
+/// A locality with its country's English name after it: the English `detail`.
+fn with_country(locality: &str, country: &str) -> String {
+    [locality.to_string(), shown_country(country)].into_iter().filter(|s| !s.is_empty()).collect::<Vec<_>>().join(", ")
+}
+
+/// "9490 Vaduz, Liechtenstein", "Dublin 2, D02 X285, Ireland", "Rīga, LV-1050, Latvia".
+fn detail(city: &str, postcode: &str, country: &str) -> String {
+    with_country(&locality(city, postcode, country), country)
 }
 
 /// An address as people of its country write it: "Via Roma 12", "12 rue de la Paix", "Calle Mayor, 5".
@@ -742,8 +758,8 @@ impl Map {
                     if !seen.insert((num.clone(), norm, lat.to_bits(), lon.to_bits())) {
                         continue;
                     }
-                    out.push(json!({"name": shown(&num, &street, &country), "kind": "Street address", "detail": detail(&city, &postcode, &country),
-                                    "lat": lat, "lon": lon, "source": source, "onMap": true}));
+                    out.push(json!({"name": shown(&num, &street, &country), "kind": "Street address", "kind_code": "street_address", "detail": detail(&city, &postcode, &country),
+                                    "locality": locality(&city, &postcode, &country), "country": country, "lat": lat, "lon": lon, "source": source, "onMap": true}));
                     if out.len() == limit {
                         break;
                     }
@@ -788,7 +804,8 @@ impl Map {
                 .filter(|r| seen.insert((r.6.clone(), r.1.clone(), r.2.clone())))
                 .take(limit)
                 .map(|(street, city, country, lat, lon, _, _, source)| {
-                    json!({"name": street, "kind": "Street", "detail": detail(&city, "", &country), "lat": lat, "lon": lon, "source": source, "onMap": true})
+                    json!({"name": street, "kind": "Street", "kind_code": "street", "detail": detail(&city, "", &country), "locality": locality(&city, "", &country),
+                           "country": country, "lat": lat, "lon": lon, "source": source, "onMap": true})
                 })
                 .collect();
         }
@@ -821,8 +838,8 @@ impl Map {
                             continue;
                         }
                         let rank = dist2(near, lat, lon) - n as f64 * 1e-9;
-                        out.push((rank, json!({"name": countries::postcode_shown(&postcode, &country), "kind": "Postcode", "detail": detail(&city, "", &country),
-                                                "lat": lat, "lon": lon, "source": ix.publisher, "onMap": true})));
+                        out.push((rank, json!({"name": countries::postcode_shown(&postcode, &country), "kind": "Postcode", "kind_code": "postcode", "detail": detail(&city, "", &country),
+                                                "locality": locality(&city, "", &country), "country": country, "lat": lat, "lon": lon, "source": ix.publisher, "onMap": true})));
                     }
                 }
                 if !out.is_empty() {
@@ -863,8 +880,9 @@ impl Map {
                     if pcs.len() > 3 {
                         shown_pcs.push("…".into());
                     }
-                    let d = [shown_pcs.join(" "), shown_country(&country)].into_iter().filter(|s| !s.is_empty()).collect::<Vec<_>>().join(", ");
-                    out.push((dist2(near, lat, lon) - n as f64 * 1e-9, json!({"name": city, "kind": "Town", "detail": d, "lat": lat, "lon": lon, "source": source, "onMap": true})));
+                    let local = shown_pcs.join(" ");
+                    out.push((dist2(near, lat, lon) - n as f64 * 1e-9, json!({"name": city, "kind": "Town", "kind_code": "town", "detail": with_country(&local, &country),
+                                                                              "locality": local, "country": country, "lat": lat, "lon": lon, "source": source, "onMap": true})));
                 }
                 if !out.is_empty() {
                     break;
