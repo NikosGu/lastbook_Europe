@@ -44,8 +44,9 @@ impl Library {
     /// library in reach (not set up yet, or on a drive that is away) does it keep its words without its source, as the
     /// original did. A guide that reads from documents of which this library holds none says so, in place of its short
     /// line and intro, in the words of `content/uncovered.json`; one whose documents are here only in part says that
-    /// after its intro, which may name sources the library does not hold. What the library lacks comes from
-    /// `content/gaps.json`, unless a guide in another language carries it in its own words.
+    /// after its intro, which may name sources the library does not hold. What the library lacks and where its sources
+    /// disagree come from `content/gaps.json`, unless a guide in another language carries them in its own words; a note
+    /// that names a document this library does not hold is left out too.
     pub fn topics_resolved_in(&self, lang: &str) -> Vec<Value> {
         let cat = self.catalog();
         let lib = self.lib().unwrap_or_default();
@@ -61,9 +62,9 @@ impl Library {
             let Value::Object(mut t) = t else { continue };
             let id = t.get("id").and_then(Value::as_str).unwrap_or("").to_string();
             let reads_from = openers(&t);
-            if !t.get("gaps").is_some_and(Value::is_object) {
-                t.insert("gaps".into(), gaps.get(&id).cloned().unwrap_or(json!({})));
-            }
+            let own = t.get("gaps").filter(|g| g.is_object()).cloned();
+            let notes = own.unwrap_or_else(|| gaps.get(&id).cloned().unwrap_or(json!({})));
+            t.insert("gaps".into(), gap_notes(&notes, |d| !present || cat.get(d).is_some()));
             for k in ["prepare", "learn"] {
                 let v = here(t.get(k).unwrap_or(&Value::Null));
                 t.insert(k.into(), Value::Array(v));
@@ -172,6 +173,27 @@ struct Uncovered {
     short: String,
     intro: String,
     partial: String,
+}
+
+/// A guide's notes on what the library lacks (`missing`) and where its sources disagree (`disagree`), as the app shows
+/// them: the words of each note whose documents are all `here`. A note is `{"text", "docs"}`, the documents it names
+/// (none for a note that names none); a note that names a document the library does not hold is left out, as a
+/// reading or a warning is. A note written as plain words is shown as it is.
+fn gap_notes(g: &Value, here: impl Fn(&str) -> bool) -> Value {
+    let mut out = Map::new();
+    for k in ["missing", "disagree"] {
+        let Some(list) = g.get(k).and_then(Value::as_array) else { continue };
+        let shown = list.iter().filter_map(|n| match n {
+            Value::String(s) => Some(json!(s)),
+            Value::Object(o) => {
+                let docs = o.get("docs").and_then(Value::as_array).map(|d| d.as_slice()).unwrap_or_default();
+                docs.iter().all(|d| d.as_str().is_some_and(&here)).then(|| o.get("text").cloned().unwrap_or(Value::Null)).filter(|t| t.is_string())
+            }
+            _ => None,
+        });
+        out.insert(k.into(), Value::Array(shown.collect()));
+    }
+    Value::Object(out)
 }
 
 /// How many of a guide's items open a document or an encyclopedia article: its readings, warnings, preparing and
@@ -345,8 +367,12 @@ mod tests {
                 }
                 let id = e["id"].as_str().unwrap();
                 for k in ["missing", "disagree"] {
-                    let n = |v: &Value| v[k].as_array().map_or(0, Vec::len);
-                    assert_eq!(n(&t["gaps"]), n(&gaps[id]), "{name}: gaps.{k} says in its words what content/gaps.json says");
+                    // note for note what content/gaps.json says, in its own words, naming the same documents
+                    let docs_of = |v: &Value| v[k].as_array().map(|l| l.iter().map(|n| n["docs"].clone()).collect::<Vec<_>>()).unwrap_or_default();
+                    assert_eq!(docs_of(&t["gaps"]), docs_of(&gaps[id]), "{name}: gaps.{k} says in its words what content/gaps.json says, with the same docs");
+                    for n in t["gaps"][k].as_array().into_iter().flatten() {
+                        assert!(n["text"].as_str().is_some_and(|s| !s.trim().is_empty()), "{name}: a gaps.{k} note has no words");
+                    }
                 }
             }
         }
@@ -377,6 +403,16 @@ mod tests {
             if items(&t).is_empty() {
                 assert!(gaps[id]["missing"].as_array().is_some_and(|m| !m.is_empty()), "{id}: no readings, and gaps.json does not say what is missing");
             }
+            // each note says something, and names the documents it relies on, documents a pack lists
+            for k in ["missing", "disagree"] {
+                for n in gaps[id][k].as_array().into_iter().flatten() {
+                    assert!(n["text"].as_str().is_some_and(|s| !s.trim().is_empty()), "{id}: a gaps.{k} note has no words");
+                    let named = n["docs"].as_array().unwrap_or_else(|| panic!("{id}: a gaps.{k} note has no \"docs\" (the documents it names, or [])"));
+                    for d in named {
+                        assert!(d.as_str().is_some_and(|d| docs.contains_key(d)), "{id}: gaps.{k} names {d}, which no sources list in content/library has");
+                    }
+                }
+            }
         }
     }
 
@@ -398,26 +434,42 @@ mod tests {
         let open: Vec<&str> = starter["documents"].as_array().unwrap().iter().filter(|d| d["redistribute"] == "yes").filter_map(|d| d["id"].as_str()).collect();
         assert!(!open.is_empty() && open.len() < starter["documents"].as_array().unwrap().len());
         let (data, l) = holding(&open);
-        guides_show_only(&l, &open);
-        // with no library in reach (a drive that is away), a warning keeps its words and no guide is said to be empty
+        let (_, hidden) = guides_show_only(&l, &open);
+        assert!(hidden > 0, "some gap notes name documents the published pack leaves out");
+        // with no library in reach (a drive that is away), a warning and a gap note keep their words, and no guide is
+        // said to be empty
         let away = Library::new(crate::paths::Paths::new(repo(), Some(data.join("away"))));
-        for t in away.topics_resolved_in("it") {
-            let file = l.topics_in("it").into_iter().find(|f| f["id"] == t["id"]).unwrap();
-            assert_eq!(t["limits"].as_array().map_or(0, Vec::len), file["limits"].as_array().map_or(0, Vec::len), "{}", t["id"]);
-            assert!(t.get("uncovered").is_none() && t["intro"] == file["intro"], "{}", t["id"]);
+        for lang in ["en", "it"] {
+            for t in away.topics_resolved_in(lang) {
+                let file = l.topics_in(lang).into_iter().find(|f| f["id"] == t["id"]).unwrap();
+                assert_eq!(t["limits"].as_array().map_or(0, Vec::len), file["limits"].as_array().map_or(0, Vec::len), "{}", t["id"]);
+                assert!(t.get("uncovered").is_none() && t["intro"] == file["intro"], "{}", t["id"]);
+                let all = if lang == "en" { read(&repo().join("content/gaps.json"))[t["id"].as_str().unwrap()].clone() } else { file["gaps"].clone() };
+                for k in ["missing", "disagree"] {
+                    assert_eq!(t["gaps"][k].as_array().map_or(0, Vec::len), all[k].as_array().map_or(0, Vec::len), "{lang} {} gaps.{k}", t["id"]);
+                }
+            }
         }
         let _ = std::fs::remove_dir_all(&data);
         // one document only: the guides that read from none of it say so
         let (data, l) = holding(&["ravenna-rischio-blackout"]);
-        assert!(guides_show_only(&l, &["ravenna-rischio-blackout"]) > 0, "some guide reads only from documents this library leaves out");
+        assert!(guides_show_only(&l, &["ravenna-rischio-blackout"]).0 > 0, "some guide reads only from documents this library leaves out");
+        let _ = std::fs::remove_dir_all(&data);
+        // every document the packs list: nothing changes, no note is left out and every guide keeps its own words
+        let every: Vec<String> = pack_documents().into_keys().collect();
+        let every: Vec<&str> = every.iter().map(String::as_str).collect();
+        let (data, l) = holding(&every);
+        assert_eq!(guides_show_only(&l, &every), (0, 0));
         let _ = std::fs::remove_dir_all(&data);
     }
 
-    /// Checks that each guide, in each language, opens only the documents held, shows no warning whose document is not
-    /// held, and says so where none of its documents is held; how many guides said so.
-    fn guides_show_only(l: &Library, held: &[&str]) -> usize {
+    /// Checks that each guide, in each language, opens only the documents held, shows no warning and no gap note that
+    /// names a document not held, and says so where none of its documents is held; how many guides said so, and how
+    /// many notes were left out.
+    fn guides_show_only(l: &Library, held: &[&str]) -> (usize, usize) {
         let words = read(&repo().join("content/uncovered.json"));
-        let mut said_empty = 0;
+        let gaps = read(&repo().join("content/gaps.json"));
+        let (mut said_empty, mut hidden) = (0, 0);
         for lang in ["en", "it", "de", "fr", "es", "pl"] {
             let files: HashMap<String, Value> = l.topics_in(lang).into_iter().map(|t| (t["id"].as_str().unwrap_or("").to_string(), t)).collect();
             let resolved = l.topics_resolved_in(lang);
@@ -446,8 +498,21 @@ mod tests {
                 } else {
                     assert_eq!((&t["short"], &t["intro"], t.get("uncovered"), t.get("partial")), (&file["short"], &file["intro"], None, None), "{lang} {id}");
                 }
+                // a note on what is missing or where sources disagree shows only if every document it names is here
+                let notes = if file["gaps"].is_object() { file["gaps"].clone() } else { gaps[id].clone() };
+                for k in ["missing", "disagree"] {
+                    let expected: Vec<Value> = notes[k]
+                        .as_array()
+                        .into_iter()
+                        .flatten()
+                        .filter(|n| n["docs"].as_array().into_iter().flatten().all(|d| held.contains(&d.as_str().unwrap_or(""))))
+                        .map(|n| n["text"].clone())
+                        .collect();
+                    assert_eq!(t["gaps"][k].as_array().cloned().unwrap_or_default(), expected, "{lang} {id} gaps.{k}");
+                    hidden += notes[k].as_array().map_or(0, Vec::len) - expected.len();
+                }
             }
         }
-        said_empty
+        (said_empty, hidden)
     }
 }
