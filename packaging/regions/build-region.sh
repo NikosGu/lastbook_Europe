@@ -30,14 +30,33 @@ fetch() {
     return 1
   fi
   mkdir -p "$(dirname "$file")"
-  # a refused or broken connection is tried again too, waiting longer each time (Geofabrik turns away bursts)
-  if curl -fsSL -A "lastbook-europe region builder" --retry 8 --retry-connrefused --retry-all-errors --retry-max-time 1500 \
-       -o "$file.part" "$url"; then
-    mv "$file.part" "$file"
-  else
+  local try
+  for try in 1 2 3; do
+    # a refused or broken connection is tried again too, waiting longer each time (Geofabrik turns away bursts)
+    if curl -fsSL -A "lastbook-europe region builder" --retry 8 --retry-connrefused --retry-all-errors --retry-max-time 1500 \
+         -o "$file.part" "$url" && whole "$url" "$file.part"; then
+      mv "$file.part" "$file"
+      return 0
+    fi
     rm -f "$file.part"
-    return 1
+    echo "$region: $url came incomplete or not at all (try $try of 3)" >&2
+    sleep $((try * 60))
+  done
+  return 1
+}
+
+# whole URL FILE: the file is what the site meant to send. Against the MD5 sum Geofabrik publishes beside a file, where
+# there is one; a zip must also open whole (a cut download once passed as a GeoPackage).
+whole() {
+  local url=$1 file=$2 want got
+  if want=$(curl -fsSL -A "lastbook-europe region builder" --retry 3 "$url.md5" 2>/dev/null | awk '{print $1}') && [ -n "$want" ]; then
+    got=$( (md5sum "$file" 2>/dev/null || md5 -r "$file") | awk '{print $1}')
+    [ "$got" = "$want" ] || { echo "$region: $url: MD5 $got, not $want" >&2; return 1; }
   fi
+  case "$file" in
+    *.zip|*.zip.part) unzip -tqq "$file" >/dev/null 2>&1 || { echo "$region: $url: not a whole zip" >&2; return 1; } ;;
+  esac
+  return 0
 }
 
 args=(build-map --region "$region" --out "$out/build")
