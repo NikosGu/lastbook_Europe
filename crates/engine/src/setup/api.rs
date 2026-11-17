@@ -707,7 +707,7 @@ impl Setup {
             let need_small = u(&need[s(&small["id"])]);
             return json!({"pack": null, "ai": false, "model": null, "folder": parent.to_string_lossy(), "need_bytes": need, "map_need_bytes": map_needs,
                           "address_need_bytes": address_need,
-                          "why": format!("The smallest library, {}, needs {} free, with room left for the system, and this computer has {} free.",
+                          "why": format!("The smallest download, {}, needs {} free, with room left for the system, and this computer has {} free.",
                                          s(&small["title"]), gb(need_small + margin(total)), gb(free)),
                           "why_codes": [hardware::reason("none_fits", json!({"pack": small["id"], "need_bytes": need_small + margin(total), "free_bytes": free}))]});
         };

@@ -44,6 +44,48 @@ const Chat = (() => {
     const why = !!msg && (msg.code === 'cannot_read' || msg.code === 'cannot_start') && typeof kind === 'string' && Object.hasOwn(WHY_KIND, kind);
     return why ? text + ' ' + t(WHY_KIND[kind]) : text;
   }
+  /* A map source (crates/engine/src/ai/assistant.rs PLACE_CODES), as its code and params say it in the interface's language: a place
+     found by name, by its kind and where it is as the map's place search says them (web/map.js); a help point near it, by its kind
+     (KIND_OF, the map's classes: map::HELP), how far (km, written the way the language writes numbers) and which way (the map's own
+     directions) from that place, and by its kind again when the map records no name. Who mapped it: the map's credit (map.credit.osm,
+     else the source's own name) and the day its data was taken. A source with no code, or a code this page does not know, shows the
+     engine's English. */
+  const SRC = { place: 'chat.src.place', near: 'chat.src.near' };
+  const KIND_OF = {
+    hospital: 'chat.src.kind.hospital', clinic: 'chat.src.kind.clinic', doctors: 'chat.src.kind.doctors', pharmacy: 'chat.src.kind.pharmacy',
+    chemist: 'chat.src.kind.chemist', dentist: 'chat.src.kind.dentist', fire_station: 'chat.src.kind.fire_station', police: 'chat.src.kind.police',
+    drinking_water: 'chat.src.kind.drinking_water', fountain: 'chat.src.kind.fountain', water_tower: 'chat.src.kind.water_tower',
+    water_works: 'chat.src.kind.water_works', spring: 'chat.src.kind.spring', toilet: 'chat.src.kind.toilet', shelter: 'chat.src.kind.shelter',
+    community_centre: 'chat.src.kind.community_centre', town_hall: 'chat.src.kind.town_hall', school: 'chat.src.kind.school',
+    library: 'chat.src.kind.library', supermarket: 'chat.src.kind.supermarket', convenience: 'chat.src.kind.convenience',
+    doityourself: 'chat.src.kind.doityourself', hardware: 'chat.src.kind.hardware', garden_centre: 'chat.src.kind.garden_centre',
+    post_office: 'chat.src.kind.post_office', camp_site: 'chat.src.kind.camp_site', veterinary: 'chat.src.kind.veterinary',
+    nursing_home: 'chat.src.kind.nursing_home', fuel: 'chat.src.kind.fuel', car_repair: 'chat.src.kind.car_repair',
+    bicycle_shop: 'chat.src.kind.bicycle_shop', wastewater_plant: 'chat.src.kind.wastewater_plant', comms_tower: 'chat.src.kind.comms_tower',
+    park: 'chat.src.kind.park', courthouse: 'chat.src.kind.courthouse', college: 'chat.src.kind.college', university: 'chat.src.kind.university',
+    kindergarten: 'chat.src.kind.kindergarten', beach: 'chat.src.kind.beach', embassy: 'chat.src.kind.embassy', mineral: 'chat.src.kind.mineral',
+    oil_gas_well: 'chat.src.kind.oil_gas_well', boat_launch: 'chat.src.kind.boat_launch', fish_stocking: 'chat.src.kind.fish_stocking',
+    dam: 'chat.src.kind.dam', reservoir: 'chat.src.kind.reservoir', lake: 'chat.src.kind.lake', pond: 'chat.src.kind.pond',
+    orchard: 'chat.src.kind.orchard', vineyard: 'chat.src.kind.vineyard', berries: 'chat.src.kind.berries',
+    perennial_veg: 'chat.src.kind.perennial_veg' };
+  function mapSource(s) {
+    const p = s.params && typeof s.params === 'object' ? s.params : {}, text = v => typeof v === 'string' ? v : '';
+    const M = typeof MapView === 'object' && MapView && MapView.dirName ? MapView : null;
+    const credit = typeof p.credit === 'string' && p.credit ? (p.credit_code === 'osm' ? t('map.credit.osm') : p.credit) : null;
+    const day = /^(\d{4})-(\d\d)-(\d\d)$/.exec(text(p.data_as_of));
+    const publisher = !credit ? s.publisher || '' : day ? t('chat.src.map_data', { credit, date: I18N.date(new Date(+day[1], +day[2] - 1, +day[3]), { year: 'numeric', month: 'long', day: 'numeric' }) }) : credit;
+    if (s.code === 'near' && M && typeof p.km === 'number') {
+      const kind = Object.hasOwn(KIND_OF, p.cls) ? t(KIND_OF[p.cls]) : text(p.kind);
+      return { title: text(p.name) || kind, publisher, line: I18N.said(SRC, { code: 'near', params: { kind, km: p.km, dir: M.dirName(p.dir), from: text(p.from) } }, s.excerpt) };
+    }
+    if (s.code === 'place' && M) {
+      const kind = M.kindName(p), where = M.placeDetail(p);
+      return { title: s.title, publisher, line: kind && where ? I18N.said(SRC, { code: 'place', params: { kind, where } }, s.excerpt) : kind || where || s.excerpt || '' };
+    }
+    return { title: s.title, publisher: s.publisher || '', line: s.excerpt || '' };
+  }
+  // a source as its card shows it: a map source in the interface's language, any other as the library names it
+  const shownSrc = s => s.kind === 'place' ? mapSource(s) : { title: s.title, publisher: s.publisher || '', line: s.excerpt || '' };
   // What a refusal says ({error, code, params}), or '' for an answer that is no refusal or one this page does not know
   const refusal = r => r && r.error && Object.hasOwn(CODE, r.code) ? said(r, r.error) : '';
   // Why the model fits this computer or not (l.why, with why_code and why_params)
@@ -322,7 +364,7 @@ const Chat = (() => {
     return esc(s.name);
   }
   function srcHref(s) {
-    if (s.kind === 'place') return `#/map?lat=${s.lat}&lon=${s.lon}&z=16&pin=${encodeURIComponent(s.title || s.name || t('chat.place_from_answer'))}`;
+    if (s.kind === 'place') return `#/map?lat=${s.lat}&lon=${s.lon}&z=16&pin=${encodeURIComponent(mapSource(s).title || s.name || t('chat.place_from_answer'))}`;
     if (s.kind === 'video') return `#/watch/${encodeURIComponent(s.doc_id)}?${s.t != null ? 't=' + Math.floor(s.t) + '&' : ''}from=${encodeURIComponent(here())}`;
     return `#/read/${encodeURIComponent(s.doc_id)}?${s.page ? 'p=' + s.page + '&' : ''}from=${encodeURIComponent(here())}`;
   }
@@ -333,9 +375,10 @@ const Chat = (() => {
       else if (s.kind === 'pdf' && s.page) pv = `<span class="pv"><img loading="lazy" alt="" src="/api/page/${encodeURIComponent(s.doc_id)}/${s.page}.png?w=300" onerror="this.remove()"><span class="pg">${th('chat.src.p', { page: String(s.page) })}</span></span>`;
       else pv = `<span class="pv w">${ico(s.kind === 'place' ? 'pin' : 'page')}</span>`;
       const where = s.kind === 'video' ? (s.t != null ? th('chat.src.at', { time: clock(s.t) }) : '') : s.page ? (s.pages ? th('chat.src.page_of', { page: String(s.page), pages: String(s.pages) }) : th('chat.src.page', { page: String(s.page) })) : '';
-      return `<a class="srccard" href="${srcHref(s)}" id="src-${esc(s.key || '')}">${pv}<span class="sc-body">${s.key ? `<span class="sc-key">${esc(s.key.replace(/^S/, ''))}</span>` : ''}<b>${esc(s.title)}</b>
-        <small>${esc(s.publisher || '')}${s.year ? ' · ' + esc(s.year) : ''}${where ? ' · ' + where : ''}${s.trust ? ' · ' + esc(trustOf(s)) : ''}</small>
-        ${!compact && s.excerpt ? `<span class="sc-ex">${th('chat.src.excerpt', { text: s.excerpt.slice(0, 220) + (s.excerpt.length > 220 ? '…' : '') })}</span>` : ''}
+      const c = shownSrc(s), ex = String(c.line || '');
+      return `<a class="srccard" href="${srcHref(s)}" id="src-${esc(s.key || '')}">${pv}<span class="sc-body">${s.key ? `<span class="sc-key">${esc(s.key.replace(/^S/, ''))}</span>` : ''}<b>${esc(c.title)}</b>
+        <small>${esc(c.publisher)}${s.year ? ' · ' + esc(s.year) : ''}${where ? ' · ' + where : ''}${s.trust ? ' · ' + esc(trustOf(s)) : ''}</small>
+        ${!compact && ex ? `<span class="sc-ex">${th('chat.src.excerpt', { text: ex.slice(0, 220) + (ex.length > 220 ? '…' : '') })}</span>` : ''}
         ${s.image ? `<span class="sc-tag">${th('chat.src.diagram')}</span>` : ''}</span></a>`;
     }).join('')}</div>`;
   }
@@ -398,7 +441,7 @@ const Chat = (() => {
   function plain(m) {
     const map = Object.fromEntries((m.cited || []).map(s => [s.key, s]));
     let text = m.content.replace(/\[([SM]\d+)\]/g, (_, k) => map[k] ? `[${k.replace(/^S/, '')}]` : '');
-    if ((m.cited || []).length) text += '\n\n' + t('chat.export.sources') + '\n' + m.cited.map(s => `[${s.key.replace(/^S/, '')}] ${s.title} — ${s.publisher || ''}${s.year ? ', ' + s.year : ''}${s.page ? ', ' + t('chat.src.page', { page: String(s.page) }) : ''}${s.t != null ? ', ' + t('chat.src.at', { time: clock(s.t) }) : ''}  ${location.origin}/${srcHref(s).replace(/&?from=[^&]*/, '')}`).join('\n');
+    if ((m.cited || []).length) text += '\n\n' + t('chat.export.sources') + '\n' + m.cited.map(s => `[${s.key.replace(/^S/, '')}] ${shownSrc(s).title} — ${shownSrc(s).publisher}${s.year ? ', ' + s.year : ''}${s.page ? ', ' + t('chat.src.page', { page: String(s.page) }) : ''}${s.t != null ? ', ' + t('chat.src.at', { time: clock(s.t) }) : ''}  ${location.origin}/${srcHref(s).replace(/&?from=[^&]*/, '')}`).join('\n');
     return text;
   }
   function exportChat(c) {

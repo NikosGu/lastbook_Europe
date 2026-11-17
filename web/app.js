@@ -1196,6 +1196,13 @@ async function localAI(action) {
   const no = Chat.refusal(a); if (no) toast(no);   // the button could not act (no model found, no library open): said by its code
   setTimeout(() => { if (location.hash.startsWith('#/about')) route() }, 400);
 }
+// What the library holds, as a sentence: each count its own plural phrase (1 saved web page, 2 saved web pages), the manuals with
+// their pages in brackets, joined as the language joins a list
+function contents(s) {
+  const n = v => typeof v === 'number' && isFinite(v) ? v : 0;
+  const pdfs = t('app.about.with_pages', { what: t('app.about.n_pdfs', { n: n(s.pdfs) }), pages: t('app.about.n_pages', { n: n(s.pdf_pages) }) });
+  return t('app.about.contents_list', { list: I18N.list([pdfs, t('app.about.n_web', { n: n(s.web_pages) }), t('app.about.n_videos', { n: n(s.videos) }), t('app.about.n_zims', { n: n(s.collections) })]) });
+}
 // How sources are labelled: the label, and who it covers
 const LABELS = [['app.about.l_intl', 'app.about.l_intl_who'], ['app.about.l_hesperian', 'app.about.l_hesperian_who'], ['app.about.l_gov', 'app.about.l_gov_who'],
   ['app.about.l_uni', 'app.about.l_uni_who'], ['app.about.l_maker', 'app.about.l_maker_who']];
@@ -1211,7 +1218,7 @@ async function about() {
   main.innerHTML = `<h1>${th('app.about.title')}</h1>
   <p class="lead">${th('app.about.lead')}</p>
   <div class="cards2" style="margin-top:16px">
-   <div class="card"><b>${th('app.about.contents')}</b><small>${th('app.about.contents_text', { pdfs: s.pdfs || 0, pages: s.pdf_pages || 0, web: s.web_pages || 0, videos: s.videos || 0, zims: s.collections || 0 })}</small></div>
+   <div class="card"><b>${th('app.about.contents')}</b><small>${esc(contents(s))}</small></div>
    ${ch ? `<div class="card"><b>${th('app.about.arriving')}</b><small>${th('app.about.arriving_text', { pending: ch.pending, downloading: ch.downloading })}</small></div>` : ''}
    <div class="card"><b>${th('app.about.assistant')}</b><small>${localAbout(st) || (st.online ? th('app.about.model_ok', { model: st.model }) : th('app.about.no_model'))} ${ix.chunks ? th(ix.pending ? 'app.about.index_pending' : 'app.about.index', { chunks: ix.chunks, docs: ix.docs, pending: ix.pending }) : ''}</small></div>
    <div class="card"><b>${th('app.about.blind_title')}</b><small>${blind(st.coverage)}${st.vision === false ? th('app.about.blind_text') : th('app.about.blind_text_vision')}${st.coverage && st.coverage.remote_videos ? ' ' + th('app.about.remote', { n: st.coverage.remote_videos }) : ''}</small></div>

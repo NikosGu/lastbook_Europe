@@ -22,7 +22,7 @@ const MapView = (() => {
     ['hospital', 'map.layer.hospital', 'H', '#c62828', 'hospital', 'help'],
     ['clinic', 'map.layer.clinic', '+', '#d81b60', 'clinic,doctors', 'help'],
     ['dentist', 'map.layer.dentist', 'Dt', '#00695c', 'dentist', 'help'],
-    ['pharmacy', 'map.layer.pharmacy', '✚', '#2e7d32', 'pharmacy,chemist', 'help'],   // the green cross of Europe's pharmacies
+    ['pharmacy', 'map.layer.pharmacy', '✚', '#2e7d32', 'pharmacy', 'help'],   // the green cross of Europe's pharmacies: amenity=pharmacy alone
     ['fire', 'map.layer.fire', 'F', '#ef6c00', 'fire_station', 'help'],
     ['police', 'map.layer.police', 'P', '#1a4f9c', 'police', 'help'],
     ['shelter', 'map.layer.shelter', '⌂', '#455a64', 'shelter', 'help'],
@@ -34,6 +34,7 @@ const MapView = (() => {
     ['spring', 'map.layer.spring', 'S', '#00897b', 'spring', 'water'],
     ['food', 'map.layer.food', '$', '#a05f00', 'supermarket,convenience', 'supply'],
     ['hardware', 'map.layer.hardware', '⚒', '#546e7a', 'hardware,doityourself', 'supply'],
+    ['drugstore', 'map.layer.drugstore', 'Dr', '#8e5572', 'chemist', 'supply'],   // shop=chemist: dm, Rossmann, Müller. No prescription medicines, so not under the cross
     ['fuel', 'map.layer.fuel', 'G', '#37474f', 'fuel', 'supply'],
     ['camp', 'map.layer.camp', '▲', '#558b2f', 'camp_site', 'supply'],
     ['orchard', 'map.layer.orchard', '♣', '#3f7a2a', 'orchard', 'food'],
@@ -49,7 +50,7 @@ const MapView = (() => {
   const DEFAULT_LAYERS = ['hospital', 'clinic', 'pharmacy', 'fire', 'police', 'shelter', 'water', 'reservoir', 'fish', 'boat'];
   // Quick choices in the Layers panel: id, name, layers
   const PRESETS = [['emergency', 'map.preset.emergency', ['hospital', 'clinic', 'dentist', 'pharmacy', 'fire', 'police', 'shelter', 'community']], ['water', 'map.preset.water', ['water', 'spring', 'reservoir', 'pond', 'dam', 'fish', 'boat']],
-    ['supplies', 'map.preset.supplies', ['food', 'hardware', 'fuel', 'camp']], ['food', 'map.preset.food', ['orchard', 'vineyard', 'berries']], ['resources', 'map.preset.resources', ['fish', 'boat', 'mineral', 'well']], ['all', 'map.preset.all', LAYERS.map(l => l.id)]];
+    ['supplies', 'map.preset.supplies', ['food', 'drugstore', 'hardware', 'fuel', 'camp']], ['food', 'map.preset.food', ['orchard', 'vineyard', 'berries']], ['resources', 'map.preset.resources', ['fish', 'boat', 'mineral', 'well']], ['all', 'map.preset.all', LAYERS.map(l => l.id)]];
   const LEGACY = { all_resources: ['fish', 'boat', 'mineral', 'well'], mineral: ['mineral'], oil_gas_well: ['well'], fish_stocking: ['fish'], boat_launch: ['boat'] };
   // A record's fields, by the names its source gives them. (A field named year is the crop map's year: the dams' "Built" year was
   // listed first under the same name, and never shown.)
@@ -69,7 +70,7 @@ const MapView = (() => {
     orchard: 'map.caveat.crops', vineyard: 'map.caveat.crops', berries: 'map.caveat.crops', perennial_veg: 'map.caveat.crops',
     pond: 'map.caveat.pond', spring: 'map.caveat.spring', drinking_water: 'map.caveat.tap' };
   // A place with no name, said whole in each language ("Unnamed hospital"): by the server's class
-  const UNNAMED = { hospital: 'map.unnamed.hospital', clinic: 'map.unnamed.clinic', doctors: 'map.unnamed.doctors', dentist: 'map.unnamed.dentist', pharmacy: 'map.unnamed.pharmacy', chemist: 'map.unnamed.pharmacy',
+  const UNNAMED = { hospital: 'map.unnamed.hospital', clinic: 'map.unnamed.clinic', doctors: 'map.unnamed.doctors', dentist: 'map.unnamed.dentist', pharmacy: 'map.unnamed.pharmacy', chemist: 'map.unnamed.chemist',
     fire_station: 'map.unnamed.fire_station', police: 'map.unnamed.police', shelter: 'map.unnamed.shelter', community_centre: 'map.unnamed.community_centre', town_hall: 'map.unnamed.town_hall', library: 'map.unnamed.library',
     drinking_water: 'map.unnamed.drinking_water', reservoir: 'map.unnamed.reservoir', lake: 'map.unnamed.lake', pond: 'map.unnamed.pond', dam: 'map.unnamed.dam', spring: 'map.unnamed.spring',
     supermarket: 'map.unnamed.supermarket', convenience: 'map.unnamed.convenience', hardware: 'map.unnamed.hardware', doityourself: 'map.unnamed.hardware', fuel: 'map.unnamed.fuel', camp_site: 'map.unnamed.camp_site',
@@ -975,5 +976,8 @@ const MapView = (() => {
       if (r.length === 1) pick(r[0]);
     } catch { if (st === state) box.innerHTML = `<p class="muted small">${th('map.find.unavailable')}</p>` }
   }
-  return { page, stop };
+  // The map's places as this page says them, for other pages (web/chat.js, the chat's map sources): a direction as the engine sends
+  // it ("south-east"), a place's kind, and the line under a place's name
+  const dirName = d => typeof d === 'string' && Object.hasOwn(DIR, d) ? t(DIR[d]) : String(d || '');
+  return { page, stop, dirName, kindName, placeDetail };
 })();

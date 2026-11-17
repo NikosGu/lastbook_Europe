@@ -36,8 +36,10 @@ pub trait Knowledge: Send + Sync {
     fn near(&self, lat: f64, lon: f64, kinds: &[String], limit: usize) -> Vec<Value>;
     /// The kinds of help point the map knows (hospital, pharmacy, drinking_water…).
     fn help_kinds(&self) -> Vec<String>;
-    /// How the map's data is credited, with its date.
-    fn map_credit(&self) -> String;
+    /// How the map's data is credited, with its date: the English line (`text`, "© OpenStreetMap contributors (data as of
+    /// 2026-11-16)"), and its parts for the interface: the source as the map's credits name it (`credit`, with its `code`,
+    /// "osm" or ''), and the day its data was taken (`data_as_of`, '' when the map names none).
+    fn map_credit(&self) -> Value;
 }
 
 /// No library and no map: what the assistant reads before a library is open (it then says the library does not cover it).
@@ -71,8 +73,8 @@ impl Knowledge for NoKnowledge {
     fn help_kinds(&self) -> Vec<String> {
         vec![]
     }
-    fn map_credit(&self) -> String {
-        String::new()
+    fn map_credit(&self) -> Value {
+        json!({"text": "", "code": "", "credit": "", "data_as_of": ""})
     }
 }
 
@@ -180,6 +182,52 @@ pub fn tools() -> Vec<Value> {
             "parameters": {"type": "object", "properties": {"query": {"type": "string"},
                 "nearby": {"type": "string", "description": "Comma-separated kinds of help point to list near the place"}}, "required": ["query"]}}}),
     ]
+}
+
+/// What a map source says under its name (its `excerpt`), each a code the interface words in the person's language
+/// (web/locales: chat.src.<code>), with its params; the English stays beside them, for the model's notes and for an
+/// interface that does not know the code. The model itself reads the tool's own English lines.
+/// - `place`: a place found by name, with what the map's place search sends of it: its kind (`kind` as the place files
+///   give it, `kind_code` the address search's code, '' for none), where it is (`locality` and `country`, the country's
+///   code, null for a place the files give only a `detail`), the rest of its line (`detail_parts`) and the English `detail`.
+/// - `near`: a help point near the first place found: its kind (`cls`, one of map::HELP, worded as chat.src.kind.<cls>;
+///   `kind`, its English name), its name (`name`, '' when the map records none: the source is then named by its kind),
+///   how far it is in a straight line (`km`) and which way (`dir`: north, north-east...) from that place (`from`, its name).
+/// A source credited to the map's own data (every `near`, and a lake or dam found by name) also has the map's credit
+/// (`credit`, with its `credit_code`, osm or '') and the day the data was taken (`data_as_of`, '' when the map names
+/// none), which its English `publisher` says.
+pub const PLACE_CODES: [&str; 2] = ["place", "near"];
+
+/// A place found by name: the source the person sees, the place as the map's place search sends it beside the English.
+fn place_source(p: &Value, credit: &Value) -> Value {
+    let text = |k: &str| p[k].as_str().unwrap_or("").to_string();
+    let mut params = json!({"kind": text("kind"), "kind_code": text("kind_code"), "detail": text("detail"), "locality": p["locality"], "country": p["country"],
+                            "detail_parts": p.get("detail_parts").filter(|d| d.is_array()).cloned().unwrap_or_else(|| json!([]))});
+    // a lake or dam is the map's own water data (its source is "water"): credited as the map is
+    let ours = p["source"] == "water";
+    if ours {
+        with_credit(&mut params, credit);
+    }
+    json!({"kind": "place", "title": p["name"], "publisher": if ours { credit["text"].clone() } else { p["source"].clone() }, "lat": p["lat"], "lon": p["lon"],
+           "excerpt": format!("{} · {}", text("kind"), text("detail")), "code": "place", "params": params})
+}
+
+/// A help point near a place: the source the person sees, its kind, name, distance and direction beside the English.
+fn near_source(h: &Value, from: &str, credit: &Value) -> Value {
+    let label = h["label"].as_str().unwrap_or("");
+    let name = h["name"].as_str().filter(|n| !n.is_empty());
+    let dir = h["dir"].as_str().unwrap_or("");
+    let mut params = json!({"cls": h["cls"].as_str().unwrap_or(""), "kind": label, "name": name.unwrap_or(""), "km": h["km"], "dir": dir, "from": from});
+    with_credit(&mut params, credit);
+    json!({"kind": "place", "title": name.unwrap_or(label), "publisher": credit["text"], "lat": h["lat"], "lon": h["lon"],
+           "excerpt": format!("{label} · {} km {dir} of {from} (straight line)", h["km"]), "code": "near", "params": params})
+}
+
+fn with_credit(params: &mut Value, credit: &Value) {
+    let text = |k: &str| credit[k].as_str().unwrap_or("").to_string();
+    params["credit_code"] = json!(text("code"));
+    params["credit"] = json!(text("credit"));
+    params["data_as_of"] = json!(text("data_as_of"));
 }
 
 /// Citable sources gathered during one answer. Keys: S# for library passages, M# for map results.
@@ -350,9 +398,9 @@ pub fn run_tool(name: &str, args: &mut Map<String, Value>, sess: &mut Session, k
                 return ("No place with that name in the offline gazetteer.".into(), json!({"query": q, "count": 0}));
             }
             let mut lines = Vec::new();
+            let credit = k.map_credit();
             for p in pl.iter().take(3) {
-                let key = sess.add(json!({"kind": "place", "title": p["name"], "publisher": p["source"], "lat": p["lat"], "lon": p["lon"],
-                                          "excerpt": format!("{} · {}", p["kind"].as_str().unwrap_or(""), p["detail"].as_str().unwrap_or(""))}));
+                let key = sess.add(place_source(p, &credit));
                 let line = format!("[{key}] {} ({}, {}) at {:.4},{:.4}{}", p["name"].as_str().unwrap_or(""), p["kind"].as_str().unwrap_or(""), p["detail"].as_str().unwrap_or(""),
                                    p["lat"].as_f64().unwrap_or(0.0), p["lon"].as_f64().unwrap_or(0.0), if p["onMap"].as_bool().unwrap_or(false) { "" } else { " — outside the offline street map" });
                 sess.note(&key, &line);
@@ -365,8 +413,7 @@ pub fn run_tool(name: &str, args: &mut Map<String, Value>, sess: &mut Session, k
                 for h in k.near(lat, lon, &kinds, 3) {
                     let label = h["label"].as_str().unwrap_or("");
                     let name = h["name"].as_str().filter(|n| !n.is_empty());
-                    let key = sess.add(json!({"kind": "place", "title": name.unwrap_or(label), "publisher": k.map_credit(), "lat": h["lat"], "lon": h["lon"],
-                                              "excerpt": format!("{label} · {} km {} of {} (straight line)", h["km"], h["dir"].as_str().unwrap_or(""), pl[0]["name"].as_str().unwrap_or(""))}));
+                    let key = sess.add(near_source(&h, pl[0]["name"].as_str().unwrap_or(""), &credit));
                     let line = format!("[{key}] {label}: {} — {} km {} (straight-line)", name.unwrap_or("(no name recorded)"), h["km"], h["dir"].as_str().unwrap_or(""));
                     sess.note(&key, &line);
                     lines.push(line);
@@ -820,17 +867,33 @@ mod tests {
         fn topics(&self) -> Vec<Value> {
             vec![json!({"id": "water", "title": "Safe water", "choices": [{"label": "Boil", "read": [{"doc": "who-water", "page": 2, "label": "Boiling"}]}]})]
         }
+        // as the map's place search sends them: a town from the place files, an address, a lake (the map's own water data)
         fn places(&self, q: &str, _limit: usize) -> Vec<Value> {
-            if q.contains("Vaduz") { vec![json!({"name": "Vaduz", "kind": "town", "detail": "Liechtenstein", "lat": 47.141, "lon": 9.521, "source": "GeoNames", "onMap": true})] } else { vec![] }
+            if q.contains("Vaduz") {
+                vec![json!({"name": "Vaduz", "kind": "town", "detail": "Liechtenstein", "lat": 47.141, "lon": 9.521, "source": "GeoNames", "onMap": true})]
+            } else if q.contains("Städtle") {
+                vec![json!({"name": "Städtle 11", "kind": "Street address", "kind_code": "street_address", "detail": "9490 Vaduz, Liechtenstein", "locality": "9490 Vaduz",
+                            "country": "LI", "lat": 47.139, "lon": 9.522, "source": "OpenStreetMap", "onMap": true})]
+            } else if q.contains("Gänglesee") {
+                vec![json!({"name": "Gänglesee", "kind": "Lake", "detail": "Triesenberg, Liechtenstein · 3 km away", "locality": "Triesenberg", "country": "LI",
+                            "detail_parts": [{"code": "km_away", "params": {"km": 3}, "text": "3 km away"}], "lat": 47.12, "lon": 9.6, "source": "water", "onMap": true})]
+            } else {
+                vec![]
+            }
         }
+        // as the map's near() sends them: a hospital with its name, a pharmacy the map records without one
         fn near(&self, _lat: f64, _lon: f64, kinds: &[String], _limit: usize) -> Vec<Value> {
-            kinds.iter().map(|k| json!({"name": "Landesspital", "label": if k == "hospital" { "Hospital" } else { "Pharmacy" }, "lat": 47.14, "lon": 9.52, "km": 0.8, "dir": "south"})).collect()
+            kinds.iter().map(|k| if k == "hospital" {
+                json!({"cls": "hospital", "name": "Landesspital", "label": "Hospital", "lat": 47.14, "lon": 9.52, "km": 0.8, "dir": "south"})
+            } else {
+                json!({"cls": "pharmacy", "name": null, "label": "Pharmacy", "lat": 47.137, "lon": 9.525, "km": 0.27, "dir": "south-east"})
+            }).collect()
         }
         fn help_kinds(&self) -> Vec<String> {
             vec!["hospital".into(), "pharmacy".into()]
         }
-        fn map_credit(&self) -> String {
-            "OpenStreetMap".into()
+        fn map_credit(&self) -> Value {
+            json!({"text": "© OpenStreetMap contributors (data as of 2026-11-16)", "code": "osm", "credit": "© OpenStreetMap contributors", "data_as_of": "2026-11-16"})
         }
     }
 
@@ -902,6 +965,59 @@ mod tests {
         assert!(tool_text[0].contains("[M2] Hospital: Landesspital — 0.8 km south"));
         assert!(!tool_text[0].contains("unknown"));
         assert!(tool_text[1].contains("(page 9 does not exist; the document has 4 pages)"));
+        // the map's sources as the person sees them: each a code with its params, the English beside them
+        let hospital = &done["sources"][0];
+        assert_eq!((hospital["key"].as_str(), hospital["code"].as_str(), hospital["title"].as_str()), (Some("M2"), Some("near"), Some("Landesspital")));
+        assert_eq!(hospital["excerpt"], "Hospital · 0.8 km south of Vaduz (straight line)");
+        assert_eq!(hospital["params"], json!({"cls": "hospital", "kind": "Hospital", "name": "Landesspital", "km": 0.8, "dir": "south", "from": "Vaduz",
+                                              "credit_code": "osm", "credit": "© OpenStreetMap contributors", "data_as_of": "2026-11-16"}));
+        assert_eq!(hospital["publisher"], "© OpenStreetMap contributors (data as of 2026-11-16)");
+        let town = done["consulted"].as_array().unwrap().iter().find(|s| s["key"] == "M1").unwrap();
+        assert_eq!((town["code"].as_str(), town["excerpt"].as_str(), town["publisher"].as_str()), (Some("place"), Some("town · Liechtenstein"), Some("GeoNames")));
+        assert_eq!(town["params"], json!({"kind": "town", "kind_code": "", "detail": "Liechtenstein", "locality": null, "country": null, "detail_parts": []}),
+                   "a place the files give only a detail: no locality, so the interface shows that detail");
+    }
+
+    /// Every way a map source is made says itself by its code and params (PLACE_CODES), its English beside them: an address
+    /// with a pharmacy near it that the map records without a name, and a lake found by name, the map's own water data.
+    #[test]
+    fn map_sources_say_themselves_by_their_codes() {
+        let mut s = Session::default();
+        let (text, summary) = run_tool("lookup_place", &mut args(json!({"query": "Städtle 11", "nearby": "pharmacy"})), &mut s, &Lib, "it");
+        assert_eq!(summary, json!({"query": "Städtle 11", "count": 1}));
+        assert!(text.contains("[M1] Städtle 11 (Street address, 9490 Vaduz, Liechtenstein) at 47.1390,9.5220"), "the model still reads English: {text}");
+        assert!(text.contains("[M2] Pharmacy: (no name recorded) — 0.27 km south-east (straight-line)"), "{text}");
+        assert_eq!(s.get("M1").unwrap(), &json!({"kind": "place", "key": "M1", "title": "Städtle 11", "publisher": "OpenStreetMap", "lat": 47.139, "lon": 9.522,
+            "excerpt": "Street address · 9490 Vaduz, Liechtenstein", "code": "place",
+            "params": {"kind": "Street address", "kind_code": "street_address", "detail": "9490 Vaduz, Liechtenstein", "locality": "9490 Vaduz", "country": "LI",
+                       "detail_parts": []}}));
+        assert_eq!(s.get("M2").unwrap(), &json!({"kind": "place", "key": "M2", "title": "Pharmacy", "publisher": "© OpenStreetMap contributors (data as of 2026-11-16)",
+            "lat": 47.137, "lon": 9.525, "excerpt": "Pharmacy · 0.27 km south-east of Städtle 11 (straight line)", "code": "near",
+            "params": {"cls": "pharmacy", "kind": "Pharmacy", "name": "", "km": 0.27, "dir": "south-east", "from": "Städtle 11",
+                       "credit_code": "osm", "credit": "© OpenStreetMap contributors", "data_as_of": "2026-11-16"}}),
+                   "no name recorded: the source is named by its kind");
+        run_tool("lookup_place", &mut args(json!({"query": "Gänglesee"})), &mut s, &Lib, "it");
+        assert_eq!(s.get("M3").unwrap(), &json!({"kind": "place", "key": "M3", "title": "Gänglesee", "publisher": "© OpenStreetMap contributors (data as of 2026-11-16)",
+            "lat": 47.12, "lon": 9.6, "excerpt": "Lake · Triesenberg, Liechtenstein · 3 km away", "code": "place",
+            "params": {"kind": "Lake", "kind_code": "", "detail": "Triesenberg, Liechtenstein · 3 km away", "locality": "Triesenberg", "country": "LI",
+                       "detail_parts": [{"code": "km_away", "params": {"km": 3}, "text": "3 km away"}],
+                       "credit_code": "osm", "credit": "© OpenStreetMap contributors", "data_as_of": "2026-11-16"}}),
+                   "the map's own water data is credited as the map is");
+        // no map open: nothing to credit, said as nothing
+        assert_eq!(NoKnowledge.map_credit(), json!({"text": "", "code": "", "credit": "", "data_as_of": ""}));
+    }
+
+    #[test]
+    fn every_code_has_words_in_the_interface() {
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web/locales/en.json");
+        let words: Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+        for code in PLACE_CODES {
+            assert!(words[format!("chat.src.{code}")].is_string(), "web/locales/en.json has no chat.src.{code}");
+        }
+        // a help point's kind (map::HELP): its words in English are the name the map gives it
+        for (cls, name) in crate::map::HELP {
+            assert_eq!(words[format!("chat.src.kind.{cls}")].as_str(), Some(*name), "web/locales/en.json: chat.src.kind.{cls}");
+        }
     }
 
     #[test]

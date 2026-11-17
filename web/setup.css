@@ -66,8 +66,9 @@ html.plat-mac.in-app .s-top{padding-top:30px}   /* below the traffic lights of a
 /* the total, against the free space */
 .s-sum{margin:24px 0 0;padding:16px;border-radius:var(--r);background:var(--sunk)}
 .s-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.s-nums span{display:flex;flex-direction:column;min-width:0}
-.s-nums small{font-size:14px;color:var(--ink2);line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* a long disk name wraps rather than being cut ("Free on Macintosh HD - Data"); the numbers stay on one line, at the foot of each */
+.s-nums span{display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.s-nums small{font-size:14px;color:var(--ink2);line-height:1.25;overflow-wrap:anywhere}
 .s-nums b{font:650 21px/1.25 var(--display);font-variant-numeric:tabular-nums}
 .s-meter{height:10px;border-radius:999px;background:color-mix(in srgb,var(--ink) 10%,transparent);margin:12px 0 4px;overflow:hidden}
 .s-meter i{display:block;height:100%;border-radius:inherit;background:var(--accent);transition:width .25s}

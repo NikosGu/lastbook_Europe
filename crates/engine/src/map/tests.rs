@@ -132,11 +132,13 @@ fn map_info_has_what_the_ui_reads_and_no_personal_paths() {
     }
     assert!(datasets.contains("This download has only the base map"));
     assert_eq!(info["datasets"], json!([
-        {"code": "base", "params": {}, "label": "Main roads, towns and water (OpenStreetMap, Natural Earth)", "status": "Shown at every zoom level"},
+        {"code": "base", "params": {"source": ""}, "label": "Main roads, towns and water", "status": "Shown at every zoom level"},
         {"code": "no_detail", "params": {}, "label": "No street detail or help points",
          "status": "This download has only the base map. Hospitals, water taps and side streets are not in it."},
-    ]), "each row a code with its params, the English beside them");
+    ]), "each row a code with its params, the English beside them; no map file, so the base map names no source");
     assert_eq!(info["version"], "n7");
+    // the assistant's map sources: no map description, so OpenStreetMap's credit and no date
+    assert_eq!(f.map.data_credit(), json!({"text": "© OpenStreetMap contributors", "code": "osm", "credit": "© OpenStreetMap contributors", "data_as_of": ""}));
 }
 
 #[test]
@@ -161,7 +163,7 @@ fn map_info_names_what_the_files_hold() {
     assert!(d.contains("Street addresses (Landesverwaltung Liechtenstein)") && d.contains("house numbers in Liechtenstein"), "{d}");
     assert!(d.contains("Street detail stops at the edge of this area."));
     assert_eq!(info["datasets"], json!([
-        {"code": "base", "params": {}, "label": "Main roads, towns and water (OpenStreetMap, Natural Earth)", "status": "Shown at every zoom level"},
+        {"code": "base", "params": {"source": ""}, "label": "Main roads, towns and water", "status": "Shown at every zoom level"},
         {"code": "streets_detail", "params": {}, "label": "Streets, places and help points (OpenStreetMap) for the area this map details",
          "status": "Street detail stops at the edge of this area."},
         {"code": "addresses", "params": {"source": "Landesverwaltung Liechtenstein", "regions": ["LI"], "region_names": ["Liechtenstein"]},
@@ -216,6 +218,11 @@ fn map_info_says_when_its_data_was_taken_and_who_made_it() {
     assert_eq!(said, info::CREDIT_CODES, "every credit code is said");
     assert!(info["datasets"].as_array().unwrap().iter().any(|d| d["code"] == "addresses" && d["params"]["regions"] == json!(["LI"])),
             "the panel names the region whose addresses are there");
+    assert_eq!(info["datasets"][0], json!({"code": "base", "params": {"source": "OpenStreetMap, Natural Earth"},
+                                           "label": "Main roads, towns and water (OpenStreetMap, Natural Earth)", "status": "Shown at every zoom level"}),
+               "the base map names the sources national.sqlite names");
+    assert_eq!(f.map.data_credit(), json!({"text": "© OpenStreetMap contributors (data as of 2026-11-16)", "code": "osm", "credit": "© OpenStreetMap contributors",
+                                           "data_as_of": "2026-11-16"}), "the assistant's map sources: whose data, and of when");
     // map.sqlite's own meta comes first; national.sqlite adds what it lacks
     let c = f.sqlite("derived/geo/map.sqlite", MAP_TABLES);
     c.execute_batch("INSERT INTO meta VALUES ('source', 'Overture Maps Foundation'), ('data_as_of', '2026-10-25');").unwrap();
@@ -224,6 +231,10 @@ fn map_info_says_when_its_data_was_taken_and_who_made_it() {
     assert_eq!((info["meta"]["data_as_of"].as_str(), info["meta"]["region"].as_str()), (Some("2026-10-25"), Some("LI")));
     assert_eq!(info["credits"][0], json!({"text": "Overture Maps Foundation"}));
     assert_eq!(info["credits"][1]["code"], "osm");
+    assert_eq!((info["datasets"][0]["params"]["source"].as_str(), info["datasets"][0]["label"].as_str()),
+               (Some("Overture Maps Foundation, OpenStreetMap, Natural Earth"), Some("Main roads, towns and water (Overture Maps Foundation, OpenStreetMap, Natural Earth)")));
+    assert_eq!(f.map.data_credit(), json!({"text": "Overture Maps Foundation (data as of 2026-10-25)", "code": "", "credit": "Overture Maps Foundation",
+                                           "data_as_of": "2026-10-25"}));
 }
 
 /// The panel's rows for three more map sets: a region with its places, buildings and crops; a map of everything whose
@@ -231,7 +242,7 @@ fn map_info_says_when_its_data_was_taken_and_who_made_it() {
 /// Between them, every code is said.
 #[test]
 fn map_info_says_each_row_as_a_code() {
-    let base = json!({"code": "base", "params": {}, "label": "Main roads, towns and water (OpenStreetMap, Natural Earth)", "status": "Shown at every zoom level"});
+    let base = json!({"code": "base", "params": {"source": ""}, "label": "Main roads, towns and water", "status": "Shown at every zoom level"});
     let meta = "CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT);";
     let bldg = "CREATE TABLE bldg(x INT, y INT, part INT, n INT, data BLOB, PRIMARY KEY(x,y,part)) WITHOUT ROWID;";
     let terrain = "CREATE TABLE tile(z INT, x INT, y INT, png BLOB, PRIMARY KEY(z,x,y)) WITHOUT ROWID; INSERT INTO tile VALUES (11, 1, 1, x'00');";
@@ -458,6 +469,13 @@ fn help_pins_members_and_nearest() {
     assert_eq!(near.len(), 3, "{near:?}");
     assert_eq!(near[0]["label"], "Pharmacy");
     assert_eq!(near[0]["dir"], "north-east");
+    let chemist = near.iter().find(|p| p["cls"] == "chemist").unwrap();
+    assert_eq!((chemist["name"].as_str(), chemist["label"].as_str()), (Some("Drogerie"), Some("Drugstore")), "OpenStreetMap's shop=chemist is a drugstore, not a pharmacy");
+    assert_eq!(help("chemist"), Some("Drugstore"));
+    // pharmacies alone: amenity=pharmacy, no drugstore among them
+    let pharmacies = f.json(&format!("/api/map/near?lat={la}&lon={lo}&cls=pharmacy&limit=5"));
+    assert_eq!(pharmacies.as_array().unwrap().iter().map(|p| (p["cls"].as_str().unwrap(), p["name"].as_str().unwrap())).collect::<Vec<_>>(),
+               [("pharmacy", "Apotheke am Städtle")], "the pharmacy mapped twice counts once, and the drugstore is not one");
     assert!(near.windows(2).all(|w| w[0]["km"].as_f64() <= w[1]["km"].as_f64()));
     assert_eq!(near[0]["km"].as_f64().unwrap(), pins::round_to(near[0]["km"].as_f64().unwrap(), 2));
     let default = f.json(&format!("/api/map/near?lat={la}&lon={lo}"));
@@ -468,6 +486,35 @@ fn help_pins_members_and_nearest() {
     // the assistant's own calls
     assert_eq!(f.map.near(la, lo, &["fire_station"], 3)[0]["name"], "Feuerwehr");
     assert_eq!(help("dam"), Some("Dam"));
+}
+
+/// The assistant looks up the pharmacies near a place (lookup_place, nearby "pharmacy": the kind the model is told to ask
+/// for, whatever the person's language calls it, farmacia, Apotheke, pharmacie, apteka) on the open library's own map:
+/// it gets the pharmacy, never the drugstore beside it; a drugstore is found only when asked for by its own kind.
+#[test]
+fn the_assistant_asking_for_pharmacies_gets_no_drugstores() {
+    use crate::ai::assistant::{run_tool, Knowledge, Session};
+    let f = fx("assistant-pharmacy");
+    vaduz(&f);
+    places_db(&f, &[("Vaduz", "town", "Liechtenstein", VADUZ.0, VADUZ.1, 2, &[])]);
+    std::fs::write(f.file("pack.json"), r#"{"name": "LI", "map": "LI"}"#).unwrap(); // a pack's map: the places are on it
+    let paths = Paths::new(f.dir.join("app"), Some(f.dir.join("data")));
+    let k = crate::knowledge::EngineKnowledge { library: Arc::new(crate::library::Library::new(paths.clone())), map: Arc::new(Map::new(paths)) };
+    assert!(k.help_kinds().contains(&"pharmacy".to_string()) && k.help_kinds().contains(&"chemist".to_string()));
+    let ask = |nearby: &str| {
+        let mut s = Session::default();
+        let args = json!({"query": "Vaduz", "nearby": nearby}).as_object().unwrap().clone();
+        let (text, _) = run_tool("lookup_place", &mut args.clone(), &mut s, &k, "it");
+        let found: Vec<(String, String)> = s.all().iter().filter(|x| x["code"] == "near")
+            .map(|x| (x["params"]["cls"].as_str().unwrap_or("").to_string(), x["title"].as_str().unwrap_or("").to_string())).collect();
+        (text, found)
+    };
+    let (text, found) = ask("pharmacy");
+    assert_eq!(found, [("pharmacy".to_string(), "Apotheke am Städtle".to_string())], "{text}");
+    assert!(!text.contains("Drogerie") && text.contains("Pharmacy: Apotheke am Städtle"), "{text}");
+    let (text, found) = ask("chemist");
+    assert_eq!(found, [("chemist".to_string(), "Drogerie".to_string())]);
+    assert!(text.contains("Drugstore: Drogerie"), "named a drugstore to the model too: {text}");
 }
 
 #[test]

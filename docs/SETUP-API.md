@@ -25,8 +25,8 @@ is already there is skipped; `nothing` is answered when nothing is left to do.
 **Errors** are `{error, code, params}`: one code for each sentence (`crates/engine/src/setup/api.rs`, `CODES`: for
 example `too_deep` with `room`, `wrong_size` with `name`, `size_bytes` and `expected_bytes`, `not_library` with `name`),
 the params it names, and the English sentence in `error`, for logs and as the fallback. Status 409 for `busy` and
-`not_done`, 507 for `no_space` (with `need_bytes` and `free_bytes`, also at the top level), 413 for a body over 64 KB,
-400 otherwise. The window says each code in the person's language (`web/locales/*`: `setup.code.<code>`) and shows the
+`not_done`, 507 for `no_space` (with `need_bytes` and `free_bytes`, also at the top level), 413 for a body over 64 KB
+(`request_too_large`, from the router), 400 otherwise (`bad_request` for a body that cannot be read). The window says each code in the person's language (`web/locales/*`: `setup.code.<code>`) and shows the
 sentence only for a code it does not know.
 
 ## The state

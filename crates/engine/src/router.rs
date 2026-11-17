@@ -24,6 +24,10 @@ const MAX_CHAT_BODY: usize = 256 * 1024;
 /// language (web/locales: chat.code.<code>, beside the local AI's and the chat's own codes), with its params; the English
 /// stays beside them, in `error`, for logs and for an interface that does not know the code.
 pub const CODES: [&str; 6] = ["no_library", "answer_gone", "no_messages", "answer_not_started", "chat_too_long", "bad_request"];
+/// What setup's route says of a request it cannot read, before setup itself sees it: too large (413), or not a JSON
+/// object (400). Each a code the interface words as setup's own refusals are (web/locales: setup.code.<code>), with its
+/// params, the English beside them in `error`.
+pub const SETUP_CODES: [&str; 2] = ["request_too_large", "bad_request"];
 const NO_LIBRARY: &str = "There is no library open, so there is no local AI.";
 const GONE: &str = "This answer is no longer kept.";
 
@@ -227,14 +231,14 @@ impl Engine {
         let method = if method == "HEAD" { "GET" } else { method };
         let body = if method == "POST" {
             if req.body.len() > MAX_BODY {
-                return Response::json_status(413, &json!({"error": "request too large"}));
+                return refused(413, "request_too_large", json!({}), "request too large");
             }
             if req.body.is_empty() {
                 json!({})
             } else {
                 match serde_json::from_slice::<Value>(&req.body) {
                     Ok(v) if v.is_object() => v,
-                    _ => return Response::json_status(400, &json!({"error": "bad request"})),
+                    _ => return refused(400, "bad_request", json!({}), "bad request"),
                 }
             }
         } else {
@@ -369,6 +373,23 @@ mod tests {
     }
 
     #[test]
+    fn setup_says_why_it_cannot_read_a_request_by_its_codes() {
+        let d = std::env::temp_dir().join(format!("lb-setup-route-{}", std::process::id()));
+        let o = crate::setup::api::Options::new(crate::setup::api::Mode::FirstRun, d.join("settings"), d.join("parent"), None);
+        let e = engine(None).with_setup(Setup::new(o));
+        let said_as = |code: &str, english: &str, status: u16| (status, english.to_string(), code.to_string(), json!({}));
+        // too large to read, and not a JSON object: said before setup sees the request
+        assert_eq!(said(&e.handle(&Request::post("/api/setup/start", vec![b' '; MAX_BODY + 1]))), said_as("request_too_large", "request too large", 413));
+        for body in ["not json", "[1]", "\"text\""] {
+            assert_eq!(said(&e.handle(&Request::post("/api/setup/start", body))), said_as("bad_request", "bad request", 400), "{body}");
+        }
+        // a request it can read goes on to setup, which answers for itself
+        assert_eq!(said(&e.handle(&Request::post("/api/setup/start", "{}"))), said_as("choose_library", "Choose a library first.", 400));
+        assert_eq!(said(&e.handle(&Request::post("/api/setup/start", ""))).2, "choose_library", "an empty body is an empty request");
+        let _ = std::fs::remove_dir_all(&d);
+    }
+
+    #[test]
     fn every_code_has_words_in_the_interface() {
         let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web/locales/en.json");
         let words: Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
@@ -376,6 +397,11 @@ mod tests {
             assert!(words[format!("chat.code.{code}")].is_string(), "web/locales/en.json has no chat.code.{code}");
             // the same words' table as the local AI's and the chat's codes: none is two things
             assert!(!crate::ai::local::CODES.contains(&code) && !crate::ai::chat::CODES.contains(&code), "{code} is also the local AI's or the chat's");
+        }
+        for code in SETUP_CODES {
+            assert!(words[format!("setup.code.{code}")].is_string(), "web/locales/en.json has no setup.code.{code}");
+            // the same words' table as setup's own refusals
+            assert!(!crate::setup::api::CODES.contains(&code), "{code} is also one of setup's own codes");
         }
     }
 }

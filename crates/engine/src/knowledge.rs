@@ -56,13 +56,8 @@ impl Knowledge for EngineKnowledge {
         map::HELP.iter().map(|(k, _)| k.to_string()).collect()
     }
 
-    /// The map's source and date, as its file names them.
-    fn map_credit(&self) -> String {
-        let meta = &self.map.map_info()["meta"];
-        let source = meta["source"].as_str().unwrap_or("OpenStreetMap contributors");
-        match meta["data_as_of"].as_str() {
-            Some(d) => format!("{source} (data as of {})", &d[..d.len().min(10)]),
-            None => source.to_string(),
-        }
+    /// The map's source and date, as its files name them (Map::data_credit).
+    fn map_credit(&self) -> Value {
+        self.map.data_credit()
     }
 }

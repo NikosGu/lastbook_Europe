@@ -533,7 +533,7 @@ fn recommend_says_why_as_codes() {
     assert_eq!(r["pack"], Value::Null);
     // what it needs, with room left for the system: 5% of the 100 GB disk in all, 2 GB of it already in the install's need
     assert_eq!(r["why_codes"], json!([{"code": "none_fits", "params": {"pack": "small", "need_bytes": need + 3_000_000_000, "free_bytes": 1_000_000}}]));
-    assert!(r["why"].as_str().unwrap().starts_with("The smallest library, small, needs "));
+    assert!(r["why"].as_str().unwrap().starts_with("The smallest download, small, needs "), "the smallest download, by its name: a name that says library is not said twice");
     // room on another disk (/dev is on another device than the temporary folder on every system the tests run on)
     let stick = json!({"path": "/dev", "name": "STICK", "free_bytes": 900_000_000_000u64, "total_bytes": 1_000_000_000_000u64, "kind": "removable"});
     let r = s.recommend(&json!({"disks": [stick]}));

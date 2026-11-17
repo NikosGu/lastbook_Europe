@@ -9,9 +9,10 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 /// The rows of "What this map covers", each a code the interface words in the person's language (web/locales:
 /// map.info.<code> for the label, map.info.<code>_status for the status), with its params: `source`, the source a map
-/// file names ('' when it names none), and for the address search `regions` (the regions' codes) with `region_names`
-/// (their names as the English says them). An area in a code: `_detail`, the area this map details; `_whole`, the whole
-/// map. The English label and status stay beside them, for logs and for an interface that does not know the code.
+/// file names ('' when it names none; for the base map, the sources its files name, "OpenStreetMap, Natural Earth"),
+/// and for the address search `regions` (the regions' codes) with `region_names` (their names as the English says
+/// them). An area in a code: `_detail`, the area this map details; `_whole`, the whole map. The English label and
+/// status stay beside them, for logs and for an interface that does not know the code.
 pub const CODES: [&str; 12] = ["base", "streets_detail", "streets_whole", "no_detail", "places", "addresses", "elevation_contours", "elevation_broad",
     "buildings_detail", "buildings_whole", "crops_detail", "crops_whole"];
 
@@ -43,6 +44,11 @@ fn credit_of(source: &str) -> Option<(&'static str, String)> {
         _ => s,
     };
     Some(("", name.to_string()))
+}
+
+/// A source as a row of the panel names it in brackets: OpenStreetMap, or the name the credits give it.
+fn short_source(source: &str) -> Option<String> {
+    credit_of(source).map(|(code, name)| if code == "osm" { "OpenStreetMap".to_string() } else { name })
 }
 
 fn secs(t: SystemTime) -> f64 {
@@ -193,6 +199,18 @@ impl Map {
             .unwrap_or_default()
     }
 
+    /// Whose data the map's help points are, and of when, for the assistant's map sources (ai/assistant.rs PLACE_CODES):
+    /// the source the map's own description names (map.sqlite's meta, then national.sqlite's), as the credits name it
+    /// (`credit`, with its `code`: osm, or '' for a source credited by its own name; OpenStreetMap's when the map names
+    /// none), the day its data was taken (`data_as_of`, '' when the map names none), and the English line (`text`).
+    pub fn data_credit(&self) -> Value {
+        let first = |key: &str| [MAPDB, NATIONAL].iter().map(|f| self.meta_source(f, key)).find(|v| !v.trim().is_empty()).unwrap_or_default();
+        let (code, credit) = credit_of(&first("source")).unwrap_or(("osm", "© OpenStreetMap contributors".into()));
+        let date: String = first("data_as_of").trim().chars().take(10).collect();
+        let text = if date.is_empty() { credit.clone() } else { format!("{credit} (data as of {date})") };
+        json!({"text": text, "code": code, "credit": credit, "data_as_of": date})
+    }
+
     /// The credits under the map ([`CREDIT_CODES`]): the sources this map set's files name, each once. Building outlines
     /// that name none are OpenStreetMap's, as the panel beside the map says.
     fn credits(&self) -> Vec<Value> {
@@ -242,7 +260,18 @@ impl Map {
         let bounded = !have["bounds"].is_null();
         let detail = have["detail"] == true;
         let with = |label: &str, src: &str| if src.is_empty() { label.to_string() } else { format!("{label} ({src})") };
-        let mut out = vec![row("base", json!({}), "Main roads, towns and water (OpenStreetMap, Natural Earth)", "Shown at every zoom level")];
+        // the base map's sources, as its files name them (map.sqlite's and national.sqlite's source and base_source), each
+        // once: none when there is no map file, or its file names none
+        let mut base: Vec<String> = Vec::new();
+        for file in [MAPDB, NATIONAL] {
+            for key in ["source", "base_source"] {
+                if let Some(name) = short_source(&self.meta_source(file, key)).filter(|n| !base.contains(n)) {
+                    base.push(name);
+                }
+            }
+        }
+        let base = base.join(", ");
+        let mut out = vec![row("base", json!({"source": base}), with("Main roads, towns and water", &base), "Shown at every zoom level")];
         out.push(match (detail, bounded) {
             (true, true) => row("streets_detail", json!({}), "Streets, places and help points (OpenStreetMap) for the area this map details", "Street detail stops at the edge of this area."),
             (true, false) => row("streets_whole", json!({}), "Streets, places and help points (OpenStreetMap) for the whole map", "Shown when you zoom in"),

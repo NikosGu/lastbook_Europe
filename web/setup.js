@@ -65,8 +65,10 @@
   const errCode = e => e && (typeof e === 'object' ? e.code : null);
   const errText = e => e && (typeof e === 'object' ? e.message || e.error : e);
   /* What the engine says, as a code with params beside its English (crates/engine/src/setup/api.rs CODES and WHY_CODES,
-     hardware.rs AI_CODES): each code to its whole key. A code not listed here shows the engine's own sentence. */
+     hardware.rs AI_CODES; a request setup's route could not read, router.rs SETUP_CODES): each code to its whole key. A code not
+     listed here shows the engine's own sentence. */
   const CODE = {   // an answer that refused: {error, code, params}
+    request_too_large: 'setup.code.request_too_large', bad_request: 'setup.code.bad_request',
     busy: 'setup.code.busy', pack_unavailable: 'setup.code.pack_unavailable', no_ai_offered: 'setup.code.no_ai_offered',
     model_unavailable: 'setup.code.model_unavailable', map_unavailable: 'setup.code.map_unavailable', addresses_unavailable: 'setup.code.addresses_unavailable',
     choose_library: 'setup.code.choose_library', nothing_to_add: 'setup.code.nothing_to_add', cannot_make_folder: 'setup.code.cannot_make_folder',
@@ -446,8 +448,10 @@
     b.disabled = !need || !!short || mapMissing();
     const newPack = c && packNeedsInstall(packById(choice.pack)), newAi = c && choice.ai && !c.model, newMap = c && mapAdds(), newAddresses = c && addressAdds();
     const parts = [newPack && packTitle(packById(choice.pack)), newAi && t('setup.go.part_ai'), newMap && t('setup.go.part_map', { name: mapName(newMap.id) }), newAddresses && !newMap && t('setup.go.part_addresses')].filter(Boolean);
-    b.textContent = mapMissing() ? t('setup.go.choose_region') : !c ? t('setup.go.install') : parts.length ? t('setup.go.get', { list: I18N.list(parts) }) : t('setup.go.nothing');
-    if (newPack && choice.pack === c.pack && !mapMissing()) b.textContent = t('setup.go.install_update');
+    // with nothing to download (every file found on this computer), the button says only that it installs
+    b.textContent = mapMissing() ? t('setup.go.choose_region') : !c ? t(dl ? 'setup.go.install' : 'setup.go.install_found')
+      : parts.length ? t(dl ? 'setup.go.get' : 'setup.go.install_list', { list: I18N.list(parts) }) : t('setup.go.nothing');
+    if (newPack && choice.pack === c.pack && !mapMissing()) b.textContent = t(dl ? 'setup.go.install_update' : 'setup.go.install_update_found');
     const ch = $('#chFolder'); if (ch) ch.onclick = pickFolder;
   }
   // where the library goes; on an external disk, a USB stick or a network share, said plainly beside it

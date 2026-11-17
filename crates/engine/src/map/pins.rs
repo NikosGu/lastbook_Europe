@@ -13,9 +13,10 @@ use std::collections::HashMap;
 pub const TILE_POI: &[&str] = &["hospital", "clinic", "doctors", "pharmacy", "chemist", "fire_station", "police", "drinking_water", "toilet",
     "shelter", "community_centre", "supermarket", "doityourself", "hardware", "spring"];
 
-/// Every kind of point the map knows, with the name people see.
+/// Every kind of point the map knows, with the name people see. OpenStreetMap's shop=chemist is a drugstore in Europe (dm,
+/// Rossmann, Müller): no prescription medicines, so it is never named a pharmacy, which is amenity=pharmacy alone.
 pub const HELP: &[(&str, &str)] = &[
-    ("hospital", "Hospital"), ("clinic", "Clinic"), ("doctors", "Doctor"), ("pharmacy", "Pharmacy"), ("chemist", "Pharmacy"),
+    ("hospital", "Hospital"), ("clinic", "Clinic"), ("doctors", "Doctor"), ("pharmacy", "Pharmacy"), ("chemist", "Drugstore"),
     ("dentist", "Dentist"), ("fire_station", "Fire station"), ("police", "Police"), ("drinking_water", "Drinking water tap"),
     ("fountain", "Fountain (not necessarily drinkable)"), ("water_tower", "Water tower"), ("water_works", "Water works"),
     ("spring", "Spring (untested)"), ("toilet", "Public toilet"), ("shelter", "Shelter (structure)"),
