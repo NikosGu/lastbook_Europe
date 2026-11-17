@@ -1316,7 +1316,8 @@ mod tests {
     fn why_it_cannot_answer_is_told_by_its_code() {
         let bytes = b"GGUF but not really a model".to_vec();
         let (mut l, d) = local("told", vec![entry("tiny", "tiny.gguf", &bytes)]);
-        Arc::get_mut(&mut l.0).unwrap().start_wait = Duration::from_millis(600);
+        // long beside the 150 ms after which a thread below ends a start: a busy test machine must not make it a timeout
+        Arc::get_mut(&mut l.0).unwrap().start_wait = Duration::from_secs(3);
         // nothing set up
         let text = l.ensure_running(&mut |_| {}, &|| false).unwrap();
         assert_eq!(told(&text), Some(fixed("not_set_up")));
