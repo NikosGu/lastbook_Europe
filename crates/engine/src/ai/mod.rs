@@ -5,3 +5,4 @@
 pub mod gguf;
 pub mod format;
 pub mod local;
+pub mod assistant;
