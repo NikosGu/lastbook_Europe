@@ -126,42 +126,48 @@ impl Layers for Connection {
     }
 }
 
-/// A region's GeoPackages: its own extract first, read whole, then its neighbours', read only inside the region's boxes
-/// (Switzerland's for Liechtenstein's bank of the Rhine). A feature two extracts hold, a road across the border, comes
-/// once, from the first.
+/// A region's GeoPackages: its own extracts (one, or France's old regions that make a new one), read whole, then its
+/// neighbours', read only inside the region's boxes (Switzerland's for Liechtenstein's bank of the Rhine). A feature two
+/// extracts hold, a road across the border, comes once, from the first that has it.
 pub struct Set {
     conns: Vec<Connection>,
+    own: usize,
     boxes: Vec<[f64; 4]>,
 }
 
 impl Set {
-    pub fn open(paths: &[PathBuf], boxes: &[[f64; 4]]) -> Result<Set, String> {
-        let conns = paths.iter().map(|p| Connection::open_with_flags(p, rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY).map_err(|e| format!("{}: {e}", p.display())))
-            .collect::<Result<Vec<_>, _>>()?;
-        if conns.is_empty() {
-            return Err("no GeoPackage".into());
+    pub fn open(own: &[PathBuf], neighbours: &[PathBuf], boxes: &[[f64; 4]]) -> Result<Set, String> {
+        if own.is_empty() {
+            return Err("no GeoPackage of the region".into());
         }
-        Ok(Set { conns, boxes: boxes.to_vec() })
+        let conns = own.iter().chain(neighbours).map(|p| Connection::open_with_flags(p, rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY).map_err(|e| format!("{}: {e}", p.display())))
+            .collect::<Result<Vec<_>, _>>()?;
+        Ok(Set { conns, own: own.len(), boxes: boxes.to_vec() })
     }
 
-    /// The region's own extract: its administrative areas say which country an address is in.
-    pub fn own(&self) -> &Connection {
-        &self.conns[0]
-    }
-}
-
-impl Layers for Set {
-    fn layer(&self, table: &str, cols: &[&str]) -> Vec<Row> {
+    fn rows(&self, table: &str, cols: &[&str], conns: usize) -> Vec<Row> {
         let mut seen = std::collections::HashSet::new();
         let mut out = Vec::new();
-        for (i, c) in self.conns.iter().enumerate() {
-            for (id, row) in read(c, table, cols, (i > 0).then_some(&self.boxes[..])) {
+        for (i, c) in self.conns.iter().take(conns).enumerate() {
+            for (id, row) in read(c, table, cols, (i >= self.own).then_some(&self.boxes[..])) {
                 if id.is_none_or(|id| seen.insert(id)) {
                     out.push(row);
                 }
             }
         }
         out
+    }
+
+    /// A layer of the region's own extracts alone: their administrative areas say which country an address is in, which
+    /// a neighbour's larger national outline must not.
+    pub fn own_layer(&self, table: &str, cols: &[&str]) -> Vec<Row> {
+        self.rows(table, cols, self.own)
+    }
+}
+
+impl Layers for Set {
+    fn layer(&self, table: &str, cols: &[&str]) -> Vec<Row> {
+        self.rows(table, cols, self.conns.len())
     }
 }
 

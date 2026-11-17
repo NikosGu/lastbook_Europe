@@ -14,15 +14,19 @@ use lastbook_engine::{dist, regions};
 use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
 
-const BUILD_MAP: &str = "lastbook-tools build-map --region REGION --gpkg FILE... --pbf FILE... [--dem FILE]... [--ne FOLDER] --out FOLDER
+const BUILD_MAP: &str = "lastbook-tools build-map --region REGION --gpkg FILE... --pbf FILE... [--neighbour-gpkg FILE]...
+          [--neighbour-pbf FILE]... [--dem FILE]... [--ne FOLDER] --out FOLDER
 
-  --region  the region's code (crates/engine/src/regions.rs), as LI or DE-HB
-  --gpkg    Geofabrik's free GeoPackage of the region (<region>-latest-free.gpkg.zip); more after it are the
-            neighbours', read only inside the region's boxes (Switzerland's for Liechtenstein's bank of the Rhine)
-  --pbf     Geofabrik's PBF of the region (<region>-latest.osm.pbf), then the neighbours', read the same way
-  --dem     a Copernicus DEM GLO-30 GeoTIFF; give each one the region's boxes touch (none: no elevation)
-  --ne      the folder holding Natural Earth's six zips (none: no zoomed-out base)
-  --out     the folder to write map/ (the map set) and addresses/<REGION>.sqlite into
+  --region          the region's code (crates/engine/src/regions.rs), as LI or DE-HB
+  --gpkg            Geofabrik's free GeoPackage of the region (<region>-latest-free.gpkg.zip); several for a region
+                    Geofabrik splits (Grand Est: Alsace, Champagne-Ardenne, Lorraine)
+  --pbf             Geofabrik's PBF of the region (<region>-latest.osm.pbf), likewise
+  --neighbour-gpkg  a neighbour's GeoPackage, read only inside the region's boxes (Switzerland's for Liechtenstein's
+                    bank of the Rhine)
+  --neighbour-pbf   a neighbour's PBF, read the same way
+  --dem             a Copernicus DEM GLO-30 GeoTIFF; give each one the region's boxes touch (none: no elevation)
+  --ne              the folder holding Natural Earth's six zips (none: no zoomed-out base)
+  --out             the folder to write map/ (the map set) and addresses/<REGION>.sqlite into
 Prints what it made.";
 
 const PACK_MAP: &str = "lastbook-tools pack-map --map FOLDER --out FOLDER [--base URL]
@@ -117,7 +121,8 @@ pub fn build_map(args: &[String]) -> i32 {
     run("build-map", BUILD_MAP, args, |o| {
         o.need("gpkg")?;
         o.need("pbf")?;
-        let sources = mapset::Sources { gpkg: o.all("gpkg"), pbf: o.all("pbf"), dem: o.all("dem"), ne: o.get("ne").map(PathBuf::from) };
+        let sources = mapset::Sources { gpkg: o.all("gpkg"), pbf: o.all("pbf"), neighbour_gpkg: o.all("neighbour-gpkg"), neighbour_pbf: o.all("neighbour-pbf"),
+                                        dem: o.all("dem"), ne: o.get("ne").map(PathBuf::from) };
         mapset::build(o.need("region")?, &sources, Path::new(o.need("out")?))
     })
 }

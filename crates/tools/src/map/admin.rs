@@ -5,6 +5,9 @@ use crate::map::geo::{self, Part};
 use crate::map::gpkg;
 use rusqlite::Connection;
 
+/// The columns of `gis_osm_adminareas_a_free` the areas are read with.
+pub const ADMIN_COLUMNS: &[&str] = &["fclass", "name"];
+
 #[derive(Debug, Default, Clone)]
 pub struct Admin {
     /// The region's country code and the outline its own addresses lie in.
@@ -17,7 +20,11 @@ pub struct Admin {
 
 impl Admin {
     pub fn load(g: &Connection, country: &str) -> Admin {
-        let rows = gpkg::layer(g, "gis_osm_adminareas_a_free", &["fclass", "name"]);
+        Admin::from_rows(&gpkg::layer(g, "gis_osm_adminareas_a_free", ADMIN_COLUMNS), country)
+    }
+
+    /// From `gis_osm_adminareas_a_free`'s rows, read with [`ADMIN_COLUMNS`] (of every extract of the region's own).
+    pub fn from_rows(rows: &[gpkg::Row], country: &str) -> Admin {
         let named = |level: &str| -> Vec<(String, Vec<Part>)> {
             rows.iter().filter(|r| r.col(0) == Some(level)).filter_map(|r| Some((r.col(1)?.to_string(), r.parts.clone()))).collect()
         };

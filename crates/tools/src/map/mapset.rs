@@ -11,7 +11,7 @@
 //!
 //! `map/` is what the region map zip holds (pack.rs); the address index is zipped on its own.
 
-use crate::map::admin::Admin;
+use crate::map::admin::{self, Admin};
 use crate::map::detail::{self, MapWriter};
 use crate::map::osm::{self, Kind};
 use crate::map::gpkg::Layers;
@@ -23,11 +23,15 @@ use std::path::{Path, PathBuf};
 use std::time::Instant;
 
 pub struct Sources {
-    /// Geofabrik's `<region>-latest-free.gpkg.zip` (or the .gpkg) of the region, then of its neighbours, whose features
-    /// are read only inside the region's boxes.
+    /// Geofabrik's `<region>-latest-free.gpkg.zip` (or the .gpkg) of the region: one, or the old French regions that
+    /// make a new one.
     pub gpkg: Vec<PathBuf>,
-    /// Geofabrik's `<region>-latest.osm.pbf` of the region, then of its neighbours, read the same way.
+    /// Geofabrik's `<region>-latest.osm.pbf` of the region, likewise.
     pub pbf: Vec<PathBuf>,
+    /// The neighbours' GeoPackages and PBFs, read only inside the region's boxes (Switzerland's for Liechtenstein's bank
+    /// of the Rhine).
+    pub neighbour_gpkg: Vec<PathBuf>,
+    pub neighbour_pbf: Vec<PathBuf>,
     /// Copernicus DEM GLO-30 GeoTIFFs covering the region's boxes; none leaves terrain out.
     pub dem: Vec<PathBuf>,
     /// The folder of Natural Earth zips (base.rs); None leaves the base out.
@@ -54,26 +58,32 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     let _ = std::fs::remove_dir_all(out.join("map"));
     std::fs::create_dir_all(&geo).map_err(|e| e.to_string())?;
     std::fs::create_dir_all(out.join("addresses")).map_err(|e| e.to_string())?;
-    let (Some(own_gpkg), Some(own_pbf)) = (src.gpkg.first(), src.pbf.first()) else { return Err("a GeoPackage and a PBF of the region are needed".into()) };
+    let Some(own_gpkg) = src.gpkg.first() else { return Err("a GeoPackage of the region is needed".into()) };
+    if src.pbf.is_empty() {
+        return Err("a PBF of the region is needed".into());
+    }
     let work = out.join("work");
-    let files: Vec<PathBuf> = src.gpkg.iter().map(|p| gpkg::unpacked(p, &work)).collect::<Result<_, _>>()?;
-    let g = gpkg::Set::open(&files, boxes)?;
+    let unpack = |list: &[PathBuf]| list.iter().map(|p| gpkg::unpacked(p, &work)).collect::<Result<Vec<_>, _>>();
+    let g = gpkg::Set::open(&unpack(&src.gpkg)?, &unpack(&src.neighbour_gpkg)?, boxes)?;
     let as_of = gpkg::data_as_of(own_gpkg).unwrap_or_default();
     let osm_source = format!("OpenStreetMap contributors (ODbL 1.0), Geofabrik extract{}", if as_of.is_empty() { String::new() } else { format!(" as of {as_of}") });
-    // the region's own extract says which country an address lies in; the neighbours' only add what is in the boxes
-    let admin = Admin::load(g.own(), country);
+    // the region's own extracts say which country an address lies in; the neighbours' only add what is in the boxes
+    let admin = Admin::from_rows(&g.own_layer("gis_osm_adminareas_a_free", admin::ADMIN_COLUMNS), country);
     say(&format!("{} municipalities", admin.towns.len()));
     let keep = |k: Kind, t: &[(&str, &str)]| {
         addresses::wanted(k, t) || addresses::street_wanted(k, t) || buildings::wanted(k, t) || places::wanted(k, t) || water::wanted(k, t)
             || coast::wanted(k, t)
     };
-    let mut things = osm::read(own_pbf, &keep)?;
-    let mut seen: HashSet<(Kind, i64)> = things.iter().map(|t| (t.kind, t.id)).collect();
-    for p in &src.pbf[1..] {
-        let near = osm::read_within(p, &keep, boxes)?;
+    // an element two extracts hold (a building on the border) comes once, from the first that has it
+    let mut things = Vec::new();
+    let mut seen: HashSet<(Kind, i64)> = HashSet::new();
+    for (p, near) in src.pbf.iter().map(|p| (p, false)).chain(src.neighbour_pbf.iter().map(|p| (p, true))) {
+        let read = if near { osm::read_within(p, &keep, boxes)? } else { osm::read(p, &keep)? };
         let before = things.len();
-        things.extend(near.into_iter().filter(|t| seen.insert((t.kind, t.id))));
-        say(&format!("{} more elements in the boxes from {}", things.len() - before, p.display()));
+        things.extend(read.into_iter().filter(|t| seen.insert((t.kind, t.id))));
+        if near {
+            say(&format!("{} more elements in the boxes from {}", things.len() - before, p.display()));
+        }
     }
     say(&format!("{} elements from the PBF", things.len()));
     let db = |e: rusqlite::Error| e.to_string();
@@ -191,7 +201,7 @@ mod tests {
         crate::map::terrain::write::geotiff(&dem, 9.40, 47.30, 0.002, 150, 150, false);
         crate::map::shp::write::zip(&dir.join("ne/ne_10m_roads.zip"), crate::map::shp::Kind::Line, &[(vec![vec![(9.0, 47.0), (9.6, 47.2), (10.0, 47.5)]],
             vec![("type", "Major Highway"), ("expressway", "0"), ("min_zoom", "5"), ("name", "13")])]);
-        Sources { gpkg: vec![gpkg], pbf: vec![pbf_path], dem: vec![dem], ne: Some(dir.join("ne")) }
+        Sources { gpkg: vec![gpkg], pbf: vec![pbf_path], neighbour_gpkg: Vec::new(), neighbour_pbf: Vec::new(), dem: vec![dem], ne: Some(dir.join("ne")) }
     }
 
     #[test]
@@ -276,8 +286,8 @@ mod tests {
         els.push(El::Way(100, &[10, 11, 12, 13, 10], &[("building", "retail"), ("building:levels", "3"), ("addr:housenumber", "13"), ("addr:street", "Städtle"), ("addr:postcode", "9490")]));
         let ch_pbf = dir.join("src/ch.osm.pbf");
         std::fs::write(&ch_pbf, pbf(&els)).unwrap();
-        src.gpkg.push(ch);
-        src.pbf.push(ch_pbf);
+        src.neighbour_gpkg.push(ch);
+        src.neighbour_pbf.push(ch_pbf);
         let report = build("LI", &src, &dir.join("out")).unwrap();
         let c = Connection::open(dir.join("out/map/derived/geo/national.sqlite")).unwrap();
         let named = |n: &str| -> i64 { c.query_row("SELECT count(*) FROM feat WHERE layer='road' AND name=?1", [n], |r| r.get(0)).unwrap() };
