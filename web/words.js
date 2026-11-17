@@ -1,5 +1,5 @@
 /* Word handling for topic search: split, fold and match words in any script, not just a-z.
-   Loaded before app.js. No DOM, no network: app/tests/test_topic_search.py runs these same functions in Node. */
+   Loaded before app.js. No DOM, no network. crates/engine/src/library/words.rs folds and matches words the same way for the library's search. */
 (function (root) {
   'use strict';
 

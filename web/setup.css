@@ -11,6 +11,13 @@ html.plat-mac.in-app .s-top{padding-top:30px}   /* below the traffic lights of a
 .s-back{margin-left:auto;display:inline-flex;align-items:center;gap:4px;min-height:40px;padding:6px 12px 6px 6px;border-radius:var(--r-ctl);color:var(--accent);text-decoration:none;font-weight:600;font-size:16px}
 .s-back:hover{background:var(--field)}
 .s-back svg{width:20px;height:20px}
+/* the language menu: the current language's name beside a globe, with the system's own menu laid over it, unseen */
+.s-lang{position:relative;margin-left:auto;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 12px 6px 10px;border-radius:var(--r-ctl);color:var(--ink2);font-size:15px;font-weight:500;cursor:pointer}
+.s-back:not([hidden])~.s-lang{margin-left:0}
+.s-lang:hover{background:var(--field)}
+.s-lang:focus-within{outline:3px solid var(--focus);outline-offset:1px}
+.s-lang svg{width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7}
+.s-lang select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px;-webkit-appearance:none;appearance:none}
 
 .s-main{max-width:760px;padding:8px 16px 56px;min-height:0}
 @media (min-width:640px){.s-main{padding:8px 28px 64px}.s-top{padding-left:28px;padding-right:28px}}

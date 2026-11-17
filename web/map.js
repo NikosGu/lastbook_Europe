@@ -6,7 +6,7 @@ const MapView = (() => {
   const MINZ = 3, MAXZ = 19, DATAZ = 17;
   let HOME = null;   // a household's own opening place, from web/home-area.json: a local file never packaged. "Set as my area" wins over it.
   const IN_WINDOW = location.protocol === 'lastbook:' || location.hostname === 'lastbook.invalid';
-  const US = [-124.8, 24.4, -66.9, 49.4];  // lower 48
+  const EUROPE = [-25, 34, 45, 71.5];  // the EU and EFTA, from the Azores to the North Cape: the whole map when the server names no bounds
   const FULL = ['<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>', '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'];   // full screen, and leave it
   const C = { land: '#f2efe6', ocean: '#aad3df', water: '#aad3df', wet: '#cfe3d4', beach: '#f4e7b6',
     park: '#cfe7c2', playa: '#ece4cf', green: '#d5e8c6', farm: '#eceac6', res: '#ebe7de', com: '#f1e2df', ind: '#e8e1ea', bldg: '#d9d0c3', bldgLine: '#c6bcae',
@@ -17,58 +17,66 @@ const MapView = (() => {
     cycleway: ['#6f8fd8', 1, 14], steps: ['#d08f7a', 1.6, 16], bridleway: ['#7fae6a', 1, 14], busway: ['#ffffff', 2, 14] };
   const roadStyle = c => ROAD[c] || ROAD[c.replace(/_link$/, '')] || (c.startsWith('track') ? ROAD.track : ROAD.service);
 
-  // Map layers: id, label, symbol, colour, server classes, group, note
+  // Map layers: id, name (a key of web/locales/), symbol, colour, server classes, group
   const LAYERS = [
-    ['hospital', 'Hospitals', 'H', '#c62828', 'hospital', 'help'],
-    ['clinic', 'Clinics & doctors', '+', '#d81b60', 'clinic,doctors', 'help'],
-    ['dentist', 'Dentists', 'Dt', '#00695c', 'dentist', 'help'],
-    ['pharmacy', 'Pharmacies', 'Rx', '#2e7d32', 'pharmacy,chemist', 'help'],
-    ['fire', 'Fire stations', 'F', '#ef6c00', 'fire_station', 'help'],
-    ['police', 'Police', 'P', '#1a4f9c', 'police', 'help'],
-    ['shelter', 'Shelters (structures)', '⌂', '#455a64', 'shelter', 'help'],
-    ['community', 'Community centers, town halls & libraries', 'C', '#8e24aa', 'community_centre,town_hall,library', 'help'],
-    ['water', 'Drinking-water taps', 'W', '#0277bd', 'drinking_water', 'water'],
-    ['reservoir', 'Reservoirs & named lakes', '≈', '#1565c0', 'reservoir,lake', 'water'],
-    ['pond', 'Unnamed ponds (1+ acre, year-round)', '≈', '#5e9fd0', 'pond', 'water'],
-    ['dam', 'Dams (with storage & purpose)', 'D', '#6d4c41', 'dam', 'water'],
-    ['spring', 'Springs (untested water)', 'S', '#00897b', 'spring', 'water'],
-    ['food', 'Supermarkets & food shops', '$', '#a05f00', 'supermarket,convenience', 'supply'],
-    ['hardware', 'Hardware stores', '⚒', '#546e7a', 'hardware,doityourself', 'supply'],
-    ['fuel', 'Fuel stations', 'G', '#37474f', 'fuel', 'supply'],
-    ['camp', 'Campsites', '▲', '#558b2f', 'camp_site', 'supply'],
-    ['orchard', 'Orchards: nuts, fruit, citrus, olives', '♣', '#3f7a2a', 'orchard', 'food'],
-    ['vineyard', 'Vineyards (grapes)', '✽', '#6a2c8f', 'vineyard', 'food'],
-    ['berries', 'Berries & asparagus', '✿', '#3949ab', 'berries,perennial_veg', 'food'],
-    ['fish', 'Fish-stocking sites (California)', 'Fi', '#007d9c', 'fish_stocking', 'resource'],
-    ['boat', 'Boating facilities (California)', 'B', '#176d43', 'boat_launch', 'resource'],
-    ['mineral', 'Minerals & mines (US)', 'M', '#8b5429', 'mineral', 'resource'],
-    ['well', 'Oil & gas wells (California)', 'O', '#633ca6', 'oil_gas_well', 'resource'],
-  ].map(([id, label, sym, col, cls, group]) => ({ id, label, sym, col, cls: cls.split(','), group }));
-  const GROUPS = [['help', 'Emergency help'], ['water', 'Water'], ['supply', 'Supplies & camping'], ['food', 'Food that keeps growing (2025 crop maps)'], ['resource', 'Natural resources (historical records)']];
+    ['hospital', 'map.layer.hospital', 'H', '#c62828', 'hospital', 'help'],
+    ['clinic', 'map.layer.clinic', '+', '#d81b60', 'clinic,doctors', 'help'],
+    ['dentist', 'map.layer.dentist', 'Dt', '#00695c', 'dentist', 'help'],
+    ['pharmacy', 'map.layer.pharmacy', '✚', '#2e7d32', 'pharmacy,chemist', 'help'],   // the green cross of Europe's pharmacies
+    ['fire', 'map.layer.fire', 'F', '#ef6c00', 'fire_station', 'help'],
+    ['police', 'map.layer.police', 'P', '#1a4f9c', 'police', 'help'],
+    ['shelter', 'map.layer.shelter', '⌂', '#455a64', 'shelter', 'help'],
+    ['community', 'map.layer.community', 'C', '#8e24aa', 'community_centre,town_hall,library', 'help'],
+    ['water', 'map.layer.water', 'W', '#0277bd', 'drinking_water', 'water'],
+    ['reservoir', 'map.layer.reservoir', '≈', '#1565c0', 'reservoir,lake', 'water'],
+    ['pond', 'map.layer.pond', '≈', '#5e9fd0', 'pond', 'water'],
+    ['dam', 'map.layer.dam', 'D', '#6d4c41', 'dam', 'water'],
+    ['spring', 'map.layer.spring', 'S', '#00897b', 'spring', 'water'],
+    ['food', 'map.layer.food', '$', '#a05f00', 'supermarket,convenience', 'supply'],
+    ['hardware', 'map.layer.hardware', '⚒', '#546e7a', 'hardware,doityourself', 'supply'],
+    ['fuel', 'map.layer.fuel', 'G', '#37474f', 'fuel', 'supply'],
+    ['camp', 'map.layer.camp', '▲', '#558b2f', 'camp_site', 'supply'],
+    ['orchard', 'map.layer.orchard', '♣', '#3f7a2a', 'orchard', 'food'],
+    ['vineyard', 'map.layer.vineyard', '✽', '#6a2c8f', 'vineyard', 'food'],
+    ['berries', 'map.layer.berries', '✿', '#3949ab', 'berries,perennial_veg', 'food'],
+    ['fish', 'map.layer.fish', 'Fi', '#007d9c', 'fish_stocking', 'resource'],
+    ['boat', 'map.layer.boat', 'B', '#176d43', 'boat_launch', 'resource'],
+    ['mineral', 'map.layer.mineral', 'M', '#8b5429', 'mineral', 'resource'],
+    ['well', 'map.layer.well', 'O', '#633ca6', 'oil_gas_well', 'resource'],
+  ].map(([id, key, sym, col, cls, group]) => ({ id, key, sym, col, cls: cls.split(','), group }));
+  const GROUPS = [['help', 'map.group.help'], ['water', 'map.group.water'], ['supply', 'map.group.supply'], ['food', 'map.group.food'], ['resource', 'map.group.resource']];
   const BY_CLS = {}; for (const l of LAYERS) for (const c of l.cls) BY_CLS[c] = l;
   const DEFAULT_LAYERS = ['hospital', 'clinic', 'pharmacy', 'fire', 'police', 'shelter', 'water', 'reservoir', 'fish', 'boat'];
-  const PRESETS = [['Emergency', ['hospital', 'clinic', 'dentist', 'pharmacy', 'fire', 'police', 'shelter', 'community']], ['Water', ['water', 'spring', 'reservoir', 'pond', 'dam', 'fish', 'boat']],
-    ['Supplies', ['food', 'hardware', 'fuel', 'camp']], ['Food trees', ['orchard', 'vineyard', 'berries']], ['Resources', ['fish', 'boat', 'mineral', 'well']], ['All', LAYERS.map(l => l.id)]];
+  // Quick choices in the Layers panel: id, name, layers
+  const PRESETS = [['emergency', 'map.preset.emergency', ['hospital', 'clinic', 'dentist', 'pharmacy', 'fire', 'police', 'shelter', 'community']], ['water', 'map.preset.water', ['water', 'spring', 'reservoir', 'pond', 'dam', 'fish', 'boat']],
+    ['supplies', 'map.preset.supplies', ['food', 'hardware', 'fuel', 'camp']], ['food', 'map.preset.food', ['orchard', 'vineyard', 'berries']], ['resources', 'map.preset.resources', ['fish', 'boat', 'mineral', 'well']], ['all', 'map.preset.all', LAYERS.map(l => l.id)]];
   const LEGACY = { all_resources: ['fish', 'boat', 'mineral', 'well'], mineral: ['mineral'], oil_gas_well: ['well'], fish_stocking: ['fish'], boat_launch: ['boat'] };
-  const FIELD = { commod1: 'Commodity', commod2: 'Also', commod3: 'Also', ore: 'Ore', dev_stat: 'Recorded status', oper_type: 'Operation', yr_lst_prd: 'Last production year',
-    county: 'County', state: 'State',  WellTypeLabel: 'Well type', WellStatus: 'Well status', FieldName: 'Field', API: 'API number', CountyName: 'County',
-    FishType: 'Fish', Counties: 'County', WeekOfPlantStart: 'Stocked (week of)', Water_Body: 'Water', Facility_Type: 'Facility', County: 'County', Owner: 'Owner',
-    other_names: 'Also called', purpose: 'Main purpose', purposes: 'All purposes', river: 'River / stream', city: 'Nearest town', owner: 'Owner',
-    normal_storage_af: 'Normal storage (acre-ft)', max_storage_af: 'Max storage (acre-ft)', surface_acres: 'Surface (acres)', height_ft: 'Height (ft)', year: 'Built',
-    dam_type: 'Dam type', hazard: 'Downstream hazard if it failed', condition: 'Condition', status: 'Status', area_acres: 'Area (acres)', water_type: 'Water present',
-    reservoir_type: 'Reservoir type', crop: 'Crop', crop_acres: 'Acres of it in this ~600 m block', perennial_acres: 'All tree, vine & berry acres in block', year: 'Satellite crop map year',
-    FUEL_SALES: 'Fuel sales', NO_OF_RAMP_LANE_USE_ONE_TIME: 'Ramp lanes', FISH_CLEANING: 'Fish cleaning', Comments: 'Notes', Website: 'Website' };
-  const CAVEAT = { mineral: 'USGS mineral record: an occurrence or past mine, not proof of recoverable ore, access or safety. Old workings can be deadly.',
-    oil_gas_well: 'State well record. Most are plugged or idle; never approach an unsealed well head.', fish_stocking: 'A past stocking record — it does not confirm fish are present now.',
-    boat_launch: 'Facility survey data; check current access.',
-    dam: 'National Inventory of Dams record. Keep away from spillways and outlets — currents and sudden releases drown people.',
-    reservoir: 'Surface water: filter, then boil or disinfect before drinking. Skip water with green scum or discolouration (toxic algae; boiling won’t remove it).',
-    lake: 'Surface water: filter, then boil or disinfect before drinking. Skip water with green scum or discolouration (toxic algae; boiling won’t remove it).',
-    orchard: 'USDA 2025 satellite crop map: usually right for big orchards, sometimes wrong for small ones. Trees and vines keep producing for decades but need water in dry regions and winter pruning. Private farmland — ask first.',
-    vineyard: 'USDA 2025 satellite crop map: usually right for big orchards, sometimes wrong for small ones. Trees and vines keep producing for decades but need water in dry regions and winter pruning. Private farmland — ask first.',
-    berries: 'USDA 2025 satellite crop map: usually right for big orchards, sometimes wrong for small ones. Trees and vines keep producing for decades but need water in dry regions and winter pruning. Private farmland — ask first.',
-    perennial_veg: 'USDA 2025 satellite crop map: usually right for big orchards, sometimes wrong for small ones. Trees and vines keep producing for decades but need water in dry regions and winter pruning. Private farmland — ask first.',
-    pond: 'Small ponds are often livestock ponds with manure runoff: treat the water and cook any fish thoroughly. Small ponds can be fished out in weeks.', spring: 'Mapped spring — treat the water before drinking.', drinking_water: 'Mapped tap; may be off in an emergency.' };
+  // A record's fields, by the names its source gives them. (A field named year is the crop map's year: the dams' "Built" year was
+  // listed first under the same name, and never shown.)
+  const FIELD = { commod1: 'map.field.commodity', commod2: 'map.field.also', commod3: 'map.field.also', ore: 'map.field.ore', dev_stat: 'map.field.dev_stat', oper_type: 'map.field.operation', yr_lst_prd: 'map.field.last_production',
+    county: 'map.field.district', state: 'map.field.region', WellTypeLabel: 'map.field.well_type', WellStatus: 'map.field.well_status', FieldName: 'map.field.oil_field', API: 'map.field.well_id', CountyName: 'map.field.district',
+    FishType: 'map.field.fish', Counties: 'map.field.district', WeekOfPlantStart: 'map.field.stocked_week', Water_Body: 'map.field.water', Facility_Type: 'map.field.facility', County: 'map.field.district', Owner: 'map.field.owner',
+    other_names: 'map.field.other_names', purpose: 'map.field.purpose', purposes: 'map.field.purposes', river: 'map.field.river', city: 'map.field.nearest_town', owner: 'map.field.owner',
+    normal_storage_af: 'map.field.normal_storage', max_storage_af: 'map.field.max_storage', surface_acres: 'map.field.surface', height_ft: 'map.field.height',
+    dam_type: 'map.field.dam_type', hazard: 'map.field.hazard', condition: 'map.field.condition', status: 'map.field.status', area_acres: 'map.field.area', water_type: 'map.field.water_present',
+    reservoir_type: 'map.field.reservoir_type', crop: 'map.field.crop', crop_acres: 'map.field.crop_area', perennial_acres: 'map.field.perennial_area', year: 'map.field.crop_year',
+    FUEL_SALES: 'map.field.fuel_sales', NO_OF_RAMP_LANE_USE_ONE_TIME: 'map.field.ramp_lanes', FISH_CLEANING: 'map.field.fish_cleaning', Comments: 'map.field.notes', Website: 'map.field.website' };
+  // Fields a source records in US units, shown in metric: [factor, decimals]. Acre-feet to m³, acres to hectares, feet to metres.
+  const METRIC = { normal_storage_af: [1233.48, 0], max_storage_af: [1233.48, 0], surface_acres: [0.404686, 1], area_acres: [0.404686, 1], crop_acres: [0.404686, 1], perennial_acres: [0.404686, 1], height_ft: [0.3048, 1] };
+  const fieldValue = (k, v) => { const m = METRIC[k], n = Number(String(v).replace(/,/g, '')); return m && String(v).trim() !== '' && isFinite(n) ? I18N.num(n * m[0], { maximumFractionDigits: m[1] }) : v };
+  const CAVEAT = { mineral: 'map.caveat.mineral', oil_gas_well: 'map.caveat.well', fish_stocking: 'map.caveat.fish', boat_launch: 'map.caveat.boat', dam: 'map.caveat.dam',
+    reservoir: 'map.caveat.surface_water', lake: 'map.caveat.surface_water',
+    orchard: 'map.caveat.crops', vineyard: 'map.caveat.crops', berries: 'map.caveat.crops', perennial_veg: 'map.caveat.crops',
+    pond: 'map.caveat.pond', spring: 'map.caveat.spring', drinking_water: 'map.caveat.tap' };
+  // A place with no name, said whole in each language ("Unnamed hospital"): by the server's class
+  const UNNAMED = { hospital: 'map.unnamed.hospital', clinic: 'map.unnamed.clinic', doctors: 'map.unnamed.doctors', dentist: 'map.unnamed.dentist', pharmacy: 'map.unnamed.pharmacy', chemist: 'map.unnamed.pharmacy',
+    fire_station: 'map.unnamed.fire_station', police: 'map.unnamed.police', shelter: 'map.unnamed.shelter', community_centre: 'map.unnamed.community_centre', town_hall: 'map.unnamed.town_hall', library: 'map.unnamed.library',
+    drinking_water: 'map.unnamed.drinking_water', reservoir: 'map.unnamed.reservoir', lake: 'map.unnamed.lake', pond: 'map.unnamed.pond', dam: 'map.unnamed.dam', spring: 'map.unnamed.spring',
+    supermarket: 'map.unnamed.supermarket', convenience: 'map.unnamed.convenience', hardware: 'map.unnamed.hardware', doityourself: 'map.unnamed.hardware', fuel: 'map.unnamed.fuel', camp_site: 'map.unnamed.camp_site',
+    orchard: 'map.unnamed.orchard', vineyard: 'map.unnamed.vineyard', berries: 'map.unnamed.berries', perennial_veg: 'map.unnamed.perennial_veg',
+    fish_stocking: 'map.unnamed.fish_stocking', boat_launch: 'map.unnamed.boat_launch', mineral: 'map.unnamed.mineral', oil_gas_well: 'map.unnamed.oil_gas_well' };
+  // The server's direction from the map's centre ("north-east"), with the words each language puts before it
+  const DIR = { north: 'map.dir.north', 'north-east': 'map.dir.north_east', east: 'map.dir.east', 'south-east': 'map.dir.south_east', south: 'map.dir.south', 'south-west': 'map.dir.south_west', west: 'map.dir.west', 'north-west': 'map.dir.north_west' };
   let st = null, world = null, geography = null;
 
   const load = (k, d) => { try { return JSON.parse(localStorage.getItem('sg.' + k)) ?? d } catch { return d } };
@@ -79,18 +87,19 @@ const MapView = (() => {
   const y2lat = (y, z) => { const n = Math.PI - 2 * Math.PI * y / 2 ** z; return 180 / Math.PI * Math.atan(Math.sinh(n)) };
   const escH = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const $ = id => document.getElementById(id);
-  const dist = km => km < 1.6 ? Math.round(km * 1000) + ' m' : (km / 1.609).toFixed(km < 16 ? 1 : 0) + ' mi';
+  const dist = km => km < 1 ? I18N.unit(Math.round(km * 1000), 'meter') : I18N.unit(km, 'kilometer', km < 10 ? 1 : 0);
   const kmBetween = (a, b, c, d) => { const r = Math.PI / 180, x = Math.sin((c - a) * r / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin((d - b) * r / 2) ** 2; return 12742 * Math.asin(Math.sqrt(x)) };
   const sym = (l, size = 22) => `<i class="msym" style="background:${l.col};width:${size}px;height:${size}px">${escH(l.sym)}</i>`;
-  const layerOf = cls => BY_CLS[cls] || { sym: '•', col: '#555', label: cls };
-  const unnamed = p => p.name || (p.detail?.reservoir_type ? p.detail.reservoir_type : 'Unnamed ' + (p.label || layerOf(p.cls).label).replace(/ \(.*\)/, '').replace(/^Recorded /, '').toLowerCase());
+  const layerOf = cls => BY_CLS[cls] || { sym: '•', col: '#555', name: cls };
+  const lname = l => l.key ? t(l.key) : l.name || '';   // a layer's name in the interface's language (a class the layers do not know keeps its own)
+  const unnamed = p => p.name || p.detail?.reservoir_type || t(UNNAMED[p.cls] || 'map.unnamed.place');
 
   let askedHome = false;
   async function localHome() {
     if (!askedHome && !IN_WINDOW) { askedHome = true; try { const r = await fetch('/ui/home-area.json'); if (r.ok) HOME = await r.json() } catch { } }
     return HOME;
   }
-  const wholeMap = () => st.bounds || US;
+  const wholeMap = () => st.bounds || EUROPE;
   async function page(main, q) {
     await localHome();
     const home = load('mapHome', HOME);
@@ -100,28 +109,28 @@ const MapView = (() => {
     if (!on.length) on = (load('mapLayers', DEFAULT_LAYERS) || []).filter(id => LAYERS.some(l => l.id === id));  // drop retired layers (e.g. toilets)
     if (!on.length) on = DEFAULT_LAYERS;
     main.classList.add('map-page');
-    document.title = 'Map · Lastbook';
-    main.innerHTML = `<div class="maphead"><h1>Map &amp; nearby help</h1><p class="small muted">Offline: works with no internet. Shows what was mapped by 25 Oct 2026 — not damage, closures or hazards.</p>${IN_WINDOW ? '<a class="btn plain" href="/ui/setup.html#manage">Map downloads</a>' : ''}</div>
+    document.title = t('map.page_title') + ' · Lastbook';
+    main.innerHTML = `<div class="maphead"><h1>${th('map.heading')}</h1><p class="small muted">${th('map.offline_note')}</p>${IN_WINDOW ? `<a class="btn plain" href="/ui/setup.html#manage">${th('map.downloads')}</a>` : ''}</div>
     <div class="mapgrid"><div class="mapwrap" id="mapwrap">
-      <canvas id="mapc" tabindex="0" role="application" aria-label="Map. Arrow keys move, plus and minus zoom, Escape closes details. The list beside the map gives the same places as text."></canvas>
+      <canvas id="mapc" tabindex="0" role="application" aria-label="${th('map.canvas_label')}"></canvas>
       <div class="map-top">
-        <form class="map-search" id="pf" role="search"><label class="sr" for="pq">Find an address, town, ZIP code or place</label><input id="pq" type="search" placeholder="Find an address, town or ZIP" autocomplete="off"><button aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></form>
-        <button class="map-layers-btn" id="layers-btn" aria-expanded="false" aria-controls="layers">Layers <b id="layer-count"></b></button>
+        <form class="map-search" id="pf" role="search"><label class="sr" for="pq">${th('map.find_label')}</label><input id="pq" type="search" placeholder="${th('map.find_placeholder')}" autocomplete="off"><button aria-label="${th('map.find_button')}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></form>
+        <button class="map-layers-btn" id="layers-btn" aria-expanded="false" aria-controls="layers">${th('map.layers')} <b id="layer-count"></b></button>
       </div>
       <div class="map-pop" id="pres" hidden></div>
       <div class="map-pop layers" id="layers" hidden></div>
-      <div class="mapctl"><span class="zgrp" role="group" aria-label="Zoom"><button id="zin" aria-label="Zoom in" title="Zoom in">+</button><button id="zout" aria-label="Zoom out" title="Zoom out">−</button></span>
-        <button id="zhome" aria-label="Go to my area" title="My area"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg></button><button id="map-us" aria-label="Whole United States" title="Whole US">US</button>
-        <button id="map-full" aria-label="Full screen" title="Full screen">${FULL[0]}</button><button id="map-3d" aria-label="3D terrain view" title="3D view">3D</button><button id="map-photo" aria-label="Aerial photos" aria-pressed="false" title="Aerial photos">🛰</button></div>
+      <div class="mapctl"><span class="zgrp" role="group" aria-label="${th('map.zoom')}"><button id="zin" aria-label="${th('map.zoom_in')}" title="${th('map.zoom_in')}">+</button><button id="zout" aria-label="${th('map.zoom_out')}" title="${th('map.zoom_out')}">−</button></span>
+        <button id="zhome" aria-label="${th('map.home_label')}" title="${th('map.home_title')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg></button><button id="map-us"${t('map.whole_button').length > 5 ? ' class="long"' : ''} aria-label="${th('map.whole_map')}" title="${th('map.whole_map')}">${th('map.whole_button')}</button>
+        <button id="map-full" aria-label="${th('map.full_screen')}" title="${th('map.full_screen')}">${FULL[0]}</button><button id="map-3d" aria-label="${th('map.view_3d_label')}" title="${th('map.view_3d_title')}">3D</button><button id="map-photo" aria-label="${th('map.aerial')}" aria-pressed="false" title="${th('map.aerial')}">🛰</button></div>
       <div class="map-card" id="card" hidden></div>
       <div class="map-tip" id="tip" hidden></div>
       <div class="map-status" id="mstatus" aria-live="polite"></div>
-      <div class="mapelev" id="melev" hidden></div><div class="mapscale" id="mscale"></div><div class="mapattr">© OpenStreetMap contributors · Microsoft buildings · USGS · USDA · NOAA · USACE · CDFW · CalGEM · Natural Earth</div>
+      <div class="mapelev" id="melev" hidden></div><div class="mapscale" id="mscale"></div><div class="mapattr">${th('map.attribution')}</div>
     </div>
     <div class="maptools">
-      <section class="panel"><h2>Nearest to the map center</h2><p class="small muted" style="margin:0 0 4px">For the layers you have on. Straight-line distance, not by road.</p><div class="nearres" id="near" aria-live="polite"></div></section>
-      <section class="panel"><h2>Your area</h2><p class="small muted" style="margin:0 0 8px">The home button returns here. Saved on this device only.</p><button class="btn plain" id="sethome">Make the map center my area</button>${navigator.geolocation && isSecureContext ? ' <button class="btn plain" id="gps">Use my location</button>' : ''}</section>
-      <section class="panel"><h2>What this map covers</h2><ul class="list small" id="mdata"><li class="muted">Loading…</li></ul></section>
+      <section class="panel"><h2>${th('map.nearest_title')}</h2><p class="small muted" style="margin:0 0 4px">${th('map.nearest_note')}</p><div class="nearres" id="near" aria-live="polite"></div></section>
+      <section class="panel"><h2>${th('map.area_title')}</h2><p class="small muted" style="margin:0 0 8px">${th('map.area_note')}</p><button class="btn plain" id="sethome">${th('map.set_home')}</button>${navigator.geolocation && isSecureContext ? ` <button class="btn plain" id="gps">${th('map.use_location')}</button>` : ''}</section>
+      <section class="panel"><h2>${th('map.covers_title')}</h2><ul class="list small" id="mdata"><li class="muted">${th('map.loading')}</li></ul></section>
     </div></div>`;
     // The map fills the window. With the tools beside it, the page ends where the window does, at the page's own bottom margin (so the
     // page itself never scrolls); with the tools below, the map leaves room for the tab bar and a margin.
@@ -139,10 +148,10 @@ const MapView = (() => {
     const toolsSeen = new ResizeObserver(toolsEdge); toolsSeen.observe(tools); [...tools.children].forEach(c => toolsSeen.observe(c));
     const place = isFinite(lat) && isFinite(lon) ? null : home;
     const openWhole = !place && !(isFinite(lat) && isFinite(lon));   // nothing says where to open: the whole of this map, once its bounds have come
-    st = { lat: isFinite(lat) ? lat : place ? place.lat : 39, lon: isFinite(lon) ? lon : place ? place.lon : -98, z: isFinite(z) ? Math.max(MINZ, Math.min(MAXZ, z)) : place ? place.z : 4,
+    st = { lat: isFinite(lat) ? lat : place ? place.lat : 50, lon: isFinite(lon) ? lon : place ? place.lon : 10, z: isFinite(z) ? Math.max(MINZ, Math.min(MAXZ, z)) : place ? place.z : 4,
       on: new Set(on), tiles: new Map(), pending: new Set(), gen: 0, mark: null, sel: null, raf: 0, alive: true, pins: [], pinBox: null, hits: [], serial: { pins: 0, near: 0, members: 0, place: 0 }, hover: null,
       dem: new Map(), demPending: new Set(), demNone: new Map(), style: load('mapStyle', { relief: true, contours: true }) };
-    if (q.get('pin') && isFinite(lat) && isFinite(lon)) st.mark = { lat, lon, name: q.get('pin').slice(0, 80), kind: 'Linked place' };
+    if (q.get('pin') && isFinite(lat) && isFinite(lon)) st.mark = { lat, lon, name: q.get('pin').slice(0, 80), kind: t('map.linked_place') };
     const cv = $('mapc');
     st.cv = cv; st.ctx = cv.getContext('2d');
     fetch('/ui/geographic-context.json').then(r => r.json()).then(d => { geography = d; draw() }).catch(() => { });
@@ -157,16 +166,16 @@ const MapView = (() => {
     $('map-photo').onclick = () => setPhoto(!st.style.aerial);
     $('map-photo').classList.toggle('on', !!st.style.aerial); $('map-photo').setAttribute('aria-pressed', !!st.style.aerial);
     $('map-3d').onclick = () => {
-      if (typeof Terrain3D === 'undefined') return toastMap('3D view unavailable');
+      if (typeof Terrain3D === 'undefined') return toastMap(t('map.view_3d_unavailable'));
       closeCard();
       const w = cv.clientWidth, h = cv.clientHeight;
       Terrain3D.open($('mapwrap'), { lat: st.lat, lon: st.lon, z: st.z, w, h, texture: cv, elev: elevation, demTile: (z, x, y) => demTile(z, x, y), getDem: (z, x, y) => st && st.dem.get(tileKey(z, x, y)),
         geo: { lon2x, lat2y, x2lon, y2lat }, ver: st.ver, maxTz: tzMax(st.lat, st.lon) });
     };
     document.addEventListener('fullscreenchange', st.onFull = () => { const f = document.fullscreenElement === $('mapwrap'); if (!f) $('mapwrap')?.classList.remove('max'); syncFull() });
-    $('sethome').onclick = () => { save('mapHome', { lat: st.lat, lon: st.lon, z: Math.round(st.z) }); toastMap('Saved as your area on this device'); draw() };
+    $('sethome').onclick = () => { save('mapHome', { lat: st.lat, lon: st.lon, z: Math.round(st.z) }); toastMap(t('map.home_saved')); draw() };
     const gps = $('gps');
-    if (gps) gps.onclick = () => navigator.geolocation.getCurrentPosition(p => { st.mark = { lat: p.coords.latitude, lon: p.coords.longitude, name: 'You are here (approx.)' }; go(p.coords.latitude, p.coords.longitude, 15) }, e => toastMap('Location unavailable: ' + e.message), { timeout: 15000 });
+    if (gps) gps.onclick = () => navigator.geolocation.getCurrentPosition(p => { st.mark = { lat: p.coords.latitude, lon: p.coords.longitude, name: t('map.you_are_here') }; go(p.coords.latitude, p.coords.longitude, 15) }, e => toastMap(t('map.location_unavailable', { why: e.message })), { timeout: 15000 });
     $('pf').onsubmit = e => { e.preventDefault(); findPlace($('pq').value.trim()) };
     $('pq').addEventListener('input', () => { if (!$('pq').value) $('pres').hidden = true });
     $('layers-btn').onclick = () => { const p = $('layers'), open = p.hidden; p.hidden = !open; $('layers-btn').setAttribute('aria-expanded', open); $('pres').hidden = true; if (open) { $('card').hidden = true; renderLayers() } };
@@ -177,9 +186,9 @@ const MapView = (() => {
       if (!st) return;
       st.national = info.national; st.ver = info.version; st.aerialDetail = info.aerial_detail; st.aerialRev = info.aerial_rev; st.terrainCircle = info.terrain_circle;
       describe(info); if (openWhole) fit(wholeMap(), 0.92, true); coverage(); draw();
-      $('mdata').innerHTML = info.datasets.map(d => `<li class="row" style="display:block"><b>${escH(d.label)}</b><span class="muted">${escH(d.status)}</span>${d.bytes ? ` · ${(d.bytes / 1073741824).toFixed(1)} GB` : ''}</li>`).join('') +
-        (st.have && !st.have.size ? '' : `<li class="row small muted" style="display:block">${st.have ? '' : 'Not drawn yet: forest types. '}Resource layers are records — fish, wells, mines and crops show where they were recorded or mapped, not proof of what is there now.</li>`);
-    }).catch(() => { $('mdata').innerHTML = '<li class="muted">Map details unavailable.</li>'; if (openWhole && st) fit(US, 0.92, true) });
+      $('mdata').innerHTML = info.datasets.map(d => `<li class="row" style="display:block"><b>${escH(d.label)}</b><span class="muted">${escH(d.status)}</span>${d.bytes ? ` · ${I18N.unit(d.bytes / 1073741824, 'gigabyte', 1)}` : ''}</li>`).join('') +
+        (st.have && !st.have.size ? '' : `<li class="row small muted" style="display:block">${st.have ? '' : th('map.not_drawn') + ' '}${th('map.records_note')}</li>`);
+    }).catch(() => { $('mdata').innerHTML = `<li class="muted">${th('map.details_unavailable')}</li>`; if (openWhole && st) fit(EUROPE, 0.92, true) });
     // When map data changes (national build, water import), quietly refresh visible tiles; old tiles stay up until new ones arrive.
     st.nationalTimer = setInterval(async () => {
       if (!st) return;
@@ -198,7 +207,6 @@ const MapView = (() => {
     st.on = new Set([...st.on].filter(id => offered(LAYERS.find(l => l.id === id))));
     layerCount();
     if (!st.have.size) $('near').closest('section').hidden = true;
-    if (info.bounds) { const b = $('map-us'); b.textContent = 'All'; b.title = 'Whole map'; b.setAttribute('aria-label', 'Whole map') }
   }
   const offered = l => !st.have || (l && l.cls.some(c => st.have.has(c)));
   function toastMap(m) { if (typeof toast === 'function') toast(m) }
@@ -214,16 +222,15 @@ const MapView = (() => {
     else { w.classList.add('max'); w.requestFullscreen?.().catch(() => { }) }  // CSS fallback keeps working where the Fullscreen API is missing (iPhone)
     syncFull();
   }
-  function syncFull() { const w = $('mapwrap'), b = $('map-full'); if (!w || !b) return; const on = w.classList.contains('max'); b.innerHTML = FULL[on ? 1 : 0]; b.setAttribute('aria-label', on ? 'Exit full screen' : 'Full screen'); b.title = on ? 'Exit full screen (Esc)' : 'Full screen'; document.body.classList.toggle('map-maxed', on); draw() }
+  function syncFull() { const w = $('mapwrap'), b = $('map-full'); if (!w || !b) return; const on = w.classList.contains('max'); b.innerHTML = FULL[on ? 1 : 0]; b.setAttribute('aria-label', on ? t('map.exit_full_screen') : t('map.full_screen')); b.title = on ? t('map.exit_full_screen_esc') : t('map.full_screen'); document.body.classList.toggle('map-maxed', on); draw() }
 
   function coverage() {
     const n = st?.national, el = $('mstatus'); if (!el) return;
-    const inSoCal = st.lat > 32.5 && st.lat < 35.9 && st.lon > -121.4 && st.lon < -114.1;
     const b = st.bounds, outside = b && (st.lon < b[0] || st.lon > b[2] || st.lat < b[1] || st.lat > b[3]);
-    st.coverNote = n && n.state === 'building' && !inSoCal
-      ? `US streets still being converted (${((n.features || 0) / 1e6).toFixed(1)}M roads & features so far) — gaps fill in automatically.`
-      : outside ? 'Outside the area this map details, only main roads, towns and water show.'
-      : st.have && !st.have.size && st.z >= 9 ? 'This download has the base map only: main roads, towns and water.' : '';
+    st.coverNote = n && n.state === 'building'
+      ? t('map.cover.building', { n: I18N.num((n.features || 0) / 1e6, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) })
+      : outside ? t('map.cover.outside')
+      : st.have && !st.have.size && st.z >= 9 ? t('map.cover.base_only') : '';
     statusLine();
   }
   function statusLine(msg) {
@@ -235,27 +242,27 @@ const MapView = (() => {
 
   // ---------------------------------------------------------------- layers ----
   function kinds() { return LAYERS.filter(l => st.on.has(l.id)).flatMap(l => l.cls) }
-  function layerCount() { const n = st.on.size; $('layer-count').textContent = st.have && !st.have.size ? '' : n ? `· ${n}` : '· none' }
+  function layerCount() { const n = st.on.size; $('layer-count').textContent = st.have && !st.have.size ? '' : '· ' + (n ? I18N.num(n) : t('map.layers_none')) }
   function renderLayers() {
     const box = $('layers'); if (!box || box.hidden) return;
     const counts = {}; for (const p of st.pins) if (inView(p)) for (const [k, n] of Object.entries(p.kinds)) { const l = layerOf(k); counts[l.id] = (counts[l.id] || 0) + n }
     if (box.querySelector('fieldset')) {  // already built: refresh ticks and counts in place so focus isn't lost
-      box.querySelectorAll('label.ly').forEach(lb => { const i = lb.querySelector('input'); i.checked = st.on.has(i.value); lb.querySelector('small').textContent = i.checked ? (counts[i.value] || 0).toLocaleString() : '' });
+      box.querySelectorAll('label.ly').forEach(lb => { const i = lb.querySelector('input'); i.checked = st.on.has(i.value); lb.querySelector('small').textContent = i.checked ? I18N.num(counts[i.value] || 0) : '' });
       return;
     }
-    box.innerHTML = `<div class="layers-head"><b>Show on map</b><button class="x" aria-label="Close layers">×</button></div>
-      ${st.have && !st.have.size ? '' : `<div class="presets">${PRESETS.map(([n]) => `<button data-p="${n}">${n}</button>`).join('')}<button data-p="">None</button></div>`}
-      <fieldset class="style"><legend>Map style</legend>
-        ${st.noAerial ? '' : `<label><input type="checkbox" data-style="aerial"${st.style.aerial ? ' checked' : ''}><i class="msym style-ico">🛰</i><span>Aerial photos (USGS / USDA)</span></label>`}
-        <label><input type="checkbox" data-style="relief"${st.style.relief ? ' checked' : ''}><i class="msym style-ico">⛰</i><span>Shaded relief (hills &amp; valleys)</span></label>
-        ${st.noContours ? '' : `<label><input type="checkbox" data-style="contours"${st.style.contours ? ' checked' : ''}><i class="msym style-ico">〰</i><span>Contour lines (from zoom 11)</span></label>`}
-        ${st.have && !st.have.has('orchard') ? '' : `<label><input type="checkbox" data-style="crops"${st.style.crops !== false ? ' checked' : ''}><i class="msym style-ico" style="background:#3f7a2a">♣</i><span>Orchard &amp; vineyard areas (coloured)</span></label>`}</fieldset>
-      ${GROUPS.filter(([g]) => LAYERS.some(l => l.group === g && offered(l))).map(([g, gl]) => `<fieldset><legend>${gl}</legend>${LAYERS.filter(l => l.group === g && offered(l)).map(l => `<label class="ly"><input type="checkbox" value="${l.id}"${st.on.has(l.id) ? ' checked' : ''}>${sym(l, 20)}<span>${escH(l.label)}</span><small>${st.on.has(l.id) ? (counts[l.id] || 0).toLocaleString() : ''}</small></label>`).join('')}</fieldset>`).join('')}
-      ${st.have && !st.have.size ? '' : '<p class="small muted" style="margin:6px 2px 0">Numbers are places in the current view.</p>'}`;
+    box.innerHTML = `<div class="layers-head"><b>${th('map.layers_title')}</b><button class="x" aria-label="${th('map.layers_close')}">×</button></div>
+      ${st.have && !st.have.size ? '' : `<div class="presets">${PRESETS.map(([id, key]) => `<button data-p="${id}">${th(key)}</button>`).join('')}<button data-p="">${th('map.preset.none')}</button></div>`}
+      <fieldset class="style"><legend>${th('map.style.legend')}</legend>
+        ${st.noAerial ? '' : `<label><input type="checkbox" data-style="aerial"${st.style.aerial ? ' checked' : ''}><i class="msym style-ico">🛰</i><span>${th('map.aerial')}</span></label>`}
+        <label><input type="checkbox" data-style="relief"${st.style.relief ? ' checked' : ''}><i class="msym style-ico">⛰</i><span>${th('map.style.relief')}</span></label>
+        ${st.noContours ? '' : `<label><input type="checkbox" data-style="contours"${st.style.contours ? ' checked' : ''}><i class="msym style-ico">〰</i><span>${th('map.style.contours')}</span></label>`}
+        ${st.have && !st.have.has('orchard') ? '' : `<label><input type="checkbox" data-style="crops"${st.style.crops !== false ? ' checked' : ''}><i class="msym style-ico" style="background:#3f7a2a">♣</i><span>${th('map.style.crops')}</span></label>`}</fieldset>
+      ${GROUPS.filter(([g]) => LAYERS.some(l => l.group === g && offered(l))).map(([g, gk]) => `<fieldset><legend>${th(gk)}</legend>${LAYERS.filter(l => l.group === g && offered(l)).map(l => `<label class="ly"><input type="checkbox" value="${l.id}"${st.on.has(l.id) ? ' checked' : ''}>${sym(l, 20)}<span>${escH(lname(l))}</span><small>${st.on.has(l.id) ? I18N.num(counts[l.id] || 0) : ''}</small></label>`).join('')}</fieldset>`).join('')}
+      ${st.have && !st.have.size ? '' : `<p class="small muted" style="margin:6px 2px 0">${th('map.layers_numbers')}</p>`}`;
     box.querySelector('.x').onclick = () => { box.hidden = true; $('layers-btn').setAttribute('aria-expanded', 'false') };
     box.querySelectorAll('label.ly input').forEach(i => i.onchange = () => { i.checked ? st.on.add(i.value) : st.on.delete(i.value); layersChanged() });
     box.querySelectorAll('[data-style]').forEach(i => i.onchange = () => { if (i.dataset.style === 'aerial') return setPhoto(i.checked); st.style[i.dataset.style] = i.checked; save('mapStyle', st.style); draw() });
-    box.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { st.on = new Set((PRESETS.find(p => p[0] === b.dataset.p)?.[1] || []).filter(id => offered(LAYERS.find(l => l.id === id)))); layersChanged(); renderLayers() });
+    box.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { st.on = new Set((PRESETS.find(p => p[0] === b.dataset.p)?.[2] || []).filter(id => offered(LAYERS.find(l => l.id === id)))); layersChanged(); renderLayers() });
     renderLayers();
   }
   function layersChanged() { save('mapLayers', [...st.on]); layerCount(); st.pinBox = null; if (st.sel && !st.on.has(layerOf(st.sel.cls).id)) closeCard(); settle() }
@@ -286,7 +293,7 @@ const MapView = (() => {
     function spread() { const [a, b] = [...pts.values()]; return Math.hypot(a.x - b.x, a.y - b.y) || 1 }
     function mid() { const [a, b] = [...pts.values()]; return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 } }
   }
-  const CROP_RGB = {"Almonds":[150,100,50],"Walnuts":[120,80,40],"Pecans":[135,90,45],"Pistachios":[140,160,60],"Cherries":[190,30,60],"Peaches":[240,140,90],"Apples":[200,40,40],"Pears":[170,190,60],"Prunes":[110,50,120],"Nectarines":[240,120,70],"Plums":[130,40,110],"Apricots":[245,160,50],"Pomegranates":[180,30,50],"Avocados":[70,120,40],"Olives":[110,120,50],"Other tree crops":[90,150,70],"Citrus":[250,160,20],"Oranges":[255,140,0],"Grapes":[120,50,150],"Blueberries":[60,70,180],"Cranberries":[170,20,50],"Caneberries":[150,30,90],"Asparagus":[90,160,90]};  // overlay colours (tools/build_crops.py)
+  const CROP_RGB = {"Almonds":[150,100,50],"Walnuts":[120,80,40],"Pecans":[135,90,45],"Pistachios":[140,160,60],"Cherries":[190,30,60],"Peaches":[240,140,90],"Apples":[200,40,40],"Pears":[170,190,60],"Prunes":[110,50,120],"Nectarines":[240,120,70],"Plums":[130,40,110],"Apricots":[245,160,50],"Pomegranates":[180,30,50],"Avocados":[70,120,40],"Olives":[110,120,50],"Other tree crops":[90,150,70],"Citrus":[250,160,20],"Oranges":[255,140,0],"Grapes":[120,50,150],"Blueberries":[60,70,180],"Cranberries":[170,20,50],"Caneberries":[150,30,90],"Asparagus":[90,160,90]};  // overlay colours, as the crop map is drawn
   // Clicking a coloured orchard / vineyard patch opens the crop block under it.
   function identifyCrop(x, y) {
     if (st.style.crops === false || st.z < 11) return false;
@@ -307,7 +314,7 @@ const MapView = (() => {
     const w = st.cv.clientWidth, h = st.cv.clientHeight;
     const lon = x2lon(lon2x(st.lon, st.z) + (x - w / 2) / 256, st.z), lat = y2lat(lat2y(st.lat, st.z) + (y - h / 2) / 256, st.z);
     const m = elevAt(lat, lon);
-    el.hidden = m == null; if (m != null) el.textContent = '⛰ ' + fmtElev(m) + ' here';
+    el.hidden = m == null; if (m != null) el.textContent = '⛰ ' + t('map.elev_here', { elev: fmtElev(m) });
   }
   function hover(x, y) {
     const hit = hitAt(x, y); st.cv.style.cursor = hit ? 'pointer' : '';
@@ -315,15 +322,15 @@ const MapView = (() => {
     if (hit === st.hover) { if (hit) placeTip(x, y); return }
     st.hover = hit; const tip = $('tip'); if (!tip) return;
     if (!hit) return hideTip();
-    tip.innerHTML = hit.count > 1 && !hit.spot ? `<b>${hit.count.toLocaleString()} places</b>${breakdown(hit)}<small>${st.z >= 16 ? 'Click to list them' : 'Click to zoom in'}</small>`
-      : hit.count > 1 ? `<b>${hit.count} records at one spot</b><small>${escH(layerOf(hit.cls).label)} · click to list them</small>`
-      : `<b>${escH(hit.place ? hit.name : unnamed(hit))}</b><small>${escH(hit.place ? hit.kind || 'Place' : layerOf(hit.cls).label)}${hit.records > 1 ? ` · ${hit.records} records · click to list` : ''}</small>`;
+    tip.innerHTML = hit.count > 1 && !hit.spot ? `<b>${th('map.n_places', { n: hit.count })}</b>${breakdown(hit)}<small>${st.z >= 16 ? th('map.tip.click_list') : th('map.tip.click_zoom')}</small>`
+      : hit.count > 1 ? `<b>${th('map.n_records_spot', { n: hit.count })}</b><small>${th('map.tip.spot_list', { kind: lname(layerOf(hit.cls)) })}</small>`
+      : `<b>${escH(hit.place ? hit.name : unnamed(hit))}</b><small>${escH(hit.place ? hit.kind || t('map.place') : lname(layerOf(hit.cls)))}${hit.records > 1 ? ' · ' + th('map.tip.records', { n: hit.records }) : ''}</small>`;
     tip.hidden = false; placeTip(x, y);
   }
   function breakdown(p) {
     const by = {}; for (const [k, n] of Object.entries(p.kinds || {})) { const l = layerOf(k); by[l.id || k] = by[l.id || k] || [l, 0]; by[l.id || k][1] += n }
     const e = Object.values(by).sort((a, b) => b[1] - a[1]);
-    return e.length > 1 ? `<span class="mix">${e.slice(0, 6).map(([l, n]) => `${sym(l, 14)}${n.toLocaleString()} ${escH(l.label.replace(/ \(.*\)/, '').toLowerCase())}`).join('<br>')}</span>` : '';
+    return e.length > 1 ? `<span class="mix">${e.slice(0, 6).map(([l, n]) => `${sym(l, 14)}${th('map.breakdown_row', { kind: lname(l).replace(/ \(.*\)/, ''), n })}`).join('<br>')}</span>` : '';
   }
   function placeTip(x, y) { const tip = $('tip'), w = st.cv.clientWidth; tip.style.left = Math.min(x + 14, w - tip.offsetWidth - 6) + 'px'; tip.style.top = Math.max(6, y - tip.offsetHeight - 10) + 'px' }
   function hideTip() { if (st) st.hover = null; const t = $('tip'); if (t) t.hidden = true }
@@ -521,8 +528,9 @@ const MapView = (() => {
     g.strokeStyle = 'rgba(0,0,0,.3)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(w / 2 - 7, h / 2); g.lineTo(w / 2 + 7, h / 2); g.moveTo(w / 2, h / 2 - 7); g.lineTo(w / 2, h / 2 + 7); g.stroke();
     const mpp = 156543.03 * Math.cos(st.lat * Math.PI / 180) / 2 ** st.z;
     const nice = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000].find(m => m / mpp > 60) || 100000;
-    const el = $('mscale'); if (el) el.innerHTML = `<span style="display:inline-block;width:${Math.round(nice / mpp)}px;border:2px solid #333;border-top:0;height:6px;vertical-align:middle"></span> ${nice >= 1000 ? nice / 1000 + ' km' : nice + ' m'} · ${(nice / 1609.34 < 1 ? Math.round(nice * 3.281) + ' ft' : (nice / 1609.34).toFixed(nice < 5000 ? 1 : 0) + ' mi')}`;
+    const el = $('mscale'); if (el) el.innerHTML = `<span style="display:inline-block;width:${Math.round(nice / mpp)}px;border:2px solid #333;border-top:0;height:6px;vertical-align:middle"></span> ${nice >= 1000 ? I18N.unit(nice / 1000, 'kilometer') : I18N.unit(nice, 'meter')}`;   // metric only
     const at = el && el.parentNode.querySelector('.mapattr'); if (at) at.style.maxWidth = Math.max(120, el.parentNode.clientWidth - el.offsetWidth - 34) + 'px';   // the credits wrap before they reach the scale bar, however long it is
+    const ms = $('mstatus'); if (ms && at) ms.style.bottom = at.offsetHeight ? Math.max(34, at.offsetHeight + 14) + 'px' : '';   // the status line stays above the credits, however many lines they take
   }
 
   function hitAt(x, y, touch) {
@@ -541,7 +549,7 @@ const MapView = (() => {
 
   // --------------------------------------------------------------- terrain ----
   // Elevation tiles (/api/map/terrain/z/x/y.png, terrain-RGB) drive shaded relief, contours and spot heights:
-  // zoom 4-12 nationwide (30 m), zoom 13-17 from 1 m lidar inside the detail area (/api/map/info terrain_detail = [w, s, e, n]).
+  // zoom 4-12 everywhere (30 m), zoom 13-17 from 1 m lidar inside the detail area (/api/map/info terrain_detail = [w, s, e, n]).
   const TZ0 = 4, TZN = 12, TZD = 17;
   const tzMax = (lat, lon) => {  // lidar zooms only inside the built circle (/api/map/info terrain_circle = [lat, lon, km])
     const c = st.terrainCircle; if (!c) return TZN;
@@ -584,16 +592,16 @@ const MapView = (() => {
     }
     g.putImageData(img, 0, 0); return t.shade = c;
   }
-  const CONTOUR = [[11, 200, 1000], [12, 100, 500], [13, 40, 200], [15, 20, 100], [16, 5, 25]];  // [from zoom, interval ft, index ft]; 5 ft only on lidar
+  const CONTOUR = [[11, 50, 250], [12, 20, 100], [13, 10, 50], [15, 5, 25], [16, 2, 10]];  // [from zoom, interval m, index m]; 2 m only on lidar
   function contours(t, step) {
     if (t.contours[step]) return t.contours[step];
-    const h = t.h, ft = 3.28084, lines = [];  // marching squares on the 256x256 grid, in feet
-    let lo = Infinity, hi = -Infinity; for (let i = 0; i < 65536; i++) { const v = h[i] * ft; if (v < lo) lo = v; if (v > hi) hi = v }
+    const h = t.h, lines = [];  // marching squares on the 256x256 grid, in metres
+    let lo = Infinity, hi = -Infinity; for (let i = 0; i < 65536; i++) { const v = h[i]; if (v < lo) lo = v; if (v > hi) hi = v }
     for (let lev = Math.ceil(lo / step) * step; lev <= hi; lev += step) {
       if (lev <= 0) continue;
       const seg = [];
       for (let y = 0; y < 255; y++) for (let x = 0; x < 255; x++) {
-        const a = h[y * 256 + x] * ft, b = h[y * 256 + x + 1] * ft, c = h[(y + 1) * 256 + x + 1] * ft, d = h[(y + 1) * 256 + x] * ft;
+        const a = h[y * 256 + x], b = h[y * 256 + x + 1], c = h[(y + 1) * 256 + x + 1], d = h[(y + 1) * 256 + x];
         const idx = (a > lev) | ((b > lev) << 1) | ((c > lev) << 2) | ((d > lev) << 3);
         if (idx === 0 || idx === 15) continue;
         const e = [[x + (lev - a) / (b - a), y], [x + 1, y + (lev - b) / (c - b)], [x + (lev - d) / (c - d), y + 1], [x, y + (lev - a) / (d - a)]];
@@ -650,12 +658,12 @@ const MapView = (() => {
         for (const L of contours(t, step)) { if (!L.index) continue; const a = L.seg;
           for (let i = 0; i < a.length && placed.length < 24; i += 4 * 61) { const x = sx + a[i] * k, y = sy + a[i + 1] * k; if (x < 40 || x > w - 70 || y < 70 || y > h - 50) continue;
             if (placed.some(p => Math.abs(p[0] - x) < 130 && Math.abs(p[1] - y) < 70)) continue; placed.push([x, y]);
-            const s = L.lev.toLocaleString() + ' ft'; g.lineWidth = 3; g.strokeStyle = 'rgba(255,255,255,.85)'; g.strokeText(s, x, y); g.fillStyle = 'rgba(120,76,36,.95)'; g.fillText(s, x, y) } }
+            const s = I18N.unit(L.lev, 'meter'); g.lineWidth = 3; g.strokeStyle = 'rgba(255,255,255,.85)'; g.strokeText(s, x, y); g.fillStyle = 'rgba(120,76,36,.95)'; g.fillText(s, x, y) } }
       }
       g.restore();
     }
   }
-  // Aerial photos (/api/map/aerial/z/x/y, zoom 0-16; z16 only in towns and California, z14 in rural Alaska)
+  // Aerial photos (/api/map/aerial/z/x/y, zoom 0-16, and finer only where the map set has them)
   function setPhoto(on) {
     st.style.aerial = on; save('mapStyle', st.style);  // tiles in the other style re-render as they are next needed (getTile)
     const b = $('map-photo'); if (b) { b.setAttribute('aria-pressed', on); b.classList.toggle('on', on) }
@@ -733,7 +741,7 @@ const MapView = (() => {
     for (let z = top; z >= TZ0; z--) {
       const fx = lon2x(lon, z), fy = lat2y(lat, z), x = Math.floor(fx), y = Math.floor(fy), t = st.dem.get(tileKey(z, x, y));
       if (z === top && t === undefined && load) demTile(z, x, y);
-      if (t === null && z === TZN) return null;  // no data here (ocean / outside the US); a missing lidar tile falls through
+      if (t === null && z === TZN) return null;  // no data here (ocean, or outside this map); a missing lidar tile falls through
       if (!t) continue;
       const px = Math.min(254.999, Math.max(0, (fx - x) * 256 - 0.5)), py = Math.min(254.999, Math.max(0, (fy - y) * 256 - 0.5)), i = Math.floor(px), j = Math.floor(py), a = px - i, b = py - j, H = t.h;
       return H[j * 256 + i] * (1 - a) * (1 - b) + H[j * 256 + i + 1] * a * (1 - b) + H[(j + 1) * 256 + i] * (1 - a) * b + H[(j + 1) * 256 + i + 1] * a * b;
@@ -747,11 +755,11 @@ const MapView = (() => {
     }
     return st ? elevAt(lat, lon) : null;
   }
-  const fmtElev = m => `${Math.round(m * 3.28084).toLocaleString()} ft (${Math.round(m).toLocaleString()} m)`;
+  const fmtElev = m => I18N.unit(Math.round(m), 'meter');   // heights in metres only
 
   // ------------------------------------------------------------------ card ----
   function openCard(html) {
-    const el = $('card'); el.innerHTML = `<button class="x" aria-label="Close details">×</button>` + html; el.hidden = false; el.scrollTop = 0;
+    const el = $('card'); el.innerHTML = `<button class="x" aria-label="${th('map.card.close')}">×</button>` + html; el.hidden = false; el.scrollTop = 0;
     $('layers').hidden = true; $('layers-btn').setAttribute('aria-expanded', 'false'); $('pres').hidden = true;  // one floating panel at a time
     el.querySelector('.x').onclick = closeCard; return el;
   }
@@ -769,35 +777,38 @@ const MapView = (() => {
     pan(tx - x, ty - y); st.listAt = 1; settle(true);  // the nearby list stays put while the map makes room
   }
   function closeCard() { const el = $('card'); if (el) el.hidden = true; if (st) { st.sel = null; draw() } document.querySelectorAll('#near button.on').forEach(b => b.classList.remove('on')) }
-  function showPlace(p) { openCard(`<div class="kind"><i class="msym" style="background:#1565c0">◉</i>${escH(p.kind || 'Place')}</div><h3>${escH(p.name)}</h3>${p.detail ? `<p>${escH(p.detail)}</p>` : ''}${coordsBlock(p)}<div class="acts"><button data-a="clear">Remove marker</button></div>`).querySelector('[data-a=clear]').onclick = () => { st.mark = null; closeCard() }; wireCoords(p) }
+  function showPlace(p) { openCard(`<div class="kind"><i class="msym" style="background:#1565c0">◉</i>${escH(p.kind || t('map.place'))}</div><h3>${escH(p.name)}</h3>${p.detail ? `<p>${escH(p.detail)}</p>` : ''}${coordsBlock(p)}<div class="acts"><button data-a="clear">${th('map.card.remove_marker')}</button></div>`).querySelector('[data-a=clear]').onclick = () => { st.mark = null; closeCard() }; wireCoords(p) }
   function coordsBlock(p) {
     const home = load('mapHome', HOME), km = home && kmBetween(home.lat, home.lon, p.lat, p.lon);
     const id = 'el' + Math.random().toString(36).slice(2, 8);
-    elevation(p.lat, p.lon).then(m => { const el = document.getElementById(id); if (el) el.textContent = m == null ? '' : 'Elevation ' + fmtElev(m) });
-    return `<p class="coords">${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}<br>${home ? `<span class="muted">${dist(km)} from your area</span><br>` : ''}<span class="muted" id="${id}">Elevation…</span></p>`;
+    elevation(p.lat, p.lon).then(m => { const el = document.getElementById(id); if (el) el.textContent = m == null ? '' : t('map.card.elevation', { elev: fmtElev(m) }) });
+    return `<p class="coords">${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}<br>${home ? `<span class="muted">${th('map.card.from_area', { dist: dist(km) })}</span><br>` : ''}<span class="muted" id="${id}">${th('map.card.elevation_loading')}</span></p>`;
   }
   function wireCoords(p) {
     const el = $('card');
-    el.querySelector('[data-a=copy]')?.addEventListener('click', async e => { try { await navigator.clipboard.writeText(`${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}`); e.target.textContent = 'Copied ✓' } catch { e.target.textContent = 'Copy failed — select the numbers above' } });
+    el.querySelector('[data-a=copy]')?.addEventListener('click', async e => { try { await navigator.clipboard.writeText(`${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}`); e.target.textContent = t('map.card.copied') + ' ✓' } catch { e.target.textContent = t('map.card.copy_failed') } });
     el.querySelector('[data-a=zoom]')?.addEventListener('click', () => { go(p.lat, p.lon, Math.max(st.z, 16)); reveal(p.lat, p.lon) });
   }
   function showDetail(p, back) {
     const l = layerOf(p.cls), detail = p.detail || {};
     st.sel = { lat: p.lat, lon: p.lon, cls: p.cls }; draw();
     const rows = Object.entries(detail).filter(([k, v]) => FIELD[k] && v != null && String(v).trim() !== '' && !(k === 'commod2' && v === detail.commod1))
-      .map(([k, v]) => `<tr><th>${escH(FIELD[k])}</th><td>${escH(v)}</td></tr>`).join('');
-    const el = openCard(`${back ? `<button class="back">← ${escH(back.title)}</button>` : ''}<div class="kind">${sym(l, 20)}${escH(l.label)}</div><h3>${escH(unnamed(p))}</h3>
-      ${p.records > 1 ? `<p class="muted small">${p.records} source records at this spot</p>` : ''}
-      ${rows ? `<table>${rows}</table>` : p.summary ? `<p>${escH(p.summary)}</p>` : ''}${detail.not_drinking_water ? `<p class="caveat"><b>Not a water source:</b> this is a ${escH((detail.reservoir_type || 'waste pond').toLowerCase())}. It can hold sewage, mine waste or chemicals that treatment won’t make safe.</p>` : ''}${/tailings/i.test(detail.purposes || '') ? '<p class="caveat"><b>Mine-tailings dam:</b> it holds mine waste, not usable water. Do not drink, swim or fish here.</p>' : ''}${CAVEAT[p.cls] && !detail.not_drinking_water ? `<p class="caveat">${escH(CAVEAT[p.cls])}</p>` : ''}${coordsBlock(p)}
-      <div class="acts"><button data-a="zoom">Zoom here</button><button data-a="copy">Copy coordinates</button></div>`);   // no web links: the words stay, the addresses go
+      .map(([k, v]) => `<tr><th>${th(FIELD[k])}</th><td>${escH(fieldValue(k, v))}</td></tr>`).join('');
+    const notWater = detail.not_drinking_water ? `<p class="caveat"><b>${th('map.caveat.not_water_head')}</b> ${th('map.caveat.not_water', { kind: detail.reservoir_type ? String(detail.reservoir_type).toLowerCase() : t('map.caveat.waste_pond') })}</p>` : '';
+    const tailings = /tailings/i.test(detail.purposes || '') ? `<p class="caveat"><b>${th('map.caveat.tailings_head')}</b> ${th('map.caveat.tailings')}</p>` : '';
+    const el = openCard(`${back ? `<button class="back">← ${escH(back.title)}</button>` : ''}<div class="kind">${sym(l, 20)}${escH(lname(l))}</div><h3>${escH(unnamed(p))}</h3>
+      ${p.records > 1 ? `<p class="muted small">${th('map.card.source_records', { n: p.records })}</p>` : ''}
+      ${rows ? `<table>${rows}</table>` : p.summary ? `<p>${escH(p.summary)}</p>` : ''}${notWater}${tailings}${CAVEAT[p.cls] && !detail.not_drinking_water ? `<p class="caveat">${th(CAVEAT[p.cls])}</p>` : ''}${coordsBlock(p)}
+      <div class="acts"><button data-a="zoom">${th('map.card.zoom_here')}</button><button data-a="copy">${th('map.card.copy')}</button></div>`);   // no web links: the words stay, the addresses go
     if (back) el.querySelector('.back').onclick = () => showMembers(back.p);
     wireCoords(p); reveal(p.lat, p.lon);
   }
   async function showMembers(p) {
     const serial = ++st.serial.members, state = st, b = p.bbox || [p.lon, p.lat, p.lon, p.lat], pad = 1e-5;
     st.sel = { lat: p.lat, lon: p.lon }; draw();
-    const title = p.spot ? `${Math.max(p.count, p.records || 0)} records at one spot` : `${p.count.toLocaleString()} places here`;
-    openCard(`<div class="kind">${sym(layerOf(p.cls), 20)}${p.spot ? escH(layerOf(p.cls).label) : 'Group'}</div><h3>${escH(title)}</h3><p class="muted">Loading…</p>`);
+    const title = p.spot ? t('map.n_records_spot', { n: Math.max(p.count, p.records || 0) }) : t('map.n_places_here', { n: p.count });
+    const kind = p.spot ? escH(lname(layerOf(p.cls))) : th('map.card.group');
+    openCard(`<div class="kind">${sym(layerOf(p.cls), 20)}${kind}</div><h3>${escH(title)}</h3><p class="muted">${th('map.loading')}</p>`);
     reveal(p.lat, p.lon);
     try {
       const q = new URLSearchParams({ west: b[0] - pad, south: b[1] - pad, east: b[2] + pad, north: b[3] + pad, lat: p.lat, lon: p.lon, kinds: Object.keys(p.kinds || { [p.cls]: 1 }).join(',') });
@@ -806,27 +817,27 @@ const MapView = (() => {
       const items = r.items || [], names = new Set(items.map(m => m.name));
       if (items.length === 1) return showDetail(items[0]);
       const head = p.spot && names.size === 1 && items[0]?.name ? items[0].name : title;
-      const el = openCard(`<div class="kind">${sym(layerOf(p.cls), 20)}${p.spot ? escH(layerOf(p.cls).label) : 'Group'}</div><h3>${escH(head)}</h3>${breakdown(p)}
-        <p class="muted small">${r.total > items.length ? `Showing the ${items.length} nearest of ${r.total.toLocaleString()}${r.capped ? '+' : ''}. Zoom in to see the rest.` : `${items.length} record${items.length === 1 ? '' : 's'}`}</p>
-        <div class="members">${items.map((m, i) => `<button data-i="${i}">${sym(layerOf(m.cls), 20)}<span><b>${escH(unnamed(m))}</b><small>${escH([m.summary || layerOf(m.cls).label, m.detail?.WeekOfPlantStart ? 'stocked ' + m.detail.WeekOfPlantStart : ''].filter(Boolean).join(' · '))}</small></span></button>`).join('')}</div>
-        <div class="acts"><button data-a="zoom">Zoom here</button></div>`);
+      const el = openCard(`<div class="kind">${sym(layerOf(p.cls), 20)}${kind}</div><h3>${escH(head)}</h3>${breakdown(p)}
+        <p class="muted small">${r.total > items.length ? th('map.card.showing_nearest', { n: items.length, total: I18N.num(r.total) + (r.capped ? '+' : '') }) : th('map.card.n_records', { n: items.length })}</p>
+        <div class="members">${items.map((m, i) => `<button data-i="${i}">${sym(layerOf(m.cls), 20)}<span><b>${escH(unnamed(m))}</b><small>${escH([m.summary || lname(layerOf(m.cls)), m.detail?.WeekOfPlantStart ? t('map.card.stocked', { week: String(m.detail.WeekOfPlantStart) }) : ''].filter(Boolean).join(' · '))}</small></span></button>`).join('')}</div>
+        <div class="acts"><button data-a="zoom">${th('map.card.zoom_here')}</button></div>`);
       el.querySelectorAll('.members button').forEach(bt => bt.onclick = () => showDetail(items[+bt.dataset.i], { title, p }));
       el.querySelector('[data-a=zoom]').onclick = () => fit(b);
-    } catch { if (st === state) openCard(`<h3>${escH(title)}</h3><p>Couldn’t load the list. Zoom in to see individual places.</p>`) }
+    } catch { if (st === state) openCard(`<h3>${escH(title)}</h3><p>${th('map.card.list_failed')}</p>`) }
   }
 
   // ------------------------------------------------------------------ data ----
   async function loadPins() {
     if (!st) return;
     const state = st, cv = st.cv, ks = kinds(), z = Math.floor(st.z + 0.05);  // never a finer grid than the screen shows
-    if (!ks.length) { st.pins = []; st.pinBox = null; statusLine(st.have && !st.have.size ? '' : 'No layers on — open Layers to choose what to show.'); renderLayers(); draw(); return }
+    if (!ks.length) { st.pins = []; st.pinBox = null; statusLine(st.have && !st.have.size ? '' : t('map.status.no_layers')); renderLayers(); draw(); return }
     const cx = lon2x(st.lon, st.z), cy = lat2y(st.lat, st.z), dx = cv.clientWidth / 256 * 0.75, dy = cv.clientHeight / 256 * 0.75;  // view + 25% margin each side
     const box = [x2lon(cx - dx, st.z), y2lat(cy + dy, st.z), x2lon(cx + dx, st.z), y2lat(cy - dy, st.z)];
     const v = [x2lon(cx - dx / 1.5, st.z), y2lat(cy + dy / 1.5, st.z), x2lon(cx + dx / 1.5, st.z), y2lat(cy - dy / 1.5, st.z)];
     const key = ks.join(',') + '|' + z;
     if (st.pinBox && st.pinKey === key && v[0] >= st.pinBox[0] && v[1] >= st.pinBox[1] && v[2] <= st.pinBox[2] && v[3] <= st.pinBox[3]) return countLine();
     const serial = ++st.serial.pins;
-    statusLine('Loading places…');
+    statusLine(t('map.status.loading'));
     try {
       const q = new URLSearchParams({ west: box[0], south: box[1], east: box[2], north: box[3], zoom: z, kinds: ks.join(',') });
       const data = await fetch('/api/map/pins?' + q).then(r => r.json());
@@ -834,7 +845,7 @@ const MapView = (() => {
       if (!data.points) throw Error(data.error || 'no points');
       st.pins = data.points; st.pinBox = box; st.pinKey = key; st.truncated = data.truncated;
       countLine(); renderLayers(); draw();
-    } catch (e) { if (st === state && serial === st.serial.pins) statusLine('Couldn’t load places for this view — move the map to retry.') }
+    } catch (e) { if (st === state && serial === st.serial.pins) statusLine(t('map.status.failed')) }
   }
   function inView(p) {
     const w = st.cv.clientWidth, h = st.cv.clientHeight, x = w / 2 + (lon2x(p.lon, st.z) - lon2x(st.lon, st.z)) * 256, y = h / 2 + (lat2y(p.lat, st.z) - lat2y(st.lat, st.z)) * 256;
@@ -843,41 +854,45 @@ const MapView = (() => {
   function countLine() {
     let n = 0; for (const p of st.pins) if (inView(p)) n += p.count;
     renderLayers();
-    statusLine(n ? `${n.toLocaleString()} place${n === 1 ? '' : 's'} in view${st.truncated ? ' (busiest shown — zoom in for all)' : ''}` : 'Nothing from your layers in this view — zoom out or turn on more layers.');
+    statusLine(n ? t(st.truncated ? 'map.status.in_view_busiest' : 'map.status.in_view', { n }) : t('map.status.nothing_in_view'));
   }
   async function nearby() {
     if (!st) return;
     const box = $('near'), state = st, serial = ++st.serial.near, ks = kinds(); if (!box) return;
-    if (!ks.length) { box.innerHTML = '<p class="muted small">No layers are on.</p>'; return }
+    if (!ks.length) { box.innerHTML = `<p class="muted small">${th('map.near.no_layers')}</p>`; return }
     box.classList.add('busy');
     try {
       const r = await fetch(`/api/map/near?lat=${st.lat}&lon=${st.lon}&cls=${ks.join(',')}&limit=${Math.max(3, Math.ceil(14 / ks.length))}`).then(r => r.json());
       if (st !== state || serial !== st.serial.near) return;
       box.classList.remove('busy');
-      if (!Array.isArray(r) || !r.length) { box.innerHTML = '<p class="muted small">Nothing from your layers within about 100 miles of the map center.</p>'; return }
+      if (!Array.isArray(r) || !r.length) { box.innerHTML = `<p class="muted small">${th('map.near.nothing')}</p>`; return }
       const list = r.sort((a, b) => a.km - b.km).slice(0, 14);
-      box.innerHTML = list.map((p, i) => `<button data-i="${i}">${sym(layerOf(p.cls), 24)}<span><b>${escH(unnamed(p))}</b><small>${escH(layerOf(p.cls).label)} · ${dist(p.km)} ${escH(p.dir)}</small>${p.detail ? `<small>${escH(p.detail)}</small>` : ''}</span></button>`).join('');
+      box.innerHTML = list.map((p, i) => `<button data-i="${i}">${sym(layerOf(p.cls), 24)}<span><b>${escH(unnamed(p))}</b><small>${th('map.near.line', { kind: lname(layerOf(p.cls)), dist: dist(p.km), dir: DIR[p.dir] ? t(DIR[p.dir]) : p.dir || '' })}</small>${p.detail ? `<small>${escH(p.detail)}</small>` : ''}</span></button>`).join('');
       box.querySelectorAll('button').forEach(b => b.onclick = () => {
         const p = list[+b.dataset.i]; box.querySelectorAll('button.on').forEach(x => x.classList.remove('on')); b.classList.add('on');
         st.z = Math.max(st.z, 16); st.lat = p.lat; st.lon = p.lon; st.listAt = 1; showDetail({ ...p, summary: p.detail, detail: {} }); settle(true); b.classList.add('on');
         if (innerWidth < 1000) $('mapwrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
-    } catch { if (st === state) box.innerHTML = '<p class="muted small">Nearby search is unavailable.</p>' }
+    } catch { if (st === state) box.innerHTML = `<p class="muted small">${th('map.near.unavailable')}</p>` }
   }
   async function findPlace(q) {
     const box = $('pres'); if (!q) { box.hidden = true; return }
     $('layers').hidden = true;
     const state = st, serial = ++st.serial.place;
-    box.hidden = false; $('card').hidden = true; box.innerHTML = '<p class="muted small">Searching…</p>';
+    box.hidden = false; $('card').hidden = true; box.innerHTML = `<p class="muted small">${th('map.find.searching')}</p>`;
     try {
-      const r = await fetch('/api/places?q=' + encodeURIComponent(q) + `&near=${st.lat.toFixed(3)},${st.lon.toFixed(3)}`).then(r => r.json());
+      const res = await fetch('/api/places?q=' + encodeURIComponent(q) + `&near=${st.lat.toFixed(3)},${st.lon.toFixed(3)}`), r = await res.json();
       if (st !== state || serial !== st.serial.place) return;
-      if (!r.length) { const address = /^\s*\d[\w-]*\s+\S/.test(q); box.innerHTML = '<p class="muted small" style="padding:8px">' + (address ? 'Address not found in your offline data. Check the house number and street.' + (IN_WINDOW ? ' <a href="/ui/setup.html#manage">Add your state’s address search</a>.' : '') : 'No place by that name in the saved gazetteers. Try a town, county or 5-digit ZIP.') + '</p>'; return }
-      const pick = p => { box.hidden = true; st.mark = { lat: p.lat, lon: p.lon, name: p.name, kind: p.kind, detail: p.detail }; closeCard(); go(p.lat, p.lon, /county/i.test(p.kind) ? 10 : /ZIP|city|town|populated|^(Lake|Reservoir)$/i.test(p.kind) ? 13 : 15); st.cv.focus() };
-      box.innerHTML = `<div class="small muted" style="padding:4px 8px">${r.length} match${r.length === 1 ? '' : 'es'}</div>` + r.map((p, i) => `<button data-i="${i}"><b>${escH(p.name)}</b><small>${escH(p.kind)} · ${escH(p.detail)}</small></button>`).join('');
+      if (!r.length) {
+        const address = res.headers.get('X-Query-Kind') === 'address';   // the engine says how it read the query: address, postcode or place
+        box.innerHTML = `<p class="muted small" style="padding:8px">${address ? th('map.find.no_address') + (IN_WINDOW ? ` <a href="/ui/setup.html#manage">${th('map.find.add_addresses')}</a>.` : '') : th('map.find.no_place')}</p>`;
+        return;
+      }
+      const pick = p => { box.hidden = true; st.mark = { lat: p.lat, lon: p.lon, name: p.name, kind: p.kind, detail: p.detail }; closeCard(); go(p.lat, p.lon, /county/i.test(p.kind) ? 10 : /postcode|postal|city|town|populated|^(Lake|Reservoir)$/i.test(p.kind) ? 13 : 15); st.cv.focus() };
+      box.innerHTML = `<div class="small muted" style="padding:4px 8px">${th('map.find.matches', { n: r.length })}</div>` + r.map((p, i) => `<button data-i="${i}"><b>${escH(p.name)}</b><small>${escH(p.kind)} · ${escH(p.detail)}</small></button>`).join('');
       box.querySelectorAll('button').forEach(b => b.onclick = () => pick(r[+b.dataset.i]));
       if (r.length === 1) pick(r[0]);
-    } catch { if (st === state) box.innerHTML = '<p class="muted small">Place finder unavailable.</p>' }
+    } catch { if (st === state) box.innerHTML = `<p class="muted small">${th('map.find.unavailable')}</p>` }
   }
   return { page, stop };
 })();

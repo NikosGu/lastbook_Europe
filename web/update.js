@@ -1,6 +1,7 @@
 /* Check for updates, in About (desktop app only). It runs only when the person presses Check for updates, or chooses
    Lastbook > Check for Updates… (the menu calls LBUpdate.fromMenu; no address starts it). It only says whether a newer version
-   is on the website: nothing is downloaded or installed. engine/update.py does the check. */
+   is on the website: nothing is downloaded or installed. crates/engine/src/update.rs does the check.
+   Words: t() and th() from web/i18n.js, keys update.*; s.message is the engine's own sentence, shown as it comes. */
 (() => {
   const E = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   let timer = null, menuAsked = false;
@@ -11,16 +12,16 @@
   }
 
   function view(s) {
-    const btn = (t) => `<button class="btn plain" data-upd="check">${t}</button>`;
-    const ver = s.current ? `Version ${E(s.current)}.` : 'This copy has no version number (it was not built as an app).';
+    const btn = key => `<button class="btn plain" data-upd="check">${th(key)}</button>`;
+    const ver = s.current ? th('update.version', { version: s.current }) : th('update.no_version');
     switch (s.state) {
-      case 'checking': return `${ver} Checking for updates…`;
-      case 'up_to_date': return `${ver} Lastbook is up to date. ${btn('Check again')}`;
-      case 'available': return `${ver} Version ${E(s.version)} is available.${s.website ? ` Download it from ${E(s.website)}.` : ''} Your library, local AI and chats stay. ${btn('Check again')}`;
-      case 'not_published': return `${ver} No update information yet. ${btn('Try again')}`;
-      case 'no_site': return `${ver} ${E(s.message)}`;     // no download site chosen yet (engine/dist.py): nothing to try again
-      case 'too_old_os': case 'error': return `${ver} ${E(s.message)} ${btn('Try again')}`;
-      default: return `${ver} ${btn('Check for updates')}`;
+      case 'checking': return `${ver} ${th('update.checking')}`;
+      case 'up_to_date': return `${ver} ${th('update.up_to_date')} ${btn('update.check_again')}`;
+      case 'available': return `${ver} ${th('update.available', { version: s.version })}${s.website ? ' ' + th('update.download_from', { site: s.website }) : ''} ${th('update.stays')} ${btn('update.check_again')}`;
+      case 'not_published': return `${ver} ${th('update.not_published')} ${btn('update.try_again')}`;
+      case 'no_site': return `${ver} ${E(s.message)}`;     // no download site chosen yet (crates/engine/src/dist.rs): nothing to try again
+      case 'too_old_os': case 'error': return `${ver} ${E(s.message)} ${btn('update.try_again')}`;
+      default: return `${ver} ${btn('update.check')}`;
     }
   }
 
@@ -32,7 +33,7 @@
 
   async function refresh(el) {
     if (!el.isConnected) return;
-    try { paint(el, await call('state')) } catch { el.textContent = 'Lastbook could not ask about updates.' }
+    try { paint(el, await call('state')) } catch { el.textContent = t('update.failed') }
   }
 
   async function check(el) {
@@ -40,11 +41,11 @@
       const s = await call('check');
       if (s.error && !s.state) { el.textContent = s.error; return }
       paint(el, s);
-    } catch { el.textContent = 'Lastbook could not ask about updates.' }
+    } catch { el.textContent = t('update.failed') }
   }
 
   window.LBUpdate = {
-    card: () => '<div class="card"><b>Lastbook app</b><small id="updBox">…</small></div>',
+    card: () => `<div class="card"><b>${th('update.card_title')}</b><small id="updBox">…</small></div>`,
     mount(root) {
       const el = root.querySelector('#updBox'); if (!el) return;
       el.addEventListener('click', e => { if (e.target.closest('[data-upd]')) check(el) });

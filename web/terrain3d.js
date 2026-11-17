@@ -62,9 +62,9 @@ const Terrain3D = (() => {
   async function open(wrap, o) {
     close();
     const box = document.createElement('div'); box.className = 't3d';
-    box.innerHTML = `<canvas></canvas><div class="bar"><button data-a="exit">✕ Exit 3D</button>
-      <label title="Exaggerate heights">Height ×<input type="range" min="1" max="5" step="0.5" value="${o.z < 10 ? 3 : 1.5}"><span></span></label>
-      <button data-a="reset">Reset view</button></div><div class="hint">Loading elevation…</div>`;
+    box.innerHTML = `<canvas></canvas><div class="bar"><button data-a="exit">✕ ${th('t3d.exit')}</button>
+      <label title="${th('t3d.height_title')}">${th('t3d.height')}<input type="range" min="1" max="5" step="0.5" value="${o.z < 10 ? 3 : 1.5}"><span></span></label>
+      <button data-a="reset">${th('t3d.reset')}</button></div><div class="hint">${th('t3d.loading')}</div>`;
     wrap.appendChild(box);
     const cv = box.querySelector('canvas'), hint = box.querySelector('.hint'), range = box.querySelector('input');
     const me = cur = { box, alive: true };  // this session: checks after each await use me, not whatever cur is by then
@@ -87,7 +87,7 @@ const Terrain3D = (() => {
       let waiting = 0;
       for (const k of need) { const [z, x, y] = k.split('/').map(Number); if (o.getDem(z, x, y) === undefined) { o.demTile(z, x, y); waiting++ } }
       if (!waiting || !me.alive) break;
-      hint.textContent = `Loading elevation… ${need.size - waiting}/${need.size}`;
+      hint.textContent = t('t3d.loading_n', { done: need.size - waiting, total: need.size });
       await new Promise(r => setTimeout(r, 150));
     }
     if (!me.alive) return;
@@ -165,7 +165,7 @@ const Terrain3D = (() => {
       B.count = P.length / 3;
     }
     async function loadBldg() {
-      if (W > BLDG_MAX_SPAN || Hm > BLDG_MAX_SPAN) return 'Zoom in to a town to see 3D buildings.';
+      if (W > BLDG_MAX_SPAN || Hm > BLDG_MAX_SPAN) return t('t3d.zoom_for_buildings');
       const sc = 2 ** (30 - Z), X0 = (cx - hw) * sc, X1 = (cx + hw) * sc, Y0 = (cy - hh) * sc, Y1 = (cy + hh) * sc;
       const tiles = [];
       for (let ty = Math.floor(Y0 / 65536); ty <= Math.floor(Y1 / 65536); ty++)
@@ -224,7 +224,7 @@ const Terrain3D = (() => {
       B.list = list; buildBldg(ex); render();
       if (!list.length) return '';
       const measured = list.filter(f => f.osm).length, guessed = list.filter(f => !f.est).length;
-      return `${list.length.toLocaleString()} buildings${capped ? ' (nearest shown)' : ''} · ${measured ? `${measured.toLocaleString()} with mapped heights (OpenStreetMap), the rest ` : 'heights are '}satellite estimates${guessed ? `; ${guessed.toLocaleString()} without one shown one storey tall` : ''}`;
+      return `${t(capped ? 't3d.buildings_nearest' : 't3d.buildings', { n: list.length })} · ${measured ? t('t3d.heights_mapped', { n: measured }) : t('t3d.heights_satellite')}${guessed ? '; ' + t('t3d.heights_none', { n: guessed }) : ''}`;
     }
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
     // the 2D map (streets, labels, pins) becomes the ground texture
@@ -281,8 +281,8 @@ const Terrain3D = (() => {
     me.ro = new ResizeObserver(render); me.ro.observe(cv);
     setEx();
     const rel = hmax - hmin;
-    const base = rel < 1 ? 'No elevation data here (ocean or outside the US).' : `${matchMedia('(pointer: coarse)').matches ? 'Drag to turn and tilt · pinch to zoom' : 'Drag to rotate · scroll to zoom · shift-drag to tilt'} · ${Math.round(hmin * 3.28084).toLocaleString()}–${Math.round(hmax * 3.28084).toLocaleString()} ft`;
-    hint.textContent = base + (W <= BLDG_MAX_SPAN && Hm <= BLDG_MAX_SPAN ? ' · loading buildings…' : '');
+    const base = rel < 1 ? t('t3d.no_elevation') : `${matchMedia('(pointer: coarse)').matches ? t('t3d.help_touch') : t('t3d.help_mouse')} · ${t('t3d.range', { min: Math.round(hmin), max: Math.round(hmax) })}`;   // heights in metres
+    hint.textContent = base + (W <= BLDG_MAX_SPAN && Hm <= BLDG_MAX_SPAN ? ' · ' + t('t3d.loading_buildings') : '');
     const note = await loadBldg();
     if (!me.alive) return;
     hint.textContent = note ? `${base} · ${note}` : base;

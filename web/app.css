@@ -100,6 +100,21 @@ svg{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-lin
 .side-end{margin-top:auto;padding:10px 10px 4px}
 .side-ok{display:flex;align-items:center;gap:8px;padding:8px 10px 2px;font-size:14px;color:var(--ink2)}
 .side-ok svg{width:16px;height:16px;flex:none;color:var(--accent)}
+/* the language menu: a row like the others, the current language's name beside a globe, the system's menu laid over it unseen */
+.side .side-lang{position:relative;display:flex;align-items:center;gap:11px;height:var(--row-h);padding:0 10px;border-radius:var(--r-row);color:var(--ink);font:400 15.5px/1 var(--font);cursor:pointer}
+.side .side-lang svg{width:20px;height:20px;flex:none;stroke-width:1.75;color:var(--side-ico)}
+.plat-win .side .side-lang svg{stroke-width:1.5}
+.plat-mac.inactive .side .side-lang svg{color:var(--ink3)}
+.side .side-lang:hover{background:var(--row-hover)}
+.side .side-lang:focus-within{outline:2px solid var(--focus);outline-offset:-2px}
+.side .side-lang span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side .side-lang select{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;font-size:16px;-webkit-appearance:none;appearance:none}
+/* narrower than 640 the sidebar is not there: the same menu as a globe in the toolbar */
+.tb-btn.tb-lang{position:relative}
+.tb-btn.tb-lang:focus-within{outline:2px solid var(--focus);outline-offset:-2px}
+.tb-lang select{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;font-size:16px;-webkit-appearance:none;appearance:none}
+@media (max-width:639px){.tb-btn.tb-lang{display:grid}}
+@media (min-width:640px){.tb-btn.tb-lang{display:none}}
 
 /* ---------- toolbar (was the green top bar) ---------- */
 .top{position:sticky;top:0;z-index:20;background:var(--bar-bg);color:var(--ink);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid transparent;transition:border-color .15s}
@@ -212,7 +227,7 @@ main:focus{outline:none}
   .plat-win.compact .side-top{padding-left:0;height:88px}
   .plat-win.compact #sideBtn{left:8px;top:46px}
   .plat-win.compact .side-nav{padding:0 8px}
-  .plat-win.compact .side a.row-s{padding:0 0 0 10px}
+  .plat-win.compact .side a.row-s,.plat-win.compact .side .side-lang{padding:0 0 0 10px}
   .plat-win.compact .top-search{position:relative;left:auto;top:auto;width:auto;max-width:300px;margin-left:auto}
   .plat-win.compact body.home .top-search{visibility:hidden}
   .plat-win.compact .side-nav{padding-top:0}
@@ -225,7 +240,7 @@ main:focus{outline:none}
   .plat-win.compact.side-open .row-s span{display:inline}
   .plat-win.compact.side-open .side-top{padding-left:52px;height:88px}
   .plat-win.compact.side-open .side-nav{padding:0 10px}
-  .plat-win.compact.side-open .side a.row-s{padding:0 10px}
+  .plat-win.compact.side-open .side a.row-s,.plat-win.compact.side-open .side .side-lang{padding:0 10px}
 }
 /* 900 and wider: the Mac sidebar stays, floating inset as in macOS 26 */
 @media (min-width:900px){
@@ -792,6 +807,7 @@ main.map-page{max-width:none;padding-bottom:24px}   /* the same side and top ins
 .map-page .mapgrid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px}
 .map-page .mapwrap{height:calc(100vh - var(--map-top,170px) - var(--map-bottom,24px));min-height:220px;user-select:none;-webkit-user-select:none}
 .map-page .maptools{max-height:calc(100vh - var(--map-top,170px) - var(--map-bottom,24px));overflow:auto;margin:0;align-content:start}.map-page .maptools .panel{padding:14px 16px}
+.map-page .maptools .btn{white-space:normal;text-align:center}   /* the column is a fixed width: a long label in another language wraps inside its button */
 .mapwrap canvas{cursor:grab}.mapwrap canvas.dragging{cursor:grabbing}
 .mapwrap.max{position:fixed;inset:0;z-index:60;height:auto!important;min-height:0;border-radius:0;border:0}
 html.plat-mac.in-app .mapwrap.max,html.plat-mac.in-app .chat-side.open{top:var(--top-h)}
@@ -819,6 +835,7 @@ body.map-maxed{overflow:hidden}
 .layers label input{width:18px;height:18px;margin:0;accent-color:#1b5e20}.layers label span{flex:1}.layers label small{color:var(--ink3);font-variant-numeric:tabular-nums}
 .mapctl{z-index:4}.mapctl button{width:46px;height:46px;font-size:20px}
 .mapctl #map-us{font-size:14px;letter-spacing:.02em}
+.mapctl #map-us.long{font-size:11px;letter-spacing:0}   /* a longer word for "All" (Polish "Całość") still fits the square */
 .mapctl .zgrp{display:flex;flex-direction:column;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.15)}
 .mapctl .zgrp button{box-shadow:none;border-radius:0}
 .mapctl .zgrp button:first-child{border-radius:12px 12px 0 0;border-bottom-color:var(--line2)}

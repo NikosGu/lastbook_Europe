@@ -1,7 +1,9 @@
 'use strict';
 /* Lastbook setup: choose a library and the local AI, then download, check, unpack and switch. The contract is docs/SETUP-API.md.
    Works on its own page in setup mode (no library, so none of /api/topics and the rest) and inside the app (Library → Library and local AI).
-   Views: manage (what is here now), choose (what to get), job (progress, pause, errors), done. Plain fetch: in the app the bridge adds the key. */
+   Views: manage (what is here now), choose (what to get), job (progress, pause, errors), done. Plain fetch: in the app the bridge adds the key.
+   Words: t() and th() from web/i18n.js, keys setup.* in web/locales/. The engine's errors carry a code, translated here (ERRS, errorBox);
+   an unknown code shows the engine's own English sentence. */
 (() => {
   const $ = s => document.querySelector(s);
   const main = $('#main'), live = $('#live');
@@ -35,41 +37,49 @@
   const ico = (k, cls) => `<svg viewBox="0 0 24 24" aria-hidden="true"${cls ? ` class="${cls}"` : ''}>${ICO[k] || ''}</svg>`;
 
   /* ------------------------------------------------------------ numbers */
-  function size(b) {
-    if (b == null || !isFinite(b)) return '';
-    const g = b / UNIT ** 3;
-    if (g >= 100) return Math.round(g).toLocaleString() + ' GB';
-    if (g >= 1) return g.toFixed(1) + ' GB';
-    const m = b / UNIT ** 2;
-    return (m >= 10 ? Math.round(m) : m.toFixed(1)) + ' MB';
-  }
-  const ram = b => Math.round(b / 1024 ** 3) + ' GB';   // memory is counted in binary by both systems
-  const rate = bps => bps > 0 ? (bps / UNIT ** 2 >= 10 ? Math.round(bps / UNIT ** 2) : (bps / UNIT ** 2).toFixed(1)) + ' MB/s' : '';
+  const size = b => I18N.size(b, UNIT);
+  const ram = b => I18N.unit(Math.round(b / 1024 ** 3), 'gigabyte');   // memory is counted in binary by both systems
+  const rate = bps => { if (!(bps > 0)) return ''; const m = bps / UNIT ** 2; return m >= 10 ? I18N.unit(Math.round(m), 'megabyte-per-second') : I18N.unit(m, 'megabyte-per-second', 1) };
   function eta(s) {
     if (s == null || !isFinite(s) || s < 0) return '';
-    if (s < 60) return 'under a minute left';
+    if (s < 60) return t('setup.eta.under_minute');
     const m = Math.round(s / 60);
-    if (m < 60) return `about ${m} min left`;
+    if (m < 60) return t('setup.eta.minutes', { n: m });
     const h = Math.floor(m / 60), r = m % 60;
-    return `about ${h} h${r ? ` ${r} min` : ''} left`;
+    return r ? t('setup.eta.hours_minutes', { h, m: r }) : t('setup.eta.hours', { n: h });
   }
   const home = p => String(p || '').replace(/^\/Users\/[^/]+/, '~').replace(/^[A-Z]:\\Users\\[^\\]+\\/i, '');   // ~/… on a Mac; Documents\… on Windows, as Explorer names it
+  const baseName = p => String(p || '').split(/[\\/]/).filter(Boolean).pop() || '';
 
   /* ------------------------------------------------------------ the engine */
   async function call(path, body) {
     const opts = body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) };
-    let r; try { r = await fetch('/api/setup/' + path, opts) } catch { throw Object.assign(new Error('Lastbook did not answer. Close it and open it again.'), { status: 0 }) }
+    let r; try { r = await fetch('/api/setup/' + path, opts) } catch { throw Object.assign(new Error(t('setup.err.no_answer')), { status: 0 }) }
     let d = null; try { d = await r.json() } catch { }
-    if (!r.ok && !(d && (d.error || d.need_bytes))) throw Object.assign(new Error(r.status === 404 ? 'Not available.' : 'Lastbook sent an unreadable reply.'), { status: r.status });
+    if (!r.ok && !(d && (d.error || d.need_bytes))) throw Object.assign(new Error(r.status === 404 ? t('setup.err.not_available') : t('setup.err.unreadable')), { status: r.status });
     return d;
   }
   const errCode = e => e && (typeof e === 'object' ? e.code : null);
   const errText = e => e && (typeof e === 'object' ? e.message || e.error : e);
+  /* An error answer {error, code} (docs/SETUP-API.md), said in the person's language by its code; what one code means depends on
+     the action asked. A code not listed here shows the engine's own sentence. */
+  const ERRS = {
+    start: { busy: 'setup.err.busy', unavailable: 'setup.err.start_unavailable', nothing: 'setup.err.start_nothing', folder: 'setup.err.start_folder' },
+    repair: { busy: 'setup.err.busy', nothing: 'setup.err.repair_nothing', unavailable: 'setup.err.repair_unknown', folder: 'setup.err.start_folder' },
+    use: { busy: 'setup.err.busy', missing: 'setup.err.use_missing', not_library: 'setup.err.use_not_library', folder: 'setup.err.use_folder', size: 'setup.err.use_size', unavailable: 'setup.err.use_unavailable', unknown: 'setup.err.use_unknown' },
+    finish: { not_done: 'setup.err.finish_not_done' },
+    'remove-ai': { busy: 'setup.err.busy', nothing: 'setup.err.remove_ai_nothing', folder: 'setup.err.remove_ai_folder' },
+    'delete-old': { unknown: 'setup.err.delete_old_unknown' },
+  };
+  const said = (action, r, params) => { const k = r && (ERRS[action] || {})[r.code]; return k ? t(k, params) : (r && r.error) || '' };
+  /* Sentences the engine sends without a code (recommend.why, hardware.ai.why, pack titles and summaries): in English its own words,
+     which say the most; in another language the interface's sentence for the same facts. */
+  const english = () => I18N.lang === 'en';
 
   /* ------------------------------------------------------------ state */
   let S = null;           // GET state
   let view = 'choose';
-  let choice = { pack: null, ai: false, country: null, map: null };   // country: ISO 3166-1 code; map: the region code (engine/regions.py)
+  let choice = { pack: null, ai: false, country: null, map: null };   // country: ISO 3166-1 code; map: the region code (crates/engine/src/regions.rs)
   let folder = '';
   let shortfall = null;   // the answer to a start that had no room: {need_bytes, free_bytes}
   let pollT = 0;
@@ -87,19 +97,22 @@
     if (!current || pack.id !== current.pack) return true;
     return Boolean(pack.revision && pack.revision !== current.content_revision);
   }
+  // The published packs by id: their names and summaries in each language. Another id keeps the manifest's own words.
+  const PACK = { small: ['setup.pack.small', 'setup.pack.small_summary'], medium: ['setup.pack.medium', 'setup.pack.medium_summary'], all: ['setup.pack.all', 'setup.pack.all_summary'] };
+  const packTitle = p => !p ? '' : english() && p.title ? p.title : PACK[p.id] ? t(PACK[p.id][0]) : p.title || p.id;
+  const packSummary = p => !p ? '' : english() && p.summary ? p.summary : PACK[p.id] ? t(PACK[p.id][1]) : p.summary || '';
 
   /* region maps (docs/SETUP-API.md, Region maps). A region is a country, or for the five largest a part of one: its code is
-     LU or DE-BY (engine/regions.py). The person picks the country, then the region; Lastbook never looks for where it is. */
-  const maps = () => ((S.manifest && S.manifest.maps) || []).slice().sort((a, b) => String(a.title).localeCompare(String(b.title)));   // by name, as people look for theirs
+     LU or DE-BY (crates/engine/src/regions.rs). The person picks the country, then the region; Lastbook never looks for where it is.
+     Country names come from Intl in the interface's language; a region keeps its own name (Bayern, Bretagne). */
+  const maps = () => ((S.manifest && S.manifest.maps) || []).slice().sort((a, b) => I18N.compare(a.title, b.title));   // by name, as people look for theirs
   const mapById = id => maps().find(m => m.id === id);
   const countryOf = id => String(id || '').split('-')[0];
-  let countryNames = null;
-  try { countryNames = new Intl.DisplayNames([document.documentElement.lang || 'en'], { type: 'region' }) } catch { }
-  const countryName = cc => { try { return (countryNames && countryNames.of(cc)) || cc } catch { return cc } };
-  const countries = () => [...new Set(maps().map(m => countryOf(m.id)))].sort((a, b) => countryName(a).localeCompare(countryName(b)));
+  const countryName = cc => I18N.country(cc);
+  const countries = () => [...new Set(maps().map(m => countryOf(m.id)))].sort((a, b) => I18N.compare(countryName(a), countryName(b)));
   const regionsOf = cc => maps().filter(m => countryOf(m.id) === cc);
   const split = cc => regionsOf(cc).length > 1 || regionsOf(cc).some(m => m.id !== cc);
-  const mapName = id => id === 'europe' ? 'every region' : !mapById(id) ? id : split(countryOf(id)) ? `${mapById(id).title} (${countryName(countryOf(id))})` : countryName(id);
+  const mapName = id => id === 'europe' ? t('setup.map.every_region') : !mapById(id) ? id : split(countryOf(id)) ? t('setup.map.region_country', { region: mapById(id).title, country: countryName(countryOf(id)) }) : countryName(id);
   /* the detailed map the library will have once the chosen pack is in: the person's region map, or the one the pack carries (manifest packs[].map) */
   const packMap = id => (packById(id) || {}).map || null;
   const mapNow = () => { const c = cur() || {}; return choice.pack && choice.pack !== c.pack ? packMap(choice.pack) : (c.map && c.map !== 'base' ? c.map : packMap(c.pack)) };
@@ -110,13 +123,14 @@
   const addressAdds = () => { const a = addressById(selectedRegion()); return a && a.available !== false && !((cur() || {}).address_indexes || []).includes(a.id) ? a : null };
   const mapMissing = () => maps().length > 0 && !selectedRegion();   // no region maps published yet: nothing to choose
   const mapAdds = () => choice.map && choice.map !== mapNow() && mapNow() !== 'europe' ? mapById(choice.map) : null;
-  const packSummary = p => p.summary || '';
   const packDl = p => p.download_bytes || (p.files || []).reduce((n, f) => n + (f.size || 0), 0);
   const SEP = WIN ? '\\' : '/', DATA = 'LastbookData';
   const asData = p => /[\\/]LastbookData[\\/]?$/i.test(p) ? p.replace(/[\\/]$/, '') : String(p).replace(/[\\/]$/, '') + SEP + DATA;
   /* a file already on this computer, of the right size, for a pack or the model: setup uses it instead of downloading */
   const foundFor = (kind, id) => (S.found || []).find(f => f.kind === kind && (f.size_ok !== false) && (kind === 'model' || f.id === id || f.pack === id));
   const aiFits = () => !!(S.hardware && S.hardware.ai && S.hardware.ai.fits);
+  // why the local AI does not fit this computer
+  const aiWhy = () => { const a = (S.hardware && S.hardware.ai) || {}; return english() && a.why ? a.why : t(S.hardware && S.hardware.ram_bytes ? 'setup.ai.no_memory' : 'setup.ai.ram_unknown') };
 
   function diskFor(path) {
     const ds = (S.hardware && S.hardware.disks) || [];
@@ -126,8 +140,11 @@
     for (const d of ds) if (p.startsWith(norm(d.path)) && (!best || d.path.length > best.path.length)) best = d;
     return best || (path ? null : ds[0] || null);   // a folder on a disk the engine did not report: its free space is not known here
   }
-  const diskName = d => !d ? 'this disk' : d.name || (WIN ? (String(d.path).match(/^[A-Z]:/i) || ['this disk'])[0].toUpperCase()   // C:, D:
-    : /^\/Volumes\/[^/]+/.test(d.path) ? d.path.split('/')[2] : /Linux/.test(navigator.platform || '') ? 'this computer' : 'this Mac');
+  // "on Macintosh HD", "on D:", "on this Mac": a disk named where something is, as the sentences around it need it
+  function diskWhere(d) {
+    const name = d && (d.name || (WIN ? (String(d.path).match(/^[A-Z]:/i) || [''])[0].toUpperCase() : /^\/Volumes\/[^/]+/.test(d.path) ? d.path.split('/')[2] : ''));
+    return name ? t('setup.disk.on', { name }) : t(!d || WIN ? 'setup.disk.on_this_disk' : /Linux/.test(navigator.platform || '') ? 'setup.disk.on_this_computer' : 'setup.disk.on_this_mac');
+  }
 
   function plan() {   // what the current choice adds: bytes to download, space it needs (download + unpacked + 2 GB, as the engine counts)
     const c = cur() || {};
@@ -151,7 +168,7 @@
 
   async function load() {
     try { S = await call('state') }
-    catch (e) { main.innerHTML = `<div class="s-err" role="alert">${ico('warn')}<div><b>Setup could not start.</b><p>${esc(e.message)}</p><p><button class="btn" id="again">Try again</button></p></div></div>`; $('#again').onclick = load; return }
+    catch (e) { main.innerHTML = `<div class="s-err" role="alert">${ico('warn')}<div><b>${th('setup.err.could_not_start')}</b><p>${esc(e.message)}</p><p><button class="btn" id="again">${th('setup.try_again')}</button></p></div></div>`; $('#again').onclick = load; return }
     const rf = (S.recommend || {}).folder;
     folder = folder || (cur() && cur().folder) || S.default_folder || (rf ? asData(rf) : '');
     if (!choice.pack) {
@@ -175,7 +192,7 @@
     shapeKey = '';
     if (view === 'manage') manageView();
     else if (view === 'choose') chooseView();
-    else if (view === 'job') jobView(S.job);
+    else if (view === 'job') { jobView(S.job); poll() }
     else if (view === 'done') doneView();
     if (focus) { const h = main.querySelector('h1'); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }) } scrollTo(0, 0) }
   }
@@ -184,19 +201,36 @@
   /* ---- this computer */
   function computer() {
     const h = S.hardware || {}, d = diskFor(folder), tiles = [];
-    if (d) tiles.push([ico('disk'), size(d.free_bytes), `free on ${esc(diskName(d))}`]);
-    if (h.ram_bytes) tiles.push([ico('chip'), ram(h.ram_bytes), h.unified_memory ? 'memory, shared with graphics' : 'memory']);
+    if (d) tiles.push([ico('disk'), size(d.free_bytes), th('setup.pc.free', { where: diskWhere(d) })]);
+    if (h.ram_bytes) tiles.push([ico('chip'), ram(h.ram_bytes), th(h.unified_memory ? 'setup.pc.memory_shared' : 'setup.pc.memory')]);
     if (!h.unified_memory) {
       const g = (h.gpus || []).slice().sort((a, b) => (b.vram_bytes || 0) - (a.vram_bytes || 0))[0];
-      tiles.push(g ? [ico('gpu'), g.vram_bytes ? ram(g.vram_bytes) : '—', `graphics: ${esc(g.name)}`] : [ico('gpu'), 'None', 'graphics card for the AI']);
+      tiles.push(g ? [ico('gpu'), g.vram_bytes ? ram(g.vram_bytes) : '—', th('setup.pc.graphics', { name: g.name })] : [ico('gpu'), th('setup.pc.none'), th('setup.pc.no_gpu')]);
     }
-    return `<section class="s-pc" aria-label="This computer">${tiles.map(t => `<div class="s-tile">${t[0]}<b>${t[1]}</b><small>${t[2]}</small></div>`).join('')}</section>`;
+    return `<section class="s-pc" aria-label="${th('setup.pc.label')}">${tiles.map(x => `<div class="s-tile">${x[0]}<b>${x[1]}</b><small>${x[2]}</small></div>`).join('')}</section>`;
   }
   function recommendLine() {
     const r = S.recommend || {}, p = packById(r.pack);
-    if (!p) return r.why ? `<p class="s-rec bad">${ico('warn')}<span>${esc(r.why)}</span></p>` : '';
-    const what = `${esc(p.title)}${r.ai && aiFits() ? ' with the local AI' : ''}`;
-    return `<p class="s-rec">${ico('ok')}<span><b>Suggested: ${what}.</b> ${esc(r.why || '')}</span></p>`;
+    if (!p) { const why = noPackWhy(r); return why ? `<p class="s-rec bad">${ico('warn')}<span>${why}</span></p>` : '' }
+    const what = r.ai && aiFits() ? th('setup.rec.pack_with_ai', { pack: packTitle(p) }) : esc(packTitle(p));
+    return `<p class="s-rec">${ico('ok')}<span><b>${th('setup.rec.suggested', { what: I18N.raw(what) })}</b> ${recWhy(r, p)}</span></p>`;
+  }
+  // recommend.why, in another language than English: the library goes on another disk, or a larger one can be chosen; the AI has no room
+  function recWhy(r, p) {
+    if (english()) return esc(r.why || '');
+    const ds = (S.hardware && S.hardware.disks) || [], norm = s => String(s).toLowerCase().replace(/[\\/]+$/, '');
+    const other = r.folder && ds.find((d, i) => i > 0 && norm(d.path) === norm(r.folder));   // the engine names the other disk's own folder
+    const parts = [other ? th('setup.rec.other_disk', { pack: packTitle(p), where: diskWhere(other) }) : th('setup.rec.larger')];
+    if (model() && aiFits() && !r.ai) parts.push(th('setup.rec.ai_no_room'));
+    return parts.join(' ');
+  }
+  function noPackWhy(r) {
+    if (!r.why) return '';
+    if (english()) return esc(r.why);
+    const ready = packs().filter(x => x.available !== false), need = r.need_bytes || {};
+    if (!ready.length) return th('setup.rec.none_ready');
+    const small = ready.slice().sort((a, b) => (need[a.id] || packDl(a)) - (need[b.id] || packDl(b)))[0], d = diskFor(folder);
+    return need[small.id] && d ? th('setup.rec.none_fits', { pack: packTitle(small), need: size(need[small.id]), free: size(d.free_bytes) }) : th('setup.rec.none_fits_plain', { pack: packTitle(small) });
   }
 
   /* ---- choose */
@@ -205,43 +239,43 @@
     const packCards = packs().map(p => {
       const update = c && c.pack === p.id && packNeedsInstall(p);
       const off = p.available === false, here = c && c.pack === p.id && !update, rec = (S.recommend || {}).pack === p.id && !c;
-      const badge = off ? '<span class="s-badge later">Coming later</span>' : update ? '<span class="s-badge rec">Update available</span>' : here ? '<span class="s-badge here">Installed</span>' : rec ? '<span class="s-badge rec">Suggested</span>' : '';
+      const badge = off ? `<span class="s-badge later">${th('setup.badge.later')}</span>` : update ? `<span class="s-badge rec">${th('setup.badge.update')}</span>` : here ? `<span class="s-badge here">${th('setup.badge.installed')}</span>` : rec ? `<span class="s-badge rec">${th('setup.badge.suggested')}</span>` : '';
       return `<label class="s-opt${off ? ' off' : ''}">
         <input type="radio" name="pack" value="${esc(p.id)}"${choice.pack === p.id ? ' checked' : ''}${off ? ' disabled' : ''}>
-        <span class="s-opt-in"><span class="s-opt-h"><b>${esc(p.title)}</b>${badge}</span>
+        <span class="s-opt-in"><span class="s-opt-h"><b>${esc(packTitle(p))}</b>${badge}</span>
         <small data-pack-summary="${esc(p.id)}">${esc(packSummary(p))}</small>
-        <span class="s-sizes">${off ? 'Not ready to download yet' : here ? 'On this computer' : `<span>${foundFor('pack', p.id) ? 'Already downloaded' : size(packDl(p)) + ' download'}</span><span>${size(p.installed_bytes)} on disk</span>`}</span></span></label>`;
+        <span class="s-sizes">${off ? th('setup.size.not_ready') : here ? th('setup.size.here') : `<span>${foundFor('pack', p.id) ? th('setup.size.found') : th('setup.size.download', { size: size(packDl(p)) })}</span><span>${th('setup.size.on_disk', { size: size(p.installed_bytes) })}</span>`}</span></span></label>`;
     }).join('');
     let ai = '';
     if (m && m.available !== false) {
       const has = c && c.model;
       ai = aiFits() || has
         ? `<label class="s-opt s-ai"><input type="checkbox" id="aiBox"${choice.ai || has ? ' checked' : ''}${has ? ' disabled' : ''}>
-            <span class="s-opt-in"><span class="s-opt-h"><b>Local AI</b>${has ? '<span class="s-badge here">Installed</span>' : (S.recommend || {}).ai && !c ? '<span class="s-badge rec">Suggested</span>' : '<span class="s-badge">Optional</span>'}</span>
-            <small>Answers questions from the library, in plain words. Works offline.</small>
-            <span class="s-sizes">${has ? 'On this computer' : foundFor('model') ? '<span>Already downloaded</span>' : `<span>About ${size(m.size)} download</span>`}</span></span></label>`
-        : `<div class="s-opt s-ai off" role="group" aria-label="Local AI"><span class="s-opt-in"><span class="s-opt-h"><b>Local AI</b><span class="s-badge later">Not for this computer</span></span>
-            <small>${esc((S.hardware.ai && S.hardware.ai.why) || 'This computer does not have enough memory for it.')}</small></span></div>`;
+            <span class="s-opt-in"><span class="s-opt-h"><b>${th('setup.ai.title')}</b>${has ? `<span class="s-badge here">${th('setup.badge.installed')}</span>` : (S.recommend || {}).ai && !c ? `<span class="s-badge rec">${th('setup.badge.suggested')}</span>` : `<span class="s-badge">${th('setup.badge.optional')}</span>`}</span>
+            <small>${th('setup.ai.blurb')}</small>
+            <span class="s-sizes">${has ? th('setup.size.here') : foundFor('model') ? `<span>${th('setup.size.found')}</span>` : `<span>${th('setup.size.about_download', { size: size(m.size) })}</span>`}</span></span></label>`
+        : `<div class="s-opt s-ai off" role="group" aria-label="${th('setup.ai.title')}"><span class="s-opt-in"><span class="s-opt-h"><b>${th('setup.ai.title')}</b><span class="s-badge later">${th('setup.badge.not_here')}</span></span>
+            <small>${esc(aiWhy())}</small></span></div>`;
     }
-    const found = (S.found || []).map((f, i) => f.rejected ? `<div class="s-found off">${ico('file')}<span><b>${esc(f.name || f.path.split(/[\\/]/).pop())}</b><small>${esc(home(f.path))} · doesn’t match the published file, so it is not used</small></span></div>`
-      : f.size_ok === false ? '' : `<div class="s-found">${ico(f.kind === 'library' ? 'folder' : 'file')}<span><b>${esc(f.kind === 'library' ? 'A Lastbook library' : f.kind === 'model' ? 'The local AI file' : (packById(f.id) ? packById(f.id).title + ' library' : f.title || f.name))}</b><small>${esc(home(f.path))}${f.size ? ' · ' + size(f.size) : ''}</small></span>
-        <button class="btn plain" data-use="${i}">Use the file you already have</button></div>`).join('');
+    const found = (S.found || []).map((f, i) => f.rejected ? `<div class="s-found off">${ico('file')}<span><b>${esc(f.name || f.path.split(/[\\/]/).pop())}</b><small>${th('setup.found.rejected', { path: home(f.path) })}</small></span></div>`
+      : f.size_ok === false ? '' : `<div class="s-found">${ico(f.kind === 'library' ? 'folder' : 'file')}<span><b>${esc(f.kind === 'library' ? t('setup.found.library') : f.kind === 'model' ? t('setup.found.model') : (packById(f.id) ? t('setup.item.library', { name: packTitle(packById(f.id)) }) : f.title || f.name))}</b><small>${esc(home(f.path))}${f.size ? ' · ' + size(f.size) : ''}</small></span>
+        <button class="btn plain" data-use="${i}">${th('setup.found.use')}</button></div>`).join('');
 
-    main.innerHTML = `${c ? `<button class="s-link" id="toManage">${ico('back')}<span>Library and local AI</span></button>` : ''}
-      <h1>${c ? 'Change the library' : 'Set up Lastbook'}</h1>
-      ${c ? '' : '<p class="lead">Choose your region and library. Lastbook downloads them for offline use.</p>'}
+    main.innerHTML = `${c ? `<button class="s-link" id="toManage">${ico('back')}<span>${th('setup.manage.title')}</span></button>` : ''}
+      <h1>${c ? th('setup.choose.change_title') : th('setup.choose.title')}</h1>
+      ${c ? '' : `<p class="lead">${th('setup.choose.lead')}</p>`}
       ${computer()}
       ${c ? '' : recommendLine()}
-      ${found ? `<h2>Found on this computer</h2><div class="s-founds">${found}</div>` : ''}
-      <section id="mapBox" class="s-map-panel" aria-label="Your local map"></section>
-      <h2 id="packH">Library</h2>
+      ${found ? `<h2>${th('setup.found.title')}</h2><div class="s-founds">${found}</div>` : ''}
+      <section id="mapBox" class="s-map-panel" aria-label="${th('setup.map.title')}"></section>
+      <h2 id="packH">${th('setup.choose.library')}</h2>
       <div class="s-opts" role="radiogroup" aria-labelledby="packH">${packCards}</div>
-      ${ai ? `<h2>Local AI</h2>${ai}` : ''}
+      ${ai ? `<h2>${th('setup.ai.title')}</h2>${ai}` : ''}
       <section class="s-sum" id="sum" aria-live="polite"></section>
       <div class="s-go">
         <button class="btn big" id="start"></button>
-        ${c ? '' : '<button class="s-link" id="haveLib">Choose an existing library folder</button>'}
-        <button class="s-link" id="haveFile">Choose a library zip or AI model file</button>
+        ${c ? '' : `<button class="s-link" id="haveLib">${th('setup.choose.have_library')}</button>`}
+        <button class="s-link" id="haveFile">${th('setup.choose.have_file')}</button>
       </div>
       <p class="s-note" id="haveNote" hidden></p>`;
     main.querySelectorAll('input[name=pack]').forEach(r => r.onchange = () => { choice.pack = r.value; shortfall = null; mapSection(); summary() });
@@ -269,29 +303,30 @@
       return (included ? 0 : packDl(m)) + (a && a.available !== false && !addressIncluded ? packDl(a) : 0);
     };
     const offFor = m => !(now === 'europe' || m.id === now) && m.available === false;
-    const details = m => offFor(m) ? 'coming later' : bytesFor(m) ? size(bytesFor(m)) + ' download' : 'included';
+    const details = m => offFor(m) ? t('setup.map.later') : bytesFor(m) ? t('setup.size.download', { size: size(bytesFor(m)) }) : t('setup.map.included');
     const countryOpts = countries().map(k => {
       const rs = regionsOf(k), one = !split(k) ? rs[0] : null;
       const off = rs.every(offFor);
-      return `<option value="${esc(k)}"${cc === k ? ' selected' : ''}${off ? ' disabled' : ''}>${esc(countryName(k))}${one ? ' — ' + details(one) : off ? ' — coming later' : ''}</option>`;
+      return `<option value="${esc(k)}"${cc === k ? ' selected' : ''}${off ? ' disabled' : ''}>${esc(countryName(k))}${one ? ' — ' + esc(details(one)) : off ? ' — ' + th('setup.map.later') : ''}</option>`;
     }).join('');
-    const regionOpts = cc && split(cc) ? regionsOf(cc).map(m => `<option value="${esc(m.id)}"${selected === m.id ? ' selected' : ''}${offFor(m) ? ' disabled' : ''}>${esc(m.title)} — ${details(m)}</option>`).join('') : '';
+    const regionOpts = cc && split(cc) ? regionsOf(cc).map(m => `<option value="${esc(m.id)}"${selected === m.id ? ' selected' : ''}${offFor(m) ? ' disabled' : ''}>${esc(m.title)} — ${esc(details(m))}</option>`).join('') : '';
     const sel = mapById(selected), a = addressAdds();
     const mapIncluded = now === 'europe' || selected === now;
     const bytes = (sel && !mapIncluded ? packDl(sel) : 0) + (a ? packDl(a) : 0);
     const disk = (sel && !mapIncluded ? sel.installed_bytes || 0 : 0) + (a ? a.installed_bytes || 0 : 0);
     const unavailable = selected && addresses().length && (!addressById(selected) || addressById(selected).available === false);
-    let hint = !cc ? 'Select your country to continue.' : !sel ? 'Select your region to continue.'
-      : bytes ? `${size(bytes)} download · ${size(disk)} on disk${mapIncluded && a ? '. Your map is already included; only the address index downloads.' : ''}` : 'Your region’s map and its address index are already included.';
-    if (sel && unavailable) hint = (bytes ? `${size(bytes)} download · ${size(disk)} on disk.` : 'Your region’s map is already included.') + ' Street-address search is not available for this region yet.';
-    box.innerHTML = `<h2>${ico('map')}Your local map</h2>
-      <p class="s-mapnote">Local streets, buildings, water and places to get help. Available offline.</p>
-      ${now === 'europe' ? '<p class="s-mapnote">This library includes every region’s map. Choose your region for offline street-address search.</p>' : ''}
-      <label class="s-maplabel" for="mapCountry">Your country</label>
-      <select id="mapCountry" class="s-select" required aria-describedby="mapHint"><option value="" disabled${cc ? '' : ' selected'}>Select a country</option>${countryOpts}</select>
-      ${regionOpts ? `<label class="s-maplabel" for="mapSel">Your region</label>
-      <select id="mapSel" class="s-select" required aria-describedby="mapHint"><option value="" disabled${selected && countryOf(selected) === cc ? '' : ' selected'}>Select a region</option>${regionOpts}</select>` : ''}
-      <p class="s-hint" id="mapHint">${hint}</p>`;
+    const sizes = { download: size(bytes), disk: size(disk) };
+    let hint = !cc ? t('setup.map.pick_country_hint') : !sel ? t('setup.map.pick_region_hint')
+      : bytes ? t(mapIncluded && a ? 'setup.map.sizes_addresses' : 'setup.map.sizes', sizes) : t('setup.map.all_included');
+    if (sel && unavailable) hint = (bytes ? t('setup.map.sizes', sizes) + '.' : t('setup.map.map_included')) + ' ' + t('setup.map.no_addresses');
+    box.innerHTML = `<h2>${ico('map')}${th('setup.map.title')}</h2>
+      <p class="s-mapnote">${th('setup.map.note')}</p>
+      ${now === 'europe' ? `<p class="s-mapnote">${th('setup.map.europe_note')}</p>` : ''}
+      <label class="s-maplabel" for="mapCountry">${th('setup.map.country')}</label>
+      <select id="mapCountry" class="s-select" required aria-describedby="mapHint"><option value="" disabled${cc ? '' : ' selected'}>${th('setup.map.select_country')}</option>${countryOpts}</select>
+      ${regionOpts ? `<label class="s-maplabel" for="mapSel">${th('setup.map.region')}</label>
+      <select id="mapSel" class="s-select" required aria-describedby="mapHint"><option value="" disabled${selected && countryOf(selected) === cc ? '' : ' selected'}>${th('setup.map.select_region')}</option>${regionOpts}</select>` : ''}
+      <p class="s-hint" id="mapHint">${esc(hint)}</p>`;
     $('#mapCountry').onchange = e => {
       choice.country = e.target.value;
       choice.map = split(choice.country) ? null : (regionsOf(choice.country)[0] || {}).id || null;
@@ -305,20 +340,20 @@
     const pct = need && free ? Math.min(100, need / free * 100) : short ? 100 : 0;
     const c = cur();
     $('#sum').innerHTML = need ? `
-      <div class="s-nums"><span><small>Download</small><b>${dl ? size(dl) : 'None'}</b></span><span><small>Space needed</small><b>${size(short ? short.need_bytes : need)}</b></span><span><small>Free on ${esc(diskName(d))}</small><b>${short ? size(short.free_bytes) : free != null ? size(free) : 'Checked at start'}</b></span></div>
-      ${free == null && !short ? '' : `<div class="s-meter${short ? ' bad' : ''}" role="img" aria-label="Uses ${Math.round(pct)} percent of the free space"><i style="width:${pct}%"></i></div>`}
-      ${short ? `<p class="s-short">${ico('warn')}<span>Not enough room: this needs ${size(short.need_bytes)}, and ${esc(diskName(d))} has ${size(short.free_bytes)} free. Pick a smaller library or another folder.</span></p>` : ''}
+      <div class="s-nums"><span><small>${th('setup.sum.download')}</small><b>${dl ? size(dl) : th('setup.sum.none')}</b></span><span><small>${th('setup.sum.space')}</small><b>${size(short ? short.need_bytes : need)}</b></span><span><small>${th('setup.sum.free', { where: diskWhere(d) })}</small><b>${short ? size(short.free_bytes) : free != null ? size(free) : th('setup.sum.checked_at_start')}</b></span></div>
+      ${free == null && !short ? '' : `<div class="s-meter${short ? ' bad' : ''}" role="img" aria-label="${th('setup.sum.meter', { pct: Math.round(pct) })}"><i style="width:${pct}%"></i></div>`}
+      ${short ? `<p class="s-short">${ico('warn')}<span>${th('setup.sum.short', { need: size(short.need_bytes), free: size(short.free_bytes), where: diskWhere(d) })}</span></p>` : ''}
       ${folderRow()}`
-      : `<p class="s-nothing">${c ? 'This is what you have now.' : 'Pick a library.'}</p>${c ? '' : folderRow()}`;
+      : `<p class="s-nothing">${c ? th('setup.sum.have_now') : th('setup.sum.pick')}</p>${c ? '' : folderRow()}`;
     const b = $('#start');
     b.disabled = !need || !!short || mapMissing();
     const newPack = c && packNeedsInstall(packById(choice.pack)), newAi = c && choice.ai && !c.model, newMap = c && mapAdds(), newAddresses = c && addressAdds();
-    const parts = [newPack && packById(choice.pack).title, newAi && 'the local AI', newMap && `the ${mapName(newMap.id)} map`, newAddresses && !newMap && 'offline address search'].filter(Boolean);
-    b.textContent = mapMissing() ? 'Choose your region to continue' : !c ? 'Download and install' : parts.length ? 'Get ' + parts.join(parts.length > 2 ? ', ' : ' and ').replace(/, ([^,]*)$/, ' and $1') : 'Nothing to add';
-    if (newPack && choice.pack === c.pack && !mapMissing()) b.textContent = 'Download and install update';
+    const parts = [newPack && packTitle(packById(choice.pack)), newAi && t('setup.go.part_ai'), newMap && t('setup.go.part_map', { name: mapName(newMap.id) }), newAddresses && !newMap && t('setup.go.part_addresses')].filter(Boolean);
+    b.textContent = mapMissing() ? t('setup.go.choose_region') : !c ? t('setup.go.install') : parts.length ? t('setup.go.get', { list: I18N.list(parts) }) : t('setup.go.nothing');
+    if (newPack && choice.pack === c.pack && !mapMissing()) b.textContent = t('setup.go.install_update');
     const ch = $('#chFolder'); if (ch) ch.onclick = pickFolder;
   }
-  const folderRow = () => `<div class="s-folder">${ico('folder')}<span><small>Saves to</small><b title="${esc(folder)}">${esc(home(folder))}</b></span>${cur() ? '' : '<button class="btn plain" id="chFolder">Change…</button>'}</div>`;
+  const folderRow = () => `<div class="s-folder">${ico('folder')}<span><small>${th('setup.folder.saves_to')}</small><b title="${esc(folder)}">${esc(home(folder))}</b></span>${cur() ? '' : `<button class="btn plain" id="chFolder">${th('setup.folder.change')}</button>`}</div>`;
 
   async function pickFolder() {
     const b = $('#chFolder'); b.disabled = true;
@@ -331,7 +366,7 @@
         const pc = main.querySelector('.s-pc'); if (pc) pc.outerHTML = computer();
       }
       summary();
-    } catch { b.disabled = false; b.textContent = 'Can’t change here' }
+    } catch { b.disabled = false; b.textContent = t('setup.folder.cant_change') }
   }
   async function haveLibrary(files) {
     const n = $('#haveNote');
@@ -342,15 +377,15 @@
       throw 0;
     } catch {
       n.hidden = false;
-      n.textContent = 'The picker could not open. Try choosing the file or folder again.';
+      n.textContent = t('setup.pick.failed');
     }
   }
   async function useFile(path, btn) {
     if (btn) btn.disabled = true;
     try {
       const r = await call('use', { path });
-      if (r && r.error) throw new Error(r.error);
-      if (r && r.noted) { S = await call('state').catch(() => S); choice.ai = true; chooseView(); const n = $('#haveNote'); n.hidden = false; n.textContent = 'The local AI file will be used. No need to download it.'; return }
+      if (r && r.error) throw new Error(said('use', r, { name: baseName(path) }));
+      if (r && r.noted) { S = await call('state').catch(() => S); choice.ai = true; chooseView(); const n = $('#haveNote'); n.hidden = false; n.textContent = t('setup.use.model_noted'); return }
       S.job = r; go(r.state === 'done' ? 'done' : 'job'); poll();
     } catch (e) {
       if (btn) btn.disabled = false;
@@ -362,7 +397,7 @@
     const b = $('#start'); b.disabled = true;
     const r = await call('start', { pack: packNeedsInstall(packById(choice.pack)) ? choice.pack : null, ai: !!choice.ai && aiFits() && !(cur() || {}).model, map: mapAdds() ? choice.map : null, address_id: addressById(selectedRegion())?.available !== false && addressById(selectedRegion()) ? selectedRegion() : null, folder }).catch(e => ({ error: e.message }));
     if (r && r.need_bytes) { shortfall = r; summary(); return }
-    if (!r || r.error) { b.disabled = false; const n = $('#haveNote'); n.hidden = false; n.textContent = (r && r.error) || 'Setup could not start.'; return }
+    if (!r || r.error) { b.disabled = false; const n = $('#haveNote'); n.hidden = false; n.textContent = (r && r.error && said('start', r)) || t('setup.err.could_not_start'); return }
     S.job = r; go('job'); poll();
   }
 
@@ -373,19 +408,19 @@
     const o = [].concat(c.old || [])[0], old = o ? (typeof o === 'string' ? { path: o } : o) : null;   // the engine lists the paths it moved aside
     const larger = packs().filter(x => (x.installed_bytes || 0) > ((p && p.installed_bytes) || 0));
     const bigger = larger.filter(x => x.available !== false), later = larger.find(x => x.available === false);
-    main.innerHTML = `<h1>Library and local AI</h1>
+    main.innerHTML = `<h1>${th('setup.manage.title')}</h1>
       <div class="s-have">
-        <div class="s-row">${ico('book', 's-ri')}<span><b>${esc(p ? p.title : c.pack || 'Library')} library</b><small>${libraryUpdate ? 'Updated edition available · ' : p ? size(p.installed_bytes) + ' · ' : ''}${esc(home(c.folder))}</small></span>
-          ${libraryUpdate ? `<button class="btn" id="libraryUpdate">Update ${esc(p.title)}</button>` : bigger.length ? `<button class="btn" id="upgrade">${ico('up')}Get ${esc(bigger[0].title)}</button>` : later ? `<span class="s-badge later">${esc(later.title)} comes later</span>` : '<span class="s-badge here">The largest</span>'}</div>
-        ${m && m.available !== false ? `<div class="s-row">${ico('ai', 's-ri')}<span><b>Local AI</b><small>${c.model ? 'On this computer · ' + size(m.size) : aiFits() ? 'Not installed · about ' + size(m.size) : esc((S.hardware.ai && S.hardware.ai.why) || 'Not for this computer.')}</small></span>
-          ${c.model ? (!CAN.removeAi ? '' : confirmRemove ? `<span class="s-confirm"><button class="btn danger" id="rmYes">Remove</button><button class="btn plain" id="rmNo">Keep</button></span>` : '<button class="btn plain" id="rmAi">Remove</button>') : aiFits() ? `<button class="btn" id="addAi">Add</button>` : ''}</div>` : ''}
+        <div class="s-row">${ico('book', 's-ri')}<span><b>${p || c.pack ? th('setup.item.library', { name: p ? packTitle(p) : c.pack }) : th('setup.manage.library')}</b><small>${libraryUpdate ? th('setup.manage.update_available') + ' · ' : p ? size(p.installed_bytes) + ' · ' : ''}${esc(home(c.folder))}</small></span>
+          ${libraryUpdate ? `<button class="btn" id="libraryUpdate">${th('setup.manage.update', { name: packTitle(p) })}</button>` : bigger.length ? `<button class="btn" id="upgrade">${ico('up')}${th('setup.manage.get', { name: packTitle(bigger[0]) })}</button>` : later ? `<span class="s-badge later">${th('setup.manage.comes_later', { name: packTitle(later) })}</span>` : `<span class="s-badge here">${th('setup.manage.largest')}</span>`}</div>
+        ${m && m.available !== false ? `<div class="s-row">${ico('ai', 's-ri')}<span><b>${th('setup.ai.title')}</b><small>${c.model ? th('setup.manage.ai_here', { size: size(m.size) }) : aiFits() ? th('setup.manage.ai_absent', { size: size(m.size) }) : esc(aiWhy())}</small></span>
+          ${c.model ? (!CAN.removeAi ? '' : confirmRemove ? `<span class="s-confirm"><button class="btn danger" id="rmYes">${th('setup.manage.remove')}</button><button class="btn plain" id="rmNo">${th('setup.manage.keep')}</button></span>` : `<button class="btn plain" id="rmAi">${th('setup.manage.remove')}</button>`) : aiFits() ? `<button class="btn" id="addAi">${th('setup.manage.add')}</button>` : ''}</div>` : ''}
         ${maps().length ? (() => { const mNow = c.map && c.map !== 'base' ? c.map : packMap(c.pack);
-          return `<div class="s-row">${ico('map', 's-ri')}<span><b>${mNow ? 'Detailed map: ' + esc(mapName(mNow)) : 'Detailed map'}</b><small>${mNow ? (mNow === 'europe' ? 'Local streets and terrain everywhere' : 'Local streets, buildings and terrain') : 'None yet. Add one for your region.'}</small></span>
-          <button class="btn plain" id="mapCh">${(c.address_indexes || []).length ? 'Choose region' : 'Add address search'}</button></div>` })() : ''}
+          return `<div class="s-row">${ico('map', 's-ri')}<span><b>${mNow ? th('setup.manage.map_named', { name: mapName(mNow) }) : th('setup.manage.map')}</b><small>${mNow ? (mNow === 'europe' ? th('setup.manage.map_everywhere') : th('setup.manage.map_local')) : th('setup.manage.map_none')}</small></span>
+          <button class="btn plain" id="mapCh">${(c.address_indexes || []).length ? th('setup.manage.choose_region') : th('setup.manage.add_addresses')}</button></div>` })() : ''}
       </div>
-      ${old ? `<div class="s-row s-old">${ico('folder', 's-ri')}<span><b>The old library is still here</b><small>${esc(home(old.path))}${old.bytes ? ' · ' + size(old.bytes) : ''}</small></span>${confirmOld ? `<span class="s-confirm"><span>Delete it for good?</span><button class="btn danger" id="oldYes">Delete</button><button class="btn plain" id="oldNo">Keep</button></span>` : `<button class="btn plain" id="rmOld">${ico('trash')}Delete it</button>`}</div>` : ''}
+      ${old ? `<div class="s-row s-old">${ico('folder', 's-ri')}<span><b>${th('setup.manage.old')}</b><small>${esc(home(old.path))}${old.bytes ? ' · ' + size(old.bytes) : ''}</small></span>${confirmOld ? `<span class="s-confirm"><span>${th('setup.manage.old_confirm')}</span><button class="btn danger" id="oldYes">${th('setup.manage.delete')}</button><button class="btn plain" id="oldNo">${th('setup.manage.keep')}</button></span>` : `<button class="btn plain" id="rmOld">${ico('trash')}${th('setup.manage.delete_it')}</button>`}</div>` : ''}
       ${computer()}
-      ${CAN.repair ? `<div class="s-go left"><button class="btn plain" id="repair">${ico('repair')}Check and repair</button></div>` : ''}
+      ${CAN.repair ? `<div class="s-go left"><button class="btn plain" id="repair">${ico('repair')}${th('setup.manage.repair')}</button></div>` : ''}
       <p class="s-note${noteOk ? ' ok' : ''}" id="haveNote"${note ? '' : ' hidden'}>${esc(note)}</p>`;
     if ($('#libraryUpdate')) $('#libraryUpdate').onclick = () => { choice.pack = c.pack; choice.ai = !!c.model; go('choose') };
     if ($('#upgrade')) $('#upgrade').onclick = () => { choice.pack = bigger[0].id; choice.ai = !!c.model; go('choose') };
@@ -393,53 +428,54 @@
     if ($('#addAi')) $('#addAi').onclick = () => { choice.pack = c.pack; choice.ai = true; go('choose') };
     if ($('#rmAi')) $('#rmAi').onclick = () => { confirmRemove = true; manageView(); $('#rmNo').focus() };
     if ($('#rmNo')) $('#rmNo').onclick = () => { confirmRemove = false; manageView(); $('#rmAi').focus() };
-    if ($('#rmYes')) $('#rmYes').onclick = () => act('remove-ai', 'The local AI was removed.');   // the engine stops the AI first
+    if ($('#rmYes')) $('#rmYes').onclick = () => act('remove-ai', t('setup.manage.ai_removed'));   // the engine stops the AI first
     if ($('#rmOld')) $('#rmOld').onclick = () => { confirmOld = true; manageView(); $('#oldNo').focus() };
     if ($('#oldNo')) $('#oldNo').onclick = () => { confirmOld = false; manageView(); $('#rmOld').focus() };
-    if ($('#oldYes')) $('#oldYes').onclick = () => act('delete-old', 'The old library is being deleted.', { path: old.path });
+    if ($('#oldYes')) $('#oldYes').onclick = () => act('delete-old', t('setup.manage.old_deleting'), { path: old.path });
     if ($('#repair')) $('#repair').onclick = async () => {
       const r = await call('start', { repair: true, ai: !!c.model }).catch(e => ({ error: e.message }));
-      if (!r || r.error) { note = (r && r.error) || 'Repair could not start.'; manageView(); return }
+      if (!r || r.error) { note = (r && r.error && said('repair', r)) || t('setup.err.repair_could_not_start'); manageView(); return }
       repair = { fixed: false }; S.job = r; go('job'); poll();
     };
   }
   async function act(path, done, body) {
-    const r = await call(path, body || {}).catch(e => ({ error: e.status === 404 ? 'This Lastbook cannot do that yet.' : e.message }));
+    const r = await call(path, body || {}).catch(e => ({ error: e.status === 404 ? t('setup.err.cannot_yet') : e.message }));
     confirmRemove = confirmOld = false;
     noteOk = !(r && r.error);
-    if (r && r.error) note = r.error;
+    if (r && r.error) note = said(path, r);
     else { note = done; S = await call('state').catch(() => S) }
     manageView();
     const n = $('#haveNote'); if (n) { n.tabIndex = -1; n.focus() }
   }
 
   /* ---- job */
-  const STEPS = { pack: [['downloading', 'Download'], ['verifying', 'Check'], ['unpacking', 'Unpack'], ['activating', 'Finish']],
-                  model: [['downloading', 'Download'], ['verifying', 'Check'], ['activating', 'Finish']] };
-  STEPS.map = [['downloading', 'Download'], ['unpacking', 'Unpack']];   // the engine's map item: waiting, downloading, unpacking, done
+  const STEPS = { pack: [['downloading', 'setup.step.download'], ['verifying', 'setup.step.check'], ['unpacking', 'setup.step.unpack'], ['activating', 'setup.step.finish']],
+                  model: [['downloading', 'setup.step.download'], ['verifying', 'setup.step.check'], ['activating', 'setup.step.finish']] };
+  STEPS.map = [['downloading', 'setup.step.download'], ['unpacking', 'setup.step.unpack']];   // the engine's map item: waiting, downloading, unpacking, done
   STEPS.addresses = STEPS.map;
-  const WORD = { waiting: 'Waiting', downloading: 'Downloading', paused: 'Paused', verifying: 'Checking', unpacking: 'Unpacking', activating: 'Finishing', done: 'Done', failed: 'Stopped' };
+  const WORD = { waiting: 'setup.state.waiting', downloading: 'setup.state.downloading', paused: 'setup.state.paused', verifying: 'setup.state.verifying', unpacking: 'setup.state.unpacking', activating: 'setup.state.activating', done: 'setup.state.done', failed: 'setup.state.failed' };
   const ACTIVE = new Set(['waiting', 'downloading', 'verifying', 'unpacking', 'activating']);
   let shapeKey = '', lastAct = null;   // lastAct: the button just pressed, so focus lands on what replaced it
 
   function errorBox(j) {
     const e = j.error, code = errCode(e) || j.code, c = cur();
-    const safe = c ? 'Your library is untouched and still works.' : 'Nothing else on this computer was changed.';
+    const safe = c ? th('setup.job.safe_library') : th('setup.job.safe_nothing');
     const d = diskFor(j.folder || folder);
     const T = {
       found_mismatch: (() => {   // a file of the person's own that did not match: nothing was downloaded, and their file is left alone
-        const f = String((e && e.file) || ''), name = f.split(/[\\/]/).pop() || 'file', at = f.split(/[\\/]/).slice(-2, -1)[0];
-        return [`The ${esc(name)}${at ? ' in ' + esc(at) : ''} doesn’t match the published file, so it was not used.`, 'It was left as it is. Download it instead?', 'download'];
+        const f = String((e && e.file) || ''), name = f.split(/[\\/]/).pop(), at = f.split(/[\\/]/).slice(-2, -1)[0];
+        return [name ? th(at ? 'setup.job.mismatch_in' : 'setup.job.mismatch', { name, folder: at }) : th('setup.job.mismatch_plain'), th('setup.job.mismatch_next'), 'download'];
       })(),
-      no_space: [`Not enough room on ${esc(diskName(d))}${e && e.need_bytes ? `: this needs ${size(e.need_bytes)}, and ${size(e.free_bytes)} is free` : ''}.`, 'Free some space, then retry, or go back and choose less.', 'retry'],
-      network: ['The internet connection dropped.', 'What is downloaded is kept. Retry when you are online again.', 'retry'],
-      checksum: ['The download came out damaged twice, so it was not used.', 'Retry to download it once more.', 'retry'],
-      unpack: ['Unpacking did not finish.', 'Check there is room on the disk, then retry.', 'retry'],
-      activate: ['The new library is ready but could not be switched in.', 'Retry, or close Lastbook and open it again.', 'retry'],
-      cancelled: ['The download was cancelled.', 'Start again when you are ready.', 'back'],
-    }[code] || [esc(errText(e) || 'Something went wrong.'), 'Retry, or go back and choose again.', 'retry'];
+      no_space: [e && e.need_bytes ? th('setup.job.no_space_need', { where: diskWhere(d), need: size(e.need_bytes), free: size(e.free_bytes) }) : th('setup.job.no_space', { where: diskWhere(d) }), th('setup.job.no_space_next'), 'retry'],
+      network: [th('setup.job.network'), th('setup.job.network_next'), 'retry'],
+      checksum: [th('setup.job.checksum'), th('setup.job.checksum_next'), 'retry'],
+      unpack: [th('setup.job.unpack'), th('setup.job.unpack_next'), 'retry'],
+      activate: [th('setup.job.activate'), th('setup.job.activate_next'), 'retry'],
+      folder: [th('setup.job.folder'), th('setup.job.folder_next'), 'retry'],
+      cancelled: [th('setup.job.cancelled'), th('setup.job.cancelled_next'), 'back'],
+    }[code] || [esc(errText(e) || t('setup.job.failed')), th('setup.job.failed_next'), 'retry'];
     return `<div class="s-err" role="alert">${ico('warn')}<div><b>${T[0]}</b><p>${T[1]}${code === 'found_mismatch' && !c ? '' : ' ' + safe}</p>
-      <p class="s-acts">${T[2] === 'retry' ? `<button class="btn" data-act="retry">${ico('retry')}Retry</button>` : T[2] === 'download' ? `<button class="btn" data-act="retry">${ico('down')}Download it</button>` : ''}<button class="btn ${T[2] === 'back' ? '' : 'plain'}" data-act="back">Choose again</button></p></div></div>`;
+      <p class="s-acts">${T[2] === 'retry' ? `<button class="btn" data-act="retry">${ico('retry')}${th('setup.job.retry')}</button>` : T[2] === 'download' ? `<button class="btn" data-act="retry">${ico('down')}${th('setup.job.download_it')}</button>` : ''}<button class="btn ${T[2] === 'back' ? '' : 'plain'}" data-act="back">${th('setup.job.choose_again')}</button></p></div></div>`;
   }
   function itemHTML(it, j) {
     const FAILED_AT = { checksum: 'verifying', found_mismatch: 'verifying', unpack: 'unpacking', activate: 'activating' };
@@ -449,17 +485,20 @@
     const at = it.state === 'done' ? steps.length : (it.state === 'waiting' || it.state === 'paused') && !it.bytes_done && !noDownload(it) ? -1 : Math.max(0, steps.findIndex(s => s[0] === st));
     const busy = ['verifying', 'activating'].includes(it.state) || (it.state === 'unpacking' && !it.bytes_total);
     return `<div class="s-item${it.state === 'failed' ? ' bad' : ''}${it.state === 'done' ? ' ok' : ''}" data-item="${esc(it.id)}" data-kind="${esc(it.kind)}">
-      <div class="s-item-h">${ico(it.kind === 'model' ? 'ai' : it.kind === 'map' ? 'map' : 'book', 's-ri')}<b>${esc(itemTitle(it))}</b><span class="s-state" data-f="word">${it.state === 'done' ? ico('ok') : ''}${Object.hasOwn(WORD, it.state) ? WORD[it.state] : ''}</span></div>
-      <div class="s-bar new${busy && j.state !== 'paused' ? ' busy' : ''}" role="progressbar" aria-label="${esc(it.title)}" aria-valuemin="0" aria-valuemax="100" data-f="bar"><i></i></div>
+      <div class="s-item-h">${ico(it.kind === 'model' ? 'ai' : it.kind === 'map' ? 'map' : 'book', 's-ri')}<b>${esc(itemTitle(it))}</b><span class="s-state" data-f="word">${it.state === 'done' ? ico('ok') : ''}${Object.hasOwn(WORD, it.state) ? th(WORD[it.state]) : ''}</span></div>
+      <div class="s-bar new${busy && j.state !== 'paused' ? ' busy' : ''}" role="progressbar" aria-label="${esc(itemTitle(it))}" aria-valuemin="0" aria-valuemax="100" data-f="bar"><i></i></div>
       <p class="s-line" data-f="line"></p>
-      <ol class="s-steps" aria-label="Steps">${steps.map((s, i) => `<li class="${i < at ? 'done' : i === at && it.state !== 'failed' ? 'now' : i === at ? 'stop' : ''}">${s[1]}</li>`).join('')}</ol>
+      <ol class="s-steps" aria-label="${th('setup.job.steps')}">${steps.map((s, i) => `<li class="${i < at ? 'done' : i === at && it.state !== 'failed' ? 'now' : i === at ? 'stop' : ''}">${th(s[1])}</li>`).join('')}</ol>
     </div>`;
   }
-  const itemTitle = it => it.kind === 'model' ? 'Local AI' : it.kind === 'map' ? `${mapById(it.id) ? mapName(it.id) : it.title || it.id} map` : it.kind === 'addresses' ? it.title : it.id === 'library' || it.id === 'repair' || /library/i.test(it.title) ? it.title : it.title + ' library';
+  // an item's name: the local AI, a region's map or address search, a library (by the pack's name; the engine's title for a library of the person's own)
+  const itemTitle = it => it.kind === 'model' ? t('setup.ai.title') : it.kind === 'map' ? t('setup.item.map', { name: mapById(it.id) ? mapName(it.id) : it.title || it.id })
+    : it.kind === 'addresses' ? (mapById(it.id) ? t('setup.item.addresses', { name: mapName(it.id) }) : it.title) : it.id === 'library' || it.id === 'repair' || /library/i.test(it.title) ? it.title
+    : t('setup.item.library', { name: packTitle(packById(it.id) || { id: it.id, title: it.title }) });
   /* an item that needs nothing from the internet: the person's own file, or one stopped after its download was complete.
      source and paused_from come from the engine (docs/SETUP-API.md); without them, a complete download still counts */
   const noDownload = it => it.source === 'found' || (!!it.paused_from && it.paused_from !== 'downloading') || (it.bytes_total > 0 && it.bytes_done >= it.bytes_total);
-  const STOPPED = { verifying: 'Checking stopped', unpacking: 'Unpacking stopped', activating: 'Finishing stopped' };
+  const STOPPED = { verifying: 'setup.line.checking_stopped', unpacking: 'setup.line.unpacking_stopped', activating: 'setup.line.finishing_stopped' };
   const behind = it => { const items = (S.job && S.job.items) || [], i = items.findIndex(x => x.id === it.id && x.kind === it.kind); return items.slice(0, i).some(x => x.state !== 'done' && !noDownload(x)) };
   function fillItem(el, it) {
     const pct = it.bytes_total ? Math.min(100, it.bytes_done / it.bytes_total * 100) : it.state === 'done' ? 100 : 0;
@@ -467,43 +506,48 @@
     const showPct = !bar.classList.contains('busy');
     bar.firstChild.style.width = (showPct ? pct : 100) + '%';
     if (showPct) bar.setAttribute('aria-valuenow', Math.round(pct)); else bar.removeAttribute('aria-valuenow');
-    let t = '';
-    if (it.state === 'done') t = it.bytes_total ? size(it.bytes_total) : '';
-    else if (it.state === 'downloading') t = [`${size(it.bytes_done)} of ${size(it.bytes_total)}`, rate(it.rate_bps), eta(it.eta_s)].filter(Boolean).join(' · ');
-    else if (it.state === 'paused' && noDownload(it)) t = `${STOPPED[it.paused_from] || 'Stopped'}${it.paused_from === 'unpacking' && it.bytes_done && it.bytes_total ? ` at ${size(it.bytes_done)} of ${size(it.bytes_total)}` : ''}. Nothing to download.`;
-    else if ((it.state === 'waiting' || it.state === 'paused') && !it.bytes_done) t = it.bytes_total ? `${size(it.bytes_total)} to download${behind(it) ? ', after the one above' : ''}` : '';
- else if (it.state === 'paused' || it.state === 'waiting' || it.state === 'failed') t = it.bytes_total && it.bytes_done ? `${size(it.bytes_done)} of ${size(it.bytes_total)}` : '';
-    else if (it.state === 'verifying') t = 'Making sure every byte is right';
-    else if (it.state === 'unpacking') t = it.bytes_total ? `Unpacking: ${size(it.bytes_done)} of ${size(it.bytes_total)}${it.eta_s != null ? ' · ' + eta(it.eta_s) : ''}` : 'Opening the files into the library folder';
-    else if (it.state === 'activating') t = it.kind === 'map' ? 'Switching to the new map' : 'Switching to the new library';
-    line.textContent = t;
+    const of = () => t('setup.line.of', { done: size(it.bytes_done), total: size(it.bytes_total) });
+    let msg = '';
+    if (it.state === 'done') msg = it.bytes_total ? size(it.bytes_total) : '';
+    else if (it.state === 'downloading') msg = [of(), rate(it.rate_bps), eta(it.eta_s)].filter(Boolean).join(' · ');
+    else if (it.state === 'paused' && noDownload(it)) {
+      const what = t(STOPPED[it.paused_from] || 'setup.line.stopped');
+      msg = it.paused_from === 'unpacking' && it.bytes_done && it.bytes_total ? t('setup.line.stopped_at', { what, done: size(it.bytes_done), total: size(it.bytes_total) }) : t('setup.line.stopped_nothing', { what });
+    }
+    else if ((it.state === 'waiting' || it.state === 'paused') && !it.bytes_done) msg = it.bytes_total ? t(behind(it) ? 'setup.line.to_download_after' : 'setup.line.to_download', { size: size(it.bytes_total) }) : '';
+    else if (it.state === 'paused' || it.state === 'waiting' || it.state === 'failed') msg = it.bytes_total && it.bytes_done ? of() : '';
+    else if (it.state === 'verifying') msg = t('setup.line.verifying');
+    else if (it.state === 'unpacking') msg = it.bytes_total ? t('setup.line.unpacking', { done: size(it.bytes_done), total: size(it.bytes_total) }) + (it.eta_s != null ? ' · ' + eta(it.eta_s) : '') : t('setup.line.unpacking_plain');
+    else if (it.state === 'activating') msg = it.kind === 'map' ? t('setup.line.switching_map') : t('setup.line.switching_library');
+    line.textContent = msg;
   }
   function jobView(j) {
     if (!j) { go(cur() ? 'manage' : 'choose'); return }
     if (j.state === 'done') { go('done'); return }
     const key = j.state + '|' + errCode(j.error) + '|' + confirmCancel + '|' + j.items.map(i => i.kind + ':' + i.id + ':' + i.state).join(',');
-    const head = { paused: 'Paused', failed: errCode(j.error) === 'cancelled' ? 'Cancelled' : 'Stopped' }[j.state] || (repair && !repair.fixed ? 'Checking the library' : repair ? 'Repairing' : 'Installing');
+    const head = t({ paused: 'setup.job.paused', failed: errCode(j.error) === 'cancelled' ? 'setup.job.cancelled_head' : 'setup.job.stopped' }[j.state] || (repair && !repair.fixed ? 'setup.job.checking' : repair ? 'setup.job.repairing' : 'setup.job.installing'));
     if (key !== shapeKey) {
       const had = lastAct || (document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.act : null);
       lastAct = null;
       const first = !shapeKey;
       shapeKey = key;
       const quiet = j.state === 'paused' && j.items.filter(i => i.state === 'paused').every(noDownload);
-      const lead = quiet ? 'Stopped when Lastbook closed. Resume to finish; nothing needs downloading.'
-        : j.state === 'paused' ? 'What is downloaded is kept. Resume when you are ready, even after closing Lastbook.'
-        : j.state === 'failed' ? '' : 'You can keep using this computer. Closing Lastbook pauses it.';
-      main.innerHTML = `<h1>${head}</h1>${lead ? `<p class="lead">${lead}</p>` : ''}
+      const lead = quiet ? th('setup.job.lead_quiet')
+        : j.state === 'paused' ? th('setup.job.lead_paused')
+        : j.state === 'failed' ? '' : th('setup.job.lead_running');
+      main.innerHTML = `<h1>${esc(head)}</h1>${lead ? `<p class="lead">${lead}</p>` : ''}
         ${j.state === 'failed' ? errorBox(j) : ''}
         <div class="s-items">${j.items.map(it => itemHTML(it, j)).join('')}</div>
         ${j.state === 'failed' ? '' : `<div class="s-go left">${confirmCancel
-          ? `<span class="s-confirm"><span>Stop and throw away the download?</span><button class="btn danger" data-act="cancel-yes">Stop</button><button class="btn plain" data-act="cancel-no">Keep going</button></span>`
-          : `${j.state === 'paused' ? `<button class="btn" data-act="resume">${ico('play')}Resume</button>` : j.state === 'downloading' || j.state === 'waiting' ? `<button class="btn plain" data-act="pause">${ico('pause')}Pause</button>` : ''}
-             <button class="btn plain" data-act="cancel">${ico('x')}Cancel</button>`}</div>`}`;
+          ? `<span class="s-confirm"><span>${th('setup.job.cancel_confirm')}</span><button class="btn danger" data-act="cancel-yes">${th('setup.job.stop')}</button><button class="btn plain" data-act="cancel-no">${th('setup.job.keep_going')}</button></span>`
+          : `${j.state === 'paused' ? `<button class="btn" data-act="resume">${ico('play')}${th('setup.job.resume')}</button>` : j.state === 'downloading' || j.state === 'waiting' ? `<button class="btn plain" data-act="pause">${ico('pause')}${th('setup.job.pause')}</button>` : ''}
+             <button class="btn plain" data-act="cancel">${ico('x')}${th('setup.job.cancel')}</button>`}</div>`}`;
       main.querySelectorAll('[data-act]').forEach(b => b.onclick = () => jobAct(b.dataset.act, b));
       const again = had && main.querySelector(`[data-act="${had}"]`) || (had && main.querySelector('[data-act]'));
       if (again) again.focus();
       else if (first) { const h = main.querySelector('h1'); h.tabIndex = -1; h.focus({ preventScroll: true }) }
-      const s = j.state === 'failed' ? '' : head + (j.items.find(i => ACTIVE.has(i.state)) ? ': ' + WORD[j.items.find(i => ACTIVE.has(i.state)).state] + ' ' + j.items.find(i => ACTIVE.has(i.state)).title : '');
+      const now = j.items.find(i => ACTIVE.has(i.state));
+      const s = j.state === 'failed' ? '' : now ? t('setup.job.live', { head, state: t(WORD[now.state]), item: itemTitle(now) }) : head;
       if (s && live.textContent !== s) live.textContent = s;
     }
     const fresh = main.querySelectorAll('.s-bar.new');
@@ -517,7 +561,7 @@
     if (a === 'cancel-yes') { confirmCancel = false; a = 'cancel' }
     b.disabled = true; lastAct = a;
     try { const j = await call(a, {}); if (j && j.items) S.job = j } catch { }
-    if (a === 'cancel') { S = await call('state').catch(() => S); S.job = null; go(cur() ? 'manage' : 'choose'); live.textContent = 'The download was cancelled.'; return }
+    if (a === 'cancel') { S = await call('state').catch(() => S); S.job = null; go(cur() ? 'manage' : 'choose'); live.textContent = t('setup.job.cancelled'); return }
     jobView(S.job);
     poll();
   }
@@ -537,16 +581,16 @@
   /* ---- done */
   function doneView() {
     const j = S.job || { items: [] }, fixed = repair && repair.fixed, checked = repair && !fixed;
-    const got = j.items.filter(i => i.id !== 'repair' && i.id !== 'library').map(i => esc(itemTitle(i))).join(', ').replace(/, ([^,]*)$/, ' and $1');
-    main.innerHTML = `<div class="s-done">${ico('ok', 's-big')}<h1>${checked ? 'All good' : fixed ? 'Repaired' : 'Ready'}</h1>
-      <p class="lead">${checked ? 'The library was checked and is complete.' : fixed ? 'A damaged part was downloaded again. The damaged copy is kept aside; you can delete it in Library and local AI.' : got ? `Installed: ${got}.` : 'The library is installed.'}</p>
-      <button class="btn big" id="open">Open the library</button><p class="s-note" id="openNote" hidden></p></div>`;
-    live.textContent = checked ? 'The library was checked.' : 'Installed. Ready to open.';
+    const got = j.items.filter(i => i.id !== 'repair' && i.id !== 'library').map(itemTitle);
+    main.innerHTML = `<div class="s-done">${ico('ok', 's-big')}<h1>${checked ? th('setup.done.all_good') : fixed ? th('setup.done.repaired') : th('setup.done.ready')}</h1>
+      <p class="lead">${checked ? th('setup.done.checked') : fixed ? th('setup.done.fixed') : got.length ? th('setup.done.installed', { list: I18N.list(got) }) : th('setup.done.installed_plain')}</p>
+      <button class="btn big" id="open">${th('setup.done.open')}</button><p class="s-note" id="openNote" hidden></p></div>`;
+    live.textContent = checked ? t('setup.done.live_checked') : t('setup.done.live_ready');
     $('#open').onclick = async () => {
-      const b = $('#open'); b.disabled = true; b.textContent = 'Opening your library…';
+      const b = $('#open'); b.disabled = true; b.textContent = t('setup.done.opening');
       const r = await call('finish', {}).catch(e => ({ error: e.message }));   // on {ok} the app relaunches itself into the library
-      if (!r || r.error) { b.disabled = false; b.textContent = 'Open the library'; const n = $('#openNote'); n.hidden = false; n.textContent = (r && r.error) || 'The library did not open. Try again.' }
-      else live.textContent = 'Opening your library…';
+      if (!r || r.error) { b.disabled = false; b.textContent = t('setup.done.open'); const n = $('#openNote'); n.hidden = false; n.textContent = (r && r.error && said('finish', r)) || t('setup.done.open_failed') }
+      else live.textContent = t('setup.done.opening');
     };
   }
 
@@ -558,6 +602,9 @@
   });
   /* the window comes back to the front: the job may have moved on, or a restart paused it */
   addEventListener('focus', () => { if (view === 'job') call('job').then(j => { if (j) { S.job = j; jobView(j); poll() } }).catch(() => { }) });
+  /* the language menu in the header; a new language redraws the view in place, keeping what was chosen */
+  I18N.picker($('#langSel'), $('#langName'));
+  addEventListener('lastbook:lang', () => { if (S) render(false) });
 
-  load().then(() => { if (view === 'job') poll() });
+  I18N.ready.then(load).then(() => { if (view === 'job') poll() });
 })();
