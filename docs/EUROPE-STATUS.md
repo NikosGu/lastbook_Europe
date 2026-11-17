@@ -28,6 +28,17 @@ None of these blocks the work: each has a placeholder.
 | Signing certificates (Apple Developer ID, Windows Authenticode) | builds signed ad hoc on a Mac, unsigned on Windows | `packaging/rust/` |
 | Native-speaker review of the Italian, German, French, Spanish and Polish text | translations marked for review | `web/locales/`, `content/` |
 | Publishing the first release | each push makes a **draft** release | GitHub's Releases page |
+| Whether the starter library may be published: several documents state no licence (BBK and WHO reserve their rights, BBK allowing quotations; IFRC allows non-commercial copies) | built here, not published | `content/library/starter.json` (`about`, and each document's terms) |
+
+## Decisions taken along the way
+
+| When | Decision | Why |
+|---|---|---|
+| 17 Nov 2026 | The app opens on "What do you need?" (the search and the guides), with Home first in the sidebar; videos keep their page | the original opened on its videos; the starter library has none |
+| 17 Nov 2026 | Setup suggests the smallest available library, whatever its name, and leaves 5% of the disk free in all (between 1 and 5 GB) | it looked for a pack named "small", and two margins added together turned down a 43 MB library on a disk with 7 GB free |
+| 17 Nov 2026 | Windows and Linux run the local AI on the processor until Vulkan builds on GitHub's machines; Vulkan is a build option tried in a CI job of its own | the first Vulkan builds failed there (Cargo's newer folder layout on Linux, Visual Studio's generator on Windows) |
+| 17 Nov 2026 | No Liechtenstein document in the starter library yet | llv.li refuses automated downloads, and that refusal is respected |
+| 17 Nov 2026 | First aid in the starter library comes from the IFRC guidelines, in English | no Italian first-aid document from a public body was found |
 
 ## Done and checked
 
@@ -50,22 +61,28 @@ None of these blocks the work: each has a placeholder.
 | Pictures on all three systems | `--snapshot` with WKWebView, WebView2 and WebKitGTK; CI photographs the app on each | the pictures from GitHub's Windows and Ubuntu machines, looked at |
 | Six languages | the interface in English, Italian, German, French, Spanish and Polish (990 keys each, the five translations marked for review), chosen in setup and the app, kept, changed in place; metric only; Europe on the map; setup's errors translated by code | `tools/check_locales.mjs`; pictures in Italian, German, Spanish and Polish |
 | Storage anywhere | a library and its models on this computer, an external disk, a USB stick or a NAS (SMB, NFS, mapped drives, UNC paths); disk kinds shown in setup; SQLite read immutable; a library out of reach said plainly at start and while running; models beside the library or on this computer | tests on each system, and a library read through a network path on Windows in CI |
+| The map's data tools | `lastbook-tools build-map`, `pack-map`, `pack-addresses`, `build-terrain`: the detailed map from Geofabrik's GeoPackage, addresses and buildings from OpenStreetMap's PBF, places and water, elevation from Copernicus DEM GLO-30, the zoomed-out base from Natural Earth ([MAPS.md](MAPS.md)); Liechtenstein built in 3 seconds: 32,191 map features, 441 help points, 12,499 addresses, 12 MB to download | 23 tools tests; packs checked by setup's own zip check; the map, an address and a postcode photographed |
+| The library's tools | `lastbook-tools build-library` and `build-pack`: each document checked against its size and SHA-256, page texts through PDFium (words split at a line end joined again), the search index, a Sources page; the starter library: 14 public documents in Italian, German and English (BWL, Protezione Civile, BBK, Zivilschutz, IFRC, WHO), 707 pages, 39 MB to download; PDFium in each installer, pinned by SHA-256 | tests with and without PDFium; the release photographs each packaged app drawing a PDF page |
+| The path in Italian with Liechtenstein | setup finds the three packs on this computer, suggests the starter library, Liechtenstein chosen, installed and opened; the map of Vaduz with relief, help points and the nearest help in metres; "Städtle 11, Vaduz" and "9490" found | photographed in the app on this Mac |
 
 ## Being done now
 
-- The data tools in Rust (`crates/tools`) for the map: the detailed map, places, water, buildings, terrain and the
-  address index of a region, and the region map and address index as setup installs them; first Liechtenstein.
-- The library's tools: a library and its search index from a list of documents, the pack setup installs; a small
-  starter library in Italian, German and English.
+- The guides rewritten for Europe on the starter library, each reading a real page of it, in the interface's language
+  (English and Italian complete first), with what the library does not cover in `content/gaps.json`.
+- The other test regions: Malta, Luxembourg, Bremen.
 - The engine's remaining English sentences become codes the interface translates; setup's disk kinds, the "library
   cannot be reached" card and banner, and the choice of where an AI model goes, in the six languages.
 
 ## Left, in order
 
-1. The whole path in Italian with Liechtenstein: setup, map, addresses, chat, photographed in the app.
-2. The other test regions (Malta, Luxembourg, Bremen), then all regions built by the tools on GitHub's machines.
-3. The release checks: the pinned roots cover the download hosts, nothing ships that must not.
-4. Measure "from the disk" with Qwen3.6-35B-A3B on a 16 GB Mac; if it is too slow, a cache of experts of its own, kept by
+1. The chat in the Liechtenstein path, with Qwen3.6-35B-A3B from the disk, when the computer's memory is free (it is
+   shared with other work now, and a model read from the disk needs the room for the pages it reads).
+2. All regions built by the tools on GitHub's machines. A region's box reaches into its neighbours, whose country
+   extracts are separate: the strip around a region stays empty until the build takes the neighbours' extracts too.
+3. The map page's date of the data and its credits from the installed map, not fixed words.
+4. The release checks: the pinned roots cover the download hosts, nothing ships that must not.
+5. Vulkan for graphics cards on Windows and Linux, once it builds on GitHub's machines.
+6. Measure "from the disk" with Qwen3.6-35B-A3B on a 16 GB Mac; if it is too slow, a cache of experts of its own, kept by
    use, as BigMoeOnEdge does.
 
 ## Test models
