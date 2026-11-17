@@ -799,7 +799,9 @@ async function reader(id, page, from, view) {
     try {
       const got = await api(`/api/page/${encodeURIComponent(id)}/${isPdf ? page : 1}`);
       const txt = (got.text || '').replace(/[ \t]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
-      body.innerHTML = `${isPdf || isWeb ? `<div class="notice small">${th('app.reader.extracted')}</div>` : ''}<div class="pagetext">${esc(txt) || `<span class="muted">${th('app.reader.no_text')}</span>`}</div>`;
+      // a picture's description, which the library's tools take from an accessible PDF, marked "[Alt text: …]" in the data
+      const shown = esc(txt).replace(/^\[Alt text: ([\s\S]*?)\]$/gm, (_, s) => `<span class="alttext"><b>${th('app.reader.alt_text')}</b> ${s}</span>`);
+      body.innerHTML = `${isPdf || isWeb ? `<div class="notice small">${th('app.reader.extracted')}</div>` : ''}<div class="pagetext">${shown || `<span class="muted">${th('app.reader.no_text')}</span>`}</div>`;
     } catch (e) { body.innerHTML = errorBox(e, t('app.reader.text_failed')) }
   }
   main.onkeydown = e => { if (!isPdf || /INPUT/.test(e.target.tagName) || e.altKey || e.metaKey || e.ctrlKey) return; if (e.key === 'ArrowRight' && page < total) location.hash = go(page + 1); if (e.key === 'ArrowLeft' && page > 1) location.hash = go(page - 1) };

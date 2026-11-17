@@ -846,6 +846,7 @@
   "app.reader.pdf_note": "Wenn das PDF hier nicht erscheint (manche Handys können das nicht), nutzen Sie die Ansicht „Seite“ oder öffnen Sie die Originaldatei.",
   "app.reader.loading_text": "Text wird geladen…",
   "app.reader.extracted": "Text automatisch aus dem Original übernommen — Tabellen, Abbildungen und Warnkästen können fehlen oder durcheinander sein. Prüfen Sie alles Wichtige in der Ansicht „Seite“.",
+  "app.reader.alt_text": "Bildbeschreibung:",
   "app.reader.no_text": "Kein Text auf dieser Seite (vielleicht ein Bild oder leer).",
   "app.reader.text_failed": "Der Text ließ sich nicht laden.",
   "app.wiki.note": "Von Freiwilligen geschrieben; prüfen Sie sicherheitskritische Schritte anhand eines Handbuchs",

@@ -811,6 +811,7 @@
   "app.reader.pdf_note": "If the PDF doesn’t show here (some phones can’t), use Page view or open the original file.",
   "app.reader.loading_text": "Loading text…",
   "app.reader.extracted": "Text pulled out of the original automatically — tables, diagrams and warning boxes can be lost or out of order. Check the Page view for anything important.",
+  "app.reader.alt_text": "Picture description:",
   "app.reader.no_text": "No text on this page (it may be a picture or blank).",
   "app.reader.text_failed": "Couldn’t load the text.",
   "app.wiki.note": "Community-written; check safety-critical steps against a manual",

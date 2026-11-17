@@ -514,6 +514,8 @@ details.more>.body{padding:0 12px 14px}
 .pageimg{display:block;width:100%;background:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.08),0 6px 24px rgba(0,0,0,.08);min-height:320px}
 /* a page is a printed sheet: in the dark it stays light, a little warm and dimmed, never inverted */
 @media (prefers-color-scheme:dark){.pageimg{box-shadow:0 6px 30px rgba(0,0,0,.5)}}
+.pagetext .alttext{display:block;margin:.3em 0;padding-left:.7em;border-left:3px solid var(--line2);color:var(--ink2);font-style:italic}
+.pagetext .alttext b{font-style:normal;font-family:var(--font);font-size:.8em}
 .pagetext{max-width:66ch;margin:14px auto 0;background:var(--bg);border-radius:var(--r);padding:28px 32px;white-space:pre-wrap;font:20px/1.6 var(--serif);overflow-wrap:anywhere;border:1px solid var(--line2)}
 @media (max-width:639px){.pagetext{padding:18px 18px;font-size:19px}}
 .frame{width:100%;height:calc(100vh - 230px);max-height:none;min-height:420px;border:1px solid var(--line);border-radius:var(--r2);background:#fff;color-scheme:light;display:block;margin-top:12px}

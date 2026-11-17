@@ -859,6 +859,7 @@
   "app.reader.pdf_note": "Si el PDF no se ve aquí (algunos móviles no pueden mostrarlo), usa la vista Página o abre el archivo original.",
   "app.reader.loading_text": "Cargando el texto…",
   "app.reader.extracted": "Texto extraído automáticamente del original — las tablas, los diagramas y los recuadros de advertencia pueden perderse o desordenarse. Consulta la vista Página para todo lo importante.",
+  "app.reader.alt_text": "Descripción de la imagen:",
   "app.reader.no_text": "No hay texto en esta página (puede ser una imagen o estar en blanco).",
   "app.reader.text_failed": "No se ha podido cargar el texto.",
   "app.wiki.note": "Escrito por la comunidad; contrasta con un manual los pasos de los que depende la seguridad",

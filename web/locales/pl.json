@@ -872,6 +872,7 @@
   "app.reader.pdf_note": "Jeśli PDF się tu nie wyświetla (niektóre telefony tego nie potrafią), użyj widoku „Strona” albo otwórz oryginalny plik.",
   "app.reader.loading_text": "Wczytywanie tekstu…",
   "app.reader.extracted": "Tekst automatycznie wyciągnięty z oryginału — tabele, schematy i ramki z ostrzeżeniami mogą zniknąć lub być w złej kolejności. Wszystko, co ważne, sprawdź w widoku „Strona”.",
+  "app.reader.alt_text": "Opis obrazu:",
   "app.reader.no_text": "Na tej stronie nie ma tekstu (może to być obraz albo pusta strona).",
   "app.reader.text_failed": "Nie udało się wczytać tekstu.",
   "app.wiki.note": "Tworzone przez społeczność; kroki ważne dla bezpieczeństwa sprawdź w podręczniku",
