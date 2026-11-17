@@ -37,6 +37,7 @@ None of these blocks the work: each has a placeholder.
 | 17 Nov 2026 | The app opens on "What do you need?" (the search and the guides), with Home first in the sidebar; videos keep their page | the original opened on its videos; the starter library has none |
 | 17 Nov 2026 | Setup suggests the smallest available library, whatever its name, and leaves 5% of the disk free in all (between 1 and 5 GB) | it looked for a pack named "small", and two margins added together turned down a 43 MB library on a disk with 7 GB free |
 | 17 Nov 2026 | Vulkan on Windows and Linux in the installers, built with Ninja in a short folder on Windows, llama.cpp's libraries copied beside the runner; local package builds keep the processor unless LASTBOOK_VULKAN=1 | Cargo's newer folder layout, Visual Studio's generator and Windows' 260-character paths each broke the first builds; the release now checks that the packaged runner finds the processor's backend |
+| 17 Nov 2026 | Luxembourg's address index keeps its streets' French, Luxembourgish and German names: 59 MB installed, 15 MB to download, instead of about a third | addresses really use them (75%, 33% and 6% of the streets that carry them) |
 | 17 Nov 2026 | The local AI writes its choices and log in the app's own folder when the library's folder cannot be written | a library on a read-only network share or stick must keep its AI |
 | 17 Nov 2026 | No Liechtenstein document in the starter library yet | llv.li refuses automated downloads, and that refusal is respected |
 | 17 Nov 2026 | First aid in the starter library comes from the IFRC guidelines, in English | no Italian first-aid document from a public body was found |
@@ -64,6 +65,7 @@ None of these blocks the work: each has a placeholder.
 | Six languages | the interface in English, Italian, German, French, Spanish and Polish (1,175 keys each, the five translations marked for review), chosen in setup and the app, kept, changed in place; metric only; Europe on the map; what the engine says (setup, the map, the library, the local AI, updates) comes as a code with its numbers, which the interface words in the person's language, the English kept for the log | `tools/check_locales.mjs`; a test in each engine module that every code has words; pictures in Italian, German, Spanish and Polish |
 | Storage anywhere | a library and its models on this computer, an external disk, a USB stick or a NAS (SMB, NFS, mapped drives, UNC paths); disk kinds shown in setup; SQLite read immutable; a library out of reach said plainly at start and while running; models beside the library or on this computer; a library on a read-only share or stick keeps its local AI, whose choices and log go to the app's own folder | tests on each system, and a library read through a network path on Windows in CI |
 | The map's data tools | `lastbook-tools build-map`, `pack-map`, `pack-addresses`, `build-terrain`: the detailed map from Geofabrik's GeoPackage, addresses and buildings from OpenStreetMap's PBF, places and water, elevation from Copernicus DEM GLO-30, the zoomed-out base from Natural Earth ([MAPS.md](MAPS.md)); Liechtenstein built in 3 seconds: 32,191 map features, 441 help points, 12,499 addresses, 12 MB to download | 23 tools tests; packs checked by setup's own zip check; the map, an address and a postcode photographed |
+| The test regions | Liechtenstein, Malta (36 islands from OpenStreetMap's coastline, postcodes as "VLT 1117", streets found in Maltese and English), Luxembourg ("2, place Guillaume II, L-1648 Luxembourg", streets in French, Luxembourgish and German) and Bremen (two pieces, Bremerhaven's 22,679 addresses in): maps 8 to 66 MB to download, address indexes 0.3 to 15 MB | 30 tools tests, among them 31 real questions asked of the three built regions; each region photographed in Italian |
 | The library's tools | `lastbook-tools build-library` and `build-pack`: each document checked against its size and SHA-256, page texts through PDFium (words split at a line end joined again), the search index, a Sources page; the starter library: 14 public documents in Italian, German and English (BWL, Protezione Civile, BBK, Zivilschutz, IFRC, WHO), 707 pages, 39 MB to download; PDFium in each installer, pinned by SHA-256 | tests with and without PDFium; the release photographs each packaged app drawing a PDF page |
 | The whole path in Italian with Liechtenstein | setup finds the three packs on this computer, suggests the starter library, Liechtenstein chosen, installed and opened; the map of Vaduz with relief, help points and the nearest help in metres; "Städtle 11, Vaduz" and "9490" found; the chat with Qwen3.6-35B-A3B Q8_0 (37.8 GB) from the disk on a 16 GB Mac, offered after its file was checked and chosen by a click: "how much water per person" answered in Italian with each point cited to the Swiss federal leaflet's pages (9 litres a person, for 3 days), and "the nearest pharmacy to Städtle 11" through the offline map (Schloss Apotheke, 0.27 km south) | photographed in the app on this Mac |
 | "From the disk", measured | Qwen3.6-35B-A3B Q8_0 on a 16 GB Mac, processor only, experts read ahead: a question read at about 20 words a second (3,558 in 174 s), an answer written at 0.9 to 1.4 words a second; an answer with a map look-up took about 6 minutes in all; the model loads in 4 seconds, and its 37.8 GB file is checked once, in about 2 minutes | the runner's own numbers in the log |
@@ -71,21 +73,23 @@ None of these blocks the work: each has a placeholder.
 
 ## Being done now
 
-- The other test regions: Malta, Luxembourg, Bremen.
+- The place search: an exact other name first ("Gozo" finds Għawdex first), and no lakes for a postcode ("L-1648").
+- Regions built on GitHub's machines, one job each, on demand, with the region's checks; the neighbours' extracts for
+  the strip around a region where the tools can take them.
+- Drugstores (OpenStreetMap's shop=chemist) apart from pharmacies, which keep the green cross.
+- The last small things on screen: the map's facts quoted in the chat's sources in the person's language, "Install" when
+  nothing is to be downloaded, plural forms in About.
 - Documents in French, Spanish and Polish for the starter library, so the guides in those languages open pages in
   their own language.
 
 ## Left, in order
 
-1. All regions built by the tools on GitHub's machines. A region's box reaches into its neighbours, whose country
-   extracts are separate: the strip around a region stays empty until the build takes the neighbours' extracts too.
+1. All 110 regions run through the regions workflow, their packs published where the maintainer chooses to host them.
 2. The release checks: the pinned roots cover the download hosts, nothing ships that must not.
 3. "From the disk" faster: about a word a second is slow for long answers. Next, the same model at 4 bits (about 21 GB,
    closer to a 16 GB Mac's memory), the graphics processor for the layers that fit, and a cache of experts kept by use,
    as BigMoeOnEdge does; each measured as above.
-4. The map's facts quoted in the chat's sources ("Pharmacy · 0.27 km south of …") in the person's language; setup's
-   button says "Install" when nothing is to be downloaded; plural forms in About.
-5. Native-speaker review of the five translations of the interface and the guides.
+4. Native-speaker review of the five translations of the interface and the guides.
 
 ## Test models
 
