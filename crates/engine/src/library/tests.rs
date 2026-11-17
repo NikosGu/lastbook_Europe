@@ -441,7 +441,7 @@ fn libq_against_a_small_library() {
     let empty = Library::new(Paths::new(repo(), Some(dir.join("empty"))));
     assert_eq!(get(&empty, "/api/doc/doc-water").status, 404);
     assert_eq!(body_json(&get(&empty, "/api/find?q=water"))["results"], json!([]));
-    std::fs::remove_dir_all(&dir).unwrap();
+    cleanup(&dir);
 }
 
 #[test]

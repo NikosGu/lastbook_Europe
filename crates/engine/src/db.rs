@@ -91,10 +91,11 @@ mod tests {
         assert!(c.execute("INSERT INTO t VALUES ('x')", []).is_err(), "read-only");
         assert!(open_ro(&d.join("missing.sqlite")).is_none());
         // a name SQLite would read as part of a URI still opens
-        let odd = d.join("a #1? 100%.sqlite");
+        let odd = d.join("a #1 100%.sqlite"); // '?' is a URI character too, but no Windows file name may hold one
         std::fs::copy(&f, &odd).unwrap();
         assert!(open_ro(&odd).is_some(), "{}", uri(&odd));
         assert_eq!(uri(Path::new(r"C:\Lastbook Europe\geo.sqlite")), "file:///C:/Lastbook%20Europe/geo.sqlite?mode=ro&immutable=1");
+        assert_eq!(uri(Path::new("/x/what?.sqlite")), "file:///x/what%3f.sqlite?mode=ro&immutable=1");
         assert_eq!(uri(Path::new(r"\\nas\share\geo.sqlite")), "file:////nas/share/geo.sqlite?mode=ro&immutable=1");
         assert_eq!(uri(Path::new(r"\\?\UNC\nas\share\geo.sqlite")), "file:////nas/share/geo.sqlite?mode=ro&immutable=1");
         assert_eq!(uri(Path::new("/Volumes/NAS/geo.sqlite")), "file:///Volumes/NAS/geo.sqlite?mode=ro&immutable=1");
