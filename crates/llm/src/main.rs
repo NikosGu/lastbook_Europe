@@ -5,7 +5,7 @@
 //!   lastbook-llm --model FILE [--ctx N] [--threads N] [--cpu-only] [--no-mmap] [--measure]
 //!
 //! --no-mmap reads the whole file into memory once instead of mapping it: for a model on a network share or an external
-//! disk, which fits in memory.
+//! disk, which fits in memory. --from-disk runs the model from the disk even if it would fit in memory (for tests).
 //!
 //! On start it fits the model to this computer's memory with llama.cpp's own fitting (common/fit.cpp, the same as
 //! llama-server's default --fit), prints {"ev":"fit",...} with what it found, then loads the model and prints
@@ -42,10 +42,13 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Condvar, Mutex, OnceLock};
 use std::time::Instant;
 
+mod experts;
 mod memory;
 
 // ------------------------------------------------------------------------------------------------------- the protocol --
 static OUT: OnceLock<Mutex<std::fs::File>> = OnceLock::new();
+/// The experts asked for ahead, when the model runs from the disk.
+static PREFETCH: OnceLock<&'static experts::Prefetch> = OnceLock::new();
 
 /// One line of JSON on the protocol's own channel.
 fn send(v: &Value) {
@@ -266,6 +269,9 @@ fn generate(e: &mut Engine, req: &Value) {
     let t2 = Instant::now();
     let mut done = json!({"ev": "done", "id": id, "reason": why, "n_prompt": toks.len(), "n_reused": reused, "n_gen": n_gen,
                           "prompt_ms": (t1 - t0).as_millis() as u64, "gen_ms": (t2 - t1).as_millis() as u64});
+    if let Some(p) = PREFETCH.get() {
+        done["experts_asked"] = json!(p.asked.load(std::sync::atomic::Ordering::Relaxed));
+    }
     if !stopped_by.is_empty() {
         done["stop"] = json!(stopped_by);
     }
@@ -280,10 +286,11 @@ struct Args {
     cpu_only: bool,
     measure: bool,
     no_mmap: bool,
+    from_disk: bool,
 }
 
 fn parse_args() -> Result<Args, String> {
-    let mut a = Args { model: String::new(), n_ctx: 16384, threads: 0, cpu_only: false, measure: false, no_mmap: false };
+    let mut a = Args { model: String::new(), n_ctx: 16384, threads: 0, cpu_only: false, measure: false, no_mmap: false, from_disk: false };
     let mut it = std::env::args().skip(1);
     while let Some(arg) = it.next() {
         match arg.as_str() {
@@ -293,6 +300,7 @@ fn parse_args() -> Result<Args, String> {
             "--cpu-only" => a.cpu_only = true,
             "--measure" => a.measure = true,
             "--no-mmap" => a.no_mmap = true,
+            "--from-disk" => a.from_disk = true,
             other => return Err(format!("unknown option {other}")),
         }
     }
@@ -378,7 +386,7 @@ fn main() {
     let (ram_total, ram_free) = (memory::ram_total(), memory::ram_free());
     // From the disk: the file does not fit in this computer's memory beside everything else. Its weights then stay in the
     // mapped file (plain CPU buffers: llama.cpp's repacking would copy them into memory) and are read as they are needed.
-    let from_disk = file_bytes.saturating_add(DISK_RESERVE) > ram_total;
+    let from_disk = args.from_disk || file_bytes.saturating_add(DISK_RESERVE) > ram_total;
     let placement = if !from_disk {
         if args.cpu_only { "cpu" } else { "fit" }
     } else if cfg!(target_os = "macos") || args.cpu_only {
@@ -392,6 +400,14 @@ fn main() {
         mp.as_mut().add_cpu_buft_override(EXPERTS);
         "disk_experts"
     };
+    if from_disk {
+        // a prompt read in pieces of 2048 tokens reads each layer's experts once per piece, not once per 512 tokens; and
+        // while an answer is written, each layer's chosen experts are asked for together (experts.rs)
+        let prefetch: &'static experts::Prefetch = Box::leak(Box::new(experts::Prefetch::new()));
+        cp = cp.with_n_batch(2048).with_n_ubatch(2048)
+            .with_cb_eval(Some(experts::eval_callback), prefetch as *const experts::Prefetch as *mut std::ffi::c_void);
+        let _ = PREFETCH.set(prefetch);
+    }
     send(&json!({"ev": "fit", "status": status, "n_ctx": args.n_ctx, "n_gpu_layers": mp.n_gpu_layers(), "cpu_only": args.cpu_only,
                  "ram_total": ram_total, "ram_free": ram_free, "host_overrides": overrides.len(), "experts_on_cpu": experts_on_cpu,
                  "file_bytes": file_bytes, "from_disk": from_disk, "placement": placement,

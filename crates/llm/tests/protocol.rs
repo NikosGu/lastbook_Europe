@@ -90,3 +90,40 @@ fn a_real_model_when_one_is_named() {
     writeln!(input, "{}", json!({"op": "quit"})).unwrap();
     assert!(p.wait().unwrap().success());
 }
+
+/// From the disk, with the chosen experts asked for ahead, a model writes exactly what it writes otherwise.
+#[test]
+fn from_the_disk_writes_the_same() {
+    let Some(model) = std::env::var_os("LASTBOOK_TEST_MODEL") else {
+        eprintln!("LASTBOOK_TEST_MODEL is not set: no model to run");
+        return;
+    };
+    let run = |extra: &[&str]| -> (String, Value) {
+        let mut args: Vec<std::ffi::OsString> = vec!["--model".into(), model.clone(), "--ctx".into(), "2048".into(), "--cpu-only".into()];
+        args.extend(extra.iter().map(|a| a.into()));
+        let mut p = Command::new(RUNNER).args(&args).stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::null()).spawn().unwrap();
+        let mut input = p.stdin.take().unwrap();
+        let mut out = BufReader::new(p.stdout.take().unwrap()).lines();
+        let mut next = || serde_json::from_str::<Value>(&out.next().expect("a line").unwrap()).unwrap();
+        while next()["ev"] != "ready" {}
+        writeln!(input, "{}", json!({"op": "gen", "id": 1, "segments": [["<|im_start|>user\nCiao, come stai?<|im_end|>\n<|im_start|>assistant\n", true]],
+                                     "max_tokens": 16, "temp": 0, "seed": 1})).unwrap();
+        let mut text = String::new();
+        loop {
+            let e = next();
+            match e["ev"].as_str() {
+                Some("tok") => text.push_str(e["t"].as_str().unwrap()),
+                Some("done") => {
+                    writeln!(input, "{}", json!({"op": "quit"})).unwrap();
+                    let _ = p.wait();
+                    return (text, e);
+                }
+                _ => panic!("{e}"),
+            }
+        }
+    };
+    let (plain, _) = run(&[]);
+    let (disk, done) = run(&["--from-disk"]);
+    assert_eq!(plain, disk);
+    assert!(done["experts_asked"].as_u64().unwrap_or(0) > 0, "{done}");
+}

@@ -686,6 +686,16 @@ impl LlamaContextParams {
         self
     }
 
+    /// Lastbook Europe's addition: llama.cpp's evaluation callback (`llama_context_params.cb_eval`), called for each graph
+    /// node: with `ask` true to learn whether the callback wants to see it, with `ask` false once it is computed. The
+    /// user data must outlive the context.
+    #[must_use]
+    pub fn with_cb_eval(mut self, callback: llama_cpp_sys_2::ggml_backend_sched_eval_callback, user_data: *mut std::ffi::c_void) -> Self {
+        self.context_params.cb_eval = callback;
+        self.context_params.cb_eval_user_data = user_data;
+        self
+    }
+
     /// Get whether full sliding window attention is enabled
     ///
     /// # Examples
