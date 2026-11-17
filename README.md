@@ -71,13 +71,15 @@ language.
 **Does it fit this computer?** Lastbook asks llama.cpp to fit the model to this computer's memory, then gives one of
 three answers:
 
-- **In memory.** The model fits. It runs on the graphics processor where there is one (Metal on a Mac; on Windows and
-  Linux the CPU for now, Vulkan is planned).
+- **In memory.** The model fits. It runs on the graphics processor where there is one: Metal on a Mac, Vulkan on Windows
+  and Linux (with the graphics card's own driver; without one, the best variant for the processor). `lastbook-llm
+  --devices` lists what it found.
 - **From the disk.** A mixture-of-experts model larger than the memory can still run: each word uses only a few of its
   experts, so the experts stay in the model file and are read from the disk as they are needed (the file is mapped, not
   copied into memory). It is much slower. It is offered only as an explicit choice with a warning, only on an SSD and only
   after a short measurement on that computer, and it is never the default. On a Mac this mode runs on the CPU, because
-  Metal must hold all of its share in memory.
+  llama.cpp gives Metal the mapped file from the first to the last of its tensors, which there spans the experts too.
+  Qwen3.6-35B-A3B at 8 bits (37.8 GB) on a 16 GB Mac this way: about 20 words a second read, one written.
 - **Too big.** Setup says so in plain words, and why.
 
 **How answers stay with the library.** The model has no internet: it sees only the rules, the conversation and the
