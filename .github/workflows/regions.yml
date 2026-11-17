@@ -1,74 +1,255 @@
-# Region maps built on GitHub's machines, only when asked: each region in its own job, from its public sources to the
-# zips setup downloads and their manifest entries, checked as setup takes them and as a person uses them
-# (packaging/regions/build-region.sh, docs/MAPS.md). The zips, the entries and the check come back as the job's artifact.
+# Region maps built on GitHub's machines, only when asked, into the data release: each region in its own job, one at a
+# time, from its public sources to the zips setup downloads and their manifest entries, checked as setup takes them and
+# as a person uses them (packaging/regions/build-region.sh, docs/MAPS.md). Each region's zips and entries go into the
+# release tagged data-v1, kept as a draft until the maintainer publishes it, and manifest-v1.json is written again at
+# the end (data-manifest.yml). Nothing here publishes a release, and no other release is touched.
 name: Regions
 
 on:
   workflow_dispatch:
     inputs:
       regions:
-        description: "Region codes (crates/engine/src/regions.rs), separated by spaces or commas, as LI MT LU DE-HB"
+        description: "missing: every region the data-v1 draft does not hold yet; all: every region; or region codes (crates/engine/src/regions.rs) in the order to build them, separated by spaces or commas, as CH AT LI"
         required: true
-        default: "LI"
+        default: "missing"
       neighbours:
-        description: "Take the neighbours' extracts too, read only inside each region's boxes, so the strip around the region is mapped (larger downloads)"
+        description: "Take the neighbours' extracts too, read only inside each region's boxes: those under 300 MB, and larger ones already in this week's cache"
         type: boolean
         default: true
 
 permissions:
   contents: read
 
+# one run at a time adds to the data release
+concurrency:
+  group: data-release
+  cancel-in-progress: false
+
+env:
+  RELEASE: data-v1
+  GH_REPO: ${{ github.repository }}
+
 jobs:
   plan:
-    name: The regions asked for
+    name: The regions to build
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write   # a draft release is seen, and made, only with write access
     outputs:
       regions: ${{ steps.list.outputs.regions }}
     steps:
-      - id: list
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: crates/tools/data
+      - name: The data release, a draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if draft=$(gh release view "$RELEASE" --json isDraft --jq .isDraft 2>/dev/null); then
+            if [ "$draft" != true ]; then
+              echo "$RELEASE is published: this workflow adds only to the draft. Make it a draft again, or start another data release." >&2
+              exit 1
+            fi
+          else
+            gh release create "$RELEASE" --draft --title "Lastbook Europe data" \
+              --notes "The region maps, address indexes and packs setup downloads, and manifest-v1.json, which lists them. Built by the Regions workflow; the maintainer publishes it."
+          fi
+      - name: The regions asked for, in the order to build them
+        id: list
         env:
           REGIONS: ${{ inputs.regions }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -f   # the input is split into words, never read as file names
-          list=$(printf '%s\n' ${REGIONS//,/ } | grep -E '^[A-Z]{2}(-[A-Z0-9]{1,3})?$' | sort -u | jq -R . | jq -sc .)
+          # every region, those that share an extract one after another, so that the cache serves the next
+          order=$(jq -r '.regions | to_entries | sort_by(.value.extracts[0], .key) | .[].key' crates/tools/data/region-sources.json)
+          case "$REGIONS" in
+            all)
+              want=$order ;;
+            missing)
+              have=$(gh release view "$RELEASE" --json assets --jq '.assets[] | select(.state == null or .state == "uploaded") | .name')
+              want=$(for r in $order; do
+                for f in "Lastbook-Map-$r.zip" "Lastbook-Addresses-$r.zip" "map-entry-$r.json" "addresses-entry-$r.json"; do
+                  if ! grep -qxF "$f" <<<"$have"; then echo "$r"; break; fi
+                done
+              done) ;;
+            *)
+              # in the order given: a small region after its large neighbours finds them in the cache
+              want=$(for r in ${REGIONS//,/ }; do
+                if grep -qxF "$r" <<<"$order"; then echo "$r"; else echo "not a region of the table: $r" >&2; fi
+              done | awk '!seen[$0]++')
+              if [ -z "$want" ]; then echo "no region of the table in: $REGIONS" >&2; exit 1; fi ;;
+          esac
+          list=$(printf '%s\n' $want | jq -R . | jq -sc 'map(select(length > 0))')
           echo "regions=$list" >> "$GITHUB_OUTPUT"
-          echo "$list"
-          if [ "$list" = "[]" ]; then echo "no region code in: $REGIONS" >&2; exit 1; fi
+          echo "$(jq length <<<"$list") regions to build: $(jq -r 'join(" ")' <<<"$list")" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  tools:
+    name: The tools
+    needs: plan
+    if: needs.plan.outputs.regions != '[]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release --locked -p lastbook-tools
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lastbook-tools
+          path: target/release/lastbook-tools
+          retention-days: 30
 
   region:
     name: ${{ matrix.region }}
-    needs: plan
+    needs: [plan, tools]
+    if: needs.plan.outputs.regions != '[]'
     runs-on: ubuntu-24.04
     timeout-minutes: 360
+    permissions:
+      contents: write   # the zips go into the data release
     strategy:
       fail-fast: false
       max-parallel: 1   # one at a time: Geofabrik, shared by everyone, turns away GitHub's machines when they ask too much
       matrix:
         region: ${{ fromJSON(needs.plan.outputs.regions) }}
+    env:
+      REGION: ${{ matrix.region }}
+      NEIGHBOURS: ${{ inputs.neighbours && 'yes' || 'no' }}
+      # on whichever of the runner's disks has more room, always under this name (the cache restores to it): Norway's
+      # sources and build take some 20 GB
+      DATA: /mnt/lastbook
+      TOOLS: /mnt/lastbook/bin/lastbook-tools
+      SOURCES: /mnt/lastbook/sources
+      OUT: /mnt/lastbook/regions
     steps:
       - uses: actions/checkout@v4
-      - name: Room on the disk (toolchains of the runner's this job does not use)
+      - name: Room on the disk, and memory to spare
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
-          df -h /
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-      - name: The tools
-        run: cargo build --release --locked -p lastbook-tools
-      - name: Fetch, build, pack and check
+          second=$(df --output=avail -k /mnt 2>/dev/null | tail -n 1 || echo 0)
+          system=$(df --output=avail -k "$HOME" | tail -n 1)
+          sudo mkdir -p "$(dirname "$DATA")"
+          if [ "${second:-0}" -ge "$system" ]; then
+            sudo mkdir -p "$DATA"
+            sudo chown "$(id -u):$(id -g)" "$DATA"
+          else
+            mkdir -p "$HOME/lastbook"
+            sudo ln -sfn "$HOME/lastbook" "$DATA"
+          fi
+          # a swap file beside the data: a region larger than the memory slows down rather than stops
+          if [ "$(df --output=avail -k "$DATA/" | tail -n 1)" -gt $((40 * 1024 * 1024)) ]; then
+            sudo fallocate -l 16G "$DATA/swap" && sudo chmod 600 "$DATA/swap" && sudo mkswap "$DATA/swap" >/dev/null && sudo swapon "$DATA/swap" \
+              || echo "no swap file added" >&2
+          fi
+          df -h / /mnt "$DATA/" || true
+          free -h
+      - uses: actions/download-artifact@v4
+        with:
+          name: lastbook-tools
+          path: ${{ env.DATA }}/bin
+      - name: What to fetch
+        id: sources
+        run: |
+          chmod +x "$TOOLS"
+          "$TOOLS" region-sources --region "$REGION" --neighbours "$NEIGHBOURS" > "$RUNNER_TEMP/sources.json"
+          # each Geofabrik extract kept in the cache for the ISO week, under its own name; Natural Earth's zips for good
+          jq --arg s "$SOURCES" --arg w "$(date -u +%G-W%V)" '[(.extracts + .neighbours)[] | (.path | gsub("/"; "_")) as $f
+              | {path: "\($s)/geofabrik/\($f)", key: "geofabrik-\($f)-\($w)"}] + [{path: "\($s)/ne", key: "natural-earth-10m"}]' \
+            "$RUNNER_TEMP/sources.json" > "$RUNNER_TEMP/caches.json"
+          # GitHub's own cache library, for a number of entries a workflow's steps cannot list in advance
+          npm install --silent --no-save --no-audit --no-fund --prefix "$RUNNER_TEMP/js" @actions/cache@4
+      - name: This week's downloads, from the cache
+        uses: actions/github-script@v7
         env:
-          REGION: ${{ matrix.region }}
-          NEIGHBOURS: ${{ inputs.neighbours && 'yes' || 'no' }}
-          SOURCES: ${{ runner.temp }}/sources
-          OUT: ${{ runner.temp }}/regions
+          ACTIONS_CACHE_SERVICE_V2: "true"
+        with:
+          script: |
+            const fs = require('fs')
+            const temp = process.env.RUNNER_TEMP
+            const cache = require(`${temp}/js/node_modules/@actions/cache`)
+            const found = []
+            for (const c of JSON.parse(fs.readFileSync(`${temp}/caches.json`))) {
+              try {
+                if (await cache.restoreCache([c.path], c.key)) found.push(c.key)
+                core.info(`${c.key}: ${found.includes(c.key) ? 'from the cache' : 'not in the cache'}`)
+              } catch (e) {
+                core.warning(`${c.key}: the cache could not be read (${e.message}); fetched instead`)
+              }
+            }
+            fs.writeFileSync(`${temp}/from-cache.json`, JSON.stringify(found))
+      - name: Fetch
+        env:
+          FETCH_ONLY: 1
+        run: packaging/regions/build-region.sh "$REGION" "$NEIGHBOURS"
+      - name: This week's downloads, into the cache
+        if: always() && steps.sources.outcome == 'success'
+        uses: actions/github-script@v7
+        env:
+          ACTIONS_CACHE_SERVICE_V2: "true"
+        with:
+          script: |
+            const fs = require('fs')
+            const temp = process.env.RUNNER_TEMP
+            const cache = require(`${temp}/js/node_modules/@actions/cache`)
+            const found = fs.existsSync(`${temp}/from-cache.json`) ? JSON.parse(fs.readFileSync(`${temp}/from-cache.json`)) : []
+            for (const c of JSON.parse(fs.readFileSync(`${temp}/caches.json`))) {
+              // a folder is there only whole (build-region.sh): a neighbour left out has none
+              if (found.includes(c.key) || !fs.existsSync(c.path) || fs.readdirSync(c.path).length === 0) continue
+              try {
+                await cache.saveCache([c.path], c.key)
+                core.info(`${c.key}: kept`)
+              } catch (e) {
+                core.warning(`${c.key}: not kept (${e.message})`)
+              }
+            }
+      - name: Build, pack and check
+        env:
+          OFFLINE: 1
         run: |
           packaging/regions/build-region.sh "$REGION" "$NEIGHBOURS"
-          df -h /
+          df -h / "$DATA"
+      - name: Into the data release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          packs="$OUT/$REGION/packs"
+          if [ "$(gh release view "$RELEASE" --json isDraft --jq .isDraft)" != true ]; then
+            echo "$RELEASE is no longer a draft: nothing is added to it" >&2
+            exit 1
+          fi
+          # the old entries first and the new ones last: an entry never stands beside another build's zip
+          for f in "map-entry-$REGION.json" "addresses-entry-$REGION.json"; do
+            gh release delete-asset "$RELEASE" "$f" --yes 2>/dev/null || true
+          done
+          gh release upload "$RELEASE" "$packs/Lastbook-Map-$REGION.zip" "$packs/Lastbook-Addresses-$REGION.zip" --clobber
+          gh release upload "$RELEASE" "$packs/map-entry-$REGION.json" "$packs/addresses-entry-$REGION.json" --clobber
+      - name: What it made
+        if: always()
+        run: |
+          {
+            echo "### $REGION"
+            tail -n 1 "$OUT/$REGION/time.txt" 2>/dev/null || true
+            jq -r '.files[0] | "- \(.name): \(.size / 1000000 | floor) MB"' "$OUT/$REGION/packs/map-entry-$REGION.json" "$OUT/$REGION/packs/addresses-entry-$REGION.json" 2>/dev/null || true
+            jq -r '.checks[] | "- \(if .ok then "ok" else "FAILED" end): \(.check), \(.detail)"' "$OUT/$REGION/packs/check-$REGION.json" 2>/dev/null || true
+          } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: region-${{ matrix.region }}
           path: |
-            ${{ runner.temp }}/regions/${{ matrix.region }}/packs/
-            ${{ runner.temp }}/regions/${{ matrix.region }}/build-report.json
+            ${{ env.OUT }}/${{ matrix.region }}/packs/*.json
+            ${{ env.OUT }}/${{ matrix.region }}/build-report.json
+            ${{ env.OUT }}/${{ matrix.region }}/time.txt
           if-no-files-found: warn
+      - name: A pause before the next region, for Geofabrik
+        if: always()
+        run: sleep 120
+
+  manifest:
+    name: The data release's manifest
+    needs: [plan, region]
+    if: always() && needs.plan.result == 'success'
+    permissions:
+      contents: write
+    uses: ./.github/workflows/data-manifest.yml
