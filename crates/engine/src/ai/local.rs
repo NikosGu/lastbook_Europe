@@ -711,6 +711,35 @@ impl Local {
     }
 }
 
+/// What setup needs from the local AI: a measure of a model file on this computer, the files it already checked, and
+/// stopping the model before its file is removed.
+impl crate::setup::api::AiHooks for Local {
+    fn measure(&self, _model: &Value, path: &Path) -> Option<Value> {
+        self.0.runner.as_ref()?;
+        let out = self.argv(path, &["--measure"]).stdin(Stdio::null()).stderr(Stdio::null()).output().ok()?;
+        let fit = String::from_utf8_lossy(&out.stdout).lines().filter_map(|l| serde_json::from_str::<Value>(l).ok()).find(|v| v["ev"] == "fit")?;
+        let j = judge(&fit, gguf::read(path).ok().as_ref());
+        let why = match j["verdict"].as_str() {
+            Some("fits") => "Measured on this computer: it fits.".to_string(),
+            Some("from_disk") => format!("{} Only as your choice, on an SSD.", j["why"].as_str().unwrap_or("")),
+            _ => j["why"].as_str().unwrap_or("").to_string(),
+        };
+        Some(json!({"fits": j["verdict"] == "fits", "from_disk": j["verdict"] == "from_disk", "needs_bytes": j["needs"], "estimate": false, "why": why}))
+    }
+
+    fn mark_checked(&self, path: &Path, sha256: &str) {
+        Local::mark_checked(self, path, sha256)
+    }
+
+    fn stop(&self, why: &str) {
+        Local::stop(self, why)
+    }
+
+    fn rediscover(&self) {
+        Local::rediscover(self)
+    }
+}
+
 impl Drop for Inner {
     fn drop(&mut self) {
         if let Some(mut p) = self.st.lock().ok().and_then(|mut s| s.proc.take()) {

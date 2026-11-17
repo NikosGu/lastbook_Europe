@@ -1,6 +1,9 @@
 //! Answers the window's requests: the interface's files under `/ui/`, the app page at `/`, setup at `/api/setup/`, and the
 //! engine's other `/api/` routes. Each part of the engine adds its routes here as it is ported from the original Lastbook.
 
+use crate::ai::assistant::{Knowledge, NoKnowledge};
+use crate::ai::chat::Chats;
+use crate::ai::local::Local;
 use crate::http::{Request, Response};
 use crate::library::Library;
 use crate::map::Map;
@@ -8,19 +11,33 @@ use crate::paths::Paths;
 use crate::setup::api::Setup;
 use crate::static_files;
 use serde_json::{json, Value};
+use std::sync::Arc;
 
 const MAX_BODY: usize = 64 * 1024;
+/// A chat request carries the conversation so far.
+const MAX_CHAT_BODY: usize = 256 * 1024;
 
 pub struct Engine {
     pub paths: Paths,
     pub setup: Option<Setup>,
     pub map: Map,
     pub library: Library,
+    /// The local AI, once a library is open.
+    pub ai: Option<Local>,
+    pub chats: Chats,
+    /// What the assistant reads: the library and the map.
+    pub knowledge: Arc<dyn Knowledge>,
 }
 
 impl Engine {
     pub fn new(paths: Paths) -> Engine {
-        Engine { map: Map::new(paths.clone()), library: Library::new(paths.clone()), paths, setup: None }
+        Engine { map: Map::new(paths.clone()), library: Library::new(paths.clone()), paths, setup: None, ai: None, chats: Chats::default(),
+                 knowledge: Arc::new(NoKnowledge) }
+    }
+
+    pub fn with_ai(mut self, ai: Local) -> Engine {
+        self.ai = Some(ai);
+        self
     }
 
     pub fn with_setup(mut self, setup: Setup) -> Engine {
@@ -36,6 +53,9 @@ impl Engine {
         }
         if let Some(name) = path.strip_prefix("/api/setup/") {
             return self.setup_route(method, name.trim_matches('/'), req);
+        }
+        if let Some(r) = self.ai_route(method, path, req) {
+            return r;
         }
         if self.paths.data.is_some() {
             if let Some(r) = self.map.route(req) {
@@ -56,6 +76,61 @@ impl Engine {
             ("GET" | "HEAD", "/api/health") => Response::json(&json!({"ok": true, "engine": "rust", "data": self.paths.data.is_some()})),
             ("GET" | "HEAD", p) if p.starts_with("/ui/") => static_files::serve(&self.paths.web(), &p["/ui/".len()..]),
             _ => Response::not_found(),
+        }
+    }
+
+    /// The assistant's status, the local AI's buttons, and the chat (see ai/chat.rs).
+    fn ai_route(&self, method: &str, path: &str, req: &Request) -> Option<Response> {
+        let body = || -> Result<Value, Response> {
+            if req.body.len() > MAX_CHAT_BODY {
+                return Err(Response::json_status(413, &json!({"error": "request too large"})));
+            }
+            match serde_json::from_slice::<Value>(&req.body) {
+                Ok(v) if v.is_object() => Ok(v),
+                _ if req.body.is_empty() => Ok(json!({})),
+                _ => Err(Response::json_status(400, &json!({"error": "bad request"}))),
+            }
+        };
+        Some(match (method, path) {
+            ("GET" | "HEAD", "/api/assistant/status") => Response::json(&self.assistant_status()),
+            ("POST", "/api/assistant/local") => match (&self.ai, body()) {
+                (_, Err(r)) => r,
+                (None, _) => Response::json_status(404, &json!({"error": "There is no library open, so there is no local AI."})),
+                (Some(ai), Ok(b)) => Response::json(&ai.action(b["action"].as_str().unwrap_or(""))),
+            },
+            ("POST", "/api/chat/start") => match body() {
+                Err(r) => r,
+                Ok(b) => match self.chats.start(&b, self.ai.clone(), self.knowledge.clone()) {
+                    Ok(id) => Response::json(&json!({"id": id})),
+                    Err(e) => Response::json_status(400, &json!({"error": e})),
+                },
+            },
+            ("GET" | "HEAD", p) if p.starts_with("/api/chat/poll/") => {
+                let from = req.param("from").and_then(|f| f.parse().ok()).unwrap_or(0);
+                match self.chats.poll(&p["/api/chat/poll/".len()..], from) {
+                    Some(v) => Response::json(&v),
+                    None => Response::json_status(404, &json!({"error": "This answer is no longer kept."})),
+                }
+            }
+            ("POST", p) if p.starts_with("/api/chat/cancel/") => Response::json(&json!({"ok": self.chats.cancel(&p["/api/chat/cancel/".len()..])})),
+            ("POST", "/api/chat") => match body() {
+                Err(r) => r,
+                Ok(b) => match self.chats.whole(&b, self.ai.clone(), self.knowledge.clone()) {
+                    Ok(text) => Response::new(200, "text/event-stream; charset=utf-8", text),
+                    Err(e) => Response::json_status(400, &json!({"error": e})),
+                },
+            },
+            _ => return None,
+        })
+    }
+
+    pub fn assistant_status(&self) -> Value {
+        match &self.ai {
+            Some(ai) => {
+                let local = ai.status();
+                json!({"model": local["name"], "online": ai.available(), "error": null, "local": local, "vision": false, "index": {"state": "off"}})
+            }
+            None => json!({"model": null, "online": false, "error": "no library", "local": null, "vision": false, "index": {"state": "off"}}),
         }
     }
 

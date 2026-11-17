@@ -72,12 +72,14 @@ pub struct Options {
     pub backoff: Option<Vec<f64>>,
     /// Refuse a folder too deep for the library's longest file name on Windows (tests in Windows' long temporary folders turn it off).
     pub windows_paths: bool,
+    /// (free, total) bytes of the disk holding a path; tests give a disk of their own, so the machine's free space does not matter.
+    pub disk_space: Option<Arc<dyn Fn(&Path) -> (u64, u64) + Send + Sync>>,
 }
 
 impl Options {
     pub fn new(mode: Mode, settings_dir: PathBuf, default_parent: PathBuf, current: Option<PathBuf>) -> Options {
         Options { mode, settings_dir, default_parent, current, manifest: Manifest::product(), allow: Allow::Product, tls: None, default_why: None,
-                  on_finish: None, pick_folder: None, look_for_libraries: None, ai: None, backoff: None, windows_paths: cfg!(windows) }
+                  on_finish: None, pick_folder: None, look_for_libraries: None, ai: None, backoff: None, windows_paths: cfg!(windows), disk_space: None }
     }
 }
 
@@ -248,6 +250,13 @@ impl Setup {
 
     fn o(&self) -> &Options {
         &self.0.o
+    }
+
+    fn disk_of(&self, p: &Path) -> (u64, u64) {
+        match &self.o().disk_space {
+            Some(f) => f(p),
+            None => hardware::disk_of(p),
+        }
     }
 
     pub fn manifest(&self) -> &Manifest {
@@ -591,7 +600,7 @@ impl Setup {
         let available: Vec<Value> = m["packs"].as_array().cloned().unwrap_or_default().into_iter().filter(|p| p["available"].as_bool().unwrap_or(false)).collect();
         let packs: Vec<&Value> = available.iter().filter(|p| s(&p["id"]) == "small").collect();
         let parent = self.o().current.as_ref().and_then(|c| c.parent().map(Path::to_path_buf)).unwrap_or(self.o().default_parent.clone());
-        let (free, total) = hardware::disk_of(&parent);
+        let (free, total) = self.disk_of(&parent);
         let fits: Map<String, Value> = hw["ai_models"].as_object().cloned().unwrap_or_default();
         let model = self.best_model(&fits);
         let none = HashSet::new();
@@ -839,7 +848,7 @@ impl Setup {
             }
         }
         let need = need.max(0) as u64;
-        let (free, _) = hardware::disk_of(&parent);
+        let (free, _) = self.disk_of(&parent);
         if free < need {
             return json!({"error": format!("This needs {} free on that disk, and it has {}. Free some space or choose another disk.", gb(need), gb(free)),
                           "code": "no_space", "need_bytes": need, "free_bytes": free});
@@ -1149,7 +1158,7 @@ impl Setup {
         match path {
             None => json!({"path": null, "cancelled": true}),
             Some(p) => {
-                let (free, _) = hardware::disk_of(&p);
+                let (free, _) = self.disk_of(&p);
                 json!({"path": p.to_string_lossy(), "free_bytes": free, "disk": hardware::disk_name(&p)})
             }
         }
@@ -1365,7 +1374,7 @@ impl Setup {
         let dest = work.join("downloads").join(&name);
         if !dest.exists() {
             let still = u(&f["size"]).saturating_sub(std::fs::metadata(work.join("downloads").join(format!("{name}.part"))).map(|m| m.len()).unwrap_or(0));
-            let (free, _) = hardware::disk_of(work);
+            let (free, _) = self.disk_of(work);
             if free < still + 512 * 1024 * 1024 {
                 let mut extra = Map::new();
                 extra.insert("need_bytes".into(), json!(still));
@@ -1454,7 +1463,7 @@ impl Setup {
             }
             let have: HashSet<String> = plan["sources"].as_object().map(|o| o.keys().cloned().collect()).unwrap_or_default();
             let need = install::need_bytes(Some(&pack), None, &have);
-            let (free, _) = hardware::disk_of(work.parent().unwrap_or(work));
+            let (free, _) = self.disk_of(work.parent().unwrap_or(work));
             if free < need {
                 return Err(SetupError::failed("no_space", format!("Some files need fetching again. That needs {} free, and the disk has {}.", gb(need), gb(free))));
             }
@@ -1479,7 +1488,7 @@ impl Setup {
             total += install::check_zip(path, installed, None)?.1; // every member checked before any is written
         }
         let still = total.saturating_sub(install::tree_size(&staged));
-        let (free, _) = hardware::disk_of(work);
+        let (free, _) = self.disk_of(work);
         if free < still + 512 * 1024 * 1024 {
             return Err(SetupError::failed("no_space", format!("Unpacking needs {} free, and the disk has {}. Free some space, then try again.", gb(still), gb(free))));
         }

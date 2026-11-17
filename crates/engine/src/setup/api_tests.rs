@@ -118,6 +118,7 @@ impl Env {
         o.tls = Some(self.srv.tls.clone());
         o.backoff = Some(vec![0.05; 6]);
         o.windows_paths = false;
+        o.disk_space = Some(Arc::new(|_: &Path| (500_000_000_000, 1_000_000_000_000))); // a disk of our own
         o.ai = ai;
         Setup::new(o)
     }

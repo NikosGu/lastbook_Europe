@@ -10,6 +10,11 @@ on:
 permissions:
   contents: read
 
+# a newer push to the same branch replaces a run still going
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # The Rust app: the engine, the window, the local AI runner (llama.cpp, built from source: Metal on macOS, the CPU
   # elsewhere for now) and the data tools. No model is downloaded: the runner's tests check its protocol without one.

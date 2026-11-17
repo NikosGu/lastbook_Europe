@@ -40,6 +40,42 @@ pub trait Knowledge: Send + Sync {
     fn map_credit(&self) -> String;
 }
 
+/// No library and no map: what the assistant reads before a library is open (it then says the library does not cover it).
+pub struct NoKnowledge;
+
+impl Knowledge for NoKnowledge {
+    fn search(&self, _: &str, _: usize, _: &str, _: &str) -> Vec<Value> {
+        vec![]
+    }
+    fn record(&self, _: &str) -> Option<Value> {
+        None
+    }
+    fn public(&self, _: &str) -> Option<Value> {
+        None
+    }
+    fn page_texts(&self, _: &str) -> Vec<String> {
+        vec![]
+    }
+    fn transcript(&self, _: &str) -> Option<Value> {
+        None
+    }
+    fn topics(&self) -> Vec<Value> {
+        vec![]
+    }
+    fn places(&self, _: &str, _: usize) -> Vec<Value> {
+        vec![]
+    }
+    fn near(&self, _: f64, _: f64, _: &[String], _: usize) -> Vec<Value> {
+        vec![]
+    }
+    fn help_kinds(&self) -> Vec<String> {
+        vec![]
+    }
+    fn map_credit(&self) -> String {
+        String::new()
+    }
+}
+
 pub enum RoundError {
     Stopped,
     Failed(String),

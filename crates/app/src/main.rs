@@ -20,7 +20,9 @@
 use lastbook_engine::http::{percent_decode, Request, Response};
 use lastbook_engine::paths::Paths;
 use lastbook_engine::router::Engine;
-use lastbook_engine::setup::api::{self as setup_api, Mode, Options, Setup};
+use lastbook_engine::ai::chat::PAGE_SCRIPT;
+use lastbook_engine::ai::local::{self, Local};
+use lastbook_engine::setup::api::{self as setup_api, AiHooks, Mode, Options, Setup};
 use lastbook_engine::setup::install;
 use lastbook_engine::{appdirs, dist};
 use std::borrow::Cow;
@@ -176,11 +178,17 @@ fn main() {
         }
     };
     let mode = if data.is_some() { Mode::Manage } else { Mode::FirstRun };
-    if data.is_some() && (given.is_none() || note.is_some()) {
-        setup_api::opened(&settings, note.as_ref(), None);
-    }
     let (parent, why) = appdirs::default_choice(&appdata);
     let mut opts = Options::new(mode, settings.clone(), parent, data.clone());
+    // the local AI, when a library is open: the models are the ones setup's catalogue offers
+    let ai = data.as_ref().map(|d| {
+        let manifest = opts.manifest.clone();
+        Local::new(d.clone(), Box::new(move || manifest.models()), local::runner_path())
+    });
+    if data.is_some() && (given.is_none() || note.is_some()) {
+        setup_api::opened(&settings, note.as_ref(), ai.as_ref().map(|a| a as &dyn AiHooks));
+    }
+    opts.ai = ai.clone().map(|a| Arc::new(a) as Arc<dyn AiHooks>);
     opts.default_why = why;
     let (s2, a2) = (settings.clone(), appdata.clone());
     opts.look_for_libraries = Some(Box::new(move || appdirs::libraries_here(&s2, &a2)));
@@ -192,7 +200,12 @@ fn main() {
         appdirs::remember(&s3, &folder);
         relaunch(test_run);
     }));
-    let engine = Arc::new(Engine::new(Paths::discover(data)).with_setup(Setup::new(opts)));
+    let mut engine = Engine::new(Paths::discover(data)).with_setup(Setup::new(opts));
+    if let Some(ai) = ai {
+        ai.start_background();
+        engine = engine.with_ai(ai);
+    }
+    let engine = Arc::new(engine);
     let start = args.url.clone().unwrap_or_else(|| app_origin().to_string());
     let allowed: Vec<String> = [Some(app_origin().to_string()), args.url.as_ref().map(|u| origin_of(u))].into_iter().flatten().collect();
 
@@ -213,6 +226,7 @@ fn main() {
             std::thread::spawn(move || responder.respond(to_webview(engine.handle(&req))));
         })
         .with_url(start)
+        .with_initialization_script(PAGE_SCRIPT) // the chat's answer streams by polls; no location is ever asked
         .with_navigation_handler(move |url| {
             let ok = url == "about:blank" || allowed.iter().any(|o| url.starts_with(o.as_str()));
             if !ok {
