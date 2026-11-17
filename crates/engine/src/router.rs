@@ -5,6 +5,7 @@ use crate::ai::assistant::{Knowledge, NoKnowledge};
 use crate::ai::chat::Chats;
 use crate::ai::local::Local;
 use crate::http::{Request, Response};
+use crate::knowledge::EngineKnowledge;
 use crate::library::Library;
 use crate::map::Map;
 use crate::paths::Paths;
@@ -21,8 +22,8 @@ const MAX_CHAT_BODY: usize = 256 * 1024;
 pub struct Engine {
     pub paths: Paths,
     pub setup: Option<Setup>,
-    pub map: Map,
-    pub library: Library,
+    pub map: Arc<Map>,
+    pub library: Arc<Library>,
     /// The local AI, once a library is open.
     pub ai: Option<Local>,
     pub chats: Chats,
@@ -34,8 +35,15 @@ pub struct Engine {
 
 impl Engine {
     pub fn new(paths: Paths) -> Engine {
-        Engine { map: Map::new(paths.clone()), library: Library::new(paths.clone()), paths, setup: None, ai: None, chats: Chats::default(),
-                 knowledge: Arc::new(NoKnowledge), updater: Updater::product() }
+        let map = Arc::new(Map::new(paths.clone()));
+        let library = Arc::new(Library::new(paths.clone()));
+        // with no library open, the assistant has nothing to read
+        let knowledge: Arc<dyn Knowledge> = if paths.data.is_some() {
+            Arc::new(EngineKnowledge { library: library.clone(), map: map.clone() })
+        } else {
+            Arc::new(NoKnowledge)
+        };
+        Engine { map, library, paths, setup: None, ai: None, chats: Chats::default(), knowledge, updater: Updater::product() }
     }
 
     pub fn with_ai(mut self, ai: Local) -> Engine {
@@ -69,7 +77,7 @@ impl Engine {
                 return r;
             }
             if let Some(r) = self.library.route(req) {
-                return r;
+                return if path == "/api/library" { self.with_pins(r) } else { r };
             }
         }
         match (method, path) {
@@ -80,6 +88,7 @@ impl Engine {
                     static_files::serve(&self.paths.web(), "setup.html") // no library yet: setup is the whole app
                 }
             }
+            ("GET" | "HEAD", "/sw.js") => static_files::serve(&self.paths.web(), "sw.js"),
             ("GET" | "HEAD", "/api/health") => Response::json(&json!({"ok": true, "engine": "rust", "data": self.paths.data.is_some()})),
             ("GET" | "HEAD", p) if p.starts_with("/ui/") => static_files::serve(&self.paths.web(), &p["/ui/".len()..]),
             _ => Response::not_found(),
@@ -131,11 +140,24 @@ impl Engine {
         })
     }
 
+    /// /api/library's `pins`: whether the map has help points to show (a library without a pack always offers them).
+    fn with_pins(&self, r: Response) -> Response {
+        let Ok(mut v) = serde_json::from_slice::<Value>(&r.body) else { return r };
+        if r.status == 200 && v.is_object() {
+            let layers = self.map.map_contents()["layers"].as_array().is_some_and(|l| !l.is_empty())
+                || self.map.map_contents()["layers"].as_object().is_some_and(|l| !l.is_empty());
+            v["pins"] = json!(self.map.pack_info().is_none() || layers);
+            return Response::json(&v);
+        }
+        r
+    }
+
     pub fn assistant_status(&self) -> Value {
         match &self.ai {
             Some(ai) => {
                 let local = ai.status();
-                json!({"model": local["name"], "online": ai.available(), "error": null, "local": local, "vision": false, "index": {"state": "off"}})
+                json!({"model": local["name"], "online": ai.available(), "error": null, "local": local, "vision": false, "index": {"state": "off"},
+                       "coverage": self.map.coverage()})
             }
             None => json!({"model": null, "online": false, "error": "no library", "local": null, "vision": false, "index": {"state": "off"}}),
         }

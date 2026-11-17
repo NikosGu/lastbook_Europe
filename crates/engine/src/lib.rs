@@ -7,6 +7,7 @@ pub mod appdirs;
 pub mod db;
 pub mod dist;
 pub mod http;
+pub mod knowledge;
 pub mod library;
 pub mod map;
 pub mod paths;

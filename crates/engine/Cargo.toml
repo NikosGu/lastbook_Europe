@@ -28,6 +28,7 @@ lol_html = "3"
 pdfium-render = { version = "0.9", default-features = false, features = ["pdfium_latest", "thread_safe"] }
 ruzstd = "0.9"
 lzma-rs = "0.3"
+flate2 = "1"
 
 [target.'cfg(unix)'.dependencies]
 libc = "0.2"

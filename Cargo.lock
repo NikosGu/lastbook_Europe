@@ -1543,6 +1543,7 @@ name = "lastbook-engine"
 version = "0.1.0"
 dependencies = [
  "filetime",
+ "flate2",
  "hex",
  "libc",
  "lol_html",
