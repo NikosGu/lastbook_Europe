@@ -5,27 +5,14 @@
 //! An address is a node, or a building (the middle of its outline). Its country is `addr:country`, else the region's
 //! country when the point lies inside it; its town is `addr:city`, else the municipality it lies in.
 
-use crate::geo::{self, Part};
+use crate::admin::Admin;
+use crate::geo;
 use crate::osm::{Kind, Thing};
 use lastbook_engine::map::address::{self, countries, Address};
 use lastbook_engine::regions;
 use rusqlite::Connection;
 use std::collections::HashMap;
 use std::path::Path;
-
-/// The areas an address is placed in when its tags do not say: the region's country, and its municipalities.
-#[derive(Debug, Default, Clone)]
-pub struct Areas {
-    /// The region's country and its outline.
-    pub country: Option<(String, Vec<Part>)>,
-    pub towns: Vec<(String, Vec<Part>)>,
-}
-
-impl Areas {
-    pub fn town_at(&self, lon: f64, lat: f64) -> Option<&str> {
-        self.towns.iter().find(|(_, rings)| geo::contains(rings, lon, lat)).map(|(n, _)| n.as_str())
-    }
-}
 
 /// The elements an address comes from.
 pub fn wanted(_: Kind, t: &[(&str, &str)]) -> bool {
@@ -77,7 +64,7 @@ fn numbers(t: &crate::osm::Tags, country: &str) -> Vec<String> {
 }
 
 /// The addresses of the region, one row per number, the same address mapped twice (on a node and on its building) once.
-pub fn rows(things: &[Thing], region: &str, areas: &Areas) -> Vec<Row> {
+pub fn rows(things: &[Thing], region: &str, areas: &Admin) -> Vec<Row> {
     let mut out: Vec<Row> = Vec::new();
     let mut seen: HashMap<(String, String, String, String), Vec<(f64, f64)>> = HashMap::new();
     let mut sorted: Vec<&Thing> = things.iter().collect();
@@ -170,7 +157,7 @@ mod tests {
         let things = crate::osm::read(&src, &wanted).unwrap();
         let li = vec![vec![(9.47, 47.04), (9.64, 47.04), (9.64, 47.28), (9.47, 47.28), (9.47, 47.04)]];
         let vaduz = vec![vec![(9.50, 47.12), (9.54, 47.12), (9.54, 47.15), (9.50, 47.15), (9.50, 47.12)]];
-        let areas = Areas { country: Some(("LI".into(), li)), towns: vec![("Vaduz".into(), vaduz)] };
+        let areas = Admin { country: Some(("LI".into(), li)), towns: vec![("Vaduz".into(), vaduz)], districts: Vec::new() };
         let rows = rows(&things, "LI", &areas);
         let mut shown: Vec<String> = rows.iter().map(|r| format!("{} {} {} {} {}", r.street, r.num, r.postcode, r.city, r.country)).collect();
         shown.sort();
