@@ -17,13 +17,13 @@
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Erste Schritte zu Hause",
          "note": "Familie, Geräte, das Radio, Wasser, Licht, der Aufzug, die Tiefkühltruhe, lebenswichtige Medikamente, Abfall und eine Ersatztoilette."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Wie man sich im Blackout verhält",
-         "note": "Auf Italienisch. Geräte ausschalten, den Kühlschrank geschlossen halten, Radio hören, Aufzüge meiden, und die Sicherheit beim Notstromaggregat."}
+         "note": "Auf Italienisch. Geräte ausschalten, den Kühlschrank geschlossen halten, Radio hören, Aufzüge meiden; Sicherheit beim Notstromaggregat."}
       ]
     },
     {
       "id": "food-link",
       "goto": "food/cook",
-      "label": "Kochen und der Kühlschrank ohne Strom",
+      "label": "Kochen und Kühlschrank ohne Strom",
       "hint": "Im Ratgeber „Essen & Kochen“"
     },
     {
@@ -42,12 +42,12 @@
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Lebenserhaltende Geräte, die Strom brauchen",
          "note": "Auf Italienisch. Frühzeitig um Hilfe bitten: Für Italien nennt die Seite die 118 und die Sozialdienste."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Ersatzbatterien und Ladegeräte für Hilfsmittel",
-         "note": "Hilfsmittel, die Strom brauchen, ein Medikamentenplan und -vorrat, und wer Ihnen helfen kann, die Wohnung zu verlassen, wenn Sie müssen."}
+         "note": "Hilfsmittel, die Strom brauchen, ein Medikamentenplan und -vorrat sowie wer Ihnen helfen kann, die Wohnung zu verlassen, wenn Sie müssen."}
       ]
     },
     {
       "id": "lift",
-      "label": "Ein Aufzug ist stehen geblieben, oder ich wohne weit oben",
+      "label": "Ein Aufzug ist stehen geblieben oder ich wohne weit oben",
       "hint": "Vielleicht ist jemand eingeschlossen, nur noch Treppen",
       "read": [
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Im Aufzug nachsehen, ob jemand eingeschlossen ist",
@@ -59,13 +59,13 @@
     {
       "id": "generator",
       "label": "Ich möchte ein Notstromaggregat betreiben",
-      "hint": "Ein tragbares Stromaggregat, Treibstoff, wo es stehen soll",
+      "hint": "Ein tragbares Stromaggregat, Kraftstoff, wo es stehen soll",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 18, "label": "Notstromaggregate: wo man sie betreibt, Treibstoff, Brandgefahr",
-         "note": "Nie in geschlossenen Räumen; etwa ein Liter Treibstoff pro Stunde; gelagerter Treibstoff ist eine Brandgefahr. Außerdem, warum Solaranlagen meist auch ausfallen."},
-        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Geräte an das Aggregat anschließen, nicht das Haus",
+        {"doc": "zsv-steiermark-blackout", "page": 18, "label": "Notstromaggregate: wo man sie betreibt, Kraftstoff, Brandgefahr",
+         "note": "Nie in geschlossenen Räumen; etwa ein Liter Kraftstoff pro Stunde; gelagerter Kraftstoff ist eine Brandgefahr. Außerdem, warum Solaranlagen meist auch ausfallen."},
+        {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Geräte direkt ans Aggregat anschließen, nicht ans Hausnetz",
          "note": "Auf Italienisch. Nicht an die Hausinstallation anschließen und nie im Haus oder in der Garage starten."},
-        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Kein Stromaggregat und kein Heizgerät für draußen im Haus",
+        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Im Haus kein Stromaggregat und kein Heizgerät für draußen",
          "note": "Auf Englisch. Aus den Kernbotschaften der IFRC für den Winter."}
       ]
     },
@@ -79,7 +79,7 @@
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 7, "label": "Was ohne Strom nicht mehr funktioniert",
          "note": "Telefon und Internet, Kartenzahlung und Geldautomaten, Kühlschrank, Herd, Leitungswasser, Licht, Heizung."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Zu Hause bleiben und aufeinander achten",
-         "note": "Zu Hause bleiben, außer Sie werden gebraucht, Treibstoff sparen, mit den Nachbarn reden, herausfinden, wer Hilfe braucht."}
+         "note": "Zu Hause bleiben, außer Sie werden gebraucht, Kraftstoff sparen, mit den Nachbarn reden, herausfinden, wer Hilfe braucht."}
       ]
     },
     {
@@ -90,18 +90,18 @@
         {"doc": "oezsv-blackout-checkliste", "page": 7, "label": "Nach einem Blackout",
          "note": "Prüfen, ob Herd und Bügeleisen aus sind, nur einschalten, was Sie brauchen, nicht dringende Anrufe vermeiden."},
         {"doc": "zsv-steiermark-blackout", "page": 27, "label": "Wenn der Strom zurückkommt",
-         "note": "Geräte, Heizung, Kühlschrank, Abwasserpumpen, Bargeld, zu Hause bleiben, und warten, bevor Sie Computer neu starten."}
+         "note": "Geräte, Heizung, Kühlschrank, Abwasserpumpen, Bargeld, zu Hause bleiben und warten, bevor Sie Computer neu starten."}
       ]
     }
   ],
   "limits": [
     {"text": "Rufen Sie die Notrufnummern nur bei einem lebensbedrohlichen Notfall an.", "doc": "oezsv-blackout-checkliste", "page": 5},
-    {"text": "Ein Notstromaggregat hat einen Motor: Es darf nicht in geschlossenen Räumen laufen, und gelagerter Treibstoff ist eine Brandgefahr.", "doc": "zsv-steiermark-blackout", "page": 18},
-    {"text": "Schließen Sie ein Notstromaggregat nicht an die Hausinstallation an, und starten Sie es nie im Haus oder in der Garage.", "doc": "ravenna-rischio-blackout", "page": 1},
+    {"text": "Ein Notstromaggregat hat einen Motor: Es darf nicht in geschlossenen Räumen laufen, und gelagerter Kraftstoff ist eine Brandgefahr.", "doc": "zsv-steiermark-blackout", "page": 18},
+    {"text": "Schließen Sie ein Notstromaggregat nicht an die Hausinstallation an und starten Sie es nie im Haus oder in der Garage.", "doc": "ravenna-rischio-blackout", "page": 1},
     {"text": "Meiden Sie Aufzüge, bis offiziell gemeldet wird, dass der Strom wieder da ist: Während der Reparaturen kann er kommen und gehen.", "doc": "ravenna-rischio-blackout", "page": 1},
-    {"text": "Wenn lebenswichtige Medikamente wie Insulin keine Woche reichen, sagen Sie es einer Apotheke, einem Arzt oder dem Rettungsdienst.", "doc": "zsv-steiermark-blackout", "page": 26},
+    {"text": "Wenn lebenswichtige Medikamente wie Insulin keine Woche reichen, geben Sie einer Apotheke, einem Arzt oder dem Rettungsdienst Bescheid.", "doc": "zsv-steiermark-blackout", "page": 26},
     {"text": "Lassen Sie Kerzen oder anderes offenes Feuer nie unbeaufsichtigt.", "doc": "zsv-steiermark-notfallratgeber", "page": 7},
-    {"text": "Wenn der Strom zurückkommt, prüfen Sie, ob Herd und Bügeleisen wirklich aus sind: Sie können einen Brand auslösen.", "doc": "zsv-steiermark-blackout", "page": 27}
+    {"text": "Wenn der Strom zurückkommt, prüfen Sie, ob Herd und Bügeleisen wirklich aus sind – sie können einen Brand auslösen.", "doc": "zsv-steiermark-blackout", "page": 27}
   ],
   "prepare": [
     {"doc": "oezsv-blackout-checkliste", "page": 4, "label": "Was Sie für einen Blackout zu Hause haben sollten", "note": "Wasser, Lebensmittel, ein Batterie- oder Kurbelradio, Licht, Medikamente, eine Kochmöglichkeit, Bargeld in kleinen Scheinen; für 10 bis 14 Tage planen."},

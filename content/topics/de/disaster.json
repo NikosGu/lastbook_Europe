@@ -4,7 +4,7 @@
   "mode": "now",
   "title": "Erdbeben, Hochwasser, Brand und andere Katastrophen",
   "short": "Erdbeben, Tsunami, Hochwasser, Brand, drinnen bleiben, das Zuhause verlassen",
-  "intro": "Lesestoff zu den Gefahren, denen Menschen in Europa am häufigsten begegnen: Erdbeben, Tsunamis an der Küste, Hochwasser, Brände zu Hause und im Wald, und Unfälle, bei denen man drinnen bleiben oder das Zuhause verlassen muss. Die meisten Seiten stammen aus dem Zivilschutz Italiens, Deutschlands und Österreichs.",
+  "intro": "Lesestoff zu den Gefahren, denen Menschen in Europa am häufigsten begegnen: Erdbeben, Tsunamis an der Küste, Hochwasser, Brände zu Hause und im Wald sowie Unfälle, bei denen man drinnen bleiben oder das Zuhause verlassen muss. Die meisten Seiten stammen aus dem Zivilschutz Italiens, Deutschlands und Österreichs.",
   "keywords": ["Erdbeben", "Beben", "Nachbeben", "Erschütterung", "Tsunami", "Flutwelle", "Hochwasser", "Überschwemmung", "Überflutung", "Flut", "Sturzflut", "Starkregen", "Fluss", "Sturm", "Unwetter", "Gewitter", "Blitz", "Blitzschlag", "Feuer", "Brand", "Wohnungsbrand", "Hausbrand", "Rauch", "Rauchmelder", "Waldbrand", "Flächenbrand", "Buschfeuer", "evakuieren", "Evakuierung", "Notgepäck", "Notfallrucksack", "Fluchtrucksack", "Dokumente", "Dokumentenmappe", "Schutz im Gebäude", "drinnen bleiben", "im Haus bleiben", "Chemieunfall", "Chemikalien", "Strahlung", "nuklear", "Atomunfall", "Jod", "Jodtabletten", "Explosion", "Sirene", "Sirenen"],
   "choices": [
     {
@@ -13,7 +13,7 @@
       "hint": "Ein Erdbeben, drinnen oder draußen",
       "read": [
         {"doc": "dpc-io-non-rischio", "page": 12, "label": "Während eines Erdbebens",
-         "note": "Auf Italienisch. Drinnen: an einer tragenden Wand oder unter einem stabilen Tisch, und nicht hinausstürzen. Draußen: weg von Gebäuden, Bäumen, Straßenlaternen und Stromleitungen."}
+         "note": "Auf Italienisch. Drinnen: an einer tragenden Wand oder unter einem stabilen Tisch Schutz suchen, nicht hinausstürzen. Draußen: weg von Gebäuden, Bäumen, Straßenlaternen und Stromleitungen."}
       ]
     },
     {
@@ -27,12 +27,12 @@
     },
     {
       "id": "tsunami",
-      "label": "Starkes Erdbeben an der Küste, oder das Meer zieht sich zurück",
+      "label": "Starkes Erdbeben an der Küste oder das Meer zieht sich zurück",
       "hint": "Anzeichen und Warnungen vor einem Tsunami, am Strand oder im Hafen",
       "read": [
         {"doc": "dpc-io-non-rischio", "page": 18, "label": "Die Anzeichen eines Tsunamis",
-         "note": "Auf Italienisch. Vielleicht gibt es keine amtliche Warnung: ein starkes Erdbeben, das Meer, das sich plötzlich zurückzieht, ein Grollen vom Meer."},
-        {"doc": "dpc-io-non-rischio", "page": 20, "label": "Schnell nach oben, zu Fuß",
+         "note": "Auf Italienisch. Vielleicht gibt es keine amtliche Warnung: ein starkes Erdbeben, ein plötzlich zurückweichendes Meer, ein Grollen vom Meer her."},
+        {"doc": "dpc-io-non-rischio", "page": 20, "label": "Schnell und zu Fuß nach oben",
          "note": "Auf Italienisch. Nach einer Warnung oder schon bei einem einzigen Anzeichen: die nächste Anhöhe oder obere Stockwerke, andere warnen, das Auto stehen lassen; Boote."},
         {"doc": "dpc-io-non-rischio", "page": 21, "label": "Nach einem Tsunami",
          "note": "Auf Italienisch. Weitere Wellen können folgen; oben bleiben, bis die Behörden etwas anderes sagen; Leitungswasser und Lebensmittel."}
@@ -46,7 +46,7 @@
         {"doc": "dpc-io-non-rischio", "page": 28, "label": "Wenn eine Hochwasserwarnung ausgegeben wird",
          "note": "Auf Italienisch. Informiert bleiben, nicht im Untergeschoss schlafen, das Erdgeschoss schützen, gut überlegen, bevor Sie das Auto umparken."},
         {"doc": "vvf-acqua-e-vita", "page": 1, "label": "Sich bei Hochwasser schützen",
-         "note": "Auf Italienisch. Nach oben gehen, Keller und Unterführungen meiden, das Telefon für Notfälle freihalten, eine Tasche bereit zum Aufbruch."},
+         "note": "Auf Italienisch. Nach oben gehen, Keller und Unterführungen meiden, das Telefon für Notfälle freihalten, eine gepackte Tasche bereithalten."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 31, "label": "Nach oben, nie in den Keller",
          "note": "Bei Hochwasser und Starkregen schützen höhere Stockwerke; Keller, Tiefgaragen und Unterführungen können zur Falle werden."}
       ]
@@ -81,7 +81,7 @@
         {"doc": "zsv-steiermark-notfallratgeber", "page": 10, "label": "Hinausgehen oder am Fenster warten",
          "note": "Ist der Fluchtweg rauchfrei, hinausgehen; bei Rauch die Türen schließen, Ritzen mit nassen Tüchern abdichten und an einem offenen Fenster warten."},
         {"doc": "zsv-steiermark-notfallratgeber", "page": 8, "label": "Einen kleinen Brand löschen",
-         "note": "Feuerlöscher und Löschdecken, nie Wasser auf brennendes Fett oder Öl, und eine Person, deren Kleidung brennt."}
+         "note": "Feuerlöscher und Löschdecken, nie Wasser auf brennendes Fett oder Öl; eine Person, deren Kleidung brennt."}
       ]
     },
     {
@@ -90,8 +90,8 @@
       "hint": "Rauch, Flammen im Wald, vom Feuer eingeschlossen",
       "read": [
         {"doc": "dpc-io-non-rischio", "page": 39, "label": "Wenn Sie einen Waldbrand sehen oder von einem eingeschlossen sind",
-         "note": "Auf Italienisch. Sofort anrufen; wie man wegkommt, wo man sich hinlegt, und wann man auf bereits verbrannten Boden wechselt."},
-        {"doc": "dpc-io-non-rischio", "page": 37, "label": "Einen Brand melden, oder auch nur Rauch",
+         "note": "Auf Italienisch. Sofort anrufen; wie man wegkommt, wo man sich hinlegt und wann man auf bereits verbrannten Boden wechselt."},
+        {"doc": "dpc-io-non-rischio", "page": 37, "label": "Einen Brand melden – oder auch nur Rauch",
          "note": "Auf Italienisch. Den genauen Ort und die Gemeinde angeben. Italienische Notrufnummern."}
       ]
     },
@@ -105,7 +105,7 @@
         {"doc": "zsv-steiermark-notfallratgeber", "page": 4, "label": "Die Sirenen in Österreich: Warnung und Alarm",
          "note": "Beim Alarmsignal einen geschützten Raum oder den Keller aufsuchen und das Radio einschalten."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Wasser und Jod nach einem Atomunfall",
-         "note": "Leitungswasser kann einige Tage lang unsicher sein; Jodtabletten nur, wenn die Behörden es sagen."}
+         "note": "Leitungswasser kann einige Tage lang unsicher sein; Jodtabletten nur auf Anweisung der Behörden."}
       ]
     },
     {
@@ -114,7 +114,7 @@
       "hint": "Blitze, auf einem Grat oder Gipfel überrascht",
       "read": [
         {"doc": "zsv-steiermark-notfallratgeber", "page": 27, "label": "Gewitter in den Bergen",
-         "note": "Warnzeichen, und welche Orte etwas Schutz bieten und welche keinen."}
+         "note": "Warnzeichen; welche Orte etwas Schutz bieten und welche keinen."}
       ]
     },
     {
@@ -127,13 +127,13 @@
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 27, "label": "Wichtige Dokumente",
          "note": "Welche Unterlagen Sie zusammen aufbewahren, in einer feuerfesten oder wasserdichten Box, mit Kopien."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Wenn Sie Hilfe brauchen, um das Haus zu verlassen",
-         "note": "Hilfsmittel, Medikamente, Kontakte, und klären, wer Ihnen hinaushelfen kann."}
+         "note": "Hilfsmittel, Medikamente, Kontakte und klären, wer Ihnen hinaushelfen kann."}
       ]
     }
   ],
   "limits": [
     {"text": "Stürzen Sie während eines Erdbebens nicht hinaus: Warten Sie, bis das Beben aufhört.", "doc": "dpc-io-non-rischio", "page": 12},
-    {"text": "Benutzen Sie nach einem Erdbeben keinen Aufzug, und seien Sie auf Treppen vorsichtig.", "doc": "dpc-io-non-rischio", "page": 13},
+    {"text": "Benutzen Sie nach einem Erdbeben keinen Aufzug und seien Sie auf Treppen vorsichtig.", "doc": "dpc-io-non-rischio", "page": 13},
     {"text": "Vielleicht gibt es keine amtliche Tsunami-Warnung: Ein starkes Erdbeben oder ein Meer, das sich plötzlich zurückzieht, ist das Signal, auf höher gelegenes Gelände zu gehen.", "doc": "dpc-io-non-rischio", "page": 18},
     {"text": "Flüchten Sie vor einem Tsunami nicht mit dem Auto: Es kann zur Falle werden.", "doc": "dpc-io-non-rischio", "page": 20},
     {"text": "Auf die erste Welle können weitere gefährliche Wellen folgen: Gehen Sie erst zurück, wenn es erlaubt ist.", "doc": "dpc-io-non-rischio", "page": 21},
@@ -145,20 +145,20 @@
     {"text": "Benutzen Sie bei einem Brand keinen Aufzug und springen Sie nicht aus dem Fenster.", "doc": "zsv-steiermark-notfallratgeber", "page": 10},
     {"text": "Wenn Sie einen Waldbrand sehen, rufen Sie sofort an: Gehen Sie nicht davon aus, dass schon jemand anderes angerufen hat.", "doc": "dpc-io-non-rischio", "page": 39},
     {"text": "Wenn in einem Gebäude Gas oder gefährliche Flüssigkeiten austreten, verlassen Sie das Gebäude.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 30},
-    {"text": "Nehmen Sie Jodtabletten nur, wenn die Behörden dazu auffordern: Sie können schwere Nebenwirkungen haben.", "doc": "oezsv-bevorratungsratgeber", "page": 17}
+    {"text": "Nehmen Sie Jodtabletten nur ein, wenn die Behörden dazu auffordern – sie können schwere Nebenwirkungen haben.", "doc": "oezsv-bevorratungsratgeber", "page": 17}
   ],
   "prepare": [
     {"doc": "dpc-io-non-rischio", "page": 11, "label": "Das Zuhause vor einem Erdbeben sicherer machen", "note": "Auf Italienisch. Hohe Möbel befestigen, Schweres unten aufbewahren, lernen, wie man Gas, Wasser und Strom abstellt, die sicheren Stellen kennen."},
-    {"doc": "dpc-io-non-rischio", "page": 26, "label": "Wie sich Hochwasser verhält, und die gefährlichsten Orte", "note": "Auf Italienisch. Das Wasser kann in wenigen Minuten um ein bis zwei Meter steigen."},
+    {"doc": "dpc-io-non-rischio", "page": 26, "label": "Wie sich Hochwasser verhält und wo es am gefährlichsten ist", "note": "Auf Italienisch. Das Wasser kann in wenigen Minuten um ein bis zwei Meter steigen."},
     {"doc": "dpc-io-non-rischio", "page": 27, "label": "Vor einem Hochwasser: Plan, Ausrüstung, Wertsachen aus dem Keller", "note": "Auf Italienisch. Auch der Gemeinde Bescheid geben, wenn jemand im Haushalt Hilfe braucht."},
     {"doc": "dpc-io-non-rischio", "page": 19, "label": "An der Küste: ein Familienplan für einen Tsunami", "note": "Auf Italienisch."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 36, "label": "Checkliste Notgepäck", "note": "Aus Deutschland."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Dokumente in einer wasserdichten Mappe, und Sandsäcke", "note": "Aus Österreich."},
+    {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Dokumente in einer wasserdichten Mappe und Wasserschutzsäcke", "note": "Aus Österreich."},
     {"doc": "dpc-io-non-rischio", "page": 38, "label": "Waldbrände verhindern", "note": "Auf Italienisch. Zigaretten, Feuer im Wald, Autos auf trockenem Gras, Abfall, das Abbrennen von Stoppelfeldern, Wind."}
   ],
   "learn": [
     {"doc": "dpc-io-non-rischio", "label": "Io non rischio: Erdbeben, Tsunami, Hochwasser", "note": "Auf Italienisch. Der Ratgeber des italienischen Zivilschutzes (Dipartimento della Protezione Civile, 2025): vorher, währenddessen und danach, dazu Waldbrände, Vulkane und IT-alert. Für Italien geschrieben."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Vorsorgen für Krisen und Katastrophen", "note": "Der Ratgeber des deutschen Bundes (2025)."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Vorsorgen für Krisen und Katastrophen", "note": "Der Ratgeber des deutschen Bundesamts für Bevölkerungsschutz (2025)."},
     {"doc": "zsv-steiermark-notfallratgeber", "label": "Notfall-Ratgeber: Richtiges Verhalten in Notsituationen", "note": "Ratgeber aus Österreich (2024): Notrufnummern, Sirenen, Brand, Erste Hilfe, Unfälle, Berge und Wasser."}
   ],
   "related": ["comms", "shelter", "hurt", "water"],

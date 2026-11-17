@@ -13,7 +13,7 @@
       "hint": "Regelmäßige Medikamente, Rezepte, sicher aufbewahren",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Eine Hausapotheke und Medikamente für zehn Tage",
-         "note": "Ärzte und Apotheken sind vielleicht nicht erreichbar; was Sie zu Hause haben sollten, und warum ein Erste-Hilfe-Kurs hilft."},
+         "note": "Ärzte und Apotheken sind vielleicht nicht erreichbar; was Sie zu Hause haben sollten und warum ein Erste-Hilfe-Kurs hilft."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 13, "label": "Wo und wie Sie Medikamente aufbewahren",
          "note": "Kühl, trocken, dunkel und für Kinder unzugänglich verschlossen, nicht im Badezimmer; eine jährliche Kontrolle; alte Medikamente zurück in die Apotheke."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Checkliste Hausapotheke",
@@ -26,13 +26,13 @@
       "hint": "Nicht schlafen können, ständig besorgt, jemand unter Schock oder verzweifelt",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 18, "label": "Was bei Angst und Sorgen hilft",
-         "note": "In Kontakt bleiben, feste Tagesabläufe, nach draußen gehen, Ruhe, und nur so viele Nachrichten wie nötig. Nennt Hilfetelefone in Deutschland."},
+         "note": "In Kontakt bleiben, feste Tagesabläufe, nach draußen gehen, Ruhe und nur so viele Nachrichten wie nötig. Nennt Hilfetelefone in Deutschland."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 116, "label": "Psychologische Erste Hilfe: hinsehen, zuhören, weitervermitteln",
-         "note": "Auf Englisch. Wie man auf jemanden in Not zugeht und zuhört, und was man nicht sagen sollte."},
+         "note": "Auf Englisch. Wie man auf jemanden in Not zugeht, wie man zuhört und was man nicht sagen sollte."},
         {"doc": "zsv-steiermark-blackout", "page": 16, "label": "Wege, sich selbst zu beruhigen",
          "note": "Langsam atmen, kleine Aufgaben, eine Decke, Bewegung, ein Tagebuch führen."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 118, "label": "Wann fachliche Hilfe nötig ist",
-         "note": "Auf Englisch. Eine Woche kein Schlaf, den Alltag nicht mehr bewältigen können, oder die Drohung, sich selbst oder anderen zu schaden."}
+         "note": "Auf Englisch. Eine Woche kein Schlaf, den Alltag nicht mehr bewältigen können oder die Drohung, sich selbst oder anderen zu schaden."}
       ]
     },
     {
@@ -54,7 +54,7 @@
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 10, "label": "Vorsorge mit einer Beeinträchtigung",
          "note": "Hilfsmittel, Ersatzbatterien und Ladegeräte, ein Medikamentenplan, ein Assistenztier, Kontakte."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Verständigung mit Rettungskräften",
-         "note": "Eine Notfallkarte, Stift und Papier, und Nachbarn, die wissen, wie sie helfen können."},
+         "note": "Eine Notfallkarte, Stift und Papier sowie Nachbarn, die wissen, wie sie helfen können."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Nachbarn, die Hilfe brauchen",
          "note": "Menschen, die Pflegedienste oder Essen auf Rädern im Blackout nicht mehr erreichen."}
       ]
@@ -62,7 +62,7 @@
     {
       "id": "kit",
       "label": "Was in einen Erste-Hilfe-Kasten gehört",
-      "hint": "Für Zuhause und das Auto",
+      "hint": "Für zu Hause und fürs Auto",
       "read": [
         {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Ein Erste-Hilfe-Kasten für den Haushalt",
          "note": "Der Inhalt eines österreichischen Standard-Verbandskastens."}
@@ -70,7 +70,7 @@
     }
   ],
   "limits": [
-    {"text": "Bewahren Sie Medikamente nicht im Badezimmer auf, und spülen Sie alte Medikamente nicht in die Toilette.", "doc": "oezsv-bevorratungsratgeber", "page": 13},
+    {"text": "Bewahren Sie Medikamente nicht im Badezimmer auf und spülen Sie alte Medikamente nicht die Toilette hinunter.", "doc": "oezsv-bevorratungsratgeber", "page": 13},
     {"text": "Wenn jemand keine Hilfe möchte, drängen Sie sie ihm nicht auf.", "doc": "ifrc-first-aid-guidelines-2020", "page": 117},
     {"text": "Holen Sie fachliche Hilfe, wenn jemand eine Woche lang nicht geschlafen hat, den Alltag nicht bewältigt oder droht, sich selbst oder anderen zu schaden.", "doc": "ifrc-first-aid-guidelines-2020", "page": 118},
     {"text": "Ein einzelnes Nachgespräch (Debriefing) nach einem traumatischen Ereignis kann schaden.", "doc": "ifrc-first-aid-guidelines-2020", "page": 366},
@@ -96,12 +96,12 @@
     {"title": "Schritt 2: Erste Hilfe lernen", "goal": "Wissen, was Ersthelfer tun, bevor Sie es brauchen",
      "read": [
        {"doc": "zsv-steiermark-notfallratgeber", "page": 16, "label": "Die Aufgaben von Ersthelfern", "note": "Aus der Steiermark (Österreich)."},
-       {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Eine Person der Reihe nach untersuchen", "note": "Auf Englisch."}
+       {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Eine Person der Reihe nach prüfen", "note": "Auf Englisch."}
      ]},
-    {"title": "Schritt 3: Wissen, was bei Angst und Stress hilft", "goal": "Stress bei sich und anderen bemerken, und was ihn lindert",
+    {"title": "Schritt 3: Wissen, was bei Angst und Stress hilft", "goal": "Stress bei sich und anderen erkennen und wissen, was ihn lindert",
      "read": [
        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 18, "label": "Was hilft", "note": "Aus Deutschland."},
-       {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Anzeichen von Stress, und was schützt", "note": "Aus der Steiermark (Österreich)."}
+       {"doc": "zsv-steiermark-blackout", "page": 15, "label": "Anzeichen von Stress und was davor schützt", "note": "Aus der Steiermark (Österreich)."}
      ]},
     {"title": "Schritt 4: Jemandem in Not helfen", "goal": "Zuhören und Menschen an Hilfe weitervermitteln, ohne sie zu drängen",
      "read": [
@@ -118,7 +118,7 @@
     "missing": [
       "Kein Ratgeber zur Pflege einer kranken Person zu Hause über Tage oder Wochen.",
       "Nichts zu chronischen Krankheiten ohne Arzt (Diabetes, Bluthochdruck, Herzkrankheiten), zu Schwangerschaft und Geburt oder zu den Zähnen.",
-      "Kein Ratgeber zu Medikamenten: was man wofür nimmt, Dosierungen, oder wie lange Medikamente haltbar sind.",
+      "Kein Ratgeber zu Medikamenten: was man wofür nimmt, Dosierungen oder wie lange Medikamente haltbar sind.",
       "Hilfetelefone werden nur für Deutschland, für die Steiermark in Österreich und für Polen genannt."
     ]
   }

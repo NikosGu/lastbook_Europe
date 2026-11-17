@@ -3,7 +3,7 @@
   "id": "sanitation",
   "mode": "now",
   "title": "Toilette, Abfall und Hygiene, wenn kein Wasser mehr kommt",
-  "short": "Eine Toilette ohne Wasser, saubere Hände, Müll",
+  "short": "Toilette ohne Wasser, saubere Hände, Müll",
   "intro": "Lesestoff für den Fall, dass sich die Toilette nicht spülen lässt oder das Wasser abgestellt ist: eine Ersatztoilette, saubere Hände und Müll. Die Bibliothek hat dazu nur kurze Abschnitte; was fehlt, steht unten.",
   "keywords": ["Toilette", "Klo", "WC", "Spülung geht nicht", "keine Spülung", "Toilettenspülung", "Abwasser", "Kanalisation", "Kanal", "Abfluss", "Eimertoilette", "Campingtoilette", "Nottoilette", "Toilettenbeutel", "Müllbeutel", "Müllsäcke", "Abfall", "Müll", "Hygiene", "waschen", "Händewaschen", "Hände waschen", "Hände", "Seife", "Händedesinfektion", "Desinfektionsmittel", "Windeln", "Hygieneartikel", "Binden", "Tampons", "Fliegen"],
   "choices": [
@@ -13,7 +13,7 @@
       "hint": "Kein Wasser, ein langer Blackout, beschädigte Kanalisation",
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 21, "label": "Toilettenbeutel, ein Eimer oder eine Campingtoilette",
-         "note": "Warum die Toilette bei einem langen Blackout zum Problem wird, und was Sie bereithalten sollten: verschließbare Beutel, Eimer, eine Campingtoilette."},
+         "note": "Warum die Toilette bei einem langen Blackout zum Problem wird und was Sie bereithalten sollten: verschließbare Beutel, Eimer, eine Campingtoilette."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Reißfeste Beutel zum Einhängen in die Toilette",
          "note": "Die Checkliste Hygiene: große, reißfeste Müllbeutel für die Toilette, eine Campingtoilette und weitere Hygieneartikel."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Eine Ersatztoilette, wenn Wasser oder Kanalisation ausfallen",
@@ -24,11 +24,11 @@
     },
     {
       "id": "hands",
-      "label": "Hände sauber halten mit wenig Wasser",
+      "label": "Mit wenig Wasser die Hände sauber halten",
       "hint": "Kein fließendes Wasser, die Seife geht aus",
       "read": [
         {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "Wann sich alle die Hände waschen sollten",
-         "note": "Auf Englisch. Nach der Toilette, vor dem Zubereiten von Essen, vor dem Essen oder dem Füttern eines Kindes, und nachdem man ein Kind sauber gemacht hat."},
+         "note": "Auf Englisch. Nach der Toilette, vor dem Zubereiten von Essen, vor dem Essen oder dem Füttern eines Kindes und nachdem man ein Kind sauber gemacht hat."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Saubere Hände vor dem Umgang mit Trinkwasser",
          "note": "Auf Englisch. Hände waschen, bevor man mit gelagertem Wasser hantiert, und ein Zapfhahn am Behälter."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Handschuhe, Einweggeschirr und -besteck",
@@ -41,14 +41,14 @@
       "hint": "Keine Müllabfuhr, Essensreste, Gerüche, Fliegen",
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Warum Abfall innerhalb von Tagen gefährlich wird",
-         "note": "Bei einem langen Blackout führen Müll und Fäkalien bald zu Insekten und Krankheiten."},
+         "note": "Bei einem langen Blackout werden Müll und Fäkalien bald zu Brutstätten für Insekten und Krankheiten."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Abfall vermeiden und in Säcken sammeln",
          "note": "Aus Österreich."}
       ]
     },
     {
       "id": "sewage",
-      "label": "Abflüsse nach einem Hochwasser, oder Rückstau von Abwasser",
+      "label": "Abflüsse nach einem Hochwasser oder Rückstau von Abwasser",
       "hint": "Überfluteter Keller, Rückstau im Abfluss, eine Abwasserpumpe",
       "read": [
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Bevor Sie nach einem Hochwasser die Abflüsse benutzen",
@@ -59,7 +59,7 @@
     }
   ],
   "limits": [
-    {"text": "Herumliegender Müll und Fäkalien führen innerhalb weniger Tage zu Insekten und Krankheiten.", "doc": "zsv-steiermark-blackout", "page": 10},
+    {"text": "Herumliegender Müll und Fäkalien werden innerhalb weniger Tage zu Brutstätten für Insekten und Krankheiten.", "doc": "zsv-steiermark-blackout", "page": 10},
     {"text": "Klären Sie nach einem Hochwasser, ob Kanalisation, Klärgruben und Brunnen beschädigt sind, bevor Sie die Abflüsse benutzen.", "doc": "dpc-io-non-rischio", "page": 31},
     {"text": "Bei einem langen Blackout kommt das Waschen an zweiter Stelle: Trinkwasser muss gespart werden.", "doc": "zsv-steiermark-blackout", "page": 21}
   ],

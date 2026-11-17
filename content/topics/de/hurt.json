@@ -4,102 +4,102 @@
   "mode": "now",
   "title": "Jemand ist verletzt oder plötzlich krank",
   "short": "Erste Hilfe: Blutungen, Verbrennungen, Atmung, Verletzungen, plötzliche Erkrankung",
-  "intro": "Lesestoff für Erste Hilfe, bis Hilfe kommt: die Person untersuchen, Hilfe rufen, Blutungen, Verbrennungen, Atmung und Wiederbelebung, Verletzungen und plötzliche Erkrankungen. Die meisten Seiten stammen aus den internationalen Erste-Hilfe-Leitlinien der IFRC (2020), die für Erste-Hilfe-Ausbilder geschrieben sind; einige aus Ratgebern des österreichischen und deutschen Zivilschutzes.",
-  "keywords": ["Erste Hilfe", "Verletzung", "verletzt", "Wunde", "Schnittwunde", "Schnitt", "Blutung", "blutet", "Blut", "Tourniquet", "abbinden", "Druckverband", "Verbrennung", "Verbrühung", "Knochenbruch", "Bruch", "Fraktur", "Verstauchung", "Schiene", "Kopfverletzung", "Gehirnerschütterung", "Wirbelsäule", "Nacken", "Wiederbelebung", "Herzdruckmassage", "Reanimation", "atmet nicht", "bewusstlos", "reagiert nicht", "stabile Seitenlage", "Defibrillator", "AED", "Verschlucken", "Ersticken", "Schock", "Hitzschlag", "Sonnenstich", "Austrocknung", "Dehydrierung", "Durchfall", "Erbrechen", "Unterkühlung", "Erfrierung", "allergische Reaktion", "Anaphylaxie", "Adrenalin", "Epinephrin", "Asthma", "Herzinfarkt", "Brustschmerzen", "Schlaganfall", "Krampfanfall", "Anfall", "Unterzuckerung", "Diabetes", "Vergiftung", "Gift", "Kohlenmonoxid", "Biss", "Stich", "Insektenstich", "Zecke", "Schlange", "Schlangenbiss", "112", "911", "999", "Rettung", "Rettungswagen", "Krankenwagen", "Notarzt", "Notfall"],
+  "intro": "Lesestoff zur Ersten Hilfe, bis Hilfe eintrifft: den Zustand der Person prüfen, Hilfe rufen, Blutungen, Verbrennungen, Atmung und Herz-Lungen-Wiederbelebung, Verletzungen und plötzliche Erkrankungen. Die meisten Seiten stammen aus den internationalen Erste-Hilfe-Leitlinien der Rotkreuz-Föderation IFRC (2020), die für Erste-Hilfe-Ausbilder geschrieben sind; einige aus Ratgebern des österreichischen Zivilschutzes und des deutschen Bevölkerungsschutzes.",
+  "keywords": ["Erste Hilfe", "Verletzung", "verletzt", "Wunde", "Schnittwunde", "Schnitt", "Blutung", "blutet", "Blut", "Tourniquet", "abbinden", "Druckverband", "Verbrennung", "Verbrühung", "Knochenbruch", "Bruch", "Fraktur", "Verstauchung", "Schiene", "Kopfverletzung", "Gehirnerschütterung", "Wirbelsäule", "Nacken", "Wiederbelebung", "Herz-Lungen-Wiederbelebung", "HLW", "Herzdruckmassage", "Reanimation", "atmet nicht", "bewusstlos", "reagiert nicht", "stabile Seitenlage", "Defibrillator", "AED", "Verschlucken", "Ersticken", "Schock", "Hitzschlag", "Sonnenstich", "Austrocknung", "Dehydrierung", "Durchfall", "Erbrechen", "Unterkühlung", "Erfrierung", "allergische Reaktion", "Anaphylaxie", "Adrenalin", "Epinephrin", "Asthma", "Herzinfarkt", "Brustschmerzen", "Schlaganfall", "Krampfanfall", "Anfall", "Unterzuckerung", "Diabetes", "Vergiftung", "Gift", "Giftnotruf", "Kohlenmonoxid", "Biss", "Stich", "Insektenstich", "Zecke", "Schlange", "Schlangenbiss", "112", "911", "999", "Rettung", "Rettungswagen", "Krankenwagen", "Notarzt", "Notruf", "Rettungsdienst", "Notfall"],
   "choices": [
     {
       "id": "check",
-      "label": "Ich weiß nicht, was los ist: Wie untersuche ich die Person?",
-      "hint": "Ein Unfall, ein Zusammenbruch, mehrere Verletzte",
+      "label": "Ich weiß nicht, was los ist: Wie prüfe ich den Zustand der Person?",
+      "hint": "Ein Unfall, jemand ist zusammengebrochen, mehrere Verletzte",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Die Person der Reihe nach untersuchen",
-         "note": "Auf Englisch. Ist es sicher? Reagiert die Person, sind die Atemwege frei, atmet sie normal, blutet sie stark?"},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Auf die eigene Sicherheit achten, früh anrufen, den am schwersten Verletzten zuerst helfen",
-         "note": "Auf Englisch. Wann man Abstand hält und die Behörden alarmiert, mit dem Telefon auf Lautsprecher anrufen, und mehrere Verletzte."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 103, "label": "Was Sie dem Notruf sagen",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 102, "label": "Die Person der Reihe nach prüfen",
+         "note": "Auf Englisch. Ist die Lage sicher? Reagiert die Person, sind die Atemwege frei, atmet sie normal, blutet sie stark?"},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Auf Eigenschutz achten, früh anrufen, den Schwerstverletzten zuerst helfen",
+         "note": "Auf Englisch. Wann man Abstand hält und die Behörden alarmiert, mit Lautsprecher telefonieren, mehrere Verletzte."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 103, "label": "Was Sie beim Notruf sagen",
          "note": "Auf Englisch. Ruhig bleiben und die Fragen beantworten; besser früh mit wenig Informationen anrufen als zu warten."},
         {"doc": "zsv-steiermark-notfallratgeber", "page": 16, "label": "Was Ersthelfer tun",
-         "note": "Ruhe bewahren, die Unfallstelle absichern, lebensrettende Maßnahmen, Hilfe rufen, was man sagt."}
+         "note": "Ruhe bewahren, die Unfallstelle absichern, lebensrettende Sofortmaßnahmen, Hilfe rufen, was man beim Notruf sagt."}
       ]
     },
     {
       "id": "bleeding",
-      "label": "Starke Blutung, ein Schnitt oder eine Wunde",
+      "label": "Starke Blutung, Schnitt oder Wunde",
       "hint": "Blut sickert durch, ein tiefer Schnitt, eine verschmutzte Schürfwunde",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 187, "label": "Starke Blutungen stoppen",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 187, "label": "Starke Blutungen stillen",
          "note": "Auf Englisch. Fest auf die Wunde drücken; ein Tourniquet nur an Arm oder Bein und nur, wenn Druck nicht hilft; was man nicht tun sollte."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 188, "label": "Schritt für Schritt, und was man lassen sollte",
-         "note": "Auf Englisch. Drücken, hinlegen, Hilfe rufen, eine zweite Wundauflage darüber; einen Gegenstand, der in der Wunde steckt, dort lassen."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 23, "label": "Ein Druckverband in vier Schritten",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 188, "label": "Schritt für Schritt – und was man nicht anrührt",
+         "note": "Auf Englisch. Drücken, die Person hinlegen, Hilfe rufen, eine zweite Wundauflage darüber; einen Gegenstand in der Wunde stecken lassen."},
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 23, "label": "Druckverband in vier Schritten",
          "note": "Für eine tiefe Wunde, die stark blutet."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 202, "label": "Einen Schnitt oder eine Schürfwunde reinigen",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 202, "label": "Schnitt- oder Schürfwunde reinigen",
          "note": "Auf Englisch. Mit sauberem Leitungswasser ausspülen und abdecken; Anzeichen einer Infektion; Tetanus (Wundstarrkrampf)."}
       ]
     },
     {
       "id": "burn",
       "label": "Verbrennung oder Verbrühung",
-      "hint": "Feuer, heißes Wasser, Speiseöl, Chemikalien, Strom",
+      "hint": "Feuer, heißes Wasser, heißes Öl, Chemikalien, Strom",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 213, "label": "Die Verbrennung mit fließendem Wasser kühlen",
-         "note": "Auf Englisch. Mindestens zehn Minuten, am besten zwanzig; danach eine feuchte, nicht haftende Wundauflage; was man nicht tun sollte."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 214, "label": "Kein Eis, und wann man Hilfe ruft",
-         "note": "Auf Englisch. Warum kein Eis und kein eiskaltes Wasser, und welche Verbrennungen den Rettungsdienst brauchen."},
+         "note": "Auf Englisch. Mindestens zehn Minuten, am besten zwanzig; danach eine feuchte, nicht verklebende Wundauflage; was man nicht tun sollte."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 214, "label": "Kein Eis – und wann man Hilfe ruft",
+         "note": "Auf Englisch. Warum kein Eis und kein eiskaltes Wasser und bei welchen Verbrennungen der Rettungsdienst kommen muss."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 215, "label": "Chemikalien im Auge; Verbrennungen bei Babys",
-         "note": "Auf Englisch. Das Auge sofort mit sauberem Wasser ausspülen; ärztlichen Rat holen, wenn ein Baby oder ein gebrechlicher Mensch verbrannt ist."}
+         "note": "Auf Englisch. Das Auge sofort mit sauberem Wasser ausspülen; ärztlichen Rat einholen, wenn ein Baby oder ein gebrechlicher Mensch eine Verbrennung hat."}
       ]
     },
     {
       "id": "bone",
       "label": "Knochenbruch, Verstauchung oder Verrenkung",
-      "hint": "Ein Sturz, ein umgeknickter Knöchel, ein Arm oder Bein, das nicht richtig aussieht",
+      "hint": "Ein Sturz, ein umgeknickter Knöchel, ein Arm oder Bein, das unnatürlich aussieht",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 223, "label": "Wie einen Bruch behandeln und ruhig halten",
-         "note": "Auf Englisch. Arm oder Bein so stützen, wie Sie es vorfinden, bis zu 20 Minuten kühlen, für einen holprigen Transport schienen."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 223, "label": "Wie einen Bruch behandeln und ruhigstellen",
+         "note": "Auf Englisch. Arm oder Bein in der vorgefundenen Lage stützen, bis zu 20 Minuten kühlen, für einen holprigen Transport schienen."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 224, "label": "Wann man Hilfe ruft",
-         "note": "Auf Englisch. Starke Schmerzen oder Schwellung, ein Arm oder Bein in seltsamer Stellung; einen Kühlbeutel immer in ein Tuch wickeln."},
+         "note": "Auf Englisch. Starke Schmerzen oder Schwellung, ein Arm oder Bein in unnatürlicher Stellung; einen Kühlbeutel immer in ein Tuch wickeln."},
         {"doc": "zsv-steiermark-notfallratgeber", "page": 20, "label": "Knochen- und Gelenkverletzungen",
          "note": "Ruhigstellen, Wunden abdecken, Ringe und Uhren früh abnehmen, gegen die Schwellung kühlen."}
       ]
     },
     {
       "id": "breathing",
-      "label": "Reagiert nicht, atmet nicht normal, oder hat sich verschluckt",
-      "hint": "Zusammengebrochen, schnappt nach Luft, Essen im Hals stecken geblieben, aus dem Wasser gezogen",
+      "label": "Reagiert nicht, atmet nicht normal oder droht zu ersticken",
+      "hint": "Zusammengebrochen, schnappt nach Luft, Essen steckt im Hals, aus dem Wasser gezogen",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 128, "label": "Reagiert nicht, atmet aber: die stabile Seitenlage",
-         "note": "Auf Englisch. Laut ansprechen, sanft schütteln, die Atemwege frei machen, bis zu zehn Sekunden die Atmung prüfen, die Person auf die Seite drehen."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 134, "label": "Atmet nicht normal: mit der Wiederbelebung beginnen",
-         "note": "Auf Englisch. Von einem Herzstillstand ausgehen; fest und schnell drücken, 100 bis 120 Mal pro Minute, etwa 5 cm tief, 30 Kompressionen zu 2 Beatmungen."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 171, "label": "Verschlucken: Schläge auf den Rücken und Oberbauchkompressionen",
+         "note": "Auf Englisch. Laut ansprechen, sanft schütteln, die Atemwege freimachen, höchstens zehn Sekunden die Atmung prüfen, die Person in die stabile Seitenlage bringen."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 134, "label": "Atmet nicht normal: mit der Herz-Lungen-Wiederbelebung beginnen",
+         "note": "Auf Englisch. Von einem Herzstillstand ausgehen; kräftig und schnell drücken, 100- bis 120-mal pro Minute, etwa 5 cm tief; 30-mal drücken, 2-mal beatmen."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 171, "label": "Verschlucken: Rückenschläge und Oberbauchkompressionen",
          "note": "Auf Englisch. Bis zu fünf Schläge zwischen die Schulterblätter, dann bis zu fünf Oberbauchkompressionen, abwechselnd."},
-        {"doc": "zsv-steiermark-notfallratgeber", "page": 17, "label": "Bewusstlos, oder atmet nicht",
-         "note": "Untersuchen, die stabile Seitenlage, Wiederbelebung im Verhältnis 30 zu 2, und ein Defibrillator."}
+        {"doc": "zsv-steiermark-notfallratgeber", "page": 17, "label": "Bewusstlos oder atmet nicht",
+         "note": "Prüfen, stabile Seitenlage, Herz-Lungen-Wiederbelebung im Verhältnis 30:2 und der Defibrillator (AED)."}
       ]
     },
     {
       "id": "shock",
-      "label": "Blass, kalt, verschwitzt, schwach: Es könnte ein Schock sein",
-      "hint": "Nach einer starken Blutung, schweren Verbrennungen oder einer schweren Allergie",
+      "label": "Blass, kaltschweißig, schwach: Es könnte ein Schock sein",
+      "hint": "Nach starker Blutung, schlimmen Verbrennungen oder einer schweren Allergie",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 288, "label": "Die Person hinlegen und warm halten",
-         "note": "Auf Englisch. Auf den Rücken, die Beine hoch, wenn sie unverletzt sind und es hilft, kein Wärmeverlust, den Rettungsdienst rufen."},
+         "note": "Auf Englisch. Auf den Rücken legen, die Beine hochlagern, wenn sie unverletzt sind und es hilft; vor Wärmeverlust schützen; den Rettungsdienst rufen."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 289, "label": "Die Anzeichen eines Schocks",
-         "note": "Auf Englisch. Blasse Haut, bläuliche Lippen, kühle oder feuchtkalte Haut, ein schneller Puls; eine Decke, und etwas zwischen der Person und dem kalten Boden."}
+         "note": "Auf Englisch. Blasse Haut, bläuliche Lippen, kühle oder feuchtkalte Haut, schneller Puls; eine Decke und eine Unterlage gegen den kalten Boden."}
       ]
     },
     {
       "id": "head",
-      "label": "Verletzung an Kopf, Hals oder Rücken",
+      "label": "Verletzung an Kopf, Nacken oder Rücken",
       "hint": "Ein Sturz, ein Autounfall, ein Schlag auf den Kopf",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 233, "label": "Warnzeichen nach einem Schlag auf den Kopf",
-         "note": "Auf Englisch. Wann man sofort den Rettungsdienst ruft, und die Person in den nächsten 24 Stunden beobachten."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 228, "label": "Eine mögliche Wirbelsäulenverletzung",
+         "note": "Auf Englisch. Wann man sofort den Rettungsdienst ruft; die Person die nächsten 24 Stunden beobachten."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 228, "label": "Mögliche Wirbelsäulenverletzung",
          "note": "Auf Englisch. Nach Verkehrsunfällen oder Stürzen aus der Höhe: die Person ruhig halten, keine Halskrause und kein Festschnallen, immer Hilfe rufen."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 230, "label": "Die Person nicht bewegen",
-         "note": "Auf Englisch. Außer sie ist in Gefahr, und dann mit zwei Helfern."}
+         "note": "Auf Englisch. Außer sie ist in Gefahr; dann mit zwei Helfern."}
       ]
     },
     {
@@ -108,13 +108,13 @@
       "hint": "Hitzschlag, eine Hitzewelle, Zittern, taube weiße Finger",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 332, "label": "Überhitzt: die Person abkühlen",
-         "note": "Auf Englisch. Aufhören und an einen kühlen Ort gehen; Kühlen mit kaltem Wasser bei einem Erwachsenen, der durch Anstrengung überhitzt ist; wann man Hilfe ruft."},
+         "note": "Auf Englisch. Die Anstrengung beenden und an einen kühlen Ort gehen; Kühlen mit kaltem Wasser bei Erwachsenen, die durch Anstrengung überhitzt sind; wann man Hilfe ruft."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 333, "label": "Hitzeerschöpfung und Hitzschlag",
-         "note": "Auf Englisch. Die Anzeichen von beidem, und etwa 15 Minuten Kühlen in kaltem Wasser."},
+         "note": "Auf Englisch. Woran man beides erkennt; etwa 15 Minuten in kaltem Wasser kühlen."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 343, "label": "Unterkühlung",
          "note": "Auf Englisch. Raus aus der Kälte, nasse Kleidung ausziehen, die Person wärmen, ein warmes, süßes Getränk, wenn sie schlucken kann; immer Hilfe rufen."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 349, "label": "Erfrierungen",
-         "note": "Auf Englisch. Nur wieder aufwärmen, wenn medizinische Versorgung mehr als zwei Stunden entfernt ist und es nicht erneut gefrieren kann: warmes Wasser mit 37 bis 39 °C, nie ein Feuer oder ein Heizgerät."}
+         "note": "Auf Englisch. Nur aufwärmen, wenn medizinische Versorgung mehr als zwei Stunden entfernt ist und die Stelle nicht wieder gefrieren kann: warmes Wasser mit 37 bis 39 °C, nie am Feuer oder an einem Heizgerät."}
       ]
     },
     {
@@ -123,8 +123,8 @@
       "hint": "Schwellung, Atemnot nach einem Stich, einem Lebensmittel oder einem Medikament",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 279, "label": "Adrenalin bei Anaphylaxie",
-         "note": "Auf Englisch. Der eigene Autoinjektor der Person; eine zweite Dosis nach 5 bis 10 Minuten, wenn keine Wirkung eintritt und noch keine Hilfe da ist."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 281, "label": "Einen Autoinjektor anwenden, Schritt für Schritt",
+         "note": "Auf Englisch. Der eigene Adrenalin-Autoinjektor der Person; eine zweite Dosis nach 5 bis 10 Minuten, wenn es nicht besser wird und noch keine Hilfe da ist."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 281, "label": "Autoinjektor anwenden, Schritt für Schritt",
          "note": "Auf Englisch. Hilfe rufen, die Person hinlegen, in die Außenseite des Oberschenkels spritzen, auch durch dünne Kleidung."}
       ]
     },
@@ -141,25 +141,25 @@
     },
     {
       "id": "poison",
-      "label": "Vergiftung: etwas verschluckt, oder Dämpfe",
+      "label": "Vergiftung: etwas verschluckt oder Dämpfe eingeatmet",
       "hint": "Putzmittel, zu viele Tabletten, eine Knopfbatterie, Kohlenmonoxid",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 258, "label": "Verschlucktes Gift, oder giftiges Gas",
-         "note": "Auf Englisch. Weiteren Kontakt mit dem Gift beenden; kein Erbrechen herbeiführen, und keine Milch, kein Wasser und keine Aktivkohle, außer der Giftnotruf sagt es; Rettung aus Gas nur, wenn es sicher ist."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 258, "label": "Verschlucktes Gift oder giftiges Gas",
+         "note": "Auf Englisch. Weiteren Kontakt mit dem Gift beenden; kein Erbrechen auslösen, keine Milch, kein Wasser, keine Aktivkohle – außer auf Anweisung des Giftnotrufs; aus Gas nur retten, wenn es sicher ist."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 259, "label": "Den Giftnotruf oder den Rettungsdienst anrufen",
          "note": "Auf Englisch. Außerdem, wie man Vergiftungen zu Hause vorbeugt, auch mit einem Kohlenmonoxidmelder."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 263, "label": "Kohlenmonoxid, und Knopfbatterien",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 263, "label": "Kohlenmonoxid und Knopfbatterien",
          "note": "Auf Englisch. Kohlenmonoxid ist farb- und geruchlos; was zu tun ist, wenn eine Knopfbatterie verschluckt wurde."}
       ]
     },
     {
       "id": "diarrhoea",
       "label": "Durchfall, Erbrechen oder Austrocknung",
-      "hint": "Ein Magen-Darm-Infekt, schlechtes Wasser, ein Baby oder ein älterer Mensch trocknet aus",
+      "hint": "Ein Magen-Darm-Infekt, verunreinigtes Wasser, ein Baby oder ein älterer Mensch, der austrocknet",
       "read": [
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Trinken, oder Elektrolytlösung",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 337, "label": "Trinken oder Elektrolytlösung",
          "note": "Auf Englisch. Leichte Austrocknung: genug trinken; schwere: Elektrolytlösung (orale Rehydratationssalze); weiter stillen; wann man Hilfe holt."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 339, "label": "Eine selbst gemachte Elektrolyt-Trinklösung",
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 339, "label": "Selbst gemachte Elektrolyt-Trinklösung",
          "note": "Auf Englisch. Salz, Zucker und Trinkwasser, in den Mengen, die die Seite nennt."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 308, "label": "Bauchschmerzen, Durchfall und Erbrechen: wann ärztliche Hilfe nötig ist",
          "note": "Auf Englisch. Starker Durchfall, wiederholtes Erbrechen, Fieber über 38 °C, Blut im Erbrochenen oder im Stuhl."}
@@ -167,14 +167,14 @@
     },
     {
       "id": "sudden",
-      "label": "Brustschmerzen, Anzeichen eines Schlaganfalls, ein Krampfanfall oder Unterzuckerung",
-      "hint": "Starker, drückender Brustschmerz, eine hängende Gesichtshälfte, ein Anfall, ein Mensch mit Diabetes wirkt verwirrt",
+      "label": "Brustschmerzen, Schlaganfall-Zeichen, Krampfanfall oder Unterzuckerung",
+      "hint": "Starker, drückender Brustschmerz, eine herabhängende Gesichtshälfte, ein Anfall, ein Mensch mit Diabetes, der verwirrt wirkt",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 264, "label": "Brustschmerzen: vielleicht ein Herzinfarkt",
-         "note": "Auf Englisch. Auch anrufen, wenn der Schmerz nur Minuten dauerte; Aspirin während des Wartens, außer die Person darf es nicht nehmen."},
+         "note": "Auf Englisch. Auch anrufen, wenn der Schmerz nur wenige Minuten dauerte; bis Hilfe kommt Aspirin, außer die Person darf es nicht nehmen."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 272, "label": "Schlaganfall: der FAST-Test",
-         "note": "Auf Englisch. Gesicht (Face), Arme, Sprache (Speech), Zeit (Time): sofort den Rettungsdienst rufen und notieren, wann es begann."},
-        {"doc": "ifrc-first-aid-guidelines-2020", "page": 296, "label": "Ein Krampfanfall: die Person schützen",
+         "note": "Auf Englisch. Gesicht (Face), Arme (Arms), Sprache (Speech), Zeit (Time): sofort den Rettungsdienst rufen und notieren, wann es begann."},
+        {"doc": "ifrc-first-aid-guidelines-2020", "page": 296, "label": "Krampfanfall: die Person schützen",
          "note": "Auf Englisch. Platz schaffen, den Kopf abpolstern, die Person nicht festhalten; wann man Hilfe ruft."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 291, "label": "Unterzuckerung",
          "note": "Auf Englisch. Traubenzucker oder Zucker, wenn die Person reagiert und schlucken kann; anrufen, wenn es nicht schnell besser wird."}
@@ -188,20 +188,20 @@
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 242, "label": "Tierbisse",
          "note": "Auf Englisch. Die Wunde mit sauberem Wasser und Seife reinigen, gegen Infektion und Tollwut."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 245, "label": "Zecken",
-         "note": "Auf Englisch. Eine Zecke entfernen, und die Anzeichen nach einem Stich, bei denen man zum Arzt muss."},
+         "note": "Auf Englisch. Eine Zecke entfernen; Anzeichen nach einem Zeckenstich, mit denen man zum Arzt muss."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 254, "label": "Schlangenbiss",
          "note": "Auf Englisch. Die Person so ruhig wie möglich halten und Hilfe rufen; kein Abbinden, kein Einschneiden, kein Aussaugen."}
       ]
     },
     {
       "id": "no-help",
-      "label": "Hilfe ist weit weg, oder viele Menschen sind verletzt",
+      "label": "Hilfe ist weit weg oder viele Menschen sind verletzt",
       "hint": "Eine Katastrophe, Telefone ausgefallen, Hilfe kann Stunden oder Tage brauchen",
       "read": [
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Wenn Hilfe Tage brauchen kann",
          "note": "Auf Englisch. Bei Katastrophen kann der Rettungsdienst Stunden, Tage oder Wochen brauchen: sich auf Blutungen, die Atemwege und den Schock konzentrieren."},
         {"doc": "ifrc-first-aid-guidelines-2020", "page": 101, "label": "Mehrere Verletzte",
-         "note": "Auf Englisch. Früh anrufen, mit Einzelheiten erneut anrufen, und zuerst die versorgen, deren Leben am meisten in Gefahr ist."},
+         "note": "Auf Englisch. Früh anrufen, mit Einzelheiten erneut anrufen und zuerst die versorgen, die in größter Lebensgefahr sind."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Wenn die 112 nicht funktioniert",
          "note": "Wenn möglich, zur nächsten Polizeiwache oder ins nächste Krankenhaus gehen."}
       ]
@@ -210,20 +210,20 @@
   "limits": [
     {"text": "Gehen Sie nicht zur Unfallstelle, wenn es dort nicht sicher ist.", "doc": "ifrc-first-aid-guidelines-2020", "page": 102},
     {"text": "Rufen Sie bei jeder starken Blutung den Rettungsdienst.", "doc": "ifrc-first-aid-guidelines-2020", "page": 187},
-    {"text": "Ziehen Sie einen Gegenstand, der in einer Wunde steckt, nicht heraus. Ein angelegtes Tourniquet bleibt dran, bis Hilfe kommt.", "doc": "ifrc-first-aid-guidelines-2020", "page": 188},
+    {"text": "Ziehen Sie einen Gegenstand, der in einer Wunde steckt, nicht heraus. Lösen Sie ein angelegtes Tourniquet nicht, bis Hilfe eintrifft.", "doc": "ifrc-first-aid-guidelines-2020", "page": 188},
     {"text": "Decken Sie eine infizierte Wunde nie ab: Holen Sie ärztliche Hilfe.", "doc": "ifrc-first-aid-guidelines-2020", "page": 203},
-    {"text": "Bringen Sie kein Eis und kein eiskaltes Wasser auf eine Verbrennung.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
-    {"text": "Rufen Sie Hilfe bei großen oder tiefen Verbrennungen, bei Verbrennungen nahe an Gesicht, Hals oder Genitalien, und bei Verbrennungen durch Chemikalien, Strom oder Flammen.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
-    {"text": "Wenn die Atmung nicht normal ist (Schnappatmung, unregelmäßig oder gar keine), beginnen Sie sofort mit der Wiederbelebung.", "doc": "ifrc-first-aid-guidelines-2020", "page": 130},
-    {"text": "Berühren Sie die Person nicht, während der Defibrillator einen Schock abgibt.", "doc": "ifrc-first-aid-guidelines-2020", "page": 158},
-    {"text": "Fahren Sie bei jemandem, der sich verschluckt hat und zu ersticken droht, nicht blind mit dem Finger in den Mund.", "doc": "ifrc-first-aid-guidelines-2020", "page": 170},
+    {"text": "Kühlen Sie Verbrennungen nicht mit Eis oder eiskaltem Wasser.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
+    {"text": "Rufen Sie Hilfe bei großen oder tiefen Verbrennungen, bei Verbrennungen nahe an Gesicht, Hals oder Genitalien und bei Verbrennungen durch Chemikalien, Strom oder Flammen.", "doc": "ifrc-first-aid-guidelines-2020", "page": 214},
+    {"text": "Wenn die Atmung nicht normal ist (Schnappatmung, unregelmäßige oder keine Atmung), beginnen Sie sofort mit der Herz-Lungen-Wiederbelebung.", "doc": "ifrc-first-aid-guidelines-2020", "page": 130},
+    {"text": "Berühren Sie die Person nicht, während der Defibrillator (AED) einen Schock abgibt.", "doc": "ifrc-first-aid-guidelines-2020", "page": 158},
+    {"text": "Tasten Sie bei einer Person, die zu ersticken droht, nicht blind mit dem Finger im Mund herum.", "doc": "ifrc-first-aid-guidelines-2020", "page": 170},
     {"text": "Wenden Sie bei einem Baby keine Oberbauchkompressionen an.", "doc": "ifrc-first-aid-guidelines-2020", "page": 173},
     {"text": "Rufen Sie sofort den Rettungsdienst, wenn jemand Anzeichen eines Schocks zeigt.", "doc": "ifrc-first-aid-guidelines-2020", "page": 288},
-    {"text": "Rufen Sie nach einem Schlag auf den Kopf sofort an, wenn die Person auch nur kurz bewusstlos wird, mehr als einmal erbricht, einen Krampfanfall hat oder aus Nase oder Ohren blutet.", "doc": "ifrc-first-aid-guidelines-2020", "page": 233},
+    {"text": "Setzen Sie nach einem Schlag auf den Kopf sofort einen Notruf ab, wenn die Person auch nur kurz bewusstlos wird, mehr als einmal erbricht, einen Krampfanfall hat oder aus Nase oder Ohren blutet.", "doc": "ifrc-first-aid-guidelines-2020", "page": 233},
     {"text": "Bewegen Sie niemanden, der eine Wirbelsäulenverletzung haben könnte, außer die Person ist in Gefahr.", "doc": "ifrc-first-aid-guidelines-2020", "page": 230},
-    {"text": "Rufen Sie bei jeder Unterkühlung Hilfe, und reiben Sie die Haut der Person nicht.", "doc": "ifrc-first-aid-guidelines-2020", "page": 343},
+    {"text": "Rufen Sie bei jeder Unterkühlung Hilfe und reiben Sie die Haut der Person nicht.", "doc": "ifrc-first-aid-guidelines-2020", "page": 343},
     {"text": "Lassen Sie Erfrierungen immer ärztlich versorgen.", "doc": "ifrc-first-aid-guidelines-2020", "page": 350},
-    {"text": "Wenn Gift verschluckt wurde, bringen Sie die Person nicht zum Erbrechen, und geben Sie keine Milch, kein Wasser und keine Aktivkohle, außer der Giftnotruf sagt es.", "doc": "ifrc-first-aid-guidelines-2020", "page": 258},
+    {"text": "Wurde Gift verschluckt, lösen Sie kein Erbrechen aus und geben Sie keine Milch, kein Wasser und keine Aktivkohle – außer der Giftnotruf rät dazu.", "doc": "ifrc-first-aid-guidelines-2020", "page": 258},
     {"text": "Rufen Sie bei Brustschmerzen den Rettungsdienst, auch wenn sie nur ein paar Minuten dauerten.", "doc": "ifrc-first-aid-guidelines-2020", "page": 264},
     {"text": "Wenn Sie einen Schlaganfall vermuten, rufen Sie sofort den Rettungsdienst und notieren Sie, wann er begann.", "doc": "ifrc-first-aid-guidelines-2020", "page": 272},
     {"text": "Halten Sie die Person während eines Krampfanfalls nicht fest.", "doc": "ifrc-first-aid-guidelines-2020", "page": 296},
@@ -232,9 +232,9 @@
   "prepare": [
     {"doc": "zsv-steiermark-notfallratgeber", "page": 22, "label": "Was in einen Erste-Hilfe-Kasten für den Haushalt gehört", "note": "Eine österreichische Standardliste."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 35, "label": "Checkliste Hausapotheke", "note": "Aus Deutschland."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Medikamente für 10 Tage, und ein Erste-Hilfe-Kurs", "note": "Aus Deutschland."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 22, "label": "Medikamente für 10 Tage und ein Erste-Hilfe-Kurs", "note": "Aus Deutschland."},
     {"doc": "ifrc-first-aid-guidelines-2020", "page": 106, "label": "Die Notrufnummern im Handy speichern", "note": "Auf Englisch."},
-    {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Planen, falls Hilfe lange braucht", "note": "Auf Englisch. Eine Ausrüstung für die ersten drei Tage."}
+    {"doc": "ifrc-first-aid-guidelines-2020", "page": 43, "label": "Planen, falls Hilfe lange braucht", "note": "Auf Englisch. Ein Notfallset für die ersten drei Tage."}
   ],
   "learn": [
     {"doc": "ifrc-first-aid-guidelines-2020", "label": "Internationale Leitlinien für Erste Hilfe, Wiederbelebung und Ausbildung 2020", "note": "Auf Englisch. IFRC, 476 Seiten, für Menschen geschrieben, die Erste-Hilfe-Kurse entwickeln: die Studienlage und die Empfehlungen, Thema für Thema. Kein Handbuch für die Allgemeinheit."},
@@ -245,11 +245,11 @@
     "missing": [
       "Kein Erste-Hilfe-Handbuch für die Allgemeinheit: Die Leitlinien der IFRC sind für Ausbilder geschrieben, und die nationalen Ratgeber haben jeweils nur wenige Seiten zur Ersten Hilfe.",
       "Die Leitlinien der IFRC nennen keine Notrufnummer; die 112 und die nationalen Nummern stammen aus den nationalen Ratgebern des Zivilschutzes.",
-      "Keine einfache Methode für die Allgemeinheit, um viele Verletzte einzuteilen (Triage).",
+      "Keine einfache Methode für die Allgemeinheit, um viele Verletzte zu sichten (Triage).",
       "Manche Medikamente, die die Leitlinien der IFRC nennen, etwa Aspirin, Adrenalin oder ein Asthmaspray, dürfen nur gegeben werden, wo örtliche Regeln es erlauben; keine Quelle hier nennt diese Regeln für irgendein Land."
     ],
     "disagree": [
-      "Kühlen einer Verbrennung: Die Leitlinien der IFRC sagen kühles fließendes Wasser für mindestens zehn Minuten, am besten zwanzig, aber nicht eiskalt; der österreichische Ratgeber sagt, mit lauwarmem Wasser zu spülen und aufzuhören, wenn die Person zittert."
+      "Kühlen einer Verbrennung: Die Leitlinien der IFRC empfehlen kühles, fließendes Wasser für mindestens zehn Minuten, am besten zwanzig, aber nicht eiskalt; der österreichische Ratgeber rät, mit lauwarmem Wasser zu spülen und aufzuhören, wenn die Person zittert."
     ]
   }
 }

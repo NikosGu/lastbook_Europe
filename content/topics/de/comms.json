@@ -13,7 +13,7 @@
       "hint": "Sirenen, Warnungen aufs Handy, Warn-Apps, Radio",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 12, "label": "Wie Warnungen Sie erreichen und was die Sirenen bedeuten",
-         "note": "Apps, Radio, Sirenen und Warnungen aufs Handy, und die deutschen Sirenensignale für Gefahr und Entwarnung."},
+         "note": "Apps, Radio, Sirenen und Warnungen aufs Handy sowie die deutschen Sirenensignale für Gefahr und Entwarnung."},
         {"doc": "zsv-steiermark-notfallratgeber", "page": 4, "label": "Die Sirenensignale in Österreich und was bei jedem zu tun ist",
          "note": "Warnung, Alarm und Entwarnung in Österreich: Radio einschalten oder einen geschützten Raum oder Keller aufsuchen."},
         {"doc": "dpc-io-non-rischio", "page": 59, "label": "IT-alert: Notfallmeldungen aufs Handy in Italien",
@@ -25,10 +25,10 @@
       "label": "Telefon oder Internet sind ausgefallen",
       "hint": "Anrufe kommen nicht durch, keine mobilen Daten, der Akku wird schwach",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Wenn die 112 nicht funktioniert, und warum ein Radio hilft",
+        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 15, "label": "Wenn die 112 nicht funktioniert – und warum ein Radio hilft",
          "note": "Wohin Sie gehen können, wenn die Notrufnummern ausfallen, und welche Radios bei einem Stromausfall weiter funktionieren."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 14, "label": "Telefonnummern auf Papier und eine geladene Powerbank",
-         "note": "Eine geschriebene Liste wichtiger Nummern, eine Powerbank für das Handy und Karten, die offline gespeichert sind."},
+         "note": "Eine Liste wichtiger Nummern auf Papier, eine Powerbank für das Handy und Karten, die offline gespeichert sind."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Im Blackout die Telefonleitungen frei halten",
          "note": "Auf Italienisch. Unter den Hinweisen zum Blackout: Radio hören und das Telefon nur für Notfälle benutzen."}
       ]
@@ -41,7 +41,7 @@
         {"doc": "zsv-steiermark-notfallratgeber", "page": 3, "label": "Was Sie bei jedem Notruf sagen",
          "note": "Wo, was passiert ist, wie viele verletzt sind, wer anruft; mit der 112 und den eigenen Notrufnummern Österreichs."},
         {"doc": "vvf-acqua-e-vita", "page": 2, "label": "Bei Hochwasser Hilfe rufen",
-         "note": "Auf Italienisch. Was Sie der Notrufzentrale sagen, und in der Leitung bleiben, bis sie das Gespräch beendet. Nennt die Notrufnummern Italiens."}
+         "note": "Auf Italienisch. Was Sie der Notrufzentrale sagen und dass Sie in der Leitung bleiben, bis diese das Gespräch beendet. Nennt die Notrufnummern Italiens."}
       ]
     },
     {
@@ -50,7 +50,7 @@
       "hint": "Verständigung mit Rettungskräften, eine Notfallkarte",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Planen, wie Sie sich mit Rettungskräften verständigen",
-         "note": "Eine Notfallkarte, die zeigt, wie Sie sich verständigen, Stift und Papier, und Nachbarn um Hilfe bitten. Nennt eine deutsche App."}
+         "note": "Eine Notfallkarte, die zeigt, wie Sie sich verständigen, Stift und Papier sowie Nachbarn um Hilfe bitten. Nennt eine deutsche App."}
       ]
     },
     {
@@ -59,7 +59,7 @@
       "hint": "Gerüchte, Kettennachrichten, beunruhigende Videos",
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 16, "label": "Warum Falschinformationen in einer Krise gefährlich sind",
-         "note": "Wie sich Gerüchte verbreiten, und die ersten Fragen dazu, wer eine Nachricht geschickt hat."},
+         "note": "Wie sich Gerüchte verbreiten und die ersten Fragen dazu, wer eine Nachricht geschickt hat."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 17, "label": "Eine Nachricht prüfen, bevor Sie sie weiterleiten",
          "note": "Weitere Fragen; wenn eine Antwort Nein lautet, die Nachricht nicht teilen."}
       ]
@@ -67,7 +67,7 @@
   ],
   "limits": [
     {"text": "Bei einem Stromausfall oder wenn das Mobilfunknetz ausfällt, funktionieren viele Warnwege nicht mehr.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
-    {"text": "Nehmen Sie amtliche Warnungen ernst: Sie sagen Ihnen, wie Sie sich und andere schützen.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
+    {"text": "Nehmen Sie amtliche Warnungen ernst – sie sagen Ihnen, wie Sie sich und andere schützen.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 13},
     {"text": "Wenn die Notrufnummern nicht funktionieren, gehen Sie, wenn möglich, zur nächsten Polizeiwache oder ins nächste Krankenhaus.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 15},
     {"text": "Wenn eine Nachricht auch nur eine der Prüffragen nicht besteht, leiten Sie sie nicht weiter.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 17},
     {"text": "Blockieren Sie im Blackout nicht die Telefonleitungen, um an Nachrichten zu kommen: Hören Sie Radio und rufen Sie nur in Notfällen an.", "doc": "ravenna-rischio-blackout", "page": 1}
@@ -80,14 +80,14 @@
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 11, "label": "Eine Notfallkarte für die Verständigung mit Rettungskräften", "note": "Aus Deutschland."}
   ],
   "learn": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Vorsorgen für Krisen und Katastrophen", "note": "Der Ratgeber des deutschen Bundes: Vorrat, Warnungen, informiert bleiben, Angst, Erste Hilfe, Brand, Dokumente, Notgepäck, Schutz suchen."},
+    {"doc": "bbk-vorsorgen-fuer-krisen", "label": "Vorsorgen für Krisen und Katastrophen", "note": "Der Ratgeber des deutschen Bundesamts für Bevölkerungsschutz: Vorrat, Warnungen, informiert bleiben, Angst, Erste Hilfe, Brand, Dokumente, Notgepäck, Schutz suchen."},
     {"doc": "zsv-steiermark-notfallratgeber", "label": "Notfall-Ratgeber: Richtiges Verhalten in Notsituationen", "note": "Ratgeber aus Österreich: Notrufnummern, Sirenen, Brand, Erste Hilfe, Unfälle, Berge und Wasser."}
   ],
   "related": ["power", "disaster"],
   "gaps": {
     "missing": [
       "Kein Ratgeber zu Funkgeräten, mit denen man miteinander spricht, etwa PMR-Funkgeräte, CB-Funk oder Amateurfunk; der Ratgeber der polnischen Regierung nennt sie nur unter den Dingen, die man haben sollte.",
-      "Einen Krisenplan für die Familie gibt es nur im Ratgeber der polnischen Regierung; der nationale französische Ratgeber sagt, mit Angehörigen abzusprechen, wie man in Kontakt bleibt.",
+      "Einen Krisenplan für die Familie gibt es nur im Ratgeber der polnischen Regierung; der nationale französische Ratgeber rät, mit Angehörigen abzusprechen, wie man in Kontakt bleibt.",
       "Warnsysteme werden nur für Deutschland, Österreich, Italien, Frankreich und Polen erklärt.",
       "Kein Ratgeber zum Kartenlesen oder zum Umgang mit dem Kompass."
     ]

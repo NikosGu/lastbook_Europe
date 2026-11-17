@@ -4,7 +4,7 @@
   "mode": "learn",
   "title": "Grundnahrungsmittel anbauen",
   "short": "Boden, Feldfrüchte und Saatgut: noch nicht in dieser Bibliothek",
-  "intro": "Diese Bibliothek hat noch keinen Ratgeber zum Anbau von Lebensmitteln, daher gibt es hier nichts zu öffnen. Die Liste unten sagt, was fehlt; Lebensmittelvorräte zu Hause sind Thema im Ratgeber „Essen & Kochen“.",
+  "intro": "Diese Bibliothek hat noch keinen Ratgeber zum Anbau von Lebensmitteln, daher gibt es hier nichts zu öffnen. Die Liste unten nennt, was fehlt; Lebensmittelvorräte zu Hause behandelt der Ratgeber „Essen & Kochen“.",
   "keywords": ["anbauen", "Anbau", "Garten", "Gärtnern", "Gemüse", "Gemüsegarten", "Samen", "Saatgut", "pflanzen", "Pflanze", "säen", "Aussaat", "Kompost", "Boden", "Erde", "Kartoffel", "Kartoffeln", "Kartoffeln pflanzen", "Bohnen", "Kürbis", "Saatgut gewinnen", "Kübel", "Pflanzkübel", "Hochbeet", "Balkon", "Schrebergarten", "Kleingarten", "gießen", "Bewässerung", "Schädlinge"],
   "choices": [],
   "limits": [],
@@ -14,8 +14,8 @@
   "related": ["food", "water"],
   "gaps": {
     "missing": [
-      "Kein Ratgeber zum Anbau von Lebensmitteln: Boden, Pflanzzeiten für das Klima in Europa, Grundnahrungsmittel wie Kartoffeln und Bohnen, oder Bewässerung.",
-      "Kein Ratgeber zum Gewinnen von Saatgut, oder zum Anbau in Töpfen oder auf dem Balkon."
+      "Kein Ratgeber zum Anbau von Lebensmitteln: Boden, Pflanzzeiten für das Klima in Europa, Grundnahrungsmittel wie Kartoffeln und Bohnen oder Bewässerung.",
+      "Kein Ratgeber zum Gewinnen von Saatgut oder zum Anbau in Töpfen oder auf dem Balkon."
     ]
   }
 }
