@@ -153,6 +153,20 @@ fn kinds(j: &Value) -> Vec<String> {
 }
 
 #[test]
+fn the_smallest_library_is_suggested_whatever_its_name() {
+    let mut env = Env::new("smallest");
+    env.add_pack("large", &[("library-data/catalog.json", b"{\"records\": []}".to_vec()), ("pack.json", b"{\"name\": \"large\", \"map\": \"base\"}".to_vec()),
+                            ("library-data/big.bin", noise(6_000_000, 7))]);
+    let packs = env.manifest["packs"].as_array_mut().unwrap();
+    packs.reverse(); // the larger one listed first
+    packs[1]["id"] = json!("starter");
+    packs[1]["title"] = json!("Starter library");
+    let st = env.setup(Mode::FirstRun, None, None).state();
+    assert_eq!(st["recommend"]["pack"], "starter");
+    assert!(st["recommend"]["why"].as_str().unwrap().starts_with("Starter library is selected"), "{}", st["recommend"]["why"]);
+}
+
+#[test]
 fn first_run_installs_and_switches_at_restart() {
     let env = Env::new("first");
     let s = env.setup(Mode::FirstRun, None, None);

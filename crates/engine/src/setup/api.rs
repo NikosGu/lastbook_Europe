@@ -23,7 +23,6 @@ use std::time::{Duration, Instant};
 
 pub const WORK_SUFFIX: &str = ".setup";
 const RECOMMEND_MARGIN: u64 = 5_000_000_000; // beyond what the install needs, so the disk is not left full
-const RECOMMEND_MARGIN_MAX: u64 = 20_000_000_000;
 pub const ACTIVE: [&str; 5] = ["waiting", "downloading", "verifying", "unpacking", "activating"];
 pub const WINDOWS_MAX_PATH: usize = 259;
 pub const LONGEST_INSIDE: usize = 190; // the longest file path inside LastbookData in any pack (measured for Medium and All)
@@ -149,9 +148,11 @@ pub fn path_too_deep(target: &Path, windows: bool) -> bool {
     windows && target.to_string_lossy().chars().count() + 1 + LONGEST_INSIDE > WINDOWS_MAX_PATH
 }
 
-/// Room left free beyond what an install needs: 5% of the disk, at least 5 GB and at most 20 GB.
+/// Room left free beyond what an install needs, so the system keeps working: in all, 5% of the disk, at least 1 GB and
+/// at most 5 GB. The install's own need already holds install::SPACE_MARGIN, so only the rest is added here. (Two
+/// margins added together turned down a 43 MB library on a disk with 7 GB free.)
 fn margin(total: u64) -> u64 {
-    RECOMMEND_MARGIN.max((total / 20).min(RECOMMEND_MARGIN_MAX))
+    (total / 20).clamp(1_000_000_000, RECOMMEND_MARGIN).saturating_sub(install::SPACE_MARGIN)
 }
 
 /// Room a region map or address index needs: what is still to download plus its unpacked size.
@@ -527,6 +528,9 @@ impl Setup {
             places.push(cur.join("models"));
             places.push(cur.clone());
         }
+        // models kept on this computer, and a folder named for them
+        places.extend(self.o().models_here.clone());
+        places.extend(std::env::var_os("LASTBOOK_MODEL_DIR").map(|v| std::env::split_paths(&v).collect::<Vec<_>>()).unwrap_or_default());
         let mut candidates: Vec<PathBuf> = self.0.sources.lock().unwrap().values().map(PathBuf::from).collect();
         for place in places {
             for e in std::fs::read_dir(&place).into_iter().flatten().flatten() {
@@ -618,7 +622,10 @@ impl Setup {
     pub fn recommend(&self, hw: &Value) -> Value {
         let m = self.manifest().current();
         let available: Vec<Value> = m["packs"].as_array().cloned().unwrap_or_default().into_iter().filter(|p| p["available"].as_bool().unwrap_or(false)).collect();
-        let packs: Vec<&Value> = available.iter().filter(|p| s(&p["id"]) == "small").collect();
+        // the smallest library first: it gets a person started soonest, and the larger ones stay one tap away
+        let mut packs: Vec<&Value> = available.iter().collect();
+        packs.sort_by_key(|p| u(&p["installed_bytes"]));
+        packs.truncate(1);
         let parent = self.o().current.as_ref().and_then(|c| c.parent().map(Path::to_path_buf)).unwrap_or(self.o().default_parent.clone());
         let (free, total) = self.disk_of(&parent);
         let fits: Map<String, Value> = hw["ai_models"].as_object().cloned().unwrap_or_default();
@@ -659,7 +666,8 @@ impl Setup {
             let small = packs.last().unwrap();
             return json!({"pack": null, "ai": false, "model": null, "folder": parent.to_string_lossy(), "need_bytes": need, "map_need_bytes": map_needs,
                           "address_need_bytes": address_need,
-                          "why": format!("The smallest library, {}, needs {} free, and this computer has {} free.", s(&small["title"]), gb(u(&need[s(&small["id"])])), gb(free))});
+                          "why": format!("The smallest library, {}, needs {} free, with room left for the system, and this computer has {} free.",
+                                         s(&small["title"]), gb(u(&need[s(&small["id"])]) + margin(total)), gb(free))});
         };
         let (mut free2, mut margin2) = (free, margin(total));
         if let Some(d) = &elsewhere {
@@ -673,7 +681,7 @@ impl Setup {
                 let name = d["name"].as_str().map(str::to_string).unwrap_or_else(|| s(&d["path"]).to_string());
                 format!("This computer’s own disk has {} free, not enough for any library, so {} goes on {name}. Keep that disk connected: Lastbook reads the library from it.", gb(free), s(&choice["title"]))
             }
-            None => "Small is selected to get started. You can choose a larger library.".to_string(),
+            None => format!("{} is selected to get started. You can choose a larger library.", s(&choice["title"])),
         };
         if let (Some(dw), None, None) = (&self.o().default_why, &elsewhere, &self.o().current) {
             why = format!("{dw} {why}");

@@ -201,7 +201,15 @@ fn main() {
     if data.is_some() && (given.is_none() || note.is_some()) {
         setup_api::opened(&settings, note.as_ref(), ai.as_ref().map(|a| a as &dyn AiHooks));
     }
-    opts.ai = ai.clone().map(|a| Arc::new(a) as Arc<dyn AiHooks>);
+    // setup measures a model file on this computer even before there is a library (the local AI only starts with one)
+    // (its own folder for what it remembers, never one setup could install a library into)
+    let measurer = ai.clone().unwrap_or_else(|| {
+        let manifest = opts.manifest.clone();
+        let m = Local::new(appdata.join("ai"), Box::new(move || manifest.models()), local::runner_path());
+        m.add_place(models_here.clone());
+        m
+    });
+    opts.ai = Some(Arc::new(measurer) as Arc<dyn AiHooks>);
     opts.default_why = why;
     let (s2, a2) = (settings.clone(), appdata.clone());
     opts.look_for_libraries = Some(Box::new(move || appdirs::libraries_here(&s2, &a2)));
