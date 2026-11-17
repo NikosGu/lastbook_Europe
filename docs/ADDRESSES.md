@@ -80,7 +80,9 @@ The tests in `crates/engine/src/map/address/tests.rs` build their tiny indexes e
 builder, `crates/tools/src/addresses.rs`, run by `map-data region <REGION>` ([MAPS.md](MAPS.md), "Building a region"),
 from the `addr:*` tags of the region's OpenStreetMap PBF:
 
-- An address is a node, or a building: the middle of its outline. One mapped on both, close together, is kept once.
+- An address is a node, or a way or relation (mostly a building) at the middle of its outline. One mapped on both,
+  close together, is kept once. Only what the extract holds is there: Geofabrik's extracts stop at the border, so
+  Liechtenstein's index has a few Austrian addresses by the border and no Swiss ones.
 - The country is `addr:country`; without it, the region's own country when the address lies inside it (else the
   address is left to its own country's index).
 - The town is `addr:city`, written as the region's own municipality or place of that name (`MAuren` is Mauren). A rare

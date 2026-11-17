@@ -16,7 +16,7 @@ not have.
 | `derived/geo/national.sqlite` | `feat`, `feat_idx`, `poi`, `meta` | Roads, water, land, place names and help points: the zoomed-out base and the region's detail | `tiles.rs`, `pins.rs`, `info.rs` |
 | `derived/geo/national-status.json` | | `{state: complete, features}`: the data version tiles are cached under | `info.rs` |
 | `derived/geo/places.sqlite` | `place`, `place_fts`, `meta` | The place finder: towns, villages, municipalities, postcodes, peaks, named help points | `places.rs` (`/api/places`) |
-| `derived/geo/water.sqlite` | `resource`, `spatial`, `water_fts`, `feat`, `feat_idx`, `meta` | Lakes, reservoirs, ponds and dams as records | `pins.rs`, `places.rs` |
+| `derived/geo/water.sqlite` | `resource`, `spatial`, `water_fts`, `feat`, `feat_idx`, `meta` | Lakes, reservoirs, ponds and dams as records | `tiles.rs`, `pins.rs`, `places.rs` |
 | `derived/geo/buildings.sqlite` | `bldg`, `bldg_osm`, `meta` | Building outlines, and mapped heights for the 3D view | `tiles.rs` |
 | `derived/geo/terrain.sqlite` | `tile`, `meta` | Elevation tiles for relief, contours, elevation and the 3D view | `terrain.rs` |
 | `derived/geo/addresses/<REGION>.sqlite` | `addr`, `area`, `meta` | Street addresses (installed on its own; [ADDRESSES.md](ADDRESSES.md)) | `address/` |
@@ -39,12 +39,13 @@ that cache is the only thing the map writes.
 
 ### buildings.sqlite
 
-- `bldg(x, y, part, n, data)`: every outline, filed under the zoom-14 tile holding its middle; `data` is zlib of int32
-  records `[npts, height_dm, X0, Y0, dX1, dY1, ...]` in zoom-30 pixels (2^-30 of the world), the first point whole and
-  the rest as steps, height 0 when the map gives none. An outline reaching more than about 150 m into a neighbouring
-  bucket is filed there too; readers keep one copy.
-- `bldg_osm(x, y, n, data)`: outlines and building parts with a mapped `height` or `building:levels` (3.2 m a storey),
-  for 3D: `[npts, height_dm, min_height_dm, is_part, X0, Y0, ...]`.
+- `bldg(x, y, part, n, data)`: every outline, filed under the zoom-14 tile holding its middle (`part` 0: a reader joins
+  every part of a tile); `data` is zlib of int32 records `[npts, height_dm, X0, Y0, dX1, dY1, ...]` in zoom-30 pixels
+  (2^-30 of the world), the first point whole and the rest as steps, height 0 when the map gives none. An outline
+  reaching more than 4096 of those (about 100 m in central Europe) into a neighbouring tile is filed there too; readers
+  keep one copy.
+- `bldg_osm(x, y, n, data)`: outlines and building parts with a mapped `height` or `building:levels` (3.2 m a storey
+  and 1.5 m of roof), for 3D: `[npts, height_dm, min_height_dm, is_part, X0, Y0, ...]`.
 
 ### terrain.sqlite
 
@@ -94,13 +95,19 @@ cargo run --release -p lastbook-tools --bin map-data -- pack-addresses derived/m
 
 `region` writes `<out>/map/` (the map set: `map-set.json` and `derived/geo/*`) and `<out>/addresses/<REGION>.sqlite`,
 and prints what it made. Everything kept lies inside the region's boxes (`crates/engine/src/regions.rs`); the DEM
-tiles given must cover them (Liechtenstein's box reaches 46.90°N, so it needs N46 as well as N47). How each file is
-made:
+tiles given must cover them (Liechtenstein's box reaches 46.90°N, so it needs N46 as well as N47).
 
-- `detail.rs`: the original Lastbook's layers, classes and zooms from the GeoPackage; areas appear from the zoom where
-  they are about a sixteenth of the screen. `base.rs` adds the Natural Earth base with each feature's own `min_zoom`.
+The detail is what the two extracts hold, and Geofabrik's country extracts stop at the border. A region's boxes reach
+into its neighbours, so that strip has only the base map and the elevation: Liechtenstein's map has no streets on the
+Swiss bank of the Rhine and a handful near Feldkirch, and its address index only the few Austrian addresses the extract
+has. Filling the strip needs the neighbours' extracts as well; `region` takes one of each for now.
+
+How each file is made:
+
+- `detail.rs`: the original Lastbook's layers, classes and zooms from the GeoPackage; an area appears from the zoom
+  where it spans about a sixteenth of a tile. `base.rs` adds the Natural Earth base with each feature's own `min_zoom`.
 - `places.rs`, `water.rs`, `buildings.rs`, `addresses.rs`, `terrain.rs`: the other files as described above. A
-  terrain pixel is the mean of the DEM over its footprint.
+  terrain pixel is the mean of DEM samples spread across it: one at zoom 12, 8 × 8 at zoom 9.
 
 `pack-map` and `pack-addresses` make `Lastbook-Map-<REGION>.zip` (the map set at the top of the zip, deflated, the
 elevation tiles stored) and `Lastbook-Addresses-<REGION>.zip` (`derived/geo/addresses/<REGION>.sqlite` alone), check
