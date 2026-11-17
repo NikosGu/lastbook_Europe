@@ -38,7 +38,7 @@ None of these blocks the work: each has a placeholder.
 | Setup | manifest, downloader (own HTTPS client, pinned roots built in, resume with ETag), installer (check, unpack beside, switch at restart), hardware, `/api/setup/*` ([SETUP-API.md](SETUP-API.md)) | 49 engine tests, 9 of them whole flows against a local HTTPS server; on macOS, Windows and Ubuntu in CI |
 | The app's start | settings and data folders on each system, the remembered library, setup when there is none, the system's file picker, a restart after setup | snapshots of the app (setup page) |
 | Setup's region choice | country, then region for a split country | snapshots: Germany → region list, Bremen → sizes, Liechtenstein → one choice |
-| Local AI runner | `lastbook-llm` on llama.cpp: JSON lines, no sockets; llama.cpp's fit; "from the disk" placement for models larger than the memory | protocol tests in CI; a small Qwen 3.5 mixture-of-experts test model on Metal; Qwen3.6-35B-A3B Q8_0 (37.8 GB) loads on a 16 GB Mac with its weights read from the disk |
+| Local AI runner | `lastbook-llm` on llama.cpp: JSON lines, no sockets; llama.cpp's fit; Metal on a Mac, Vulkan or the best processor variant on Windows and Linux (backends loaded only where they can run); "from the disk" for models larger than the memory, with each layer's chosen experts read ahead | protocol tests in CI; a small Qwen 3.5 mixture-of-experts test model on Metal, and from the disk with experts read ahead writing exactly the same; Qwen3.6-35B-A3B Q8_0 (37.8 GB) loads on a 16 GB Mac with its weights read from the disk |
 | Prompt formats | Qwen 3.5/3.6 (ChatML, XML tool calls) and Gemma 4, chosen by the model file's header | tests against the chat templates |
 | Installers and releases | `.dmg` (6.5 MB), Inno Setup installer and `.zip`, `.deb` and `.tar.gz`; a draft release on each push | the `.dmg` opened and photographed here; the release workflow on GitHub |
 | Windows | downloads, paths and file locks fixed after the first run on GitHub's Windows machines | CI |
@@ -65,8 +65,8 @@ None of these blocks the work: each has a placeholder.
 1. The whole path in Italian with Liechtenstein: setup, map, addresses, chat, photographed in the app.
 2. The other test regions (Malta, Luxembourg, Bremen), then all regions built by the tools on GitHub's machines.
 3. The release checks: the pinned roots cover the download hosts, nothing ships that must not.
-4. A faster "from the disk": experts kept in memory by use, only the missing ones read (BigMoeOnEdge, llama.cpp's expert
-   streaming).
+4. Measure "from the disk" with Qwen3.6-35B-A3B on a 16 GB Mac; if it is too slow, a cache of experts of its own, kept by
+   use, as BigMoeOnEdge does.
 
 ## Test models
 
