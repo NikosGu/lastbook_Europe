@@ -19,7 +19,9 @@ libc = "0.2"
 [target.'cfg(target_os = "macos")'.dependencies]
 llama-cpp-2 = { version = "0.1.161", default-features = false, features = ["common", "metal"] }
 
-# Windows and Linux: llama.cpp's backends are separate libraries beside the runner, each loaded only where it can run:
-# Vulkan where the computer has a graphics card and its driver, else the best CPU variant for this processor.
-[target.'cfg(any(windows, target_os = "linux"))'.dependencies]
-llama-cpp-2 = { version = "0.1.161", default-features = false, features = ["common", "vulkan", "dynamic-backends"] }
+
+[features]
+# Windows and Linux: llama.cpp's backends as separate libraries beside the runner, Vulkan among them, each loaded only
+# where it can run (a graphics card with its driver, else the best processor variant). Being made to build on GitHub's
+# machines; until it does, those builds use the processor.
+vulkan = ["llama-cpp-2/vulkan", "llama-cpp-2/dynamic-backends"]

@@ -18,9 +18,13 @@ if (Test-Path $Stage) { Remove-Item -Recurse -Force $Stage }
 New-Item -ItemType Directory -Force -Path $Stage | Out-Null
 Copy-Item "target\release\lastbook.exe", "target\release\lastbook-llm.exe" $Stage
 # llama.cpp's libraries and its backends (Vulkan, and the CPU variants), which the runner loads from beside itself
-Get-ChildItem "target\release" -Filter "*.dll" | Where-Object { $_.Name -match '^(llama|ggml)' } | Copy-Item -Destination $Stage
-$Backends = Get-ChildItem "target\release\build" -Directory -Recurse -Filter "backends" | Where-Object { $_.FullName -match 'llama-cpp-sys-2-.*\\out\\backends$' } | Select-Object -First 1
-if ($Backends) { Get-ChildItem $Backends.FullName -Filter "*.dll" | Copy-Item -Destination $Stage }
+# (built only with the runner's "vulkan" feature; Cargo puts the crate's output in build\llama-cpp-sys-2-<hash>\out, or in
+# build\llama-cpp-sys-2\<hash>\out in its newer layout)
+$SysOut = Get-ChildItem "target\release\build" -Directory -Recurse -Filter "out" -ErrorAction SilentlyContinue | Where-Object { $_.FullName -match 'llama-cpp-sys-2[-\\]' -and (Test-Path "$($_.FullName)\bin\*.dll") } | Select-Object -First 1
+if ($SysOut) {
+  Get-ChildItem "$($SysOut.FullName)\bin" -Filter "*.dll" | Where-Object { $_.Name -match '^(llama|ggml)' } | Copy-Item -Destination $Stage
+  if (Test-Path "$($SysOut.FullName)\backends") { Get-ChildItem "$($SysOut.FullName)\backends" -Filter "*.dll" | Copy-Item -Destination $Stage }
+}
 Copy-Item -Recurse "web" "$Stage\web"
 Copy-Item -Recurse "content" "$Stage\content"
 Remove-Item -Recurse -Force "$Stage\content\library" -ErrorAction SilentlyContinue # sources lists for lastbook-tools, not read by the app

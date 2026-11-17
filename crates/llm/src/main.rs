@@ -314,7 +314,7 @@ fn parse_args() -> Result<Args, String> {
 /// this program in a package, else from the build's own folder; each loads only where it can run, so a computer without a
 /// graphics driver simply uses its processor. On a Mac, Metal is built in.
 fn load_backends() {
-    #[cfg(any(windows, target_os = "linux"))]
+    #[cfg(all(feature = "vulkan", any(windows, target_os = "linux")))]
     {
         let here = std::env::current_exe().ok().and_then(|e| e.parent().map(std::path::Path::to_path_buf));
         let beside = here.filter(|d| std::fs::read_dir(d).into_iter().flatten().flatten().any(|e| e.file_name().to_string_lossy().contains("ggml-cpu")));
