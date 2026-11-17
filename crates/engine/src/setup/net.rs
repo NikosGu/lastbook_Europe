@@ -1,7 +1,8 @@
 //! The one way out: HTTPS GETs for setup's downloads and the update check. Nothing else in the app opens a connection.
 //!
-//!   - HTTPS only, to the hosts engine::dist names (the project's download site, and Hugging Face's hosts for the AI
-//!     model), port 443. Tests pass their own hosts, on any port.
+//!   - HTTPS only, to the hosts engine::dist names (the project's releases on GitHub, where GitHub sends their files,
+//!     and Hugging Face's hosts for the AI model), port 443; on github.com, this repository's release files only. Tests
+//!     pass their own hosts, on any port.
 //!   - No proxy: nothing is read from the system's or the environment's proxy settings. A request goes straight to the
 //!     host named, or nowhere.
 //!   - Trust: the roots in roots.pem only, never the system's store.
@@ -32,7 +33,9 @@ pub enum Allow {
 }
 
 pub fn allowed_hosts() -> Vec<&'static str> {
-    let mut v = vec![dist::DOWNLOAD_HOST, dist::MODEL_HOST];
+    let mut v = vec![dist::DOWNLOAD_HOST];
+    v.extend_from_slice(dist::DOWNLOAD_REDIRECT_HOSTS);
+    v.push(dist::MODEL_HOST);
     v.extend_from_slice(dist::MODEL_REDIRECT_HOSTS);
     v
 }
@@ -53,6 +56,10 @@ pub fn url_allowed(url: &str, allow: &Allow) -> bool {
     }
     let Some(host) = u.host_str() else { return false };
     if matches!(allow, Allow::Product) && u.port().is_some_and(|p| p != 443) {
+        return false;
+    }
+    // on the download host (github.com), this repository's release files only, not anyone's
+    if matches!(allow, Allow::Product) && host.eq_ignore_ascii_case(dist::DOWNLOAD_HOST) && !u.path().starts_with(&dist::download_path_prefix()) {
         return false;
     }
     host_allowed(host.trim_start_matches('[').trim_end_matches(']'), allow)
@@ -325,12 +332,17 @@ mod tests {
     #[test]
     fn product_hosts() {
         let h = dist::DOWNLOAD_HOST;
-        let ok = [format!("https://{h}/1.0.0/Lastbook-Small.zip"), "https://huggingface.co/unsloth/x/resolve/abc/f.gguf?download=true".into(),
+        let ok = [format!("{}/Lastbook-Small.zip", dist::download_base()), dist::update_url().unwrap(),
+                  "https://release-assets.githubusercontent.com/github-production-release-asset/1/abc?sp=r&sig=x".into(),
+                  "https://huggingface.co/unsloth/x/resolve/abc/f.gguf?download=true".into(),
                   "https://cas-bridge.xethub.hf.co/xet-bridge-us/abc?X-Amz=1".into(), "https://us.gcp.cdn.hf.co/x".into()];
         let bad = [format!("http://{h}/x"), format!("https://{h}:8443/x"), "https://evil.com/x".into(), "https://hf.co.evil.com/x".into(),
                    format!("https://user:pw@{h}/x"), "https://downloads.lastbook.org/x".into(), "https://lastbook.org/x".into(),
                    "https://other.r2.dev/x".into(), "ftp://huggingface.co/x".into(), "https://.hf.co/x".into(), "https://localhost/x".into(),
-                   "https://127.0.0.1/x".into(), "file:///etc/passwd".into(), format!("https://{h}.evil.com/x")];
+                   "https://127.0.0.1/x".into(), "file:///etc/passwd".into(), format!("https://{h}.evil.com/x"),
+                   // github.com: only this repository's releases
+                   format!("https://{h}/someone/else/releases/download/v1/x.zip"), format!("https://{h}/NikosGu/lastbook_Europe/archive/main.zip"),
+                   format!("https://{h}/x")];
         for u in &ok {
             assert!(url_allowed(u, &Allow::Product), "{u}");
         }

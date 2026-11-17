@@ -90,9 +90,9 @@ struct Inner {
 }
 
 impl Updater {
-    /// The product's check: the download host only, this program's version.
+    /// The product's check: the project's releases (and where GitHub sends their files) only, this program's version.
     pub fn product() -> Updater {
-        Updater::new(dist::update_url(), Allow::Only(vec![dist::DOWNLOAD_HOST.to_string()]), None, platform_key(), env!("CARGO_PKG_VERSION"), os_version())
+        Updater::new(dist::update_url(), Allow::Product, None, platform_key(), env!("CARGO_PKG_VERSION"), os_version())
     }
 
     pub fn new(url: Option<String>, allow: Allow, tls: Option<Tls>, key: Option<&'static str>, version: &str, os: Option<String>) -> Updater {
@@ -225,9 +225,14 @@ mod tests {
     }
 
     #[test]
+    fn the_product_asks_the_newest_release() {
+        assert_eq!(dist::update_url().as_deref(), Some("https://github.com/NikosGu/lastbook_Europe/releases/latest/download/app-v1.json"));
+        assert!(net::url_allowed(&dist::update_url().unwrap(), &Allow::Product));
+    }
+
+    #[test]
     fn no_site_means_no_connection() {
-        let u = Updater::product();
-        assert!(dist::update_url().is_none(), "the download site is still the placeholder");
+        let u = Updater::new(None, Allow::Product, None, platform_key(), env!("CARGO_PKG_VERSION"), os_version());
         let s = u.check();
         assert_eq!(s["state"], "no_site");
         assert_eq!((s["code"].as_str(), &s["params"]), (Some("no_site"), &json!({})));

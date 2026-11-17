@@ -1,0 +1,31 @@
+{
+ "version": 1,
+ "packs": [],
+ "maps": [],
+ "address_indexes": [],
+ "models": [
+  {
+   "id": "qwen3.6-35b-a3b-q8",
+   "title": "Qwen3.6 35B A3B (8-bit)",
+   "file": "Qwen_Qwen3.6-35B-A3B-Q8_0.gguf",
+   "url": "https://huggingface.co/bartowski/Qwen_Qwen3.6-35B-A3B-GGUF/resolve/main/Qwen_Qwen3.6-35B-A3B-Q8_0.gguf",
+   "size": 37812647552,
+   "sha256": "bc57de096ec30e45773aa86103f35a8a32cea01f2193a53a3c636d618e4434e9",
+   "memory_bytes": 40000000000,
+   "available": true,
+   "family": "qwen35",
+   "params": "35B",
+   "active_params": "3B",
+   "ctx": 16384,
+   "languages": [
+    "en",
+    "it",
+    "de",
+    "fr",
+    "es",
+    "pl"
+   ],
+   "summary": "A mixture of experts: 256 experts, 8 used for each word. Larger than this computer's memory, it runs from the disk."
+  }
+ ]
+}

@@ -22,11 +22,8 @@ None of these blocks the work: each has a placeholder.
 
 | Decision | Placeholder now | Where it is used |
 |---|---|---|
-| Project name and domain | `Lastbook Europe`, no domain | `crates/engine/src/dist.rs` (`NAME`, `WEBSITE`), the window's title, the installers |
-| Where the library packs, region maps, address indexes, models and manifest are hosted (GitHub release assets, up to 2 GB a file, are one option) | `downloads.lastbook-europe.invalid`, which never resolves | `crates/engine/src/dist.rs`, the pinned roots |
-| Contact address for removal requests | none | each pack's Sources page |
 | Native-speaker review of the Italian, German, French, Spanish and Polish text | translations marked for review | `web/locales/`, `content/` |
-| Publishing the first release | each push makes a **draft** release | GitHub's Releases page |
+| Publishing the first release, and the data release `data-v1` (setup downloads only from published releases) | each push makes a **draft** release; the data is uploaded to the `data-v1` draft | GitHub's Releases page |
 | How all 110 regions are built: Geofabrik, free and shared, refused GitHub's machines' connections for Finland and Lombardy, even after eight tries over several minutes (the four test regions and Bavaria got their extracts) | the regions workflow, one region at a time | a schedule kind to Geofabrik (extracts kept between runs, regions spread over days), a machine of the project's own, or another source of the same extracts |
 | Whether the starter library may be published: many documents state no licence, the eight French, Spanish and Polish ones among them (BBK and WHO reserve their rights, BBK allowing quotations; IFRC allows non-commercial copies) | built here, not published | `content/library/starter.json` (`about`, and each document's terms) |
 
@@ -34,6 +31,7 @@ None of these blocks the work: each has a placeholder.
 
 | When | Decision | Why |
 |---|---|---|
+| 17 Nov 2026 | The data is hosted on this repository's GitHub releases: the library packs, region maps, address indexes and their manifest in the release `data-v1`, kept as a draft until the maintainer publishes it; each app version's `app-v1.json` in its own release, read through GitHub's "latest release" address; on github.com setup may fetch only this repository's release files. The name stays Lastbook Europe, with no domain of its own; removal requests go to the repository's public issues | free, already used for the installers, files up to 2 GB; GitHub's hosts verify through the pinned roots (two USERTrust roots added for github.com) |
 | 17 Nov 2026 | No paid signing certificates (the maintainer's decision): the Mac app is signed ad hoc and the Windows installer is unsigned; the README says how to open each the first time | the release works without them; they would only spare people one warning |
 | 17 Nov 2026 | The app opens on "What do you need?" (the search and the guides), with Home first in the sidebar; videos keep their page | the original opened on its videos; the starter library has none |
 | 17 Nov 2026 | Setup suggests the smallest available library, whatever its name, and leaves 5% of the disk free in all (between 1 and 5 GB) | it looked for a pack named "small", and two margins added together turned down a 43 MB library on a disk with 7 GB free |

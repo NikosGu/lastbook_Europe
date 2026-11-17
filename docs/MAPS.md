@@ -141,7 +141,7 @@ How each file is made (`crates/tools/src/map/`):
 elevation tiles stored) and `Lastbook-Addresses-<REGION>.zip` (`derived/geo/addresses/<REGION>.sqlite` alone), check
 each with setup's own `install::check_zip`, and print the entry for `maps` or `address_indexes` in
 `manifest-v1.json` ([SETUP-API.md](SETUP-API.md)), with the download address in the `maps/` or `addresses/` folder of
-`--base` (by default the placeholder host of `crates/engine/src/dist.rs`).
+`--base` (by default this project's data release on GitHub, `crates/engine/src/dist.rs`).
 
 The four test regions, built on 17 November 2026 from Geofabrik's extracts of 16 November, one after the other (the
 first builds of Malta, Luxembourg and Bremen peaked at 440 to 460 MB of memory):

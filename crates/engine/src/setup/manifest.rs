@@ -288,8 +288,10 @@ mod tests {
         dist::DOWNLOAD_HOST.to_string()
     }
 
+    /// A pack whose file is on `url_host`: on the download host, in the data release, as the product's are.
     fn pack(id: &str, url_host: &str, sha: char, size: u64) -> Value {
-        json!({"id": id, "available": true, "installed_bytes": 5, "files": [{"name": format!("{id}.zip"), "url": format!("https://{url_host}/{id}.zip"), "size": size, "sha256": sha.to_string().repeat(64)}]})
+        let url = if url_host == h() { format!("{}/{id}.zip", dist::download_base()) } else { format!("https://{url_host}/{id}.zip") };
+        json!({"id": id, "available": true, "installed_bytes": 5, "files": [{"name": format!("{id}.zip"), "url": url, "size": size, "sha256": sha.to_string().repeat(64)}]})
     }
 
     #[test]
@@ -308,12 +310,25 @@ mod tests {
         assert!(validate(&model, &Allow::Product).is_some());
         let bad = json!({"version": 1, "packs": [pack("small", "huggingface.co", '0', 1)]});
         assert!(validate(&bad, &Allow::Product).is_none());
+        // on github.com, only this project's releases
+        let mut elsewhere = json!({"version": 1, "packs": [pack("small", &h(), '0', 1)]});
+        elsewhere["packs"][0]["files"][0]["url"] = json!("https://github.com/someone/else/releases/download/v1/small.zip");
+        assert!(validate(&elsewhere, &Allow::Product).is_none());
+    }
+
+    #[test]
+    fn the_data_release_base_is_valid() {
+        // packaging/data/manifest-base.json: the model catalogue the data release's manifest starts from
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../packaging/data/manifest-base.json");
+        let base: Value = serde_json::from_slice(&std::fs::read(path).unwrap()).unwrap();
+        let v = validate(&base, &Allow::Product).expect("valid");
+        assert!(!v["models"].as_array().unwrap().is_empty());
     }
 
     #[test]
     fn region_ids() {
         let entry = |id: &str| json!({"version": 1, "maps": [{"id": id, "title": "x", "available": true, "installed_bytes": 9,
-            "files": [{"name": "m.zip", "url": format!("https://{}/m.zip", h()), "size": 3, "sha256": "2".repeat(64)}]}]});
+            "files": [{"name": "m.zip", "url": format!("{}/m.zip", dist::download_base()), "size": 3, "sha256": "2".repeat(64)}]}]});
         assert!(validate(&entry("DE-HB"), &Allow::Product).is_some());
         assert!(validate(&entry("LU"), &Allow::Product).is_some());
         for bad in ["../DE-HB", "de-hb", "Bremen", "DE_HB"] {

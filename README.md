@@ -117,7 +117,11 @@ streaming work do.
   a network port. Pages from anywhere else are blocked.
 - **One use of the network, started by the person.** Setup's downloader (`crates/engine/src/setup/net.rs` and
   `download.rs`) is the only code that connects anywhere: HTTPS on port 443, only to the hosts in
-  `crates/engine/src/dist.rs`, no proxy from the system, and a redirect only to another allowed host.
+  `crates/engine/src/dist.rs` (this project's releases on github.com, where GitHub serves their files, and Hugging Face
+  for the AI model; on github.com, this repository's release files only), no proxy from the system, and a redirect only
+  to another allowed host. The update check, when asked, reads one small file the same way.
+- **A local AI that cannot reach the network.** The runner imports no network function, and llama.cpp is built without
+  its model downloader (`crates/llm/llama/`); `lastbook-tools scan-package` checks every package for it.
 - **Pinned trust.** The downloader trusts only the root certificates in `crates/engine/src/setup/roots.pem`, built into
   the program, never the system's trust store.
 - **Checked files.** Every download is checked against the SHA-256 published for it before it is used. Zips are checked
