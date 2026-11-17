@@ -51,7 +51,9 @@ that cache is the only thing the map writes.
 
 `tile(z, x, y, png)`: 256-pixel web-mercator tiles, zoom 9 to 12, in terrain-RGB PNG
 (metres = -10000 + (R * 65536 + G * 256 + B) * 0.1), written with the engine's `map::terrain::terrain_png`. A tile is
-written only where the DEM covers all of it. `meta`: `source`, `licence`.
+written only where the DEM covers all of it. `meta`: `source`, `licence`. Norway's, Sweden's and Finland's stop at
+zoom 10; where a tile up to zoom 12 is missing, the engine serves the part of the most detailed tile above it,
+enlarged (up to three zooms), so that the page still draws relief and contours there, and reads heights.
 
 ### Search keys
 
@@ -265,7 +267,8 @@ their PBF:
 - The Netherlands (PBFs 1.4 GB, nearly every building and address mapped), Sweden (1.0 GB), Czechia and
   Nordrhein-Westfalen (0.9 GB) and Bayern: 4 to 7 GB of memory.
 - Elevation to zoom 12 over Norway's, Sweden's and Finland's boxes would make maps of several GB, past the 2 GiB a
-  release's file may be: those three stop at zoom 10 (`terrain_zoom` in the table).
+  release's file may be: those three stop at zoom 10 (`terrain_zoom` in the table), which the engine enlarges for
+  zoom 11 and 12 (terrain.sqlite above): relief, contours and heights there are coarser, not missing.
 - These are estimates: the first run's summaries give each region's measured memory and time.
 
 Tried here, offline, on what was already downloaded: Liechtenstein through the script, its sources laid out as the

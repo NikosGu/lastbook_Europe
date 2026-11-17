@@ -445,6 +445,39 @@ fn image_tiles_and_their_gaps() {
 }
 
 #[test]
+fn terrain_that_stops_below_zoom_12_is_enlarged_to_it() {
+    // Norway's terrain stops at zoom 10: zoom 11 and 12 are its tiles' parts, enlarged
+    let f = fx("enlarged");
+    let mut h = vec![0f32; 65536];
+    for (i, v) in h.iter_mut().enumerate() {
+        *v = 100.0 + (i % 256) as f32 * 2.0 + (i / 256) as f32; // rises to the east, and to the south
+    }
+    let (x, y) = tile_of(10, VADUZ.0, VADUZ.1);
+    let c = f.sqlite("derived/geo/terrain.sqlite", "CREATE TABLE tile(z INT, x INT, y INT, png BLOB, PRIMARY KEY(z,x,y)) WITHOUT ROWID;");
+    c.execute("INSERT INTO tile VALUES (10,?1,?2,?3)", params![x, y, terrain::terrain_png(&h)]).unwrap();
+    drop(c);
+    for z in [11, 12] {
+        let (cx, cy) = tile_of(z, VADUZ.0, VADUZ.1);
+        let r = f.get(&format!("/api/map/terrain/{z}/{cx}/{cy}.png"));
+        assert_eq!(r.status, 200, "zoom {z}");
+        let child = terrain::heights(&r.body).unwrap();
+        // a pixel of the enlarged tile has the height of the same place in the zoom-10 tile
+        let k = 1i64 << (z - 10);
+        let (dx, dy) = ((cx - x * k) as f64, (cy - y * k) as f64);
+        for (px, py) in [(0usize, 0usize), (100, 37), (255, 255)] {
+            let fx = (dx * 256.0 + px as f64 + 0.5) / k as f64 - 0.5;
+            let fy = (dy * 256.0 + py as f64 + 0.5) / k as f64 - 0.5;
+            let want = 100.0 + fx.clamp(0.0, 255.0) * 2.0 + fy.clamp(0.0, 255.0);
+            assert!((child[py * 256 + px] as f64 - want).abs() < 0.2, "zoom {z} pixel {px},{py}: {} not {want}", child[py * 256 + px]);
+        }
+    }
+    let m = f.map.elevation(VADUZ.0, VADUZ.1).unwrap();
+    assert!((100.0..868.0).contains(&m), "{m}");
+    assert_eq!(f.get("/api/map/terrain/12/1/1.png").status, 204, "nothing above it: still a gap");
+    assert_eq!(f.get(&format!("/api/map/terrain/9/{}/{}.png", x / 2, y / 2)).status, 204, "never made coarser");
+}
+
+#[test]
 fn help_pins_members_and_nearest() {
     let f = fx("pins");
     vaduz(&f);
