@@ -90,7 +90,16 @@ const MapView = (() => {
   // files give, lowercased (places.sqlite: city, town, village…; the water file: Lake, Reservoir, Dam, Pond, Water). Another kind shows as it comes.
   const KIND = { street_address: 'map.kind.street_address', street: 'map.kind.street', postcode: 'map.kind.postcode', town: 'map.kind.town', city: 'map.kind.city',
     village: 'map.kind.village', hamlet: 'map.kind.hamlet', suburb: 'map.kind.suburb', island: 'map.kind.island', county: 'map.kind.county', region: 'map.kind.region',
-    lake: 'map.kind.lake', reservoir: 'map.kind.reservoir', dam: 'map.kind.dam', pond: 'map.kind.pond', water: 'map.kind.water' };
+    lake: 'map.kind.lake', reservoir: 'map.kind.reservoir', dam: 'map.kind.dam', pond: 'map.kind.pond', water: 'map.kind.water',
+    // the rest of what the place files hold (crates/tools/src/map/places.rs: Geofabrik's place classes, peaks, and detail.rs POI_KEEP)
+    locality: 'map.kind.locality', isolated_dwelling: 'map.kind.isolated_dwelling', farm: 'map.kind.farm', municipality: 'map.kind.municipality', national_capital: 'map.kind.national_capital', peak: 'map.kind.peak',
+    spring: 'map.kind.spring', beach: 'map.kind.beach', park: 'map.kind.park', hospital: 'map.kind.hospital', clinic: 'map.kind.clinic', doctors: 'map.kind.doctors',
+    dentist: 'map.kind.dentist', pharmacy: 'map.kind.pharmacy', chemist: 'map.kind.chemist', veterinary: 'map.kind.veterinary', nursing_home: 'map.kind.nursing_home', fire_station: 'map.kind.fire_station',
+    police: 'map.kind.police', courthouse: 'map.kind.courthouse', embassy: 'map.kind.embassy', town_hall: 'map.kind.town_hall', community_centre: 'map.kind.community_centre', library: 'map.kind.library',
+    post_office: 'map.kind.post_office', school: 'map.kind.school', kindergarten: 'map.kind.kindergarten', college: 'map.kind.college', university: 'map.kind.university', shelter: 'map.kind.shelter',
+    toilet: 'map.kind.toilet', drinking_water: 'map.kind.drinking_water', fountain: 'map.kind.fountain', water_tower: 'map.kind.water_tower', water_works: 'map.kind.water_works', wastewater_plant: 'map.kind.wastewater_plant',
+    comms_tower: 'map.kind.comms_tower', supermarket: 'map.kind.supermarket', convenience: 'map.kind.convenience', doityourself: 'map.kind.doityourself', hardware: 'map.kind.hardware', garden_centre: 'map.kind.garden_centre',
+    bicycle_shop: 'map.kind.bicycle_shop', car_repair: 'map.kind.car_repair', fuel: 'map.kind.fuel', camp_site: 'map.kind.camp_site' };
   // The line under a lake's or dam's name, after where it is: each part's code (crates/engine/src/map/places.rs PLACE_CODES) → its words
   const PLACE_PART = { also_called: 'map.place.also_called', km_away: 'map.place.km_away', nearby: 'map.place.nearby' };
   // A resource's line (crates/engine/src/map/pins.rs SUMMARY_CODES): its area, NOT drinking water, a crop's area in its block, what it
