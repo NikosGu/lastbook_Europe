@@ -34,6 +34,8 @@ pub struct Sources {
     pub neighbour_pbf: Vec<PathBuf>,
     /// Copernicus DEM GLO-30 GeoTIFFs covering the region's boxes; none leaves terrain out.
     pub dem: Vec<PathBuf>,
+    /// The most detailed elevation tiles, 9 to 12 (terrain::ZOOMS).
+    pub terrain_zoom: u32,
     /// The folder of Natural Earth zips (base.rs); None leaves the base out.
     pub ne: Option<PathBuf>,
 }
@@ -62,6 +64,9 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     if src.pbf.is_empty() {
         return Err("a PBF of the region is needed".into());
     }
+    if !terrain::ZOOMS.contains(&src.terrain_zoom) {
+        return Err(format!("the terrain's zoom is {} to {}, not {}", terrain::ZOOMS.start(), terrain::ZOOMS.end(), src.terrain_zoom));
+    }
     let work = out.join("work");
     let unpack = |list: &[PathBuf]| list.iter().map(|p| gpkg::unpacked(p, &work)).collect::<Result<Vec<_>, _>>();
     let g = gpkg::Set::open(&unpack(&src.gpkg)?, &unpack(&src.neighbour_gpkg)?, boxes)?;
@@ -70,6 +75,16 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     // the region's own extracts say which country an address lies in; the neighbours' only add what is in the boxes
     let admin = Admin::from_rows(&g.own_layer("gis_osm_adminareas_a_free", admin::ADMIN_COLUMNS), country);
     say(&format!("{} municipalities", admin.towns.len()));
+    let db = |e: rusqlite::Error| e.to_string();
+    // the vector map: the base, then the detail, read from the GeoPackages before the PBFs, so that a large region does
+    // not hold both at once
+    let mut w = MapWriter::create(&geo.join("national.sqlite")).map_err(db)?;
+    let base_counts = match &src.ne {
+        Some(ne) => Some(base::write(&mut w, ne)?),
+        None => None,
+    };
+    let detail = detail::detail(&mut w, &g, boxes).map_err(db)?;
+    say(&format!("{} features of detail", detail.features));
     let keep = |k: Kind, t: &[(&str, &str)]| {
         addresses::wanted(k, t) || addresses::street_wanted(k, t) || buildings::wanted(k, t) || places::wanted(k, t) || water::wanted(k, t)
             || coast::wanted(k, t)
@@ -85,15 +100,8 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
             say(&format!("{} more elements in the boxes from {}", things.len() - before, p.display()));
         }
     }
+    drop(seen);
     say(&format!("{} elements from the PBF", things.len()));
-    let db = |e: rusqlite::Error| e.to_string();
-    // the vector map: the base, then the detail
-    let mut w = MapWriter::create(&geo.join("national.sqlite")).map_err(db)?;
-    let base_counts = match &src.ne {
-        Some(ne) => Some(base::write(&mut w, ne)?),
-        None => None,
-    };
-    let detail = detail::detail(&mut w, &g, boxes).map_err(db)?;
     // the coast at every zoom: land the world outline lacks, sea it covers
     let shore = coast::coast(&things);
     let (islands, seas) = (coast::kept(&shore.islands, boxes), coast::kept(&shore.seas, boxes));
@@ -129,14 +137,18 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     say(&format!("{} water records", recs.len()));
     let (outlines, tall) = buildings::write(&geo.join("buildings.sqlite"), &things, boxes, "OpenStreetMap").map_err(db)?;
     say(&format!("{outlines} buildings, {tall} with heights"));
+    // what was read from the PBFs and the GeoPackages is let go before the terrain takes its memory
+    let (row_count, place_count, water_count) = (rows.len(), ps.len(), recs.len());
+    drop((things, rows, ps, recs, admin, names));
+    drop(g);
     let mut terrain_counts = None;
     if !src.dem.is_empty() {
-        let dems: Vec<terrain::Dem> = src.dem.iter().map(|p| terrain::Dem::read(p)).collect::<Result<_, _>>()?;
-        let n = terrain::write(&geo.join("terrain.sqlite"), &dems, boxes, terrain::ZOOMS, TERRAIN_SOURCE, TERRAIN_LICENCE).map_err(db)?;
-        say(&format!("{} elevation tiles, {} not covered whole by the DEM", n.tiles, n.skipped));
+        let mut dems = terrain::Dems::open(&src.dem, terrain::DEM_MEMORY)?;
+        let n = terrain::write(&geo.join("terrain.sqlite"), &mut dems, boxes, *terrain::ZOOMS.start()..=src.terrain_zoom, TERRAIN_SOURCE, TERRAIN_LICENCE)?;
+        say(&format!("{} elevation tiles to zoom {}, {} not covered whole by the DEM ({} DEM files, read {} times)", n.tiles, src.terrain_zoom,
+                     n.skipped, src.dem.len(), dems.reads));
         terrain_counts = Some(n);
     }
-    drop(g);
     let _ = std::fs::remove_dir_all(&work);
     let map = out.join("map");
     let mut files = Map::new();
@@ -152,12 +164,12 @@ pub fn build(region: &str, src: &Sources, out: &Path) -> Result<Value, String> {
     Ok(json!({
         "region": region, "title": r.name, "files": files, "bytes": bytes,
         "address_index": {"path": index.to_string_lossy(), "bytes": std::fs::metadata(&index).map(|m| m.len()).unwrap_or(0), "addresses": count,
-                          "rows": rows.len()},
-        "features": features, "detail_features": detail.features, "help_points": pois, "places": ps.len(), "water_records": recs.len(),
+                          "rows": row_count},
+        "features": features, "detail_features": detail.features, "help_points": pois, "places": place_count, "water_records": water_count,
         "buildings": outlines, "buildings_with_heights": tall,
         "coast": {"islands": islands.len(), "seas": seas.len(), "open": shore.open},
         "base": base_counts.map(|c| json!({"roads": c.roads, "places": c.places, "water": c.water})),
-        "terrain": terrain_counts.map(|c| json!({"tiles": c.tiles, "not_covered": c.skipped})),
+        "terrain": terrain_counts.map(|c| json!({"tiles": c.tiles, "not_covered": c.skipped, "zoom": src.terrain_zoom})),
         "seconds": started.elapsed().as_secs(),
     }))
 }
@@ -201,7 +213,8 @@ mod tests {
         crate::map::terrain::write::geotiff(&dem, 9.40, 47.30, 0.002, 150, 150, false);
         crate::map::shp::write::zip(&dir.join("ne/ne_10m_roads.zip"), crate::map::shp::Kind::Line, &[(vec![vec![(9.0, 47.0), (9.6, 47.2), (10.0, 47.5)]],
             vec![("type", "Major Highway"), ("expressway", "0"), ("min_zoom", "5"), ("name", "13")])]);
-        Sources { gpkg: vec![gpkg], pbf: vec![pbf_path], neighbour_gpkg: Vec::new(), neighbour_pbf: Vec::new(), dem: vec![dem], ne: Some(dir.join("ne")) }
+        Sources { gpkg: vec![gpkg], pbf: vec![pbf_path], neighbour_gpkg: Vec::new(), neighbour_pbf: Vec::new(), dem: vec![dem], terrain_zoom: 12,
+                  ne: Some(dir.join("ne")) }
     }
 
     #[test]
@@ -255,6 +268,14 @@ mod tests {
         assert_eq!(info["detail"], true);
         assert!(info["datasets"].to_string().contains("Elevation (Copernicus DEM GLO-30)"), "{}", info["datasets"]);
         lastbook_engine::db::close_all();
+        // a region whose zoom-12 elevation would be too large stops at a lower zoom
+        let coarse = Sources { terrain_zoom: 11, ..sources(&dir.join("src-coarse")) };
+        build("LI", &coarse, &dir.join("coarse")).unwrap();
+        let t = Connection::open(dir.join("coarse/map/derived/geo/terrain.sqlite")).unwrap();
+        assert_eq!(t.query_row("SELECT max(z) FROM tile", [], |r| r.get::<_, i64>(0)).unwrap(), 11, "the small test DEM covers no tile below 11");
+        let fine = Sources { terrain_zoom: 13, gpkg: coarse.gpkg.clone(), pbf: coarse.pbf.clone(), neighbour_gpkg: Vec::new(), neighbour_pbf: Vec::new(),
+                             dem: coarse.dem.clone(), ne: None };
+        assert!(build("LI", &fine, &dir.join("fine")).is_err(), "zoom 12 at most");
         std::fs::remove_dir_all(&dir).unwrap();
     }
 

@@ -59,7 +59,8 @@ fn zip(out: &Path, members: &[(String, std::path::PathBuf)], allowed: install::A
     Ok((size, sha256(out)?, installed))
 }
 
-/// The region map zip of a built map set (`map/` of mapset.rs), and its entry under `maps` in the manifest.
+/// The region map zip of a built map set (`map/` of mapset.rs), and its entry under `maps` in the manifest, the zip at
+/// `<url_base>/<name>` (a GitHub release holds its files side by side).
 pub fn map(map_dir: &Path, out_dir: &Path, url_base: &str) -> Result<Value, String> {
     let set: Value = serde_json::from_slice(&std::fs::read(map_dir.join("map-set.json")).map_err(|e| format!("{}: {e}", map_dir.display()))?).map_err(|e| e.to_string())?;
     let region = set["name"].as_str().filter(|r| regions::known(r)).ok_or("map-set.json names no known region")?.to_string();
@@ -75,10 +76,11 @@ pub fn map(map_dir: &Path, out_dir: &Path, url_base: &str) -> Result<Value, Stri
     let (size, sha, installed) = zip(&out_dir.join(&name), &members, &install::map_member)?;
     Ok(json!({"id": region, "title": regions::name(&region), "kind": "region", "includes": MAP_INCLUDES, "installed_bytes": installed,
               "download_bytes": size, "available": true,
-              "files": [{"name": name, "url": format!("{url_base}/maps/{name}"), "size": size, "sha256": sha, "kind": "zip"}]}))
+              "files": [{"name": name, "url": format!("{}/{name}", url_base.trim_end_matches('/')), "size": size, "sha256": sha, "kind": "zip"}]}))
 }
 
-/// The address index zip of a region (`addresses/<REGION>.sqlite` of mapset.rs), and its entry under `address_indexes`.
+/// The address index zip of a region (`addresses/<REGION>.sqlite` of mapset.rs), and its entry under `address_indexes`,
+/// the zip at `<url_base>/<name>`.
 pub fn addresses(index: &Path, out_dir: &Path, url_base: &str) -> Result<Value, String> {
     let region = index.file_stem().and_then(|s| s.to_str()).filter(|r| regions::known(r)).ok_or("the index must be named after its region, as LI.sqlite")?.to_string();
     let rel = format!("derived/geo/addresses/{region}.sqlite");
@@ -94,7 +96,7 @@ pub fn addresses(index: &Path, out_dir: &Path, url_base: &str) -> Result<Value, 
     let (size, sha, installed) = zip(&out_dir.join(&name), &[(rel.clone(), index.to_path_buf())], &allowed)?;
     Ok(json!({"id": region, "title": regions::name(&region), "kind": "region-addresses", "records": count, "installed_bytes": installed,
               "download_bytes": size, "available": true,
-              "files": [{"name": name, "url": format!("{url_base}/addresses/{name}"), "size": size, "sha256": sha, "kind": "zip"}]}))
+              "files": [{"name": name, "url": format!("{}/{name}", url_base.trim_end_matches('/')), "size": size, "sha256": sha, "kind": "zip"}]}))
 }
 
 #[cfg(test)]
@@ -121,6 +123,8 @@ mod tests {
         let idx = dir.join("LI.sqlite");
         std::fs::write(&idx, vec![1u8; 4096]).unwrap();
         let a = addresses(&idx, &out, &base).unwrap();
+        // side by side in the data release, as a GitHub release holds its files
+        assert_eq!(a["files"][0]["url"], format!("{base}/Lastbook-Addresses-LI.zip"));
         // the manifest takes both entries as they are
         let v = manifest::validate(&json!({"version": 1, "packs": [], "models": [], "maps": [m.clone()], "address_indexes": [a.clone()]}), &net::Allow::Product).unwrap();
         assert_eq!(v["maps"][0]["available"], true);
@@ -140,7 +144,7 @@ mod tests {
     fn map_entry_checked(map_dir: &Path, out: &Path, base: &str) -> Value {
         let e = super::map(map_dir, out, base).unwrap();
         assert_eq!((e["id"].as_str(), e["kind"].as_str()), (Some("LI"), Some("region")));
-        assert!(e["files"][0]["url"].as_str().unwrap().ends_with("/maps/Lastbook-Map-LI.zip"));
+        assert_eq!(e["files"][0]["url"], format!("{base}/Lastbook-Map-LI.zip"));
         assert_eq!(e["installed_bytes"].as_u64().unwrap(), 5000 + 3000 + 33 + std::fs::metadata(map_dir.join("map-set.json")).unwrap().len());
         let mut z = zip::ZipArchive::new(std::fs::File::open(out.join("Lastbook-Map-LI.zip")).unwrap()).unwrap();
         assert_eq!(z.by_name("derived/geo/terrain.sqlite").unwrap().compression(), CompressionMethod::Stored);

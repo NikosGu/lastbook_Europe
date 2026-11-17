@@ -15,6 +15,9 @@ pub const NATURAL_EARTH: &str = "https://naciscdn.org/naturalearth/10m";
 /// The addresses a region's index holds at least, unless the table says otherwise: an empty or broken index fails.
 pub const MIN_ADDRESSES: u64 = 100;
 
+/// The most detailed elevation tiles, unless the table says otherwise (terrain.rs).
+pub const TERRAIN_ZOOM: u32 = 12;
+
 #[derive(Debug, Clone)]
 pub struct Entry {
     /// Geofabrik extracts, as paths under the site: `europe/italy/nord-ovest`.
@@ -24,6 +27,8 @@ pub struct Entry {
     pub min_addresses: u64,
     /// The neighbours' extracts, when the table names them (boxes alone would take Bayern for Liechtenstein).
     pub neighbours: Option<Vec<String>>,
+    /// The most detailed elevation tiles: lower where zoom 12 would make the map too large.
+    pub terrain_zoom: u32,
 }
 
 fn data() -> Value {
@@ -35,12 +40,26 @@ pub fn table() -> BTreeMap<String, Entry> {
     let strings = |v: &Value| -> Vec<String> { v.as_array().into_iter().flatten().filter_map(Value::as_str).map(str::to_string).collect() };
     data()["regions"].as_object().into_iter().flatten().map(|(code, e)| {
         (code.clone(), Entry { extracts: strings(&e["extracts"]), capital: e["capital"].as_str().unwrap_or("").to_string(),
-                               min_addresses: e["min_addresses"].as_u64().unwrap_or(MIN_ADDRESSES), neighbours: e.get("neighbours").map(strings) })
+                               min_addresses: e["min_addresses"].as_u64().unwrap_or(MIN_ADDRESSES), neighbours: e.get("neighbours").map(strings),
+                               terrain_zoom: e["terrain_zoom"].as_u64().map_or(TERRAIN_ZOOM, |z| z as u32) })
     }).collect()
 }
 
+/// Each extract's box, [west, south, east, north], from the outline Geofabrik cuts it by.
+pub fn bounds() -> BTreeMap<String, [f64; 4]> {
+    data()["bounds"].as_object().into_iter().flatten().filter_map(|(path, b)| {
+        let v: Vec<f64> = b.as_array()?.iter().filter_map(Value::as_f64).collect();
+        Some((path.clone(), v.try_into().ok()?))
+    }).collect()
+}
+
+fn overlap(a: &[f64; 4], b: &[f64; 4]) -> bool {
+    a[0] <= b[2] && a[2] >= b[0] && a[1] <= b[3] && a[3] >= b[1]
+}
+
 /// The extracts of the regions next to this one, its own left out: as the table names them, or else those of the
-/// regions whose boxes, without their margin (where their land actually reaches), meet this region's boxes.
+/// regions whose boxes, without their margin (where their land actually reaches), meet this region's boxes, and of
+/// those only the extracts whose bounds reach its boxes (Bayern's southern parts for Austria, not Unterfranken).
 pub fn neighbours(region: &str, t: &BTreeMap<String, Entry>) -> Vec<String> {
     let Some(own) = t.get(region) else { return Vec::new() };
     if let Some(n) = &own.neighbours {
@@ -48,11 +67,13 @@ pub fn neighbours(region: &str, t: &BTreeMap<String, Entry>) -> Vec<String> {
     }
     let mine = regions::boxes(region).unwrap_or(&[]);
     let m = regions::MARGIN;
-    let meets = |b: &[f64; 4]| mine.iter().any(|x| b[0] + m <= x[2] && b[2] - m >= x[0] && b[1] + m <= x[3] && b[3] - m >= x[1]);
+    let meets = |b: &[f64; 4]| mine.iter().any(|x| overlap(&[b[0] + m, b[1] + m, b[2] - m, b[3] - m], x));
+    let bounds = bounds();
+    let reaches = |x: &String| bounds.get(x).is_none_or(|b| mine.iter().any(|m| overlap(b, m)));
     let mut out = BTreeSet::new();
     for (code, e) in t {
         if code != region && regions::boxes(code).unwrap_or(&[]).iter().any(meets) {
-            out.extend(e.extracts.iter().filter(|x| !own.extracts.contains(x)).cloned());
+            out.extend(e.extracts.iter().filter(|x| !own.extracts.contains(x) && reaches(x)).cloned());
         }
     }
     out.into_iter().collect()
@@ -99,7 +120,7 @@ pub fn sources(region: &str, with_neighbours: bool) -> Result<Value, String> {
         json!({"name": f, "url": format!("{NATURAL_EARTH}/{kind}/{f}.zip")})
     }).collect();
     Ok(json!({
-        "region": region, "name": regions::name(region), "capital": e.capital, "min_addresses": e.min_addresses,
+        "region": region, "name": regions::name(region), "capital": e.capital, "min_addresses": e.min_addresses, "terrain_zoom": e.terrain_zoom,
         "extracts": e.extracts.iter().map(|p| extract(&base, p)).collect::<Vec<_>>(),
         "neighbours": near.iter().map(|p| extract(&base, p)).collect::<Vec<_>>(),
         "dem": dem_tiles(boxes).iter().map(|n| json!({"name": n, "url": format!("{DEM}/{n}/{n}.tif")})).collect::<Vec<_>>(),
@@ -132,6 +153,20 @@ mod tests {
         }
         assert_eq!(t["IT-25"].extracts, ["europe/italy/nord-ovest"], "Italy's parts are macro-regions, which the boxes clip");
         assert_eq!(t["FR-GES"].extracts.len(), 3, "France's are the old regions");
+        // Geofabrik makes no free GeoPackage of these whole: their parts instead
+        for (code, parts) in [("CZ", 14), ("NL", 12), ("NO", 5), ("DE-BW", 4), ("DE-BY", 7), ("DE-NW", 5)] {
+            assert_eq!(t[code].extracts.len(), parts, "{code}");
+        }
+        // every extract has its bounds, a box in or near Europe
+        let b = bounds();
+        for (code, e) in &t {
+            for x in e.extracts.iter().chain(e.neighbours.iter().flatten()) {
+                let [w, s, east, n] = *b.get(x).unwrap_or_else(|| panic!("{code}: {x} has no bounds"));
+                assert!(w < east && s < n && (-32.0..45.0).contains(&w) && (26.0..72.0).contains(&s), "{x}: {w} {s} {east} {n}");
+            }
+            assert!((9..=12).contains(&e.terrain_zoom), "{code}");
+        }
+        assert_eq!(b.len(), t.values().flat_map(|e| &e.extracts).collect::<BTreeSet<_>>().len(), "bounds for the extracts in use, no others");
     }
 
     #[test]
@@ -143,6 +178,15 @@ mod tests {
         let lombardy = neighbours("IT-25", &t);
         assert!(lombardy.contains(&"europe/switzerland".to_string()) && lombardy.contains(&"europe/italy/nord-est".to_string()), "{lombardy:?}");
         assert!(!lombardy.contains(&"europe/italy/nord-ovest".to_string()) && !lombardy.contains(&"europe/italy/sud".to_string()), "{lombardy:?}");
+        // of a neighbour made of parts, only the parts that reach the boxes: South Moravia for Austria, not Liberec
+        let austria = neighbours("AT", &t);
+        assert!(austria.contains(&"europe/czech-republic/jihomoravsky".to_string()) && austria.contains(&"europe/germany/bayern/oberbayern".to_string()), "{austria:?}");
+        assert!(!austria.contains(&"europe/czech-republic/liberecky".to_string()) && !austria.contains(&"europe/germany/bayern/unterfranken".to_string()), "{austria:?}");
+        // Norway's, Sweden's and Finland's single boxes hold much of each other: no neighbours, and coarser terrain
+        for code in ["NO", "SE", "FI"] {
+            assert!(neighbours(code, &t).is_empty(), "{code}");
+            assert_eq!(sources(code, true).unwrap()["terrain_zoom"], 10, "{code}");
+        }
         assert_eq!(dem_tiles(regions::boxes("LI").unwrap()), [dem_name(46, 9), dem_name(47, 9)]);
         assert_eq!(dem_name(47, 9), "Copernicus_DSM_COG_10_N47_00_E009_00_DEM");
         assert_eq!(dem_name(-1, -31), "Copernicus_DSM_COG_10_S01_00_W031_00_DEM");
@@ -153,7 +197,7 @@ mod tests {
         assert_eq!(s["neighbours"].as_array().unwrap().len(), 2);
         assert_eq!(sources("LI", false).unwrap()["neighbours"], json!([]));
         assert_eq!(s["natural_earth"][0]["url"], "https://naciscdn.org/naturalearth/10m/cultural/ne_10m_roads.zip");
-        assert_eq!((s["capital"].as_str(), s["min_addresses"].as_u64()), (Some("Vaduz"), Some(MIN_ADDRESSES)));
+        assert_eq!((s["capital"].as_str(), s["min_addresses"].as_u64(), s["terrain_zoom"].as_u64()), (Some("Vaduz"), Some(MIN_ADDRESSES), Some(12)));
         assert!(sources("XX", false).is_err());
     }
 }

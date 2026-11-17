@@ -15,7 +15,7 @@ use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
 
 const BUILD_MAP: &str = "lastbook-tools build-map --region REGION --gpkg FILE... --pbf FILE... [--neighbour-gpkg FILE]...
-          [--neighbour-pbf FILE]... [--dem FILE]... [--ne FOLDER] --out FOLDER
+          [--neighbour-pbf FILE]... [--dem FILE]... [--terrain-zoom N] [--ne FOLDER] --out FOLDER
 
   --region          the region's code (crates/engine/src/regions.rs), as LI or DE-HB
   --gpkg            Geofabrik's free GeoPackage of the region (<region>-latest-free.gpkg.zip); several for a region
@@ -25,6 +25,7 @@ const BUILD_MAP: &str = "lastbook-tools build-map --region REGION --gpkg FILE...
                     bank of the Rhine)
   --neighbour-pbf   a neighbour's PBF, read the same way
   --dem             a Copernicus DEM GLO-30 GeoTIFF; give each one the region's boxes touch (none: no elevation)
+  --terrain-zoom    the most detailed elevation tiles, 9 to 12 (default 12; lower for a region too large at 12)
   --ne              the folder holding Natural Earth's six zips (none: no zoomed-out base)
   --out             the folder to write map/ (the map set) and addresses/<REGION>.sqlite into
 Prints what it made.";
@@ -33,21 +34,24 @@ const PACK_MAP: &str = "lastbook-tools pack-map --map FOLDER --out FOLDER [--bas
 
   --map   a map set made by build-map (its map/ folder, which holds map-set.json)
   --out   the folder to write Lastbook-Map-<REGION>.zip into
-  --base  the download site's address; the zip is published in its maps/ folder (default: the download site's)
+  --base  the address the zip will be published at, without the file name (default: the data release,
+          crates/engine/src/dist.rs)
 Prints the map's entry for the manifest (manifest-v1.json, \"maps\").";
 
 const PACK_ADDRESSES: &str = "lastbook-tools pack-addresses --index FILE --out FOLDER [--base URL]
 
   --index  an address index made by build-map (addresses/<REGION>.sqlite)
   --out    the folder to write Lastbook-Addresses-<REGION>.zip into
-  --base   the download site's address; the zip is published in its addresses/ folder (default: the download site's)
+  --base   the address the zip will be published at, without the file name (default: the data release,
+           crates/engine/src/dist.rs)
 Prints the index's entry for the manifest (manifest-v1.json, \"address_indexes\").";
 
-const BUILD_TERRAIN: &str = "lastbook-tools build-terrain --region REGION --dem FILE [--dem FILE]... --out FILE
+const BUILD_TERRAIN: &str = "lastbook-tools build-terrain --region REGION --dem FILE [--dem FILE]... [--terrain-zoom N] --out FILE
 
-  --region  the region's code
-  --dem     a Copernicus DEM GLO-30 GeoTIFF; give each one the region's boxes touch
-  --out     the terrain.sqlite to write
+  --region        the region's code
+  --dem           a Copernicus DEM GLO-30 GeoTIFF; give each one the region's boxes touch
+  --terrain-zoom  the most detailed tiles, 9 to 12 (default 12)
+  --out           the terrain.sqlite to write
 Prints the number of tiles written, and of those left out because the DEM does not cover them whole.";
 
 const REGION_SOURCES: &str = "lastbook-tools region-sources --region REGION [--neighbours yes]
@@ -55,7 +59,8 @@ const REGION_SOURCES: &str = "lastbook-tools region-sources --region REGION [--n
   --region      the region's code
   --neighbours  yes: also the extracts of the regions next to it, which build-map reads only inside its boxes
 Prints what to download for the region (crates/tools/data/region-sources.json): its Geofabrik extracts, its
-neighbours', the Copernicus DEM tiles and Natural Earth's zips, with the town and the address count its check expects.";
+neighbours', the Copernicus DEM tiles and Natural Earth's zips, with the town and the address count its check expects
+and the most detailed elevation tiles to build.";
 
 const CHECK_MAP: &str = "lastbook-tools check-map --region REGION --packs FOLDER [--town NAME] [--min-addresses N] [--work FOLDER]
 
@@ -97,6 +102,10 @@ impl Opts {
     fn base(&self) -> String {
         self.get("base").map(|b| b.trim_end_matches('/').to_string()).unwrap_or_else(dist::download_base)
     }
+
+    fn terrain_zoom(&self) -> Result<u32, String> {
+        self.get("terrain-zoom").map_or(Ok(*terrain::ZOOMS.end()), |z| z.parse().map_err(|_| format!("--terrain-zoom {z} is not a zoom")))
+    }
 }
 
 /// Runs a subcommand: its help on --help, else what it made as JSON, or the reason it could not and its help.
@@ -122,7 +131,7 @@ pub fn build_map(args: &[String]) -> i32 {
         o.need("gpkg")?;
         o.need("pbf")?;
         let sources = mapset::Sources { gpkg: o.all("gpkg"), pbf: o.all("pbf"), neighbour_gpkg: o.all("neighbour-gpkg"), neighbour_pbf: o.all("neighbour-pbf"),
-                                        dem: o.all("dem"), ne: o.get("ne").map(PathBuf::from) };
+                                        dem: o.all("dem"), terrain_zoom: o.terrain_zoom()?, ne: o.get("ne").map(PathBuf::from) };
         mapset::build(o.need("region")?, &sources, Path::new(o.need("out")?))
     })
 }
@@ -139,13 +148,16 @@ pub fn build_terrain(args: &[String]) -> i32 {
     run("build-terrain", BUILD_TERRAIN, args, |o| {
         let region = o.need("region")?;
         let boxes = regions::boxes(region).ok_or_else(|| format!("{region} is not a region"))?;
-        let dems = o.all("dem").iter().map(|p| terrain::Dem::read(p)).collect::<Result<Vec<_>, _>>()?;
-        if dems.is_empty() {
+        let zoom = o.terrain_zoom()?;
+        if !terrain::ZOOMS.contains(&zoom) {
+            return Err(format!("--terrain-zoom is {} to {}", terrain::ZOOMS.start(), terrain::ZOOMS.end()));
+        }
+        let mut dems = terrain::Dems::open(&o.all("dem"), terrain::DEM_MEMORY)?;
+        if o.all("dem").is_empty() {
             return Err("--dem is needed".into());
         }
-        let n = terrain::write(Path::new(o.need("out")?), &dems, boxes, terrain::ZOOMS, mapset::TERRAIN_SOURCE, mapset::TERRAIN_LICENCE)
-            .map_err(|e| e.to_string())?;
-        Ok(json!({"tiles": n.tiles, "not_covered": n.skipped}))
+        let n = terrain::write(Path::new(o.need("out")?), &mut dems, boxes, *terrain::ZOOMS.start()..=zoom, mapset::TERRAIN_SOURCE, mapset::TERRAIN_LICENCE)?;
+        Ok(json!({"tiles": n.tiles, "not_covered": n.skipped, "dem_reads": dems.reads}))
     })
 }
 
