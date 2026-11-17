@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "shelter",
   "mode": "now",
   "title": "Protegerse del frío, del calor y de la intemperie",
@@ -110,9 +110,9 @@
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {
     "missing": [
-      "Poco sobre las olas de calor en casa: la guía de Protección Civil sobre fenómenos meteorológicos adversos da consejos generales y las directrices de la FICR explican cómo refrescar a una persona; nada sobre cómo mantener frescas las habitaciones.",
-      "Ninguna guía para juzgar si es seguro quedarse en un edificio dañado por un terremoto, un temporal o un incendio.",
-      "Poco sobre los refugios públicos (un apartado de la guía del Gobierno polaco) y nada sobre cómo refugiarse al aire libre."
+      {"text": "Poco sobre las olas de calor en casa: la guía de Protección Civil sobre fenómenos meteorológicos adversos da consejos generales y las directrices de la FICR explican cómo refrescar a una persona; nada sobre cómo mantener frescas las habitaciones.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "ifrc-first-aid-guidelines-2020"]},
+      {"text": "Ninguna guía para juzgar si es seguro quedarse en un edificio dañado por un terremoto, un temporal o un incendio.", "docs": []},
+      {"text": "Poco sobre los refugios públicos (un apartado de la guía del Gobierno polaco) y nada sobre cómo refugiarse al aire libre.", "docs": ["pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

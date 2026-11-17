@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "sanitation",
   "mode": "now",
   "title": "Toilettes, déchets et hygiène quand l’eau est coupée",
@@ -72,10 +72,10 @@
   "related": ["water", "hurt", "food"],
   "gaps": {
     "missing": [
-      "Peu de choses sur les toilettes de secours : le guide du gouvernement polonais décrit un seau garni d’un sac en plastique, qui va ensuite dans un récipient à part ; rien sur la façon de se débarrasser des déchets sans danger.",
-      "Rien sur la façon de rester propre avec très peu d’eau, en dehors des moments où il faut se laver les mains.",
-      "Aucun guide pour nettoyer un logement après une entrée d’eaux usées ou d’eau d’inondation.",
-      "Rien sur la façon d’empêcher une maladie comme la diarrhée de se propager dans un foyer."
+      {"text": "Peu de choses sur les toilettes de secours : le guide du gouvernement polonais décrit un seau garni d’un sac en plastique, qui va ensuite dans un récipient à part ; rien sur la façon de se débarrasser des déchets sans danger.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+      {"text": "Rien sur la façon de rester propre avec très peu d’eau, en dehors des moments où il faut se laver les mains.", "docs": []},
+      {"text": "Aucun guide pour nettoyer un logement après une entrée d’eaux usées ou d’eau d’inondation.", "docs": []},
+      {"text": "Rien sur la façon d’empêcher une maladie comme la diarrhée de se propager dans un foyer.", "docs": []}
     ]
   }
 }

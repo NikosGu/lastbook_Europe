@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "repair",
   "mode": "learn",
   "title": "Réparer et construire",
@@ -14,8 +14,8 @@
   "related": ["power"],
   "gaps": {
     "missing": [
-      "Aucun guide sur les outils à main, l’affûtage ou une boîte à outils de base.",
-      "Aucun guide sur les réparations à la maison (robinets, toilettes, fenêtres, petits travaux d’électricité) ni sur les petits moteurs."
+      {"text": "Aucun guide sur les outils à main, l’affûtage ou une boîte à outils de base.", "docs": []},
+      {"text": "Aucun guide sur les réparations à la maison (robinets, toilettes, fenêtres, petits travaux d’électricité) ni sur les petits moteurs.", "docs": []}
     ]
   }
 }

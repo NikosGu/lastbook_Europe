@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "hurt",
   "mode": "now",
   "title": "Ktoś jest ranny albo nagle zachorował",
@@ -243,13 +243,13 @@
   "related": ["health", "shelter", "water", "sanitation"],
   "gaps": {
     "missing": [
-      "Brak podręcznika pierwszej pomocy napisanego dla ogółu: wytyczne IFRC są napisane dla instruktorów, a poradniki krajowe mają tylko po kilka stron o pierwszej pomocy.",
-      "Wytyczne IFRC nie podają żadnego numeru alarmowego; 112 i numery krajowe pochodzą z krajowych poradników ochrony ludności.",
-      "Brak prostej metody segregacji wielu rannych (triażu) napisanej dla ogółu.",
-      "Niektóre leki wymienione w wytycznych IFRC, takie jak aspiryna, adrenalina czy inhalator, można podawać tylko tam, gdzie pozwalają na to miejscowe przepisy; żadne źródło w tej bibliotece nie podaje tych przepisów dla żadnego kraju."
+      {"text": "Brak podręcznika pierwszej pomocy napisanego dla ogółu: wytyczne IFRC są napisane dla instruktorów, a poradniki krajowe mają tylko po kilka stron o pierwszej pomocy.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+      {"text": "Wytyczne IFRC nie podają żadnego numeru alarmowego; 112 i numery krajowe pochodzą z krajowych poradników ochrony ludności.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+      {"text": "Brak prostej metody segregacji wielu rannych (triażu) napisanej dla ogółu.", "docs": []},
+      {"text": "Niektóre leki wymienione w wytycznych IFRC, takie jak aspiryna, adrenalina czy inhalator, można podawać tylko tam, gdzie pozwalają na to miejscowe przepisy; żadne źródło w tej bibliotece nie podaje tych przepisów dla żadnego kraju.", "docs": ["ifrc-first-aid-guidelines-2020"]}
     ],
     "disagree": [
-      "Schładzanie oparzenia: wytyczne IFRC mówią o chłodnej bieżącej wodzie przez co najmniej dziesięć minut, najlepiej dwadzieścia, ale nie lodowatej; austriacki poradnik mówi, by płukać letnią wodą i przestać, jeśli poszkodowany drży z zimna."
+      {"text": "Schładzanie oparzenia: wytyczne IFRC mówią o chłodnej bieżącej wodzie przez co najmniej dziesięć minut, najlepiej dwadzieścia, ale nie lodowatej; austriacki poradnik mówi, by płukać letnią wodą i przestać, jeśli poszkodowany drży z zimna.", "docs": ["ifrc-first-aid-guidelines-2020", "zsv-steiermark-notfallratgeber"]}
     ]
   }
 }

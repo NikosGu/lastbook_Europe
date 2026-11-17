@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "sanitation",
   "mode": "now",
   "title": "Toilette, Abfall und Hygiene, wenn kein Wasser mehr kommt",
@@ -72,10 +72,10 @@
   "related": ["water", "hurt", "food"],
   "gaps": {
     "missing": [
-      "Wenig zu einer Nottoilette: Der Ratgeber der polnischen Regierung beschreibt eine Plastiktüte über einem Eimer, die danach in einen separaten Behälter kommt; nichts dazu, wie man die Abfälle sicher entsorgt.",
-      "Nichts zur Körperpflege mit sehr wenig Wasser, außer wann man sich die Hände waschen sollte.",
-      "Kein Ratgeber zum Reinigen einer Wohnung, in die Abwasser oder Hochwasser eingedrungen ist.",
-      "Nichts dazu, wie man verhindert, dass sich eine Krankheit wie Durchfall in einem Haushalt ausbreitet."
+      {"text": "Wenig zu einer Nottoilette: Der Ratgeber der polnischen Regierung beschreibt eine Plastiktüte über einem Eimer, die danach in einen separaten Behälter kommt; nichts dazu, wie man die Abfälle sicher entsorgt.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+      {"text": "Nichts zur Körperpflege mit sehr wenig Wasser, außer wann man sich die Hände waschen sollte.", "docs": []},
+      {"text": "Kein Ratgeber zum Reinigen einer Wohnung, in die Abwasser oder Hochwasser eingedrungen ist.", "docs": []},
+      {"text": "Nichts dazu, wie man verhindert, dass sich eine Krankheit wie Durchfall in einem Haushalt ausbreitet.", "docs": []}
     ]
   }
 }

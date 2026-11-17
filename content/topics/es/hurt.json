@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "hurt",
   "mode": "now",
   "title": "Alguien está herido o se ha puesto enfermo de repente",
@@ -243,13 +243,13 @@
   "related": ["health", "shelter", "water", "sanitation"],
   "gaps": {
     "missing": [
-      "Ningún manual de primeros auxilios escrito para el público: las directrices de la FICR están escritas para formadores, y las guías nacionales solo tienen unas pocas páginas de primeros auxilios cada una.",
-      "Las directrices de la FICR no dan ningún número de emergencia; el 112 y los números nacionales vienen de las guías nacionales de protección civil.",
-      "Ningún método sencillo para clasificar a muchos heridos (triaje) escrito para el público.",
-      "Algunos medicamentos que nombran las directrices de la FICR, como la aspirina, la adrenalina o un inhalador, solo se pueden dar donde lo permiten las normas locales; ninguna fuente de aquí da esas normas para ningún país."
+      {"text": "Ningún manual de primeros auxilios escrito para el público: las directrices de la FICR están escritas para formadores, y las guías nacionales solo tienen unas pocas páginas de primeros auxilios cada una.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+      {"text": "Las directrices de la FICR no dan ningún número de emergencia; el 112 y los números nacionales vienen de las guías nacionales de protección civil.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+      {"text": "Ningún método sencillo para clasificar a muchos heridos (triaje) escrito para el público.", "docs": []},
+      {"text": "Algunos medicamentos que nombran las directrices de la FICR, como la aspirina, la adrenalina o un inhalador, solo se pueden dar donde lo permiten las normas locales; ninguna fuente de aquí da esas normas para ningún país.", "docs": ["ifrc-first-aid-guidelines-2020"]}
     ],
     "disagree": [
-      "Enfriar una quemadura: las directrices de la FICR dicen agua corriente fresca durante al menos diez minutos, mejor veinte, pero no helada; la guía austriaca dice que se enjuague con agua tibia y que se pare si la persona tirita."
+      {"text": "Enfriar una quemadura: las directrices de la FICR dicen agua corriente fresca durante al menos diez minutos, mejor veinte, pero no helada; la guía austriaca dice que se enjuague con agua tibia y que se pare si la persona tirita.", "docs": ["ifrc-first-aid-guidelines-2020", "zsv-steiermark-notfallratgeber"]}
     ]
   }
 }

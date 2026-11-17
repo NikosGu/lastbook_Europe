@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "grow",
   "mode": "learn",
   "title": "Cultiver des aliments de base",
@@ -14,8 +14,8 @@
   "related": ["food", "water"],
   "gaps": {
     "missing": [
-      "Aucun guide pour cultiver des aliments : le sol, les périodes de plantation selon les climats d’Europe, les cultures de base comme les pommes de terre et les haricots, ou l’arrosage.",
-      "Aucun guide pour conserver ses semences, ni pour cultiver en pot ou sur un balcon."
+      {"text": "Aucun guide pour cultiver des aliments : le sol, les périodes de plantation selon les climats d’Europe, les cultures de base comme les pommes de terre et les haricots, ou l’arrosage.", "docs": []},
+      {"text": "Aucun guide pour conserver ses semences, ni pour cultiver en pot ou sur un balcon.", "docs": []}
     ]
   }
 }

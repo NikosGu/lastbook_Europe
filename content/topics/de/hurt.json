@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "hurt",
   "mode": "now",
   "title": "Jemand ist verletzt oder plötzlich krank",
@@ -243,13 +243,13 @@
   "related": ["health", "shelter", "water", "sanitation"],
   "gaps": {
     "missing": [
-      "Kein Erste-Hilfe-Handbuch für die Allgemeinheit: Die Leitlinien der IFRC sind für Ausbilder geschrieben, und die nationalen Ratgeber haben jeweils nur wenige Seiten zur Ersten Hilfe.",
-      "Die Leitlinien der IFRC nennen keine Notrufnummer; die 112 und die nationalen Nummern stammen aus den nationalen Ratgebern des Zivilschutzes.",
-      "Keine einfache Methode für die Allgemeinheit, um viele Verletzte zu sichten (Triage).",
-      "Manche Medikamente, die die Leitlinien der IFRC nennen, etwa Aspirin, Adrenalin oder ein Asthmaspray, dürfen nur gegeben werden, wo örtliche Regeln es erlauben; keine Quelle hier nennt diese Regeln für irgendein Land."
+      {"text": "Kein Erste-Hilfe-Handbuch für die Allgemeinheit: Die Leitlinien der IFRC sind für Ausbilder geschrieben, und die nationalen Ratgeber haben jeweils nur wenige Seiten zur Ersten Hilfe.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+      {"text": "Die Leitlinien der IFRC nennen keine Notrufnummer; die 112 und die nationalen Nummern stammen aus den nationalen Ratgebern des Zivilschutzes.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+      {"text": "Keine einfache Methode für die Allgemeinheit, um viele Verletzte zu sichten (Triage).", "docs": []},
+      {"text": "Manche Medikamente, die die Leitlinien der IFRC nennen, etwa Aspirin, Adrenalin oder ein Asthmaspray, dürfen nur gegeben werden, wo örtliche Regeln es erlauben; keine Quelle hier nennt diese Regeln für irgendein Land.", "docs": ["ifrc-first-aid-guidelines-2020"]}
     ],
     "disagree": [
-      "Kühlen einer Verbrennung: Die Leitlinien der IFRC empfehlen kühles, fließendes Wasser für mindestens zehn Minuten, am besten zwanzig, aber nicht eiskalt; der österreichische Ratgeber rät, mit lauwarmem Wasser zu spülen und aufzuhören, wenn die Person zittert."
+      {"text": "Kühlen einer Verbrennung: Die Leitlinien der IFRC empfehlen kühles, fließendes Wasser für mindestens zehn Minuten, am besten zwanzig, aber nicht eiskalt; der österreichische Ratgeber rät, mit lauwarmem Wasser zu spülen und aufzuhören, wenn die Person zittert.", "docs": ["ifrc-first-aid-guidelines-2020", "zsv-steiermark-notfallratgeber"]}
     ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "food",
   "mode": "now",
   "title": "Cibo: scorte, cucina e sicurezza",
@@ -103,14 +103,14 @@
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {
     "missing": [
-      "Nessuna guida di un'autorità sanitaria sulla sicurezza degli alimenti che dica cosa buttare dopo una lunga interruzione di corrente o un'alluvione; le regole qui vengono da opuscoli della protezione civile.",
-      "Nulla su per quanto tempo il cibo in frigo e nel congelatore resta sicuro senza corrente, oltre a mangiare prima i cibi deperibili e tenere chiuse le porte.",
-      "Nessuna guida per cucinare sul fuoco o alla griglia, a parte l'avvertenza che griglie e fornelletti da campeggio vanno usati all'aperto."
+      {"text": "Nessuna guida di un'autorità sanitaria sulla sicurezza degli alimenti che dica cosa buttare dopo una lunga interruzione di corrente o un'alluvione; le regole qui vengono da opuscoli della protezione civile.", "docs": []},
+      {"text": "Nulla su per quanto tempo il cibo in frigo e nel congelatore resta sicuro senza corrente, oltre a mangiare prima i cibi deperibili e tenere chiuse le porte.", "docs": []},
+      {"text": "Nessuna guida per cucinare sul fuoco o alla griglia, a parte l'avvertenza che griglie e fornelletti da campeggio vanno usati all'aperto.", "docs": []}
     ],
     "disagree": [
-      "Per quanto tempo organizzarsi: 72 ore (la guida nazionale francese), almeno 3 giorni (la guida del governo polacco), circa una settimana (gli opuscoli svizzeri, la guida austriaca alle scorte e la guida polacca dell'RCB), 10 giorni se possibile e almeno 3 (la guida tedesca), da una a due settimane (la guida stiriana sul blackout), almeno da 10 a 14 giorni (la lista di controllo austriaca per il blackout).",
-      "Cucinare alla griglia in un blackout: le guide austriache suggeriscono un barbecue da giardino senza dire dove usarlo; la guida tedesca dice che griglie e fornelletti da campeggio sono solo per l'aperto.",
-      "Ogni quanto controllare le scorte: una volta all'anno (la guida austriaca alle scorte e la guida francese in versione facile da leggere), due volte all'anno (la guida nazionale francese), ogni qualche mese (la guida del governo polacco)."
+      {"text": "Per quanto tempo organizzarsi: 72 ore (la guida nazionale francese), almeno 3 giorni (la guida del governo polacco), circa una settimana (gli opuscoli svizzeri, la guida austriaca alle scorte e la guida polacca dell'RCB), 10 giorni se possibile e almeno 3 (la guida tedesca), da una a due settimane (la guida stiriana sul blackout), almeno da 10 a 14 giorni (la lista di controllo austriaca per il blackout).", "docs": ["sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "rcb-badz-gotowy", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-blackout", "oezsv-blackout-checkliste"]},
+      {"text": "Cucinare alla griglia in un blackout: le guide austriache suggeriscono un barbecue da giardino senza dire dove usarlo; la guida tedesca dice che griglie e fornelletti da campeggio sono solo per l'aperto.", "docs": ["oezsv-bevorratungsratgeber", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen"]},
+      {"text": "Ogni quanto controllare le scorte: una volta all'anno (la guida austriaca alle scorte e la guida francese in versione facile da leggere), due volte all'anno (la guida nazionale francese), ogni qualche mese (la guida del governo polacco).", "docs": ["oezsv-bevorratungsratgeber", "sgdsn-agissons-falc", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

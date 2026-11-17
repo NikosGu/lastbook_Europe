@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "shelter",
   "mode": "now",
   "title": "Warm, kühl und geschützt bleiben",
@@ -110,9 +110,9 @@
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {
     "missing": [
-      "Wenig zu Hitzewellen zu Hause: Der spanische Ratgeber zu extremen Wetterlagen gibt allgemeine Ratschläge, und die Leitlinien der IFRC behandeln das Abkühlen einer Person; nichts dazu, wie man Räume kühl hält.",
-      "Kein Ratgeber dazu, wie man beurteilt, ob man in einem Gebäude sicher bleiben kann, das durch ein Erdbeben, einen Sturm oder einen Brand beschädigt wurde.",
-      "Wenig zu öffentlichen Schutzräumen (ein Abschnitt im Ratgeber der polnischen Regierung) und nichts dazu, wie man im Freien Schutz findet."
+      {"text": "Wenig zu Hitzewellen zu Hause: Der spanische Ratgeber zu extremen Wetterlagen gibt allgemeine Ratschläge, und die Leitlinien der IFRC behandeln das Abkühlen einer Person; nichts dazu, wie man Räume kühl hält.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "ifrc-first-aid-guidelines-2020"]},
+      {"text": "Kein Ratgeber dazu, wie man beurteilt, ob man in einem Gebäude sicher bleiben kann, das durch ein Erdbeben, einen Sturm oder einen Brand beschädigt wurde.", "docs": []},
+      {"text": "Wenig zu öffentlichen Schutzräumen (ein Abschnitt im Ratgeber der polnischen Regierung) und nichts dazu, wie man im Freien Schutz findet.", "docs": ["pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

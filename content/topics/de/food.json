@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "food",
   "mode": "now",
   "title": "Lebensmittel: Vorrat, Kochen und Sicherheit",
@@ -103,14 +103,14 @@
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {
     "missing": [
-      "Kein Ratgeber einer Gesundheitsbehörde zur Lebensmittelsicherheit, der sagt, was nach einem langen Stromausfall oder einem Hochwasser weggeworfen werden muss; die Regeln hier stammen aus Faltblättern des Zivilschutzes.",
-      "Nichts dazu, wie lange Lebensmittel aus Kühlschrank und Tiefkühltruhe ohne Strom sicher bleiben, außer verderbliche Lebensmittel zuerst zu essen und die Türen geschlossen zu halten.",
-      "Kein Ratgeber zum Kochen über offenem Feuer oder auf dem Grill, außer der Warnung, dass Grills und Campingkocher nach draußen gehören."
+      {"text": "Kein Ratgeber einer Gesundheitsbehörde zur Lebensmittelsicherheit, der sagt, was nach einem langen Stromausfall oder einem Hochwasser weggeworfen werden muss; die Regeln hier stammen aus Faltblättern des Zivilschutzes.", "docs": []},
+      {"text": "Nichts dazu, wie lange Lebensmittel aus Kühlschrank und Tiefkühltruhe ohne Strom sicher bleiben, außer verderbliche Lebensmittel zuerst zu essen und die Türen geschlossen zu halten.", "docs": []},
+      {"text": "Kein Ratgeber zum Kochen über offenem Feuer oder auf dem Grill, außer der Warnung, dass Grills und Campingkocher nach draußen gehören.", "docs": []}
     ],
     "disagree": [
-      "Für wie lange man planen sollte: 72 Stunden (der nationale französische Ratgeber), mindestens 3 Tage (der Ratgeber der polnischen Regierung), etwa eine Woche (die Schweizer Faltblätter, der österreichische Bevorratungsratgeber und der polnische RCB-Ratgeber), möglichst 10 Tage und mindestens 3 (der deutsche Ratgeber), ein bis zwei Wochen (der steirische Blackout-Ratgeber), mindestens 10 bis 14 Tage (die österreichische Blackout-Checkliste).",
-      "Kochen auf dem Grill im Blackout: Die österreichischen Ratgeber schlagen einen Gartengrill vor, ohne zu sagen, wo er benutzt werden soll; der deutsche Ratgeber sagt, Grills und Campingkocher seien nur für draußen.",
-      "Wie oft man den Vorrat prüfen sollte: einmal im Jahr (der österreichische Bevorratungsratgeber und der französische Ratgeber in Leichter Sprache), zweimal im Jahr (der nationale französische Ratgeber), alle paar Monate (der Ratgeber der polnischen Regierung)."
+      {"text": "Für wie lange man planen sollte: 72 Stunden (der nationale französische Ratgeber), mindestens 3 Tage (der Ratgeber der polnischen Regierung), etwa eine Woche (die Schweizer Faltblätter, der österreichische Bevorratungsratgeber und der polnische RCB-Ratgeber), möglichst 10 Tage und mindestens 3 (der deutsche Ratgeber), ein bis zwei Wochen (der steirische Blackout-Ratgeber), mindestens 10 bis 14 Tage (die österreichische Blackout-Checkliste).", "docs": ["sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "rcb-badz-gotowy", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-blackout", "oezsv-blackout-checkliste"]},
+      {"text": "Kochen auf dem Grill im Blackout: Die österreichischen Ratgeber schlagen einen Gartengrill vor, ohne zu sagen, wo er benutzt werden soll; der deutsche Ratgeber sagt, Grills und Campingkocher seien nur für draußen.", "docs": ["oezsv-bevorratungsratgeber", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen"]},
+      {"text": "Wie oft man den Vorrat prüfen sollte: einmal im Jahr (der österreichische Bevorratungsratgeber und der französische Ratgeber in Leichter Sprache), zweimal im Jahr (der nationale französische Ratgeber), alle paar Monate (der Ratgeber der polnischen Regierung).", "docs": ["oezsv-bevorratungsratgeber", "sgdsn-agissons-falc", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

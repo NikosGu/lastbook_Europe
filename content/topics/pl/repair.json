@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "repair",
   "mode": "learn",
   "title": "Naprawiaj i buduj",
@@ -14,8 +14,8 @@
   "related": ["power"],
   "gaps": {
     "missing": [
-      "Brak poradnika o narzędziach ręcznych, ostrzeniu ani podstawowym zestawie narzędzi.",
-      "Brak poradnika o naprawach w domu (krany, toalety, okna, proste prace elektryczne) ani o małych silnikach."
+      {"text": "Brak poradnika o narzędziach ręcznych, ostrzeniu ani podstawowym zestawie narzędzi.", "docs": []},
+      {"text": "Brak poradnika o naprawach w domu (krany, toalety, okna, proste prace elektryczne) ani o małych silnikach.", "docs": []}
     ]
   }
 }

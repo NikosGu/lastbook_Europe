@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "preserve",
   "mode": "learn",
   "title": "Utrwalaj i przechowuj żywność",
@@ -14,8 +14,8 @@
   "related": ["food"],
   "gaps": {
     "missing": [
-      "Brak poradnika o domowym utrwalaniu żywności: przetwory w słoikach, suszenie, marynowanie, kiszenie czy mrożenie.",
-      "Brak poradnika o tym, jak rozpoznać, czy domowe przetwory są bezpieczne do jedzenia."
+      {"text": "Brak poradnika o domowym utrwalaniu żywności: przetwory w słoikach, suszenie, marynowanie, kiszenie czy mrożenie.", "docs": []},
+      {"text": "Brak poradnika o tym, jak rozpoznać, czy domowe przetwory są bezpieczne do jedzenia.", "docs": []}
     ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "repair",
   "mode": "learn",
   "title": "Reparar y construir",
@@ -14,8 +14,8 @@
   "related": ["power"],
   "gaps": {
     "missing": [
-      "Ninguna guía sobre herramientas manuales, cómo afilar o una caja de herramientas básica.",
-      "Ninguna guía sobre reparaciones en casa (grifos, váteres, ventanas, trabajos eléctricos sencillos) ni sobre motores pequeños."
+      {"text": "Ninguna guía sobre herramientas manuales, cómo afilar o una caja de herramientas básica.", "docs": []},
+      {"text": "Ninguna guía sobre reparaciones en casa (grifos, váteres, ventanas, trabajos eléctricos sencillos) ni sobre motores pequeños.", "docs": []}
     ]
   }
 }

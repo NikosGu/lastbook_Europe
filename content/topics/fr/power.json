@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "power",
   "mode": "now",
   "title": "Le courant est coupé",
@@ -118,12 +118,12 @@
   "related": ["food", "shelter", "comms", "water"],
   "gaps": {
     "missing": [
-      "Aucun manuel pour les groupes électrogènes ou les stations électriques portables : seulement les mises en garde de ce guide.",
-      "Rien pour les habitants des immeubles élevés, en dehors de la vérification de l’ascenseur : la pression de l’eau, les longs escaliers, les voisins qui ne peuvent pas descendre.",
-      "Aucun guide sur les appareils médicaux qui ont besoin d’électricité, comme l’oxygène ou les appareils respiratoires, en dehors du conseil de demander de l’aide tôt."
+      {"text": "Aucun manuel pour les groupes électrogènes ou les stations électriques portables : seulement les mises en garde de ce guide.", "docs": []},
+      {"text": "Rien pour les habitants des immeubles élevés, en dehors de la vérification de l’ascenseur : la pression de l’eau, les longs escaliers, les voisins qui ne peuvent pas descendre.", "docs": []},
+      {"text": "Aucun guide sur les appareils médicaux qui ont besoin d’électricité, comme l’oxygène ou les appareils respiratoires, en dehors du conseil de demander de l’aide tôt.", "docs": []}
     ],
     "disagree": [
-      "Pour combien de temps se préparer à un black-out : au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out), une à deux semaines (le guide styrien sur le black-out), 10 jours (le guide allemand), environ une semaine (le dépliant suisse) ; pour toute crise, 72 heures (le guide national français) ou au moins 3 jours (le guide du gouvernement polonais)."
+      {"text": "Pour combien de temps se préparer à un black-out : au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out), une à deux semaines (le guide styrien sur le black-out), 10 jours (le guide allemand), environ une semaine (le dépliant suisse) ; pour toute crise, 72 heures (le guide national français) ou au moins 3 jours (le guide du gouvernement polonais).", "docs": ["oezsv-blackout-checkliste", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

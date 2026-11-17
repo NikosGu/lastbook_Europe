@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "health",
   "mode": "learn",
   "title": "Prendre soin de la santé quand l’aide est loin",
@@ -116,10 +116,10 @@
   "related": ["hurt", "food", "water"],
   "gaps": {
     "missing": [
-      "Aucun guide pour soigner une personne malade à la maison pendant des jours ou des semaines.",
-      "Rien sur les maladies chroniques sans médecin (diabète, hypertension, maladies cardiaques), sur la grossesse et l’accouchement, ni sur les dents.",
-      "Aucun guide sur les médicaments : quoi prendre pour quoi, les doses, ou combien de temps les médicaments se conservent.",
-      "Les lignes d’écoute ne sont indiquées que pour l’Allemagne, pour la Styrie en Autriche et pour la Pologne."
+      {"text": "Aucun guide pour soigner une personne malade à la maison pendant des jours ou des semaines.", "docs": []},
+      {"text": "Rien sur les maladies chroniques sans médecin (diabète, hypertension, maladies cardiaques), sur la grossesse et l’accouchement, ni sur les dents.", "docs": []},
+      {"text": "Aucun guide sur les médicaments : quoi prendre pour quoi, les doses, ou combien de temps les médicaments se conservent.", "docs": []},
+      {"text": "Les lignes d’écoute ne sont indiquées que pour l’Allemagne, pour la Styrie en Autriche et pour la Pologne.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

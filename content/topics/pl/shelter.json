@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "shelter",
   "mode": "now",
   "title": "Ciepło, chłód i dach nad głową",
@@ -110,9 +110,9 @@
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {
     "missing": [
-      "Niewiele o upałach w domu: hiszpański poradnik o niebezpiecznych zjawiskach pogodowych daje ogólne rady, a wytyczne IFRC omawiają schładzanie poszkodowanego; nic o chłodzeniu pomieszczeń.",
-      "Brak poradnika o tym, jak ocenić, czy budynek uszkodzony przez trzęsienie ziemi, nawałnicę lub pożar jest bezpieczny do przebywania.",
-      "Niewiele o publicznych miejscach schronienia (fragment rządowego „Poradnika bezpieczeństwa”) i nic o schronieniu pod gołym niebem."
+      {"text": "Niewiele o upałach w domu: hiszpański poradnik o niebezpiecznych zjawiskach pogodowych daje ogólne rady, a wytyczne IFRC omawiają schładzanie poszkodowanego; nic o chłodzeniu pomieszczeń.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "ifrc-first-aid-guidelines-2020"]},
+      {"text": "Brak poradnika o tym, jak ocenić, czy budynek uszkodzony przez trzęsienie ziemi, nawałnicę lub pożar jest bezpieczny do przebywania.", "docs": []},
+      {"text": "Niewiele o publicznych miejscach schronienia (fragment rządowego „Poradnika bezpieczeństwa”) i nic o schronieniu pod gołym niebem.", "docs": ["pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

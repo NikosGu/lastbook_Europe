@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "grow",
   "mode": "learn",
   "title": "Cultivar alimentos básicos",
@@ -14,8 +14,8 @@
   "related": ["food", "water"],
   "gaps": {
     "missing": [
-      "Ninguna guía para cultivar alimentos: la tierra, las épocas de siembra en los climas de Europa, cultivos básicos como las patatas y las judías, o el riego.",
-      "Ninguna guía para guardar semillas, ni para cultivar en macetas o en el balcón."
+      {"text": "Ninguna guía para cultivar alimentos: la tierra, las épocas de siembra en los climas de Europa, cultivos básicos como las patatas y las judías, o el riego.", "docs": []},
+      {"text": "Ninguna guía para guardar semillas, ni para cultivar en macetas o en el balcón.", "docs": []}
     ]
   }
 }

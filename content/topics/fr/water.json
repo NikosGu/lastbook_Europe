@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "water",
   "mode": "now",
   "title": "Avoir de l’eau potable",
@@ -117,14 +117,14 @@
   "related": ["food", "sanitation", "power"],
   "gaps": {
     "missing": [
-      "Aucun guide pour l’eau qui peut contenir du carburant, des produits chimiques ou des eaux usées, en dehors de la remarque de l’OMS : traiter l’eau à la maison n’élimine pas les produits chimiques.",
-      "Rien sur la façon de trouver de l’eau dehors (sources, ruisseaux, pluie), ni sur les risques de boire l’eau d’une rivière ou d’un lac.",
-      "Aucun avis d’un service des eaux demandant de faire bouillir l’eau, et rien sur la durée pendant laquelle l’eau continue de couler aux robinets d’un immeuble élevé lors d’un black-out.",
-      "Aucune source ne compare les pastilles ou les filtres pour l’eau ; un guide autrichien cite une seule marque."
+      {"text": "Aucun guide pour l’eau qui peut contenir du carburant, des produits chimiques ou des eaux usées, en dehors de la remarque de l’OMS : traiter l’eau à la maison n’élimine pas les produits chimiques.", "docs": ["who-tn05-emergency-water-treatment"]},
+      {"text": "Rien sur la façon de trouver de l’eau dehors (sources, ruisseaux, pluie), ni sur les risques de boire l’eau d’une rivière ou d’un lac.", "docs": []},
+      {"text": "Aucun avis d’un service des eaux demandant de faire bouillir l’eau, et rien sur la durée pendant laquelle l’eau continue de couler aux robinets d’un immeuble élevé lors d’un black-out.", "docs": []},
+      {"text": "Aucune source ne compare les pastilles ou les filtres pour l’eau ; un guide autrichien cite une seule marque.", "docs": ["oezsv-bevorratungsratgeber"]}
     ],
     "disagree": [
-      "Combien d’eau garder : le guide allemand indique 2 litres par personne et par jour (dont un demi-litre pour cuisiner) ; les dépliants suisses au moins 9 litres par personne, de quoi boire et cuisiner pendant trois jours ; le guide autrichien des provisions 1,5 litre pour boire plus 3,5 pour se laver par jour, et sept bouteilles de 1,5 litre par personne ; le guide national français 6 litres par personne pour son kit de 72 heures ; le guide du gouvernement polonais au moins 3 litres par personne et par jour, et le guide polonais du RCB 14 litres par personne pour une semaine ; la note de l’OMS 2,5 à 3 litres par jour pour boire et manger, et 7,5 à 15 au total. Chaque page donne son propre chiffre.",
-      "Désinfection par le soleil (SODIS) : la note de l’OMS indique environ une journée de soleil près de l’équateur, deux s’il y a des nuages ; le guide autrichien des provisions indique environ 6 heures en plein soleil, environ trois jours par temps couvert, et qu’elle tue 30 à 80 % des germes."
+      {"text": "Combien d’eau garder : le guide allemand indique 2 litres par personne et par jour (dont un demi-litre pour cuisiner) ; les dépliants suisses au moins 9 litres par personne, de quoi boire et cuisiner pendant trois jours ; le guide autrichien des provisions 1,5 litre pour boire plus 3,5 pour se laver par jour, et sept bouteilles de 1,5 litre par personne ; le guide national français 6 litres par personne pour son kit de 72 heures ; le guide du gouvernement polonais au moins 3 litres par personne et par jour, et le guide polonais du RCB 14 litres par personne pour une semaine ; la note de l’OMS 2,5 à 3 litres par jour pour boire et manger, et 7,5 à 15 au total. Chaque page donne son propre chiffre.", "docs": ["bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "rcb-badz-gotowy", "who-tn09-how-much-water"]},
+      {"text": "Désinfection par le soleil (SODIS) : la note de l’OMS indique environ une journée de soleil près de l’équateur, deux s’il y a des nuages ; le guide autrichien des provisions indique environ 6 heures en plein soleil, environ trois jours par temps couvert, et qu’elle tue 30 à 80 % des germes.", "docs": ["who-tn05-emergency-water-treatment", "oezsv-bevorratungsratgeber"]}
     ]
   }
 }

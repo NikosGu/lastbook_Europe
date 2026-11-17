@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "energy",
   "mode": "learn",
   "title": "Produire et gérer l’énergie",
@@ -14,9 +14,9 @@
   "related": ["power"],
   "gaps": {
     "missing": [
-      "Aucun guide sur les batteries, les batteries externes ou les stations électriques portables.",
-      "Aucun guide sur les panneaux solaires ou les autres installations électriques de la maison.",
-      "Aucun manuel pour les groupes électrogènes : le guide « Panne de courant » ne contient que les mises en garde que donnent les dépliants de la protection civile."
+      {"text": "Aucun guide sur les batteries, les batteries externes ou les stations électriques portables.", "docs": []},
+      {"text": "Aucun guide sur les panneaux solaires ou les autres installations électriques de la maison.", "docs": []},
+      {"text": "Aucun manuel pour les groupes électrogènes : le guide « Panne de courant » ne contient que les mises en garde que donnent les dépliants de la protection civile.", "docs": []}
     ]
   }
 }

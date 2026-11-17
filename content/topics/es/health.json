@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "health",
   "mode": "learn",
   "title": "Cuidar la salud cuando la ayuda está lejos",
@@ -116,10 +116,10 @@
   "related": ["hurt", "food", "water"],
   "gaps": {
     "missing": [
-      "Ninguna guía para cuidar a una persona enferma en casa durante días o semanas.",
-      "Nada sobre enfermedades de larga duración sin médico (diabetes, tensión alta, enfermedades del corazón), sobre el embarazo y el parto, ni sobre los dientes.",
-      "Ninguna guía de medicamentos: qué tomar para cada cosa, dosis, o cuánto tiempo se conservan los medicamentos.",
-      "Solo se dan teléfonos de ayuda para Alemania, para Estiria, en Austria, y para Polonia."
+      {"text": "Ninguna guía para cuidar a una persona enferma en casa durante días o semanas.", "docs": []},
+      {"text": "Nada sobre enfermedades de larga duración sin médico (diabetes, tensión alta, enfermedades del corazón), sobre el embarazo y el parto, ni sobre los dientes.", "docs": []},
+      {"text": "Ninguna guía de medicamentos: qué tomar para cada cosa, dosis, o cuánto tiempo se conservan los medicamentos.", "docs": []},
+      {"text": "Solo se dan teléfonos de ayuda para Alemania, para Estiria, en Austria, y para Polonia.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

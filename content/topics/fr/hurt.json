@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "hurt",
   "mode": "now",
   "title": "Quelqu’un est blessé ou fait un malaise",
@@ -243,13 +243,13 @@
   "related": ["health", "shelter", "water", "sanitation"],
   "gaps": {
     "missing": [
-      "Aucun manuel de premiers secours écrit pour le grand public : les lignes directrices de la FICR sont écrites pour les formateurs, et les guides nationaux n’ont chacun que quelques pages de premiers secours.",
-      "Les lignes directrices de la FICR ne citent aucun numéro d’urgence ; le 112 et les numéros nationaux viennent des guides nationaux de protection civile.",
-      "Aucune méthode simple, écrite pour le grand public, pour trier de nombreux blessés (triage).",
-      "Certains médicaments que citent les lignes directrices de la FICR, comme l’aspirine, l’adrénaline ou un inhalateur, ne peuvent être donnés que là où les règles locales le permettent ; aucune source ici ne donne ces règles, pour aucun pays."
+      {"text": "Aucun manuel de premiers secours écrit pour le grand public : les lignes directrices de la FICR sont écrites pour les formateurs, et les guides nationaux n’ont chacun que quelques pages de premiers secours.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+      {"text": "Les lignes directrices de la FICR ne citent aucun numéro d’urgence ; le 112 et les numéros nationaux viennent des guides nationaux de protection civile.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+      {"text": "Aucune méthode simple, écrite pour le grand public, pour trier de nombreux blessés (triage).", "docs": []},
+      {"text": "Certains médicaments que citent les lignes directrices de la FICR, comme l’aspirine, l’adrénaline ou un inhalateur, ne peuvent être donnés que là où les règles locales le permettent ; aucune source ici ne donne ces règles, pour aucun pays.", "docs": ["ifrc-first-aid-guidelines-2020"]}
     ],
     "disagree": [
-      "Refroidir une brûlure : les lignes directrices de la FICR recommandent de l’eau courante fraîche pendant au moins dix minutes, idéalement vingt, mais pas glacée ; le guide autrichien conseille de rincer à l’eau tiède et d’arrêter si la personne frissonne."
+      {"text": "Refroidir une brûlure : les lignes directrices de la FICR recommandent de l’eau courante fraîche pendant au moins dix minutes, idéalement vingt, mais pas glacée ; le guide autrichien conseille de rincer à l’eau tiède et d’arrêter si la personne frissonne.", "docs": ["ifrc-first-aid-guidelines-2020", "zsv-steiermark-notfallratgeber"]}
     ]
   }
 }

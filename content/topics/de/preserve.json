@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "preserve",
   "mode": "learn",
   "title": "Lebensmittel haltbar machen und lagern",
@@ -14,8 +14,8 @@
   "related": ["food"],
   "gaps": {
     "missing": [
-      "Kein Ratgeber zum Haltbarmachen von Lebensmitteln zu Hause: Einkochen in Gläsern, Trocknen, Einlegen, Fermentieren oder Einfrieren.",
-      "Kein Ratgeber dazu, wie man erkennt, ob selbst haltbar gemachte Lebensmittel sicher zu essen sind."
+      {"text": "Kein Ratgeber zum Haltbarmachen von Lebensmitteln zu Hause: Einkochen in Gläsern, Trocknen, Einlegen, Fermentieren oder Einfrieren.", "docs": []},
+      {"text": "Kein Ratgeber dazu, wie man erkennt, ob selbst haltbar gemachte Lebensmittel sicher zu essen sind.", "docs": []}
     ]
   }
 }

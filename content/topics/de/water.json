@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "water",
   "mode": "now",
   "title": "Für sicheres Trinkwasser sorgen",
@@ -117,14 +117,14 @@
   "related": ["food", "sanitation", "power"],
   "gaps": {
     "missing": [
-      "Kein Ratgeber für Wasser, das Kraftstoff, Chemikalien oder Abwasser enthalten könnte, außer dem Hinweis der WHO, dass Aufbereitung zu Hause keine Chemikalien entfernt.",
-      "Nichts dazu, wie man draußen Wasser findet (Quellen, Bäche, Regen) oder wie sicher es ist, aus einem Fluss oder See zu trinken.",
-      "Kein Abkochgebot eines Wasserversorgers, und nichts dazu, wie lange in einem Hochhaus bei einem Blackout noch Wasser aus dem Hahn kommt.",
-      "Keine Quelle vergleicht Entkeimungstabletten oder Filter; ein österreichischer Ratgeber nennt eine einzige Marke."
+      {"text": "Kein Ratgeber für Wasser, das Kraftstoff, Chemikalien oder Abwasser enthalten könnte, außer dem Hinweis der WHO, dass Aufbereitung zu Hause keine Chemikalien entfernt.", "docs": ["who-tn05-emergency-water-treatment"]},
+      {"text": "Nichts dazu, wie man draußen Wasser findet (Quellen, Bäche, Regen) oder wie sicher es ist, aus einem Fluss oder See zu trinken.", "docs": []},
+      {"text": "Kein Abkochgebot eines Wasserversorgers, und nichts dazu, wie lange in einem Hochhaus bei einem Blackout noch Wasser aus dem Hahn kommt.", "docs": []},
+      {"text": "Keine Quelle vergleicht Entkeimungstabletten oder Filter; ein österreichischer Ratgeber nennt eine einzige Marke.", "docs": ["oezsv-bevorratungsratgeber"]}
     ],
     "disagree": [
-      "Wie viel Wasser man vorrätig haben sollte: Der deutsche Ratgeber sagt 2 Liter pro Person und Tag (davon ein halber Liter zum Kochen); die Schweizer Faltblätter mindestens 9 Liter pro Person, genug zum Trinken und Kochen für drei Tage; der österreichische Bevorratungsratgeber 1,5 Liter zum Trinken plus 3,5 Liter zum Waschen pro Tag sowie sieben 1,5-Liter-Flaschen pro Person; der nationale französische Ratgeber 6 Liter pro Person für sein 72-Stunden-Notfallset; der Ratgeber der polnischen Regierung mindestens 3 Liter pro Person und Tag, und der polnische RCB-Ratgeber 14 Liter pro Person für eine Woche; das WHO-Merkblatt 2,5 bis 3 Liter pro Tag zum Trinken und Essen, insgesamt 7,5 bis 15 Liter. Jede Seite nennt ihre eigene Zahl.",
-      "Entkeimung mit Sonnenlicht (SODIS): Das WHO-Merkblatt sagt etwa einen Tag Sonne in der Nähe des Äquators, zwei Tage bei Bewölkung; der österreichische Bevorratungsratgeber sagt etwa 6 Stunden volle Sonne, etwa drei Tage bei Bewölkung und dass dabei 30 bis 80 Prozent der Keime abgetötet werden."
+      {"text": "Wie viel Wasser man vorrätig haben sollte: Der deutsche Ratgeber sagt 2 Liter pro Person und Tag (davon ein halber Liter zum Kochen); die Schweizer Faltblätter mindestens 9 Liter pro Person, genug zum Trinken und Kochen für drei Tage; der österreichische Bevorratungsratgeber 1,5 Liter zum Trinken plus 3,5 Liter zum Waschen pro Tag sowie sieben 1,5-Liter-Flaschen pro Person; der nationale französische Ratgeber 6 Liter pro Person für sein 72-Stunden-Notfallset; der Ratgeber der polnischen Regierung mindestens 3 Liter pro Person und Tag, und der polnische RCB-Ratgeber 14 Liter pro Person für eine Woche; das WHO-Merkblatt 2,5 bis 3 Liter pro Tag zum Trinken und Essen, insgesamt 7,5 bis 15 Liter. Jede Seite nennt ihre eigene Zahl.", "docs": ["bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "rcb-badz-gotowy", "who-tn09-how-much-water"]},
+      {"text": "Entkeimung mit Sonnenlicht (SODIS): Das WHO-Merkblatt sagt etwa einen Tag Sonne in der Nähe des Äquators, zwei Tage bei Bewölkung; der österreichische Bevorratungsratgeber sagt etwa 6 Stunden volle Sonne, etwa drei Tage bei Bewölkung und dass dabei 30 bis 80 Prozent der Keime abgetötet werden.", "docs": ["who-tn05-emergency-water-treatment", "oezsv-bevorratungsratgeber"]}
     ]
   }
 }

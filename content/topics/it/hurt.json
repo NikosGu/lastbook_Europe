@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "hurt",
   "mode": "now",
   "title": "Qualcuno è ferito o ha un malore",
@@ -243,13 +243,13 @@
   "related": ["health", "shelter", "water", "sanitation"],
   "gaps": {
     "missing": [
-      "Nessun manuale di primo soccorso scritto per il pubblico: le linee guida della FICR sono scritte per gli istruttori, e le guide nazionali hanno ciascuna solo poche pagine di primo soccorso.",
-      "Le linee guida della FICR non indicano nessun numero di emergenza; il 112 e i numeri nazionali vengono dalle guide nazionali di protezione civile.",
-      "Nessun metodo semplice per smistare molti feriti (triage) scritto per il pubblico.",
-      "Alcuni medicinali citati dalle linee guida della FICR, come l'aspirina, l'adrenalina o un inalatore, si possono dare solo dove le regole locali lo permettono; nessuna fonte qui riporta queste regole per nessun Paese."
+      {"text": "Nessun manuale di primo soccorso scritto per il pubblico: le linee guida della FICR sono scritte per gli istruttori, e le guide nazionali hanno ciascuna solo poche pagine di primo soccorso.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+      {"text": "Le linee guida della FICR non indicano nessun numero di emergenza; il 112 e i numeri nazionali vengono dalle guide nazionali di protezione civile.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+      {"text": "Nessun metodo semplice per smistare molti feriti (triage) scritto per il pubblico.", "docs": []},
+      {"text": "Alcuni medicinali citati dalle linee guida della FICR, come l'aspirina, l'adrenalina o un inalatore, si possono dare solo dove le regole locali lo permettono; nessuna fonte qui riporta queste regole per nessun Paese.", "docs": ["ifrc-first-aid-guidelines-2020"]}
     ],
     "disagree": [
-      "Raffreddare un'ustione: le linee guida della FICR indicano acqua corrente fresca per almeno dieci minuti, meglio venti, ma non gelata; la guida austriaca dice di sciacquare con acqua tiepida e di smettere se la persona trema."
+      {"text": "Raffreddare un'ustione: le linee guida della FICR indicano acqua corrente fresca per almeno dieci minuti, meglio venti, ma non gelata; la guida austriaca dice di sciacquare con acqua tiepida e di smettere se la persona trema.", "docs": ["ifrc-first-aid-guidelines-2020", "zsv-steiermark-notfallratgeber"]}
     ]
   }
 }

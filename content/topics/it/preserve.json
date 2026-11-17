@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "preserve",
   "mode": "learn",
   "title": "Conservare il cibo",
@@ -14,8 +14,8 @@
   "related": ["food"],
   "gaps": {
     "missing": [
-      "Nessuna guida per conservare il cibo in casa: conserve in vasetto, essiccazione, sottaceti, fermentazione o congelamento.",
-      "Nessuna guida per capire se un cibo conservato in casa si può mangiare senza rischi."
+      {"text": "Nessuna guida per conservare il cibo in casa: conserve in vasetto, essiccazione, sottaceti, fermentazione o congelamento.", "docs": []},
+      {"text": "Nessuna guida per capire se un cibo conservato in casa si può mangiare senza rischi.", "docs": []}
     ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "disaster",
   "mode": "now",
   "title": "Séisme, inondation, incendie et autres catastrophes",
@@ -164,14 +164,14 @@
   "related": ["comms", "shelter", "hurt", "water"],
   "gaps": {
     "missing": [
-      "Tempêtes, grêle et vents violents : seulement le guide espagnol sur les phénomènes météorologiques dangereux, quelques lignes dans le guide national français et une page autrichienne sur les orages en montagne.",
-      "Aucun guide sur les glissements de terrain, ni sur les avalanches au-delà du sauvetage entre alpinistes.",
-      "Aucun guide pour nettoyer et sécher un logement après une inondation.",
-      "Sur les accidents chimiques et nucléaires, seulement où se mettre à l’abri, la mise en garde sur l’iode et, dans le guide polonais du RCB, combien de temps rester à l’intérieur (au moins 24 heures) : rien sur le nettoyage.",
-      "Les pages sur chaque risque sont écrites pour un seul pays (Italie, Allemagne, Autriche, France, Espagne ou Pologne), avec ses propres numéros et alertes ; les sirènes et les systèmes d’alerte sont expliqués pour l’Italie, l’Allemagne, l’Autriche, la France et la Pologne."
+      {"text": "Tempêtes, grêle et vents violents : seulement le guide espagnol sur les phénomènes météorologiques dangereux, quelques lignes dans le guide national français et une page autrichienne sur les orages en montagne.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "sgdsn-tous-responsables", "zsv-steiermark-notfallratgeber"]},
+      {"text": "Aucun guide sur les glissements de terrain, ni sur les avalanches au-delà du sauvetage entre alpinistes.", "docs": ["zsv-steiermark-notfallratgeber"]},
+      {"text": "Aucun guide pour nettoyer et sécher un logement après une inondation.", "docs": []},
+      {"text": "Sur les accidents chimiques et nucléaires, seulement où se mettre à l’abri, la mise en garde sur l’iode et, dans le guide polonais du RCB, combien de temps rester à l’intérieur (au moins 24 heures) : rien sur le nettoyage.", "docs": ["oezsv-bevorratungsratgeber", "rcb-badz-gotowy"]},
+      {"text": "Les pages sur chaque risque sont écrites pour un seul pays (Italie, Allemagne, Autriche, France, Espagne ou Pologne), avec ses propres numéros et alertes ; les sirènes et les systèmes d’alerte sont expliqués pour l’Italie, l’Allemagne, l’Autriche, la France et la Pologne.", "docs": ["dpc-io-non-rischio", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "sgdsn-tous-responsables", "dgpce-guia-autoproteccion", "pl-poradnik-bezpieczenstwa"]}
     ],
     "disagree": [
-      "Fuir à travers la fumée : le guide allemand dit de ne jamais le faire ; le guide espagnol d’autoprotection dit de respirer à travers un linge humide et d’avancer à quatre pattes si vous devez sortir à travers la fumée."
+      {"text": "Fuir à travers la fumée : le guide allemand dit de ne jamais le faire ; le guide espagnol d’autoprotection dit de respirer à travers un linge humide et d’avancer à quatre pattes si vous devez sortir à travers la fumée.", "docs": ["bbk-vorsorgen-fuer-krisen", "dgpce-guia-autoproteccion"]}
     ]
   }
 }

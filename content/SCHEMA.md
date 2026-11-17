@@ -78,7 +78,12 @@ Other languages (`content/topics/<lang>/<id>.json`)
   document in the translation's own language that says the same thing (a warning then paraphrases that page). A
   document's edition in another language counts as the same pages where its sources list says `same_pages_as`. The
   `note`s say when a document is in another language than the guide.
-- It starts with `"_review": "machine-assisted, needs native-speaker review"`, as `web/locales/` do, until a native
-  speaker has reviewed it.
-- It carries `"gaps"`: the guide's entry of `content/gaps.json` (`missing`, `disagree`) in its own words, item for item.
+- It starts with `"_review"`, the same note as `web/locales/` carry: now "reviewed line by line on 17 Nov 2026; a
+  native speaker's read is still advised for first-aid wording".
+- It carries `"gaps"`: the guide's entry of `content/gaps.json` (`missing`, `disagree`) in its own words, item for item,
+  each note with the same `docs`.
+- A gap note is `{"text": "...", "docs": [...]}`: `docs` are the ids of the documents it names (`[]` for one that names
+  none). A note that names a document the library does not hold is not shown, as a reading or a warning is not.
+- Where a translated item opens a page of a document in its own language and the library lacks that document, the item
+  opens the English item's page instead, if that document is there; it is hidden only when neither is.
 - `cargo test -p lastbook-engine topics` checks all of this.

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "water",
   "mode": "now",
   "title": "Zdobądź bezpieczną wodę pitną",
@@ -117,14 +117,14 @@
   "related": ["food", "sanitation", "power"],
   "gaps": {
     "missing": [
-      "Brak poradnika o wodzie, w której mogą być paliwo, chemikalia lub ścieki, poza uwagą WHO, że uzdatnianie wody w domu nie usuwa chemikaliów.",
-      "Nic o szukaniu wody w terenie (źródła, strumienie, deszcz) ani o tym, czy wodę z rzeki lub jeziora można bezpiecznie pić.",
-      "Brak komunikatu wodociągów o konieczności przegotowania wody i nic o tym, jak długo podczas blackoutu woda leci z kranów w wysokim budynku.",
-      "Żadne źródło nie porównuje tabletek do uzdatniania wody ani filtrów; jeden austriacki poradnik podaje jedną markę."
+      {"text": "Brak poradnika o wodzie, w której mogą być paliwo, chemikalia lub ścieki, poza uwagą WHO, że uzdatnianie wody w domu nie usuwa chemikaliów.", "docs": ["who-tn05-emergency-water-treatment"]},
+      {"text": "Nic o szukaniu wody w terenie (źródła, strumienie, deszcz) ani o tym, czy wodę z rzeki lub jeziora można bezpiecznie pić.", "docs": []},
+      {"text": "Brak komunikatu wodociągów o konieczności przegotowania wody i nic o tym, jak długo podczas blackoutu woda leci z kranów w wysokim budynku.", "docs": []},
+      {"text": "Żadne źródło nie porównuje tabletek do uzdatniania wody ani filtrów; jeden austriacki poradnik podaje jedną markę.", "docs": ["oezsv-bevorratungsratgeber"]}
     ],
     "disagree": [
-      "Ile wody trzymać: niemiecki poradnik podaje 2 litry na osobę dziennie (z tego pół litra do gotowania); szwajcarskie ulotki co najmniej 9 litrów na osobę, czyli tyle, by przez trzy dni pić i gotować; austriacki poradnik o zapasach 1,5 litra do picia i 3,5 litra do mycia dziennie oraz siedem butelek 1,5-litrowych na osobę; francuski poradnik państwowy 6 litrów na osobę do swojego zestawu na 72 godziny; rządowy „Poradnik bezpieczeństwa” co najmniej 3 litry na osobę dziennie, a poradnik RCB „Bądź gotowy!” 14 litrów na osobę na tydzień; nota WHO 2,5 do 3 litrów dziennie do picia i jedzenia, a łącznie 7,5 do 15. Każda strona podaje własną liczbę.",
-      "Dezynfekcja słońcem (SODIS): nota WHO mówi o około jednym dniu słońca w pobliżu równika i o dwóch dniach, gdy jest pochmurno; austriacki poradnik o zapasach mówi o około 6 godzinach pełnego słońca, około trzech dniach przy zachmurzeniu i o tym, że zabija ona od 30 do 80 procent zarazków."
+      {"text": "Ile wody trzymać: niemiecki poradnik podaje 2 litry na osobę dziennie (z tego pół litra do gotowania); szwajcarskie ulotki co najmniej 9 litrów na osobę, czyli tyle, by przez trzy dni pić i gotować; austriacki poradnik o zapasach 1,5 litra do picia i 3,5 litra do mycia dziennie oraz siedem butelek 1,5-litrowych na osobę; francuski poradnik państwowy 6 litrów na osobę do swojego zestawu na 72 godziny; rządowy „Poradnik bezpieczeństwa” co najmniej 3 litry na osobę dziennie, a poradnik RCB „Bądź gotowy!” 14 litrów na osobę na tydzień; nota WHO 2,5 do 3 litrów dziennie do picia i jedzenia, a łącznie 7,5 do 15. Każda strona podaje własną liczbę.", "docs": ["bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "rcb-badz-gotowy", "who-tn09-how-much-water"]},
+      {"text": "Dezynfekcja słońcem (SODIS): nota WHO mówi o około jednym dniu słońca w pobliżu równika i o dwóch dniach, gdy jest pochmurno; austriacki poradnik o zapasach mówi o około 6 godzinach pełnego słońca, około trzech dniach przy zachmurzeniu i o tym, że zabija ona od 30 do 80 procent zarazków.", "docs": ["who-tn05-emergency-water-treatment", "oezsv-bevorratungsratgeber"]}
     ]
   }
 }

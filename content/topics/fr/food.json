@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "food",
   "mode": "now",
   "title": "Nourriture : provisions, cuisine et sécurité",
@@ -103,14 +103,14 @@
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {
     "missing": [
-      "Aucun guide de sécurité alimentaire d’une autorité sanitaire sur ce qu’il faut jeter après une longue coupure de courant ou une inondation ; les règles données ici viennent de dépliants de la protection civile.",
-      "Rien sur la durée pendant laquelle les aliments du réfrigérateur et du congélateur restent sûrs sans électricité, en dehors du conseil de manger d’abord les aliments périssables et de garder les portes fermées.",
-      "Aucun guide pour cuisiner sur un feu ou sur un gril, en dehors de la mise en garde : les grils et les réchauds de camping s’utilisent dehors."
+      {"text": "Aucun guide de sécurité alimentaire d’une autorité sanitaire sur ce qu’il faut jeter après une longue coupure de courant ou une inondation ; les règles données ici viennent de dépliants de la protection civile.", "docs": []},
+      {"text": "Rien sur la durée pendant laquelle les aliments du réfrigérateur et du congélateur restent sûrs sans électricité, en dehors du conseil de manger d’abord les aliments périssables et de garder les portes fermées.", "docs": []},
+      {"text": "Aucun guide pour cuisiner sur un feu ou sur un gril, en dehors de la mise en garde : les grils et les réchauds de camping s’utilisent dehors.", "docs": []}
     ],
     "disagree": [
-      "Pour combien de temps prévoir : 72 heures (le guide national français), au moins 3 jours (le guide du gouvernement polonais), environ une semaine (les dépliants suisses, le guide autrichien des provisions et le guide polonais du RCB), 10 jours si possible et au moins 3 (le guide allemand), une à deux semaines (le guide styrien sur le black-out), au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out).",
-      "Cuisiner sur un gril pendant un black-out : les guides autrichiens proposent un gril de jardin sans dire où l’utiliser ; le guide allemand dit que les grils et les réchauds de camping ne s’utilisent que dehors.",
-      "À quelle fréquence vérifier les provisions : une fois par an (le guide autrichien des provisions et la version facile à lire du guide national français), deux fois par an (le guide national français), à intervalles de quelques mois (le guide du gouvernement polonais)."
+      {"text": "Pour combien de temps prévoir : 72 heures (le guide national français), au moins 3 jours (le guide du gouvernement polonais), environ une semaine (les dépliants suisses, le guide autrichien des provisions et le guide polonais du RCB), 10 jours si possible et au moins 3 (le guide allemand), une à deux semaines (le guide styrien sur le black-out), au moins 10 à 14 jours (la liste de contrôle autrichienne sur le black-out).", "docs": ["sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "rcb-badz-gotowy", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-blackout", "oezsv-blackout-checkliste"]},
+      {"text": "Cuisiner sur un gril pendant un black-out : les guides autrichiens proposent un gril de jardin sans dire où l’utiliser ; le guide allemand dit que les grils et les réchauds de camping ne s’utilisent que dehors.", "docs": ["oezsv-bevorratungsratgeber", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen"]},
+      {"text": "À quelle fréquence vérifier les provisions : une fois par an (le guide autrichien des provisions et la version facile à lire du guide national français), deux fois par an (le guide national français), à intervalles de quelques mois (le guide du gouvernement polonais).", "docs": ["oezsv-bevorratungsratgeber", "sgdsn-agissons-falc", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

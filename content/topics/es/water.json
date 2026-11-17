@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "water",
   "mode": "now",
   "title": "Conseguir agua potable",
@@ -117,14 +117,14 @@
   "related": ["food", "sanitation", "power"],
   "gaps": {
     "missing": [
-      "Ninguna guía para el agua que pueda contener combustible, productos químicos o aguas residuales, aparte de la nota de la OMS de que tratar el agua en casa no elimina los productos químicos.",
-      "Nada sobre cómo encontrar agua al aire libre (manantiales, arroyos, lluvia) ni sobre si es seguro beber de un río o de un lago.",
-      "Ningún aviso de una compañía de aguas para hervir el agua, y nada sobre cuánto tiempo sigue saliendo agua de los grifos en un edificio alto durante un apagón.",
-      "Ninguna fuente compara pastillas potabilizadoras o filtros; una guía austriaca nombra una sola marca."
+      {"text": "Ninguna guía para el agua que pueda contener combustible, productos químicos o aguas residuales, aparte de la nota de la OMS de que tratar el agua en casa no elimina los productos químicos.", "docs": ["who-tn05-emergency-water-treatment"]},
+      {"text": "Nada sobre cómo encontrar agua al aire libre (manantiales, arroyos, lluvia) ni sobre si es seguro beber de un río o de un lago.", "docs": []},
+      {"text": "Ningún aviso de una compañía de aguas para hervir el agua, y nada sobre cuánto tiempo sigue saliendo agua de los grifos en un edificio alto durante un apagón.", "docs": []},
+      {"text": "Ninguna fuente compara pastillas potabilizadoras o filtros; una guía austriaca nombra una sola marca.", "docs": ["oezsv-bevorratungsratgeber"]}
     ],
     "disagree": [
-      "Cuánta agua guardar: la guía alemana dice 2 litros por persona y día (medio litro para cocinar); los folletos suizos, al menos 9 litros por persona, suficiente para beber y cocinar durante tres días; la guía austriaca de provisiones, 1,5 litros para beber más 3,5 para lavarse al día, y siete botellas de 1,5 litros por persona; la guía nacional francesa, 6 litros por persona para su kit de 72 horas; la guía del Gobierno polaco, al menos 3 litros por persona y día, y la guía polaca del RCB, 14 litros por persona para una semana; la nota de la OMS, de 2,5 a 3 litros al día para beber y comer, y de 7,5 a 15 en total. Cada página da su propia cifra.",
-      "Desinfección solar (SODIS): la nota de la OMS dice que hace falta alrededor de un día de sol cerca del ecuador, y dos si está nublado; la guía austriaca de provisiones dice unas 6 horas a pleno sol, unos tres días con nubes, y que mata entre el 30 y el 80 % de los gérmenes."
+      {"text": "Cuánta agua guardar: la guía alemana dice 2 litros por persona y día (medio litro para cocinar); los folletos suizos, al menos 9 litros por persona, suficiente para beber y cocinar durante tres días; la guía austriaca de provisiones, 1,5 litros para beber más 3,5 para lavarse al día, y siete botellas de 1,5 litros por persona; la guía nacional francesa, 6 litros por persona para su kit de 72 horas; la guía del Gobierno polaco, al menos 3 litros por persona y día, y la guía polaca del RCB, 14 litros por persona para una semana; la nota de la OMS, de 2,5 a 3 litros al día para beber y comer, y de 7,5 a 15 en total. Cada página da su propia cifra.", "docs": ["bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "rcb-badz-gotowy", "who-tn09-how-much-water"]},
+      {"text": "Desinfección solar (SODIS): la nota de la OMS dice que hace falta alrededor de un día de sol cerca del ecuador, y dos si está nublado; la guía austriaca de provisiones dice unas 6 horas a pleno sol, unos tres días con nubes, y que mata entre el 30 y el 80 % de los gérmenes.", "docs": ["who-tn05-emergency-water-treatment", "oezsv-bevorratungsratgeber"]}
     ]
   }
 }

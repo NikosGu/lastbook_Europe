@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "land",
   "mode": "learn",
   "title": "Znajdź bezpieczny teren i zasoby naturalne",
@@ -14,9 +14,9 @@
   "related": ["disaster", "water"],
   "gaps": {
     "missing": [
-      "Brak map zagrożeń (powodzie, trzęsienia ziemi, osuwiska) dla jakiegokolwiek obszaru.",
-      "Nic o szukaniu wody w naturze (źródła, studnie, deszcz) ani o dzikich roślinach i grzybach.",
-      "Nic o czytaniu mapy ani korzystaniu z kompasu."
+      {"text": "Brak map zagrożeń (powodzie, trzęsienia ziemi, osuwiska) dla jakiegokolwiek obszaru.", "docs": []},
+      {"text": "Nic o szukaniu wody w naturze (źródła, studnie, deszcz) ani o dzikich roślinach i grzybach.", "docs": []},
+      {"text": "Nic o czytaniu mapy ani korzystaniu z kompasu.", "docs": []}
     ]
   }
 }

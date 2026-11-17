@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "comms",
   "mode": "now",
   "title": "Recevoir les alertes, appeler les secours et garder le contact",
@@ -86,10 +86,10 @@
   "related": ["power", "disaster"],
   "gaps": {
     "missing": [
-      "Aucun guide sur les radios pour communiquer entre vous, comme les talkies-walkies PMR, la CB ou la radio amateur ; le guide du gouvernement polonais les cite seulement parmi les choses à avoir.",
-      "Un plan familial de crise ne figure que dans le guide du gouvernement polonais ; le guide national français dit de convenir avec ses proches de la façon de rester en contact.",
-      "Les systèmes d’alerte ne sont expliqués que pour l’Allemagne, l’Autriche, l’Italie, la France et la Pologne.",
-      "Aucun guide pour lire une carte ou utiliser une boussole."
+      {"text": "Aucun guide sur les radios pour communiquer entre vous, comme les talkies-walkies PMR, la CB ou la radio amateur ; le guide du gouvernement polonais les cite seulement parmi les choses à avoir.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+      {"text": "Un plan familial de crise ne figure que dans le guide du gouvernement polonais ; le guide national français dit de convenir avec ses proches de la façon de rester en contact.", "docs": ["pl-poradnik-bezpieczenstwa", "sgdsn-tous-responsables"]},
+      {"text": "Les systèmes d’alerte ne sont expliqués que pour l’Allemagne, l’Autriche, l’Italie, la France et la Pologne.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "dpc-io-non-rischio", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]},
+      {"text": "Aucun guide pour lire une carte ou utiliser une boussole.", "docs": []}
     ]
   }
 }

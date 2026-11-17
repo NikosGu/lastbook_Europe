@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "disaster",
   "mode": "now",
   "title": "Terremoto, inundación, incendio y otras catástrofes",
@@ -164,14 +164,14 @@
   "related": ["comms", "shelter", "hurt", "water"],
   "gaps": {
     "missing": [
-      "Temporales, granizo y vientos fuertes: solo la guía de Protección Civil sobre fenómenos meteorológicos adversos, unas pocas líneas en la guía nacional francesa y una página austriaca sobre las tormentas en la montaña.",
-      "Ninguna guía sobre deslizamientos de tierra, ni sobre aludes más allá del rescate entre montañeros.",
-      "Ninguna guía para limpiar y secar una casa después de una inundación.",
-      "Sobre accidentes químicos y nucleares, solo dónde refugiarse, la advertencia sobre el yodo y, en la guía polaca del RCB, cuánto tiempo quedarse dentro (al menos 24 horas): nada sobre cómo limpiar.",
-      "Las páginas sobre cada riesgo están escritas para un solo país (Italia, Alemania, Austria, Francia, España o Polonia), con sus propios números y alertas; las sirenas y los sistemas de alerta se explican para Italia, Alemania, Austria, Francia y Polonia."
+      {"text": "Temporales, granizo y vientos fuertes: solo la guía de Protección Civil sobre fenómenos meteorológicos adversos, unas pocas líneas en la guía nacional francesa y una página austriaca sobre las tormentas en la montaña.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "sgdsn-tous-responsables", "zsv-steiermark-notfallratgeber"]},
+      {"text": "Ninguna guía sobre deslizamientos de tierra, ni sobre aludes más allá del rescate entre montañeros.", "docs": ["zsv-steiermark-notfallratgeber"]},
+      {"text": "Ninguna guía para limpiar y secar una casa después de una inundación.", "docs": []},
+      {"text": "Sobre accidentes químicos y nucleares, solo dónde refugiarse, la advertencia sobre el yodo y, en la guía polaca del RCB, cuánto tiempo quedarse dentro (al menos 24 horas): nada sobre cómo limpiar.", "docs": ["oezsv-bevorratungsratgeber", "rcb-badz-gotowy"]},
+      {"text": "Las páginas sobre cada riesgo están escritas para un solo país (Italia, Alemania, Austria, Francia, España o Polonia), con sus propios números y alertas; las sirenas y los sistemas de alerta se explican para Italia, Alemania, Austria, Francia y Polonia.", "docs": ["dpc-io-non-rischio", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "sgdsn-tous-responsables", "dgpce-guia-autoproteccion", "pl-poradnik-bezpieczenstwa"]}
     ],
     "disagree": [
-      "Huir a través del humo: la guía alemana dice que no lo hagas nunca; la guía de Protección Civil sobre autoprotección dice que, si tienes que salir a través del humo, respires a través de un paño húmedo y avances a gatas."
+      {"text": "Huir a través del humo: la guía alemana dice que no lo hagas nunca; la guía de Protección Civil sobre autoprotección dice que, si tienes que salir a través del humo, respires a través de un paño húmedo y avances a gatas.", "docs": ["bbk-vorsorgen-fuer-krisen", "dgpce-guia-autoproteccion"]}
     ]
   }
 }

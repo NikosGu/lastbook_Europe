@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "disaster",
   "mode": "now",
   "title": "Terremoto, alluvione, incendio e altre calamità",
@@ -164,14 +164,14 @@
   "related": ["comms", "shelter", "hurt", "water"],
   "gaps": {
     "missing": [
-      "Tempeste, grandine e vento forte: solo la guida spagnola sui fenomeni meteorologici avversi, poche righe nella guida nazionale francese e una pagina austriaca sui temporali in montagna.",
-      "Nessuna guida alle frane, né alle valanghe oltre al soccorso tra alpinisti.",
-      "Nessuna guida per pulire e asciugare una casa dopo un'alluvione.",
-      "Sugli incidenti chimici e nucleari, solo dove ripararsi, l'avvertenza sullo iodio e, nella guida polacca dell'RCB, quanto tempo restare al chiuso (almeno 24 ore): nulla su come fare pulizia.",
-      "Le pagine su ogni rischio sono scritte per un solo Paese (Italia, Germania, Austria, Francia, Spagna o Polonia), con i numeri e le allerte di quel Paese; sirene e sistemi di allerta sono spiegati per Italia, Germania, Austria, Francia e Polonia."
+      {"text": "Tempeste, grandine e vento forte: solo la guida spagnola sui fenomeni meteorologici avversi, poche righe nella guida nazionale francese e una pagina austriaca sui temporali in montagna.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "sgdsn-tous-responsables", "zsv-steiermark-notfallratgeber"]},
+      {"text": "Nessuna guida alle frane, né alle valanghe oltre al soccorso tra alpinisti.", "docs": ["zsv-steiermark-notfallratgeber"]},
+      {"text": "Nessuna guida per pulire e asciugare una casa dopo un'alluvione.", "docs": []},
+      {"text": "Sugli incidenti chimici e nucleari, solo dove ripararsi, l'avvertenza sullo iodio e, nella guida polacca dell'RCB, quanto tempo restare al chiuso (almeno 24 ore): nulla su come fare pulizia.", "docs": ["oezsv-bevorratungsratgeber", "rcb-badz-gotowy"]},
+      {"text": "Le pagine su ogni rischio sono scritte per un solo Paese (Italia, Germania, Austria, Francia, Spagna o Polonia), con i numeri e le allerte di quel Paese; sirene e sistemi di allerta sono spiegati per Italia, Germania, Austria, Francia e Polonia.", "docs": ["dpc-io-non-rischio", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "sgdsn-tous-responsables", "dgpce-guia-autoproteccion", "pl-poradnik-bezpieczenstwa"]}
     ],
     "disagree": [
-      "Fuggire attraverso il fumo: la guida tedesca dice di non farlo mai; la guida spagnola sull'autoprotezione dice che, se si deve uscire attraverso il fumo, bisogna respirare attraverso un panno umido e procedere carponi."
+      {"text": "Fuggire attraverso il fumo: la guida tedesca dice di non farlo mai; la guida spagnola sull'autoprotezione dice che, se si deve uscire attraverso il fumo, bisogna respirare attraverso un panno umido e procedere carponi.", "docs": ["bbk-vorsorgen-fuer-krisen", "dgpce-guia-autoproteccion"]}
     ]
   }
 }

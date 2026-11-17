@@ -7,6 +7,7 @@ use super::catalog::Catalog;
 use super::words::truthy;
 use super::Library;
 use serde_json::{json, Map, Value};
+use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
 impl Library {
@@ -57,10 +58,19 @@ impl Library {
         let here = |items: &Value| -> Vec<Value> {
             items.as_array().into_iter().flatten().filter(|i| item_here(i, &zims, &cat)).map(|i| resolve_item(i, &cat, &lib)).collect()
         };
+        // a translation's items fall back on the English guide's, item for item
+        let english: HashMap<String, Map<String, Value>> = if lang == "en" {
+            HashMap::new()
+        } else {
+            self.topics_in("en").into_iter().filter_map(|t| if let Value::Object(m) = t { Some((m.get("id")?.as_str()?.to_string(), m)) } else { None }).collect()
+        };
         let mut res = Vec::new();
         for t in self.topics_in(lang) {
             let Value::Object(mut t) = t else { continue };
             let id = t.get("id").and_then(Value::as_str).unwrap_or("").to_string();
+            if let Some(en) = english.get(&id) {
+                fall_back_to_english(&mut t, en, &|i: &Value| item_here(i, &zims, &cat));
+            }
             let reads_from = openers(&t);
             let own = t.get("gaps").filter(|g| g.is_object()).cloned();
             let notes = own.unwrap_or_else(|| gaps.get(&id).cloned().unwrap_or(json!({})));
@@ -175,6 +185,44 @@ struct Uncovered {
     partial: String,
 }
 
+/// In a translation, an item whose document this library lacks opens the English item's page instead, where the
+/// English item's document is here: a translated item opens either the English item's page or a page in its own
+/// language that says the same thing (content/SCHEMA.md), so its words stay; its note goes, as it speaks of the other
+/// page. The items are matched as a translation keeps them: choices by id, the steps of a route by place, and the items
+/// of each list in the same order. An item is hidden afterwards only when neither document is here.
+fn fall_back_to_english(t: &mut Map<String, Value>, en: &Map<String, Value>, here: &dyn Fn(&Value) -> bool) {
+    let swap = |item: &mut Value, english: Option<&Value>| {
+        let Some(e) = english.filter(|e| !here(item) && here(e)) else { return };
+        if let (Some(o), Some(eo)) = (item.as_object_mut(), e.as_object()) {
+            for k in ["doc", "page", "zim"] {
+                match eo.get(k) {
+                    Some(v) => o.insert(k.into(), v.clone()),
+                    None => o.remove(k),
+                };
+            }
+            o.remove("note");
+            o.insert("fallback".into(), json!(true));
+        }
+    };
+    for k in ["limits", "prepare", "learn"] {
+        let english = en.get(k).and_then(Value::as_array);
+        for (n, item) in t.get_mut(k).and_then(Value::as_array_mut).into_iter().flatten().enumerate() {
+            swap(item, english.and_then(|l| l.get(n)));
+        }
+    }
+    for k in ["choices", "route"] {
+        let steps = en.get(k).and_then(Value::as_array);
+        for (n, step) in t.get_mut(k).and_then(Value::as_array_mut).into_iter().flatten().enumerate() {
+            let id = step.get("id").cloned();
+            let e = steps.and_then(|s| if k == "choices" { s.iter().find(|c| c.get("id") == id.as_ref()) } else { s.get(n) });
+            let english = e.and_then(|c| c.get("read")).and_then(Value::as_array);
+            for (i, item) in step.get_mut("read").and_then(Value::as_array_mut).into_iter().flatten().enumerate() {
+                swap(item, english.and_then(|l| l.get(i)));
+            }
+        }
+    }
+}
+
 /// A guide's notes on what the library lacks (`missing`) and where its sources disagree (`disagree`), as the app shows
 /// them: the words of each note whose documents are all `here`. A note is `{"text", "docs"}`, the documents it names
 /// (none for a note that names none); a note that names a document the library does not hold is left out, as a
@@ -243,7 +291,7 @@ mod tests {
     use super::*;
     use std::collections::HashMap;
 
-    const REVIEW: &str = "machine-assisted, needs native-speaker review";
+    const REVIEW: &str = "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording";
 
     fn read(p: &Path) -> Value {
         serde_json::from_slice(&std::fs::read(p).unwrap()).unwrap_or_else(|e| panic!("{}: {e}", p.display()))
@@ -463,12 +511,56 @@ mod tests {
         let _ = std::fs::remove_dir_all(&data);
     }
 
+    #[test]
+    fn a_translated_item_whose_own_document_is_missing_opens_the_english_items_page() {
+        let docs = pack_documents();
+        for lang in ["it", "de", "fr", "es", "pl"] {
+            // every listed document but those in this language: an older library, or one for another country
+            let held: Vec<&str> = docs.iter().filter(|(_, d)| d.lang != lang).map(|(id, _)| id.as_str()).collect();
+            let (data, l) = holding(&held);
+            let english = l.topics_resolved_in("en");
+            let mut fell_back = 0;
+            for t in l.topics_resolved_in(lang) {
+                let id = t["id"].as_str().unwrap().to_string();
+                let e = english.iter().find(|e| e["id"] == t["id"]).unwrap();
+                // item for item the English guide's documents and pages, as its own were all left out; an item is gone
+                // only where the English one is gone too
+                let opens = |g: &Value| items(g).into_iter().map(|(at, i)| (at, i["doc"].clone(), i["page"].clone())).collect::<Vec<_>>();
+                assert_eq!(opens(&t), opens(e), "{lang} {id}");
+                for ((at, i), (_, ei)) in items(&t).into_iter().zip(items(e)) {
+                    if i.get("fallback").is_some() {
+                        fell_back += 1;
+                        // in its own words, without the note about its own page
+                        assert!(i.get("note").is_none(), "{lang} {id} {at}");
+                        let words = |v: &Value| v.get("label").or_else(|| v.get("text")).cloned();
+                        assert!(words(i).is_some() && words(i) != words(ei), "{lang} {id} {at}: the words stay the translation's");
+                    }
+                }
+                if lang == "pl" && id == "hurt" {
+                    assert!(items(&t).iter().any(|(_, i)| i.get("fallback").is_some()), "Polish first aid keeps its readings on the IFRC's pages");
+                }
+            }
+            if ["fr", "es", "pl"].contains(&lang) {
+                assert!(fell_back > 0, "{lang}: its guides open pages in {lang}, and fall back on the English ones");
+            }
+            let _ = std::fs::remove_dir_all(&data);
+        }
+        // with every document there, nothing falls back
+        let every: Vec<String> = docs.into_keys().collect();
+        let (data, l) = holding(&every.iter().map(String::as_str).collect::<Vec<_>>());
+        for lang in ["it", "de", "fr", "es", "pl"] {
+            assert!(l.topics_resolved_in(lang).iter().all(|t| items(t).iter().all(|(_, i)| i.get("fallback").is_none())), "{lang}");
+        }
+        let _ = std::fs::remove_dir_all(&data);
+    }
+
     /// Checks that each guide, in each language, opens only the documents held, shows no warning and no gap note that
     /// names a document not held, and says so where none of its documents is held; how many guides said so, and how
     /// many notes were left out.
     fn guides_show_only(l: &Library, held: &[&str]) -> (usize, usize) {
         let words = read(&repo().join("content/uncovered.json"));
         let gaps = read(&repo().join("content/gaps.json"));
+        let english: HashMap<String, Value> = l.topics_in("en").into_iter().map(|t| (t["id"].as_str().unwrap_or("").to_string(), t)).collect();
         let (mut said_empty, mut hidden) = (0, 0);
         for lang in ["en", "it", "de", "fr", "es", "pl"] {
             let files: HashMap<String, Value> = l.topics_in(lang).into_iter().map(|t| (t["id"].as_str().unwrap_or("").to_string(), t)).collect();
@@ -482,8 +574,10 @@ mod tests {
                     let d = i["doc"].as_str().unwrap_or("");
                     assert!(held.contains(&d) && !i["src"].is_null(), "{lang} {id} {at}: {d} is not in this library");
                 }
-                // a warning whose document is not here is not shown, words and all
-                let warnings_here = file["limits"].as_array().into_iter().flatten().filter(|i| held.contains(&i["doc"].as_str().unwrap_or(""))).count();
+                // a warning whose document is not here is not shown, words and all, unless a translated one can cite the
+                // English warning's page instead
+                let is_held = |i: &Value| held.contains(&i["doc"].as_str().unwrap_or(""));
+                let warnings_here = file["limits"].as_array().into_iter().flatten().enumerate().filter(|(n, i)| is_held(i) || is_held(&english[id]["limits"][*n])).count();
                 assert_eq!(t["limits"].as_array().map_or(0, Vec::len), warnings_here, "{lang} {id}");
                 // a guide that reads from documents this library has none of says so; the others keep their words
                 if !items(file).is_empty() && items(t).is_empty() {

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "comms",
   "mode": "now",
   "title": "Warnungen erhalten, Hilfe rufen und in Kontakt bleiben",
@@ -86,10 +86,10 @@
   "related": ["power", "disaster"],
   "gaps": {
     "missing": [
-      "Kein Ratgeber zu Funkgeräten, mit denen man miteinander spricht, etwa PMR-Funkgeräte, CB-Funk oder Amateurfunk; der Ratgeber der polnischen Regierung nennt sie nur unter den Dingen, die man haben sollte.",
-      "Einen Krisenplan für die Familie gibt es nur im Ratgeber der polnischen Regierung; der nationale französische Ratgeber rät, mit Angehörigen abzusprechen, wie man in Kontakt bleibt.",
-      "Warnsysteme werden nur für Deutschland, Österreich, Italien, Frankreich und Polen erklärt.",
-      "Kein Ratgeber zum Kartenlesen oder zum Umgang mit dem Kompass."
+      {"text": "Kein Ratgeber zu Funkgeräten, mit denen man miteinander spricht, etwa PMR-Funkgeräte, CB-Funk oder Amateurfunk; der Ratgeber der polnischen Regierung nennt sie nur unter den Dingen, die man haben sollte.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+      {"text": "Einen Krisenplan für die Familie gibt es nur im Ratgeber der polnischen Regierung; der nationale französische Ratgeber rät, mit Angehörigen abzusprechen, wie man in Kontakt bleibt.", "docs": ["pl-poradnik-bezpieczenstwa", "sgdsn-tous-responsables"]},
+      {"text": "Warnsysteme werden nur für Deutschland, Österreich, Italien, Frankreich und Polen erklärt.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "dpc-io-non-rischio", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]},
+      {"text": "Kein Ratgeber zum Kartenlesen oder zum Umgang mit dem Kompass.", "docs": []}
     ]
   }
 }

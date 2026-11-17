@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "sanitation",
   "mode": "now",
   "title": "Bagno, rifiuti e igiene quando manca l'acqua",
@@ -72,10 +72,10 @@
   "related": ["water", "hurt", "food"],
   "gaps": {
     "missing": [
-      "Poco su un WC di emergenza: la guida del governo polacco descrive un secchio con un sacchetto di plastica, che poi va in un contenitore a parte; nulla su come smaltire i rifiuti in modo sicuro.",
-      "Nulla su come tenersi puliti con pochissima acqua, oltre a quando lavarsi le mani.",
-      "Nessuna guida per pulire una casa in cui sono entrati liquami o acqua dell'alluvione.",
-      "Nulla su come evitare che una malattia come la diarrea si diffonda in famiglia."
+      {"text": "Poco su un WC di emergenza: la guida del governo polacco descrive un secchio con un sacchetto di plastica, che poi va in un contenitore a parte; nulla su come smaltire i rifiuti in modo sicuro.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+      {"text": "Nulla su come tenersi puliti con pochissima acqua, oltre a quando lavarsi le mani.", "docs": []},
+      {"text": "Nessuna guida per pulire una casa in cui sono entrati liquami o acqua dell'alluvione.", "docs": []},
+      {"text": "Nulla su come evitare che una malattia come la diarrea si diffonda in famiglia.", "docs": []}
     ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "preserve",
   "mode": "learn",
   "title": "Conservar y almacenar alimentos",
@@ -14,8 +14,8 @@
   "related": ["food"],
   "gaps": {
     "missing": [
-      "Ninguna guía para conservar alimentos en casa: conservas en tarros, secado, encurtidos, fermentación o congelación.",
-      "Ninguna guía para saber si una conserva casera se puede comer sin peligro."
+      {"text": "Ninguna guía para conservar alimentos en casa: conservas en tarros, secado, encurtidos, fermentación o congelación.", "docs": []},
+      {"text": "Ninguna guía para saber si una conserva casera se puede comer sin peligro.", "docs": []}
     ]
   }
 }

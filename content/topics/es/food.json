@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "food",
   "mode": "now",
   "title": "Comida: provisiones, cocina y seguridad",
@@ -103,14 +103,14 @@
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {
     "missing": [
-      "Ninguna guía de seguridad alimentaria de una autoridad sanitaria sobre qué tirar después de un apagón largo o de una inundación; las normas de aquí vienen de folletos de protección civil.",
-      "Nada sobre cuánto tiempo sigue siendo segura la comida de la nevera y del congelador sin luz, aparte de comer primero los alimentos perecederos y mantener las puertas cerradas.",
-      "Ninguna guía para cocinar al fuego o en una barbacoa, aparte de la advertencia de que las barbacoas y los hornillos de camping son para el exterior."
+      {"text": "Ninguna guía de seguridad alimentaria de una autoridad sanitaria sobre qué tirar después de un apagón largo o de una inundación; las normas de aquí vienen de folletos de protección civil.", "docs": []},
+      {"text": "Nada sobre cuánto tiempo sigue siendo segura la comida de la nevera y del congelador sin luz, aparte de comer primero los alimentos perecederos y mantener las puertas cerradas.", "docs": []},
+      {"text": "Ninguna guía para cocinar al fuego o en una barbacoa, aparte de la advertencia de que las barbacoas y los hornillos de camping son para el exterior.", "docs": []}
     ],
     "disagree": [
-      "Para cuánto tiempo prepararse: 72 horas (la guía nacional francesa); al menos 3 días (la guía del Gobierno polaco); una semana, más o menos (los folletos suizos, la guía austriaca de provisiones y la guía polaca del RCB); 10 días si es posible y al menos 3 (la guía alemana); de una a dos semanas (la guía de Estiria sobre apagones); al menos de 10 a 14 días (la lista austriaca para apagones).",
-      "Cocinar en una barbacoa durante un apagón: las guías austriacas proponen una barbacoa de jardín sin decir dónde usarla; la guía alemana dice que las barbacoas y los hornillos de camping son solo para el exterior.",
-      "Cada cuánto revisar las provisiones: una vez al año (la guía austriaca de provisiones y la guía francesa en lectura fácil), dos veces al año (la guía nacional francesa), cada pocos meses (la guía del Gobierno polaco)."
+      {"text": "Para cuánto tiempo prepararse: 72 horas (la guía nacional francesa); al menos 3 días (la guía del Gobierno polaco); una semana, más o menos (los folletos suizos, la guía austriaca de provisiones y la guía polaca del RCB); 10 días si es posible y al menos 3 (la guía alemana); de una a dos semanas (la guía de Estiria sobre apagones); al menos de 10 a 14 días (la lista austriaca para apagones).", "docs": ["sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "rcb-badz-gotowy", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-blackout", "oezsv-blackout-checkliste"]},
+      {"text": "Cocinar en una barbacoa durante un apagón: las guías austriacas proponen una barbacoa de jardín sin decir dónde usarla; la guía alemana dice que las barbacoas y los hornillos de camping son solo para el exterior.", "docs": ["oezsv-bevorratungsratgeber", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen"]},
+      {"text": "Cada cuánto revisar las provisiones: una vez al año (la guía austriaca de provisiones y la guía francesa en lectura fácil), dos veces al año (la guía nacional francesa), cada pocos meses (la guía del Gobierno polaco).", "docs": ["oezsv-bevorratungsratgeber", "sgdsn-agissons-falc", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

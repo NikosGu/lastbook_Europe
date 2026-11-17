@@ -1,122 +1,122 @@
 {
  "hurt": {
   "missing": [
-   "No first aid manual written for the public: the IFRC guidelines are written for trainers, and the national guides have only a few first aid pages each.",
-   "The IFRC guidelines name no emergency number; 112 and the national numbers come from the national civil-protection guides.",
-   "No simple method for sorting many injured people (triage) written for the public.",
-   "Some medicines the IFRC guidelines name, such as aspirin, adrenaline or an inhaler, may be given only where local rules allow; no source here gives those rules for any country."
+   {"text": "No first aid manual written for the public: the IFRC guidelines are written for trainers, and the national guides have only a few first aid pages each.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+   {"text": "The IFRC guidelines name no emergency number; 112 and the national numbers come from the national civil-protection guides.", "docs": ["ifrc-first-aid-guidelines-2020"]},
+   {"text": "No simple method for sorting many injured people (triage) written for the public.", "docs": []},
+   {"text": "Some medicines the IFRC guidelines name, such as aspirin, adrenaline or an inhaler, may be given only where local rules allow; no source here gives those rules for any country.", "docs": ["ifrc-first-aid-guidelines-2020"]}
   ],
   "disagree": [
-   "Cooling a burn: the IFRC guidelines say cool running water for at least ten minutes, ideally twenty, but not ice-cold; the Austrian guide says to rinse with lukewarm water and to stop if the person shivers."
+   {"text": "Cooling a burn: the IFRC guidelines say cool running water for at least ten minutes, ideally twenty, but not ice-cold; the Austrian guide says to rinse with lukewarm water and to stop if the person shivers.", "docs": ["ifrc-first-aid-guidelines-2020", "zsv-steiermark-notfallratgeber"]}
   ]
  },
  "health": {
   "missing": [
-   "No guide to caring for a sick person at home over days or weeks.",
-   "Nothing on long-term illness without a doctor (diabetes, high blood pressure, heart disease), on pregnancy and birth, or on teeth.",
-   "No guide to medicines: what to take for what, doses, or how long medicines keep.",
-   "Helplines are named only for Germany, Styria in Austria, and Poland."
+   {"text": "No guide to caring for a sick person at home over days or weeks.", "docs": []},
+   {"text": "Nothing on long-term illness without a doctor (diabetes, high blood pressure, heart disease), on pregnancy and birth, or on teeth.", "docs": []},
+   {"text": "No guide to medicines: what to take for what, doses, or how long medicines keep.", "docs": []},
+   {"text": "Helplines are named only for Germany, Styria in Austria, and Poland.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "pl-poradnik-bezpieczenstwa"]}
   ]
  },
  "water": {
   "missing": [
-   "No guide for water that may hold fuel, chemicals or sewage, beyond the WHO note that treating water at home does not remove chemicals.",
-   "Nothing on finding water outdoors (springs, streams, rain) or on how safe a river or lake is to drink from.",
-   "No boil-water notice from a water utility, and nothing on how long taps keep running in a tall building during a blackout.",
-   "No source compares water tablets or filters; one Austrian guide names a single brand."
+   {"text": "No guide for water that may hold fuel, chemicals or sewage, beyond the WHO note that treating water at home does not remove chemicals.", "docs": ["who-tn05-emergency-water-treatment"]},
+   {"text": "Nothing on finding water outdoors (springs, streams, rain) or on how safe a river or lake is to drink from.", "docs": []},
+   {"text": "No boil-water notice from a water utility, and nothing on how long taps keep running in a tall building during a blackout.", "docs": []},
+   {"text": "No source compares water tablets or filters; one Austrian guide names a single brand.", "docs": ["oezsv-bevorratungsratgeber"]}
   ],
   "disagree": [
-   "How much water to keep: the German guide says 2 litres a person a day (half a litre for cooking); the Swiss leaflets at least 9 litres a person, enough to drink and cook for three days; the Austrian supplies guide 1.5 litres to drink plus 3.5 for washing a day, and seven 1.5-litre bottles a person; the French national guide 6 litres a person for its 72-hour kit; the Polish government guide at least 3 litres a person a day, and the Polish RCB guide 14 litres a person for a week; the WHO note 2.5 to 3 litres a day to drink and eat, and 7.5 to 15 in all. Each page states its own figure.",
-   "Sun disinfection (SODIS): the WHO note says about a day of sun near the equator, two if it is cloudy; the Austrian supplies guide says about 6 hours of full sun, about three days under cloud, and that it kills 30 to 80 per cent of germs."
+   {"text": "How much water to keep: the German guide says 2 litres a person a day (half a litre for cooking); the Swiss leaflets at least 9 litres a person, enough to drink and cook for three days; the Austrian supplies guide 1.5 litres to drink plus 3.5 for washing a day, and seven 1.5-litre bottles a person; the French national guide 6 litres a person for its 72-hour kit; the Polish government guide at least 3 litres a person a day, and the Polish RCB guide 14 litres a person for a week; the WHO note 2.5 to 3 litres a day to drink and eat, and 7.5 to 15 in all. Each page states its own figure.", "docs": ["bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "rcb-badz-gotowy", "who-tn09-how-much-water"]},
+   {"text": "Sun disinfection (SODIS): the WHO note says about a day of sun near the equator, two if it is cloudy; the Austrian supplies guide says about 6 hours of full sun, about three days under cloud, and that it kills 30 to 80 per cent of germs.", "docs": ["who-tn05-emergency-water-treatment", "oezsv-bevorratungsratgeber"]}
   ]
  },
  "food": {
   "missing": [
-   "No food-safety guide from a health authority on what to throw away after a long power cut or a flood; the rules here come from civil-protection leaflets.",
-   "Nothing on how long fridge and freezer food stays safe without power, beyond eating perishable food first and keeping the doors shut.",
-   "No guide to cooking over a fire or on a grill beyond the warning that grills and camping stoves belong outside."
+   {"text": "No food-safety guide from a health authority on what to throw away after a long power cut or a flood; the rules here come from civil-protection leaflets.", "docs": []},
+   {"text": "Nothing on how long fridge and freezer food stays safe without power, beyond eating perishable food first and keeping the doors shut.", "docs": []},
+   {"text": "No guide to cooking over a fire or on a grill beyond the warning that grills and camping stoves belong outside.", "docs": []}
   ],
   "disagree": [
-   "How long to plan for: 72 hours (the French national guide), at least 3 days (the Polish government guide), about a week (the Swiss leaflets, the Austrian supplies guide and the Polish RCB guide), 10 days if possible and at least 3 (the German guide), one to two weeks (the Styrian blackout guide), at least 10 to 14 days (the Austrian blackout checklist).",
-   "Cooking on a grill in a blackout: the Austrian guides suggest a garden grill without saying where to use it; the German guide says grills and camping stoves are for outdoors only.",
-   "How often to check the stock: once a year (the Austrian supplies guide and the French easy-to-read guide), twice a year (the French national guide), every few months (the Polish government guide)."
+   {"text": "How long to plan for: 72 hours (the French national guide), at least 3 days (the Polish government guide), about a week (the Swiss leaflets, the Austrian supplies guide and the Polish RCB guide), 10 days if possible and at least 3 (the German guide), one to two weeks (the Styrian blackout guide), at least 10 to 14 days (the Austrian blackout checklist).", "docs": ["sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "rcb-badz-gotowy", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-blackout", "oezsv-blackout-checkliste"]},
+   {"text": "Cooking on a grill in a blackout: the Austrian guides suggest a garden grill without saying where to use it; the German guide says grills and camping stoves are for outdoors only.", "docs": ["oezsv-bevorratungsratgeber", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen"]},
+   {"text": "How often to check the stock: once a year (the Austrian supplies guide and the French easy-to-read guide), twice a year (the French national guide), every few months (the Polish government guide).", "docs": ["oezsv-bevorratungsratgeber", "sgdsn-agissons-falc", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
   ]
  },
  "power": {
   "missing": [
-   "No manual for generators or portable power stations: only the warnings in this guide.",
-   "Nothing for people in tall buildings beyond checking the lift: water pressure, long stairs, neighbours who cannot get down.",
-   "No guide to medical devices that need power, such as oxygen or breathing machines, beyond asking for help early."
+   {"text": "No manual for generators or portable power stations: only the warnings in this guide.", "docs": []},
+   {"text": "Nothing for people in tall buildings beyond checking the lift: water pressure, long stairs, neighbours who cannot get down.", "docs": []},
+   {"text": "No guide to medical devices that need power, such as oxygen or breathing machines, beyond asking for help early.", "docs": []}
   ],
   "disagree": [
-   "How long to prepare for a blackout: at least 10 to 14 days (the Austrian blackout checklist), one to two weeks (the Styrian blackout guide), 10 days (the German guide), about a week (the Swiss leaflet); for any crisis, 72 hours (the French national guide) or at least 3 days (the Polish government guide)."
+   {"text": "How long to prepare for a blackout: at least 10 to 14 days (the Austrian blackout checklist), one to two weeks (the Styrian blackout guide), 10 days (the German guide), about a week (the Swiss leaflet); for any crisis, 72 hours (the French national guide) or at least 3 days (the Polish government guide).", "docs": ["oezsv-blackout-checkliste", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
   ]
  },
  "shelter": {
   "missing": [
-   "Little on heat waves at home: the Spanish guide on adverse weather gives general advice and the IFRC guidelines cover cooling a person down; nothing on keeping rooms cool.",
-   "No guide to judging whether a building damaged by an earthquake, a storm or a fire is safe to stay in.",
-   "Little on public shelters (a section of the Polish government guide), and nothing on sheltering outdoors."
+   {"text": "Little on heat waves at home: the Spanish guide on adverse weather gives general advice and the IFRC guidelines cover cooling a person down; nothing on keeping rooms cool.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "ifrc-first-aid-guidelines-2020"]},
+   {"text": "No guide to judging whether a building damaged by an earthquake, a storm or a fire is safe to stay in.", "docs": []},
+   {"text": "Little on public shelters (a section of the Polish government guide), and nothing on sheltering outdoors.", "docs": ["pl-poradnik-bezpieczenstwa"]}
   ]
  },
  "sanitation": {
   "missing": [
-   "Little on an emergency toilet: the Polish government guide describes a plastic bag on a bucket, put into a separate container after use; nothing on getting rid of the waste safely.",
-   "Nothing on keeping clean with very little water, beyond when to wash hands.",
-   "No guide to cleaning a home after sewage or flood water got in.",
-   "Nothing on stopping an illness such as diarrhoea spreading in a household."
+   {"text": "Little on an emergency toilet: the Polish government guide describes a plastic bag on a bucket, put into a separate container after use; nothing on getting rid of the waste safely.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+   {"text": "Nothing on keeping clean with very little water, beyond when to wash hands.", "docs": []},
+   {"text": "No guide to cleaning a home after sewage or flood water got in.", "docs": []},
+   {"text": "Nothing on stopping an illness such as diarrhoea spreading in a household.", "docs": []}
   ]
  },
  "disaster": {
   "missing": [
-   "Storms, hail and strong winds: only the Spanish guide on adverse weather, a few lines in the French national guide, and an Austrian page on thunderstorms in the mountains.",
-   "No guide to landslides, or to avalanches beyond rescue among mountaineers.",
-   "No guide to cleaning up and drying a home after a flood.",
-   "On chemical and nuclear accidents, only where to shelter, the iodine warning, and in the Polish RCB guide how long to stay inside (at least 24 hours): nothing on cleaning up.",
-   "Each hazard's pages are written for one country (Italy, Germany, Austria, France, Spain or Poland), with its own numbers and alerts; sirens and alert systems are explained for Italy, Germany, Austria, France and Poland."
+   {"text": "Storms, hail and strong winds: only the Spanish guide on adverse weather, a few lines in the French national guide, and an Austrian page on thunderstorms in the mountains.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "sgdsn-tous-responsables", "zsv-steiermark-notfallratgeber"]},
+   {"text": "No guide to landslides, or to avalanches beyond rescue among mountaineers.", "docs": ["zsv-steiermark-notfallratgeber"]},
+   {"text": "No guide to cleaning up and drying a home after a flood.", "docs": []},
+   {"text": "On chemical and nuclear accidents, only where to shelter, the iodine warning, and in the Polish RCB guide how long to stay inside (at least 24 hours): nothing on cleaning up.", "docs": ["oezsv-bevorratungsratgeber", "rcb-badz-gotowy"]},
+   {"text": "Each hazard's pages are written for one country (Italy, Germany, Austria, France, Spain or Poland), with its own numbers and alerts; sirens and alert systems are explained for Italy, Germany, Austria, France and Poland.", "docs": ["dpc-io-non-rischio", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "sgdsn-tous-responsables", "dgpce-guia-autoproteccion", "pl-poradnik-bezpieczenstwa"]}
   ],
   "disagree": [
-   "Escaping through smoke: the German guide says never to; the Spanish self-protection guide says that if you must go out through smoke, breathe through a damp cloth and crawl."
+   {"text": "Escaping through smoke: the German guide says never to; the Spanish self-protection guide says that if you must go out through smoke, breathe through a damp cloth and crawl.", "docs": ["bbk-vorsorgen-fuer-krisen", "dgpce-guia-autoproteccion"]}
   ]
  },
  "comms": {
   "missing": [
-   "No guide to radios for talking to each other, such as PMR walkie-talkies, CB or amateur radio; the Polish government guide only lists them among things to have.",
-   "A family crisis plan is only in the Polish government guide; the French national guide says to agree with relatives how to stay in touch.",
-   "Warning systems are explained only for Germany, Austria, Italy, France and Poland.",
-   "No guide to reading a map or using a compass."
+   {"text": "No guide to radios for talking to each other, such as PMR walkie-talkies, CB or amateur radio; the Polish government guide only lists them among things to have.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+   {"text": "A family crisis plan is only in the Polish government guide; the French national guide says to agree with relatives how to stay in touch.", "docs": ["pl-poradnik-bezpieczenstwa", "sgdsn-tous-responsables"]},
+   {"text": "Warning systems are explained only for Germany, Austria, Italy, France and Poland.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "dpc-io-non-rischio", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]},
+   {"text": "No guide to reading a map or using a compass.", "docs": []}
   ]
  },
  "grow": {
   "missing": [
-   "No guide to growing food: soil, planting times for European climates, staple crops such as potatoes and beans, or watering.",
-   "No guide to saving seed, or to growing in pots or on a balcony."
+   {"text": "No guide to growing food: soil, planting times for European climates, staple crops such as potatoes and beans, or watering.", "docs": []},
+   {"text": "No guide to saving seed, or to growing in pots or on a balcony.", "docs": []}
   ]
  },
  "preserve": {
   "missing": [
-   "No guide to preserving food at home: bottling in jars, drying, pickling, fermenting or freezing.",
-   "No guide to telling whether home-preserved food is safe to eat."
+   {"text": "No guide to preserving food at home: bottling in jars, drying, pickling, fermenting or freezing.", "docs": []},
+   {"text": "No guide to telling whether home-preserved food is safe to eat.", "docs": []}
   ]
  },
  "repair": {
   "missing": [
-   "No guide to hand tools, sharpening or a basic tool kit.",
-   "No guide to repairs in the home (taps, toilets, windows, simple electrical work) or to small engines."
+   {"text": "No guide to hand tools, sharpening or a basic tool kit.", "docs": []},
+   {"text": "No guide to repairs in the home (taps, toilets, windows, simple electrical work) or to small engines.", "docs": []}
   ]
  },
  "energy": {
   "missing": [
-   "No guide to batteries, power banks or portable power stations.",
-   "No guide to solar panels or other home power systems.",
-   "No generator manual: the power guide has only the warnings that the civil-protection leaflets give."
+   {"text": "No guide to batteries, power banks or portable power stations.", "docs": []},
+   {"text": "No guide to solar panels or other home power systems.", "docs": []},
+   {"text": "No generator manual: the power guide has only the warnings that the civil-protection leaflets give.", "docs": []}
   ]
  },
  "land": {
   "missing": [
-   "No hazard maps (floods, earthquakes, landslides) for any area.",
-   "Nothing on finding water in nature (springs, wells, rain), or on wild plants and mushrooms.",
-   "Nothing on reading a map or using a compass."
+   {"text": "No hazard maps (floods, earthquakes, landslides) for any area.", "docs": []},
+   {"text": "Nothing on finding water in nature (springs, wells, rain), or on wild plants and mushrooms.", "docs": []},
+   {"text": "Nothing on reading a map or using a compass.", "docs": []}
   ]
  }
 }

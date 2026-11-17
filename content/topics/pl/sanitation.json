@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "sanitation",
   "mode": "now",
   "title": "Toalety, odpady i higiena, gdy nie ma wody",
@@ -72,10 +72,10 @@
   "related": ["water", "hurt", "food"],
   "gaps": {
     "missing": [
-      "Niewiele o toalecie awaryjnej: rządowy „Poradnik bezpieczeństwa” opisuje plastikową torbę nałożoną na wiadro, którą potem wyrzuca się do osobnego pojemnika; nic o tym, jak bezpiecznie pozbyć się nieczystości.",
-      "Nic o utrzymaniu czystości przy bardzo małej ilości wody, poza tym, kiedy myć ręce.",
-      "Brak poradnika o sprzątaniu domu, do którego dostały się ścieki lub woda powodziowa.",
-      "Nic o tym, jak zapobiec rozprzestrzenianiu się w domu choroby, na przykład biegunki."
+      {"text": "Niewiele o toalecie awaryjnej: rządowy „Poradnik bezpieczeństwa” opisuje plastikową torbę nałożoną na wiadro, którą potem wyrzuca się do osobnego pojemnika; nic o tym, jak bezpiecznie pozbyć się nieczystości.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+      {"text": "Nic o utrzymaniu czystości przy bardzo małej ilości wody, poza tym, kiedy myć ręce.", "docs": []},
+      {"text": "Brak poradnika o sprzątaniu domu, do którego dostały się ścieki lub woda powodziowa.", "docs": []},
+      {"text": "Nic o tym, jak zapobiec rozprzestrzenianiu się w domu choroby, na przykład biegunki.", "docs": []}
     ]
   }
 }

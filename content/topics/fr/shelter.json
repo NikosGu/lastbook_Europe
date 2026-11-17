@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "shelter",
   "mode": "now",
   "title": "Rester au chaud, au frais et à l’abri",
@@ -110,9 +110,9 @@
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {
     "missing": [
-      "Peu de choses sur les canicules à la maison : le guide espagnol sur les phénomènes météorologiques dangereux donne des conseils généraux et les lignes directrices de la FICR expliquent comment rafraîchir une personne ; rien sur la façon de garder les pièces au frais.",
-      "Aucun guide pour juger si un bâtiment endommagé par un séisme, une tempête ou un incendie peut être occupé sans danger.",
-      "Peu de choses sur les abris publics (une partie du guide du gouvernement polonais) et rien sur la façon de s’abriter en plein air."
+      {"text": "Peu de choses sur les canicules à la maison : le guide espagnol sur les phénomènes météorologiques dangereux donne des conseils généraux et les lignes directrices de la FICR expliquent comment rafraîchir une personne ; rien sur la façon de garder les pièces au frais.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "ifrc-first-aid-guidelines-2020"]},
+      {"text": "Aucun guide pour juger si un bâtiment endommagé par un séisme, une tempête ou un incendie peut être occupé sans danger.", "docs": []},
+      {"text": "Peu de choses sur les abris publics (une partie du guide du gouvernement polonais) et rien sur la façon de s’abriter en plein air.", "docs": ["pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

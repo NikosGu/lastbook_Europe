@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "water",
   "mode": "now",
   "title": "Procurarsi acqua potabile",
@@ -117,14 +117,14 @@
   "related": ["food", "sanitation", "power"],
   "gaps": {
     "missing": [
-      "Nessuna guida per l'acqua che può contenere carburante, sostanze chimiche o liquami, a parte la nota dell'OMS secondo cui il trattamento in casa non elimina le sostanze chimiche.",
-      "Nulla su come trovare acqua all'aperto (sorgenti, ruscelli, pioggia) o su quanto sia sicuro bere da un fiume o da un lago.",
-      "Nessun avviso di bollitura da parte di un gestore dell'acquedotto, e nulla su per quanto tempo l'acqua continua a uscire dai rubinetti di un edificio alto durante un blackout.",
-      "Nessuna fonte confronta pastiglie o filtri per l'acqua; una guida austriaca cita un'unica marca."
+      {"text": "Nessuna guida per l'acqua che può contenere carburante, sostanze chimiche o liquami, a parte la nota dell'OMS secondo cui il trattamento in casa non elimina le sostanze chimiche.", "docs": ["who-tn05-emergency-water-treatment"]},
+      {"text": "Nulla su come trovare acqua all'aperto (sorgenti, ruscelli, pioggia) o su quanto sia sicuro bere da un fiume o da un lago.", "docs": []},
+      {"text": "Nessun avviso di bollitura da parte di un gestore dell'acquedotto, e nulla su per quanto tempo l'acqua continua a uscire dai rubinetti di un edificio alto durante un blackout.", "docs": []},
+      {"text": "Nessuna fonte confronta pastiglie o filtri per l'acqua; una guida austriaca cita un'unica marca.", "docs": ["oezsv-bevorratungsratgeber"]}
     ],
     "disagree": [
-      "Quanta acqua tenere: la guida tedesca dice 2 litri a persona al giorno (mezzo litro per cucinare); gli opuscoli svizzeri almeno 9 litri a persona, abbastanza per bere e cucinare per tre giorni; la guida austriaca alle scorte 1,5 litri da bere più 3,5 per lavarsi al giorno, e sette bottiglie da 1,5 litri a persona; la guida nazionale francese 6 litri a persona per il suo kit da 72 ore; la guida del governo polacco almeno 3 litri a persona al giorno, e la guida polacca dell'RCB 14 litri a persona per una settimana; la nota dell'OMS da 2,5 a 3 litri al giorno per bere e mangiare, e da 7,5 a 15 in tutto. Ogni pagina indica la propria cifra.",
-      "Disinfezione con il sole (SODIS): la nota dell'OMS dice circa un giorno di sole vicino all'equatore, due se è nuvoloso; la guida austriaca alle scorte dice circa 6 ore di pieno sole, circa tre giorni con il cielo coperto, e che uccide dal 30 all'80 per cento dei germi."
+      {"text": "Quanta acqua tenere: la guida tedesca dice 2 litri a persona al giorno (mezzo litro per cucinare); gli opuscoli svizzeri almeno 9 litri a persona, abbastanza per bere e cucinare per tre giorni; la guida austriaca alle scorte 1,5 litri da bere più 3,5 per lavarsi al giorno, e sette bottiglie da 1,5 litri a persona; la guida nazionale francese 6 litri a persona per il suo kit da 72 ore; la guida del governo polacco almeno 3 litri a persona al giorno, e la guida polacca dell'RCB 14 litri a persona per una settimana; la nota dell'OMS da 2,5 a 3 litri al giorno per bere e mangiare, e da 7,5 a 15 in tutto. Ogni pagina indica la propria cifra.", "docs": ["bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "rcb-badz-gotowy", "who-tn09-how-much-water"]},
+      {"text": "Disinfezione con il sole (SODIS): la nota dell'OMS dice circa un giorno di sole vicino all'equatore, due se è nuvoloso; la guida austriaca alle scorte dice circa 6 ore di pieno sole, circa tre giorni con il cielo coperto, e che uccide dal 30 all'80 per cento dei germi.", "docs": ["who-tn05-emergency-water-treatment", "oezsv-bevorratungsratgeber"]}
     ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "power",
   "mode": "now",
   "title": "Der Strom ist ausgefallen",
@@ -118,12 +118,12 @@
   "related": ["food", "shelter", "comms", "water"],
   "gaps": {
     "missing": [
-      "Keine Anleitung für Notstromaggregate oder tragbare Powerstations: nur die Warnhinweise in diesem Ratgeber.",
-      "Nichts für Menschen in Hochhäusern, außer den Aufzug zu prüfen: Wasserdruck, lange Treppen, Nachbarn, die nicht hinunterkommen.",
-      "Kein Ratgeber zu medizinischen Geräten, die Strom brauchen, etwa Sauerstoff- oder Beatmungsgeräten, außer dem Rat, früh um Hilfe zu bitten."
+      {"text": "Keine Anleitung für Notstromaggregate oder tragbare Powerstations: nur die Warnhinweise in diesem Ratgeber.", "docs": []},
+      {"text": "Nichts für Menschen in Hochhäusern, außer den Aufzug zu prüfen: Wasserdruck, lange Treppen, Nachbarn, die nicht hinunterkommen.", "docs": []},
+      {"text": "Kein Ratgeber zu medizinischen Geräten, die Strom brauchen, etwa Sauerstoff- oder Beatmungsgeräten, außer dem Rat, früh um Hilfe zu bitten.", "docs": []}
     ],
     "disagree": [
-      "Für wie lange man sich auf einen Blackout vorbereiten sollte: mindestens 10 bis 14 Tage (die österreichische Blackout-Checkliste), ein bis zwei Wochen (der steirische Blackout-Ratgeber), 10 Tage (der deutsche Ratgeber), etwa eine Woche (das Schweizer Faltblatt); für Krisen jeder Art 72 Stunden (der nationale französische Ratgeber) oder mindestens 3 Tage (der Ratgeber der polnischen Regierung)."
+      {"text": "Für wie lange man sich auf einen Blackout vorbereiten sollte: mindestens 10 bis 14 Tage (die österreichische Blackout-Checkliste), ein bis zwei Wochen (der steirische Blackout-Ratgeber), 10 Tage (der deutsche Ratgeber), etwa eine Woche (das Schweizer Faltblatt); für Krisen jeder Art 72 Stunden (der nationale französische Ratgeber) oder mindestens 3 Tage (der Ratgeber der polnischen Regierung).", "docs": ["oezsv-blackout-checkliste", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "disaster",
   "mode": "now",
   "title": "Erdbeben, Hochwasser, Brand und andere Katastrophen",
@@ -164,14 +164,14 @@
   "related": ["comms", "shelter", "hurt", "water"],
   "gaps": {
     "missing": [
-      "Stürme, Hagel und starker Wind: nur der spanische Ratgeber zu extremen Wetterlagen, ein paar Zeilen im nationalen französischen Ratgeber und eine österreichische Seite zu Gewittern in den Bergen.",
-      "Kein Ratgeber zu Erdrutschen, und zu Lawinen nichts außer der Kameradenrettung unter Bergsteigern.",
-      "Kein Ratgeber zum Aufräumen und Trocknen einer Wohnung nach einem Hochwasser.",
-      "Zu Chemie- und Atomunfällen nur, wo man Schutz sucht, die Warnung zu Jod und im polnischen RCB-Ratgeber, wie lange man drinnen bleiben muss (mindestens 24 Stunden): nichts zum Aufräumen danach.",
-      "Die Seiten zu jeder Gefahr sind für ein einziges Land geschrieben (Italien, Deutschland, Österreich, Frankreich, Spanien oder Polen), mit dessen eigenen Nummern und Warnungen; Sirenen und Warnsysteme werden für Italien, Deutschland, Österreich, Frankreich und Polen erklärt."
+      {"text": "Stürme, Hagel und starker Wind: nur der spanische Ratgeber zu extremen Wetterlagen, ein paar Zeilen im nationalen französischen Ratgeber und eine österreichische Seite zu Gewittern in den Bergen.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "sgdsn-tous-responsables", "zsv-steiermark-notfallratgeber"]},
+      {"text": "Kein Ratgeber zu Erdrutschen, und zu Lawinen nichts außer der Kameradenrettung unter Bergsteigern.", "docs": ["zsv-steiermark-notfallratgeber"]},
+      {"text": "Kein Ratgeber zum Aufräumen und Trocknen einer Wohnung nach einem Hochwasser.", "docs": []},
+      {"text": "Zu Chemie- und Atomunfällen nur, wo man Schutz sucht, die Warnung zu Jod und im polnischen RCB-Ratgeber, wie lange man drinnen bleiben muss (mindestens 24 Stunden): nichts zum Aufräumen danach.", "docs": ["oezsv-bevorratungsratgeber", "rcb-badz-gotowy"]},
+      {"text": "Die Seiten zu jeder Gefahr sind für ein einziges Land geschrieben (Italien, Deutschland, Österreich, Frankreich, Spanien oder Polen), mit dessen eigenen Nummern und Warnungen; Sirenen und Warnsysteme werden für Italien, Deutschland, Österreich, Frankreich und Polen erklärt.", "docs": ["dpc-io-non-rischio", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "sgdsn-tous-responsables", "dgpce-guia-autoproteccion", "pl-poradnik-bezpieczenstwa"]}
     ],
     "disagree": [
-      "Flucht durch Rauch: Der deutsche Ratgeber sagt, nie durch Rauch zu fliehen; der spanische Ratgeber zum Selbstschutz sagt, durch ein feuchtes Tuch zu atmen und zu kriechen, wenn Sie durch Rauch hinausmüssen."
+      {"text": "Flucht durch Rauch: Der deutsche Ratgeber sagt, nie durch Rauch zu fliehen; der spanische Ratgeber zum Selbstschutz sagt, durch ein feuchtes Tuch zu atmen und zu kriechen, wenn Sie durch Rauch hinausmüssen.", "docs": ["bbk-vorsorgen-fuer-krisen", "dgpce-guia-autoproteccion"]}
     ]
   }
 }

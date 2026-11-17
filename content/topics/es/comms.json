@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "comms",
   "mode": "now",
   "title": "Recibir avisos, pedir ayuda y mantener el contacto",
@@ -86,10 +86,10 @@
   "related": ["power", "disaster"],
   "gaps": {
     "missing": [
-      "Ninguna guía sobre radios para hablar entre personas, como los walkie-talkies PMR, la CB o la radioafición; la guía del Gobierno polaco solo las menciona entre las cosas que hay que tener.",
-      "Un plan familiar para casos de crisis solo aparece en la guía del Gobierno polaco; la guía nacional francesa dice que acuerdes con tus familiares cómo seguir en contacto.",
-      "Los sistemas de aviso solo se explican para Alemania, Austria, Italia, Francia y Polonia.",
-      "Ninguna guía para leer un mapa o usar una brújula."
+      {"text": "Ninguna guía sobre radios para hablar entre personas, como los walkie-talkies PMR, la CB o la radioafición; la guía del Gobierno polaco solo las menciona entre las cosas que hay que tener.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+      {"text": "Un plan familiar para casos de crisis solo aparece en la guía del Gobierno polaco; la guía nacional francesa dice que acuerdes con tus familiares cómo seguir en contacto.", "docs": ["pl-poradnik-bezpieczenstwa", "sgdsn-tous-responsables"]},
+      {"text": "Los sistemas de aviso solo se explican para Alemania, Austria, Italia, Francia y Polonia.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "dpc-io-non-rischio", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]},
+      {"text": "Ninguna guía para leer un mapa o usar una brújula.", "docs": []}
     ]
   }
 }

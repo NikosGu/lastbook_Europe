@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "food",
   "mode": "now",
   "title": "Jedzenie: zapasy, gotowanie i bezpieczeństwo",
@@ -103,14 +103,14 @@
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {
     "missing": [
-      "Brak poradnika o bezpieczeństwie żywności od instytucji zdrowia publicznego o tym, co wyrzucić po długiej przerwie w dostawie prądu lub po powodzi; zasady podane tutaj pochodzą z ulotek ochrony ludności.",
-      "Nic o tym, jak długo jedzenie z lodówki i zamrażarki pozostaje bezpieczne bez prądu, poza radą, by najpierw zjeść łatwo psujące się produkty i nie otwierać drzwiczek.",
-      "Brak poradnika o gotowaniu na ogniu lub na grillu poza ostrzeżeniem, że grille i kuchenki turystyczne są do używania na zewnątrz."
+      {"text": "Brak poradnika o bezpieczeństwie żywności od instytucji zdrowia publicznego o tym, co wyrzucić po długiej przerwie w dostawie prądu lub po powodzi; zasady podane tutaj pochodzą z ulotek ochrony ludności.", "docs": []},
+      {"text": "Nic o tym, jak długo jedzenie z lodówki i zamrażarki pozostaje bezpieczne bez prądu, poza radą, by najpierw zjeść łatwo psujące się produkty i nie otwierać drzwiczek.", "docs": []},
+      {"text": "Brak poradnika o gotowaniu na ogniu lub na grillu poza ostrzeżeniem, że grille i kuchenki turystyczne są do używania na zewnątrz.", "docs": []}
     ],
     "disagree": [
-      "Na jak długo planować: 72 godziny (francuski poradnik państwowy), co najmniej 3 dni (rządowy „Poradnik bezpieczeństwa”), około tygodnia (szwajcarskie ulotki, austriacki poradnik o zapasach i poradnik RCB „Bądź gotowy!”), 10 dni, jeśli to możliwe, a co najmniej 3 (niemiecki poradnik), tydzień do dwóch tygodni (styryjski poradnik o blackoucie), co najmniej 10 do 14 dni (austriacka lista kontrolna na blackout).",
-      "Gotowanie na grillu podczas blackoutu: austriackie poradniki proponują grill ogrodowy, nie mówiąc, gdzie go używać; niemiecki poradnik mówi, że grille i kuchenki turystyczne są tylko do użytku na zewnątrz.",
-      "Jak często sprawdzać zapasy: raz w roku (austriacki poradnik o zapasach i francuski poradnik w wersji łatwej do czytania), dwa razy w roku (francuski poradnik państwowy), co kilka miesięcy (rządowy „Poradnik bezpieczeństwa”)."
+      {"text": "Na jak długo planować: 72 godziny (francuski poradnik państwowy), co najmniej 3 dni (rządowy „Poradnik bezpieczeństwa”), około tygodnia (szwajcarskie ulotki, austriacki poradnik o zapasach i poradnik RCB „Bądź gotowy!”), 10 dni, jeśli to możliwe, a co najmniej 3 (niemiecki poradnik), tydzień do dwóch tygodni (styryjski poradnik o blackoucie), co najmniej 10 do 14 dni (austriacka lista kontrolna na blackout).", "docs": ["sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa", "bwl-kluger-rat-notvorrat", "oezsv-bevorratungsratgeber", "rcb-badz-gotowy", "bbk-vorsorgen-fuer-krisen", "zsv-steiermark-blackout", "oezsv-blackout-checkliste"]},
+      {"text": "Gotowanie na grillu podczas blackoutu: austriackie poradniki proponują grill ogrodowy, nie mówiąc, gdzie go używać; niemiecki poradnik mówi, że grille i kuchenki turystyczne są tylko do użytku na zewnątrz.", "docs": ["oezsv-bevorratungsratgeber", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen"]},
+      {"text": "Jak często sprawdzać zapasy: raz w roku (austriacki poradnik o zapasach i francuski poradnik w wersji łatwej do czytania), dwa razy w roku (francuski poradnik państwowy), co kilka miesięcy (rządowy „Poradnik bezpieczeństwa”).", "docs": ["oezsv-bevorratungsratgeber", "sgdsn-agissons-falc", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "land",
   "mode": "learn",
   "title": "Sicheres Land und natürliche Ressourcen finden",
@@ -14,9 +14,9 @@
   "related": ["disaster", "water"],
   "gaps": {
     "missing": [
-      "Keine Gefahrenkarten (Hochwasser, Erdbeben, Erdrutsche) für irgendein Gebiet.",
-      "Nichts dazu, wie man in der Natur Wasser findet (Quellen, Brunnen, Regen), und nichts zu Wildpflanzen und Pilzen.",
-      "Nichts zum Kartenlesen oder zum Umgang mit dem Kompass."
+      {"text": "Keine Gefahrenkarten (Hochwasser, Erdbeben, Erdrutsche) für irgendein Gebiet.", "docs": []},
+      {"text": "Nichts dazu, wie man in der Natur Wasser findet (Quellen, Brunnen, Regen), und nichts zu Wildpflanzen und Pilzen.", "docs": []},
+      {"text": "Nichts zum Kartenlesen oder zum Umgang mit dem Kompass.", "docs": []}
     ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "grow",
   "mode": "learn",
   "title": "Uprawiaj podstawową żywność",
@@ -14,8 +14,8 @@
   "related": ["food", "water"],
   "gaps": {
     "missing": [
-      "Brak poradnika o uprawie żywności: o glebie, terminach sadzenia w klimatach Europy, podstawowych uprawach, takich jak ziemniaki i fasola, ani o podlewaniu.",
-      "Brak poradnika o zbieraniu nasion ani o uprawie w doniczkach lub na balkonie."
+      {"text": "Brak poradnika o uprawie żywności: o glebie, terminach sadzenia w klimatach Europy, podstawowych uprawach, takich jak ziemniaki i fasola, ani o podlewaniu.", "docs": []},
+      {"text": "Brak poradnika o zbieraniu nasion ani o uprawie w doniczkach lub na balkonie.", "docs": []}
     ]
   }
 }

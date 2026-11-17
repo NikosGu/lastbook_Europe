@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "grow",
   "mode": "learn",
   "title": "Grundnahrungsmittel anbauen",
@@ -14,8 +14,8 @@
   "related": ["food", "water"],
   "gaps": {
     "missing": [
-      "Kein Ratgeber zum Anbau von Lebensmitteln: Boden, Pflanzzeiten für das Klima in Europa, Grundnahrungsmittel wie Kartoffeln und Bohnen oder Bewässerung.",
-      "Kein Ratgeber zum Gewinnen von Saatgut oder zum Anbau in Töpfen oder auf dem Balkon."
+      {"text": "Kein Ratgeber zum Anbau von Lebensmitteln: Boden, Pflanzzeiten für das Klima in Europa, Grundnahrungsmittel wie Kartoffeln und Bohnen oder Bewässerung.", "docs": []},
+      {"text": "Kein Ratgeber zum Gewinnen von Saatgut oder zum Anbau in Töpfen oder auf dem Balkon.", "docs": []}
     ]
   }
 }

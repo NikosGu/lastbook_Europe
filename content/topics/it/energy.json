@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "energy",
   "mode": "learn",
   "title": "Produrre e gestire l'energia",
@@ -14,9 +14,9 @@
   "related": ["power"],
   "gaps": {
     "missing": [
-      "Nessuna guida a batterie, power bank o power station portatili.",
-      "Nessuna guida ai pannelli solari o ad altri impianti domestici per produrre energia.",
-      "Nessun manuale per i generatori: la guida “Senza corrente” riporta solo le avvertenze degli opuscoli della protezione civile."
+      {"text": "Nessuna guida a batterie, power bank o power station portatili.", "docs": []},
+      {"text": "Nessuna guida ai pannelli solari o ad altri impianti domestici per produrre energia.", "docs": []},
+      {"text": "Nessun manuale per i generatori: la guida “Senza corrente” riporta solo le avvertenze degli opuscoli della protezione civile.", "docs": []}
     ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "power",
   "mode": "now",
   "title": "Nie ma prądu",
@@ -118,12 +118,12 @@
   "related": ["food", "shelter", "comms", "water"],
   "gaps": {
     "missing": [
-      "Brak instrukcji do agregatów prądotwórczych i przenośnych stacji zasilania: są tylko ostrzeżenia w tym poradniku.",
-      "Nic dla mieszkańców wysokich budynków poza sprawdzeniem windy: ciśnienie wody, długie schody, sąsiedzi, którzy nie mogą zejść na dół.",
-      "Brak poradnika o urządzeniach medycznych zasilanych prądem, takich jak koncentratory tlenu czy aparaty do oddychania, poza radą, by wcześnie poprosić o pomoc."
+      {"text": "Brak instrukcji do agregatów prądotwórczych i przenośnych stacji zasilania: są tylko ostrzeżenia w tym poradniku.", "docs": []},
+      {"text": "Nic dla mieszkańców wysokich budynków poza sprawdzeniem windy: ciśnienie wody, długie schody, sąsiedzi, którzy nie mogą zejść na dół.", "docs": []},
+      {"text": "Brak poradnika o urządzeniach medycznych zasilanych prądem, takich jak koncentratory tlenu czy aparaty do oddychania, poza radą, by wcześnie poprosić o pomoc.", "docs": []}
     ],
     "disagree": [
-      "Na jak długo przygotować się na blackout: co najmniej 10 do 14 dni (austriacka lista kontrolna na blackout), tydzień do dwóch tygodni (styryjski poradnik o blackoucie), 10 dni (niemiecki poradnik), około tygodnia (szwajcarska ulotka); na każdy rodzaj kryzysu 72 godziny (francuski poradnik państwowy) lub co najmniej 3 dni (rządowy „Poradnik bezpieczeństwa”)."
+      {"text": "Na jak długo przygotować się na blackout: co najmniej 10 do 14 dni (austriacka lista kontrolna na blackout), tydzień do dwóch tygodni (styryjski poradnik o blackoucie), 10 dni (niemiecki poradnik), około tygodnia (szwajcarska ulotka); na każdy rodzaj kryzysu 72 godziny (francuski poradnik państwowy) lub co najmniej 3 dni (rządowy „Poradnik bezpieczeństwa”).", "docs": ["oezsv-blackout-checkliste", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

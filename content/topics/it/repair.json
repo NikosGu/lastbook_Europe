@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "repair",
   "mode": "learn",
   "title": "Riparare e costruire",
@@ -14,8 +14,8 @@
   "related": ["power"],
   "gaps": {
     "missing": [
-      "Nessuna guida agli attrezzi manuali, all'affilatura o a una cassetta degli attrezzi di base.",
-      "Nessuna guida alle riparazioni in casa (rubinetti, WC, finestre, semplici lavori elettrici) o ai piccoli motori."
+      {"text": "Nessuna guida agli attrezzi manuali, all'affilatura o a una cassetta degli attrezzi di base.", "docs": []},
+      {"text": "Nessuna guida alle riparazioni in casa (rubinetti, WC, finestre, semplici lavori elettrici) o ai piccoli motori.", "docs": []}
     ]
   }
 }

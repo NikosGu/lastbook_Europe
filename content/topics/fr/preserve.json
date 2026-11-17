@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "preserve",
   "mode": "learn",
   "title": "Conserver et stocker les aliments",
@@ -14,8 +14,8 @@
   "related": ["food"],
   "gaps": {
     "missing": [
-      "Aucun guide pour conserver les aliments à la maison : mise en bocaux, séchage, conserves au vinaigre, fermentation ou congélation.",
-      "Aucun guide pour savoir si des conserves faites à la maison peuvent être mangées sans danger."
+      {"text": "Aucun guide pour conserver les aliments à la maison : mise en bocaux, séchage, conserves au vinaigre, fermentation ou congélation.", "docs": []},
+      {"text": "Aucun guide pour savoir si des conserves faites à la maison peuvent être mangées sans danger.", "docs": []}
     ]
   }
 }

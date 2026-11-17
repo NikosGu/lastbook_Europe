@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "health",
   "mode": "learn",
   "title": "Für die Gesundheit sorgen, wenn Hilfe weit weg ist",
@@ -116,10 +116,10 @@
   "related": ["hurt", "food", "water"],
   "gaps": {
     "missing": [
-      "Kein Ratgeber zur Pflege einer kranken Person zu Hause über Tage oder Wochen.",
-      "Nichts zu chronischen Krankheiten ohne Arzt (Diabetes, Bluthochdruck, Herzkrankheiten), zu Schwangerschaft und Geburt oder zu den Zähnen.",
-      "Kein Ratgeber zu Medikamenten: was man wofür nimmt, Dosierungen oder wie lange Medikamente haltbar sind.",
-      "Hilfetelefone werden nur für Deutschland, für die Steiermark in Österreich und für Polen genannt."
+      {"text": "Kein Ratgeber zur Pflege einer kranken Person zu Hause über Tage oder Wochen.", "docs": []},
+      {"text": "Nichts zu chronischen Krankheiten ohne Arzt (Diabetes, Bluthochdruck, Herzkrankheiten), zu Schwangerschaft und Geburt oder zu den Zähnen.", "docs": []},
+      {"text": "Kein Ratgeber zu Medikamenten: was man wofür nimmt, Dosierungen oder wie lange Medikamente haltbar sind.", "docs": []},
+      {"text": "Hilfetelefone werden nur für Deutschland, für die Steiermark in Österreich und für Polen genannt.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

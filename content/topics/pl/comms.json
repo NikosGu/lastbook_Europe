@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "comms",
   "mode": "now",
   "title": "Odbieraj ostrzeżenia, wzywaj pomoc i bądź w kontakcie",
@@ -86,10 +86,10 @@
   "related": ["power", "disaster"],
   "gaps": {
     "missing": [
-      "Brak poradnika o radiach do rozmów między ludźmi, takich jak krótkofalówki PMR, CB radio czy krótkofalarstwo; rządowy „Poradnik bezpieczeństwa” wymienia je tylko wśród rzeczy, które warto mieć.",
-      "Rodzinny plan na kryzys jest tylko w rządowym „Poradniku bezpieczeństwa”; francuski poradnik państwowy mówi, by uzgodnić z bliskimi, jak pozostać w kontakcie.",
-      "Systemy ostrzegania są wyjaśnione tylko dla Niemiec, Austrii, Włoch, Francji i Polski.",
-      "Brak poradnika o czytaniu mapy i korzystaniu z kompasu."
+      {"text": "Brak poradnika o radiach do rozmów między ludźmi, takich jak krótkofalówki PMR, CB radio czy krótkofalarstwo; rządowy „Poradnik bezpieczeństwa” wymienia je tylko wśród rzeczy, które warto mieć.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+      {"text": "Rodzinny plan na kryzys jest tylko w rządowym „Poradniku bezpieczeństwa”; francuski poradnik państwowy mówi, by uzgodnić z bliskimi, jak pozostać w kontakcie.", "docs": ["pl-poradnik-bezpieczenstwa", "sgdsn-tous-responsables"]},
+      {"text": "Systemy ostrzegania są wyjaśnione tylko dla Niemiec, Austrii, Włoch, Francji i Polski.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "dpc-io-non-rischio", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]},
+      {"text": "Brak poradnika o czytaniu mapy i korzystaniu z kompasu.", "docs": []}
     ]
   }
 }

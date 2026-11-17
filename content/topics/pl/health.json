@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "health",
   "mode": "learn",
   "title": "Dbaj o zdrowie, gdy pomoc jest daleko",
@@ -116,10 +116,10 @@
   "related": ["hurt", "food", "water"],
   "gaps": {
     "missing": [
-      "Brak poradnika o opiece nad chorym w domu przez wiele dni lub tygodni.",
-      "Nic o chorobach przewlekłych bez dostępu do lekarza (cukrzyca, nadciśnienie, choroby serca), o ciąży i porodzie ani o zębach.",
-      "Brak poradnika o lekach: co brać na co, dawki ani jak długo leki zachowują ważność.",
-      "Telefony zaufania są podane tylko dla Niemiec, dla austriackiej Styrii i dla Polski."
+      {"text": "Brak poradnika o opiece nad chorym w domu przez wiele dni lub tygodni.", "docs": []},
+      {"text": "Nic o chorobach przewlekłych bez dostępu do lekarza (cukrzyca, nadciśnienie, choroby serca), o ciąży i porodzie ani o zębach.", "docs": []},
+      {"text": "Brak poradnika o lekach: co brać na co, dawki ani jak długo leki zachowują ważność.", "docs": []},
+      {"text": "Telefony zaufania są podane tylko dla Niemiec, dla austriackiej Styrii i dla Polski.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

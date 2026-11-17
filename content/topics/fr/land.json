@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "land",
   "mode": "learn",
   "title": "Trouver des terres sûres et des ressources naturelles",
@@ -14,9 +14,9 @@
   "related": ["disaster", "water"],
   "gaps": {
     "missing": [
-      "Aucune carte des risques (inondations, séismes, glissements de terrain), pour aucune région.",
-      "Rien sur la façon de trouver de l’eau dans la nature (sources, puits, pluie), ni sur les plantes sauvages et les champignons.",
-      "Rien sur la lecture d’une carte ou l’utilisation d’une boussole."
+      {"text": "Aucune carte des risques (inondations, séismes, glissements de terrain), pour aucune région.", "docs": []},
+      {"text": "Rien sur la façon de trouver de l’eau dans la nature (sources, puits, pluie), ni sur les plantes sauvages et les champignons.", "docs": []},
+      {"text": "Rien sur la lecture d’une carte ou l’utilisation d’une boussole.", "docs": []}
     ]
   }
 }

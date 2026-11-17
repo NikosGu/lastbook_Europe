@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "shelter",
   "mode": "now",
   "title": "Stare al caldo, al fresco e al riparo",
@@ -110,9 +110,9 @@
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {
     "missing": [
-      "Poco sulle ondate di calore in casa: la guida spagnola sui fenomeni meteorologici avversi dà consigli generali e le linee guida della FICR spiegano come rinfrescare una persona; nulla su come tenere fresche le stanze.",
-      "Nessuna guida per capire se si può restare in un edificio danneggiato da un terremoto, una tempesta o un incendio.",
-      "Poco sui rifugi pubblici (una sezione della guida del governo polacco) e nulla su come ripararsi all'aperto."
+      {"text": "Poco sulle ondate di calore in casa: la guida spagnola sui fenomeni meteorologici avversi dà consigli generali e le linee guida della FICR spiegano come rinfrescare una persona; nulla su come tenere fresche le stanze.", "docs": ["dgpce-guia-fenomenos-meteorologicos", "ifrc-first-aid-guidelines-2020"]},
+      {"text": "Nessuna guida per capire se si può restare in un edificio danneggiato da un terremoto, una tempesta o un incendio.", "docs": []},
+      {"text": "Poco sui rifugi pubblici (una sezione della guida del governo polacco) e nulla su come ripararsi all'aperto.", "docs": ["pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

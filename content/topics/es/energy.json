@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "energy",
   "mode": "learn",
   "title": "Producir y gestionar la electricidad",
@@ -14,9 +14,9 @@
   "related": ["power"],
   "gaps": {
     "missing": [
-      "Ninguna guía sobre baterías, baterías externas o estaciones de energía portátiles.",
-      "Ninguna guía sobre placas solares u otros sistemas de energía para casa.",
-      "Ningún manual de generadores: la guía «Apagón» solo tiene las advertencias que dan los folletos de protección civil."
+      {"text": "Ninguna guía sobre baterías, baterías externas o estaciones de energía portátiles.", "docs": []},
+      {"text": "Ninguna guía sobre placas solares u otros sistemas de energía para casa.", "docs": []},
+      {"text": "Ningún manual de generadores: la guía «Apagón» solo tiene las advertencias que dan los folletos de protección civil.", "docs": []}
     ]
   }
 }

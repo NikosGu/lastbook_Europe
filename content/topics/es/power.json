@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "power",
   "mode": "now",
   "title": "Se ha ido la luz",
@@ -118,12 +118,12 @@
   "related": ["food", "shelter", "comms", "water"],
   "gaps": {
     "missing": [
-      "Ningún manual de generadores ni de estaciones de energía portátiles: solo las advertencias de esta guía.",
-      "Nada para quienes viven en edificios altos, aparte de revisar el ascensor: la presión del agua, muchas escaleras, vecinos que no pueden bajar.",
-      "Ninguna guía sobre aparatos médicos que necesitan electricidad, como el oxígeno o los respiradores, aparte de pedir ayuda pronto."
+      {"text": "Ningún manual de generadores ni de estaciones de energía portátiles: solo las advertencias de esta guía.", "docs": []},
+      {"text": "Nada para quienes viven en edificios altos, aparte de revisar el ascensor: la presión del agua, muchas escaleras, vecinos que no pueden bajar.", "docs": []},
+      {"text": "Ninguna guía sobre aparatos médicos que necesitan electricidad, como el oxígeno o los respiradores, aparte de pedir ayuda pronto.", "docs": []}
     ],
     "disagree": [
-      "Para cuánto tiempo prepararse para un apagón: al menos de 10 a 14 días (la lista austriaca para apagones), de una a dos semanas (la guía de Estiria sobre apagones), 10 días (la guía alemana), una semana, más o menos (el folleto suizo); para cualquier crisis, 72 horas (la guía nacional francesa) o al menos 3 días (la guía del Gobierno polaco)."
+      {"text": "Para cuánto tiempo prepararse para un apagón: al menos de 10 a 14 días (la lista austriaca para apagones), de una a dos semanas (la guía de Estiria sobre apagones), 10 días (la guía alemana), una semana, más o menos (el folleto suizo); para cualquier crisis, 72 horas (la guía nacional francesa) o al menos 3 días (la guía del Gobierno polaco).", "docs": ["oezsv-blackout-checkliste", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

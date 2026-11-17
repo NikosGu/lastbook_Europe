@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "comms",
   "mode": "now",
   "title": "Ricevere le allerte, chiedere aiuto e restare in contatto",
@@ -86,10 +86,10 @@
   "related": ["power", "disaster"],
   "gaps": {
     "missing": [
-      "Nessuna guida alle radio per parlarsi a distanza, come i walkie-talkie PMR, le radio CB o quelle dei radioamatori; la guida del governo polacco le cita solo tra le cose da avere.",
-      "Un piano familiare per le crisi c'è solo nella guida del governo polacco; la guida nazionale francese dice di concordare con i familiari come restare in contatto.",
-      "I sistemi di allerta sono spiegati solo per Germania, Austria, Italia, Francia e Polonia.",
-      "Nessuna guida per leggere una carta o usare una bussola."
+      {"text": "Nessuna guida alle radio per parlarsi a distanza, come i walkie-talkie PMR, le radio CB o quelle dei radioamatori; la guida del governo polacco le cita solo tra le cose da avere.", "docs": ["pl-poradnik-bezpieczenstwa"]},
+      {"text": "Un piano familiare per le crisi c'è solo nella guida del governo polacco; la guida nazionale francese dice di concordare con i familiari come restare in contatto.", "docs": ["pl-poradnik-bezpieczenstwa", "sgdsn-tous-responsables"]},
+      {"text": "I sistemi di allerta sono spiegati solo per Germania, Austria, Italia, Francia e Polonia.", "docs": ["bbk-vorsorgen-fuer-krisen", "zsv-steiermark-notfallratgeber", "dpc-io-non-rischio", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]},
+      {"text": "Nessuna guida per leggere una carta o usare una bussola.", "docs": []}
     ]
   }
 }

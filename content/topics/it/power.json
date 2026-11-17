@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "power",
   "mode": "now",
   "title": "Manca la corrente",
@@ -118,12 +118,12 @@
   "related": ["food", "shelter", "comms", "water"],
   "gaps": {
     "missing": [
-      "Nessun manuale per generatori o power station portatili: solo le avvertenze di questa guida.",
-      "Nulla per chi vive in edifici alti, oltre a controllare l'ascensore: la pressione dell'acqua, le lunghe rampe di scale, i vicini che non riescono a scendere.",
-      "Nessuna guida agli apparecchi medici che funzionano a corrente, come quelli per l'ossigeno o i respiratori, oltre a chiedere aiuto per tempo."
+      {"text": "Nessun manuale per generatori o power station portatili: solo le avvertenze di questa guida.", "docs": []},
+      {"text": "Nulla per chi vive in edifici alti, oltre a controllare l'ascensore: la pressione dell'acqua, le lunghe rampe di scale, i vicini che non riescono a scendere.", "docs": []},
+      {"text": "Nessuna guida agli apparecchi medici che funzionano a corrente, come quelli per l'ossigeno o i respiratori, oltre a chiedere aiuto per tempo.", "docs": []}
     ],
     "disagree": [
-      "Per quanto tempo prepararsi a un blackout: almeno da 10 a 14 giorni (la lista di controllo austriaca per il blackout), da una a due settimane (la guida stiriana sul blackout), 10 giorni (la guida tedesca), circa una settimana (l'opuscolo svizzero); per qualsiasi crisi, 72 ore (la guida nazionale francese) o almeno 3 giorni (la guida del governo polacco)."
+      {"text": "Per quanto tempo prepararsi a un blackout: almeno da 10 a 14 giorni (la lista di controllo austriaca per il blackout), da una a due settimane (la guida stiriana sul blackout), 10 giorni (la guida tedesca), circa una settimana (l'opuscolo svizzero); per qualsiasi crisi, 72 ore (la guida nazionale francese) o almeno 3 giorni (la guida del governo polacco).", "docs": ["oezsv-blackout-checkliste", "zsv-steiermark-blackout", "bbk-vorsorgen-fuer-krisen", "bwl-kluger-rat-notvorrat", "sgdsn-tous-responsables", "pl-poradnik-bezpieczenstwa"]}
     ]
   }
 }

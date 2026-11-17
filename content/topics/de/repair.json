@@ -1,5 +1,5 @@
 {
-  "_review": "machine-assisted, needs native-speaker review",
+  "_review": "reviewed line by line on 17 Nov 2026; a native speaker's read is still advised for first-aid wording",
   "id": "repair",
   "mode": "learn",
   "title": "Reparieren und bauen",
@@ -14,8 +14,8 @@
   "related": ["power"],
   "gaps": {
     "missing": [
-      "Kein Ratgeber zu Handwerkzeugen, zum Schärfen oder zu einer Grundausstattung an Werkzeug.",
-      "Kein Ratgeber zu Reparaturen im Haus (Wasserhähne, Toiletten, Fenster, einfache Elektroarbeiten) oder zu Kleinmotoren."
+      {"text": "Kein Ratgeber zu Handwerkzeugen, zum Schärfen oder zu einer Grundausstattung an Werkzeug.", "docs": []},
+      {"text": "Kein Ratgeber zu Reparaturen im Haus (Wasserhähne, Toiletten, Fenster, einfache Elektroarbeiten) oder zu Kleinmotoren.", "docs": []}
     ]
   }
 }
