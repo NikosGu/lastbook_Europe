@@ -1,8 +1,8 @@
-# Every build of llama.cpp in this workspace leaves out its model downloader: the local AI runner must not be able to
-# reach the network (crates/llm/llama/no-download.cmake explains why and how). llama-cpp-sys-2 passes CMAKE_* variables
-# on to llama.cpp's CMake.
+# Every build of llama.cpp in this workspace goes through crates/llm/llama/lastbook.cmake: without its model downloader,
+# so the local AI runner cannot reach the network, and able to give a graphics processor copies of its weights.
+# llama-cpp-sys-2 passes CMAKE_* variables on to llama.cpp's CMake.
 [env]
-CMAKE_PROJECT_INCLUDE = { value = "crates/llm/llama/no-download.cmake", relative = true }
+CMAKE_PROJECT_INCLUDE = { value = "crates/llm/llama/lastbook.cmake", relative = true }
 # llama-cpp-sys-2 rebuilds llama.cpp when a GGML_* variable changes, not when the CMake file above does: change this
 # value whenever crates/llm/llama/ changes. (A build made before this line existed: cargo clean -p llama-cpp-sys-2.)
-GGML_LASTBOOK_BUILD = "no-download-1"
+GGML_LASTBOOK_BUILD = "2"

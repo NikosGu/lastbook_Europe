@@ -1,6 +1,6 @@
 // llama.cpp's common/download.cpp and common/hf-cache.cpp for Lastbook's local AI runner: the same functions, without the
 // network. The runner never fetches a model or anything else; these answer that nothing can be fetched and that there is
-// no download cache. Built in their place by no-download.cmake.
+// no download cache. Built in their place by lastbook.cmake.
 
 #include "download.h"
 #include "hf-cache.h"

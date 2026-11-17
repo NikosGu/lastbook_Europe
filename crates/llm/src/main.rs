@@ -418,13 +418,18 @@ fn main() {
     let from_disk = args.from_disk || file_bytes.saturating_add(DISK_RESERVE) > ram_total;
     let placement = if !from_disk {
         if args.cpu_only { "cpu" } else { "fit" }
-    } else if cfg!(target_os = "macos") || args.cpu_only {
-        // Metal maps the whole file for its share and must hold it all in memory while it computes: everything runs on the CPU.
+    } else if args.cpu_only || (cfg!(target_os = "macos") && std::env::var_os("LASTBOOK_FROM_DISK_GPU").is_none()) {
+        // everything on the CPU, the weights in the mapped file. On a Mac until the graphics processor's share below is
+        // measured there (LASTBOOK_FROM_DISK_GPU=1 tries it).
         mp = Box::pin(model_params(&inbox).with_use_extra_bufts(false).with_n_gpu_layers(0));
         mp = Box::pin(std::pin::Pin::into_inner(mp).with_devices(&[]).expect("no devices"));
         "disk_cpu"
     } else {
-        // A graphics card with its own memory gets a copy of the shared part; the experts stay in the mapped file.
+        // The graphics processor gets a copy of the shared part (attention, the shared expert, the output), in memory of
+        // its own; the experts stay in the mapped file, on the CPU. Copied, not mapped: llama.cpp as built here
+        // (crates/llm/llama/lastbook.cmake) does so when asked, where on a Mac Metal would otherwise be handed the mapped
+        // file from the first to the last of its tensors, nearly the whole file, experts and all.
+        std::env::set_var("LASTBOOK_COPY_GPU_WEIGHTS", "1");
         mp = Box::pin(model_params(&inbox).with_use_extra_bufts(false));
         mp.as_mut().add_cpu_buft_override(EXPERTS);
         "disk_experts"
