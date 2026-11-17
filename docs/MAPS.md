@@ -61,10 +61,13 @@ Muenchen, Łódź and Lodz; `map::text::fold` and `loose`, described in [ADDRESS
 
 - `places.sqlite`: `place(id, name, kind, detail, lat, lon, rank, source, country, key, area)` and
   `place_fts USING fts5(key, area, content='place', content_rowid='id', tokenize='unicode61 remove_diacritics 0')`.
-  `key` holds every name the place has (its name, and from the PBF its names in other languages, alternative, old,
-  official and short names); `area` the words that say where it is (its municipality or district, and its country in
-  its own languages and English). A postcode's names are the postcode as written and its key (`1012 AB`, `1012AB`).
-  `rank`: 1 a city or town, 2 a village, municipality or postcode, 3 a smaller place or a peak, 4 a named point.
+  `key` holds the place's names: its name, and from the PBF its names in its country's languages and the app's six
+  (Lussemburgo for an Italian, Luksemburg for a Pole), and its alternative, old, official and short names. Not every
+  language: Luxembourg's 150 names made its key so long that the search ranked villages lying in it above the capital.
+  `area` holds the words that say where it is (its municipality or district, and its country in its own languages and
+  English). A postcode's names are the postcode as written and its key (`1012 AB`, `1012AB`). Places mapped only as
+  areas (Malta's islands, some suburbs and localities) are there too, at their middle. `rank`: 1 a city or town, 2 a
+  village, suburb, island, municipality or postcode, 3 a smaller place or a peak, 4 a named point.
 - `water.sqlite`: `water_fts USING fts5(key)`, rowid the `resource` id, `key` the place key of its name.
 
 Older files without a `key` column are still searched, by every way a word may be written in them.
@@ -99,17 +102,26 @@ subcommand prints its options with `--help`. Everything kept lies inside the reg
 (`crates/engine/src/regions.rs`); the DEM tiles given must cover them (Liechtenstein's box reaches 46.90°N, so it
 needs N46 as well as N47).
 
-The detail is what the two extracts hold, and Geofabrik's country extracts stop at the border. A region's boxes reach
-into its neighbours, so that strip has only the base map and the elevation: Liechtenstein's map has no streets on the
-Swiss bank of the Rhine and a handful near Feldkirch, and its address index only the few Austrian addresses the extract
-has. Filling the strip needs the neighbours' extracts as well; `build-map` takes one of each for now.
+The detail is what the two extracts hold, and Geofabrik's extracts stop at the border. A region's boxes reach into its
+neighbours, so that strip has only the base map and the elevation: Liechtenstein's map has no streets on the Swiss bank
+of the Rhine and a handful near Feldkirch, and its address index only the few Austrian addresses the extract has.
+Bremen's one box holds the city, Bremerhaven 50 km down the Weser and the Lower Saxony land between them; the extract
+has the two cities, so only they have detail. Filling the strip needs the neighbours' extracts as well; `build-map`
+takes one of each for now.
 
 How each file is made (`crates/tools/src/map/`):
 
 - `detail.rs`: the original Lastbook's layers, classes and zooms from the GeoPackage; an area appears from the zoom
   where it spans about a sixteenth of a tile. `base.rs` adds the Natural Earth base with each feature's own `min_zoom`.
-- `places.rs`, `water.rs`, `buildings.rs`, `addresses.rs`, `terrain.rs`: the other files as described above. A
-  terrain pixel is the mean of DEM samples spread across it: one at zoom 12, 8 × 8 at zoom 9.
+- `coast.rs`: the coast from the PBF's `natural=coastline` ways, which have the land on their left. The page paints the
+  sea, then a coarse outline of the world's land (Natural Earth 1:110m, without Malta), then the tiles, where these
+  rings are drawn at every zoom: `island` in the land's colour, `ocean` in the sea's. A coast the extract cuts (up the
+  Weser to Bremerhaven and Bremen) is closed by a straight line between its cut ends, land or water by its side.
+- `places.rs`, `water.rs`, `buildings.rs`, `addresses.rs`, `terrain.rs`: the other files as described above. The PBF
+  is read once for all of them, so each takes only its own: buildings are `building` and `building:part` only (a
+  town's boundary kept for the place finder is no building). A terrain pixel is the mean of DEM samples spread across
+  it: one at zoom 12, 8 × 8 at zoom 9; a tile reaching past the DEM files given is left out (Malta's and Luxembourg's
+  edges at zoom 9 and 10).
 
 `pack-map` and `pack-addresses` make `Lastbook-Map-<REGION>.zip` (the map set at the top of the zip, deflated, the
 elevation tiles stored) and `Lastbook-Addresses-<REGION>.zip` (`derived/geo/addresses/<REGION>.sqlite` alone), check
@@ -117,22 +129,46 @@ each with setup's own `install::check_zip`, and print the entry for `maps` or `a
 `manifest-v1.json` ([SETUP-API.md](SETUP-API.md)), with the download address in the `maps/` or `addresses/` folder of
 `--base` (by default the placeholder host of `crates/engine/src/dist.rs`).
 
-Liechtenstein, built on 17 November 2026 from Geofabrik's extract of 16 November (about 3 seconds):
+The four test regions, built on 17 November 2026 from Geofabrik's extracts of 16 November, one after the other (the
+first builds of Malta, Luxembourg and Bremen peaked at 440 to 460 MB of memory):
 
-| | Size |
-|---|---|
-| Sources: GeoPackage zip, PBF, two DEM tiles, Natural Earth | 6.1 MB, 3.5 MB, 82 MB, 15 MB |
-| national.sqlite: 32,191 features (12,767 base, 19,424 detail), 441 help points | 8.1 MB |
-| terrain.sqlite: 86 tiles | 8.2 MB |
-| buildings.sqlite: 17,946 outlines, 1,026 with heights | 0.7 MB |
-| places.sqlite (341 places), water.sqlite (25 records) | 0.2 MB |
-| The map set installed, and `Lastbook-Map-LI.zip` | 17.1 MB, 12.1 MB |
-| The address index (12,499 addresses), and `Lastbook-Addresses-LI.zip` | 1.6 MB, 0.6 MB |
+| | Liechtenstein | Malta | Luxembourg | Bremen |
+|---|---|---|---|---|
+| Sources: GeoPackage zip, PBF | 6.1, 3.5 MB | 12.9, 9.0 MB | 88.3, 48.0 MB | 32.5, 21.3 MB |
+| DEM tiles (Natural Earth, 15 MB, for all) | N46, N47 E009: 82 MB | N35, N36 E014: 9 MB | N49, N50 E005, E006: 149 MB | N52, N53 E008, E009: 125 MB |
+| Build | 3 s | 3 s | 41 s | 10 s |
+| national.sqlite: features (detail), help points | 32,191 (19,424), 441: 8.1 MB | 67,464 (54,661), 2,432: 14.1 MB | 310,056 (297,289), 5,920: 73.0 MB | 109,083 (96,305), 3,471: 21.7 MB |
+| Coast: islands, seas (cut and closed) | none | 36, 0 (0) | none | 8, 3 (5) |
+| terrain.sqlite: tiles (left out at the edges) | 86 (0): 8.2 MB | 100 (19): 0.8 MB | 373 (15): 30.2 MB | 251 (5): 13.5 MB |
+| buildings.sqlite: outlines, with heights | 17,906, 1,023: 0.7 MB | 38,667, 19,377: 2.1 MB | 221,377, 9,525: 8.0 MB | 197,760, 62,274: 6.9 MB |
+| places.sqlite, water.sqlite | 341, 25: 0.2 MB | 2,784, 69: 0.6 MB | 9,044, 281: 1.8 MB | 2,521, 434: 0.7 MB |
+| The map set installed, `Lastbook-Map-<R>.zip` | 17.1, 12.1 MB | 17.5, 8.4 MB | 113.1, 66.3 MB | 42.8, 28.5 MB |
+| Address index: addresses (rows), installed, zip | 12,499: 1.7, 0.6 MB | 4,553 (6,529): 1.2, 0.3 MB | 167,509 (369,262): 58.9, 14.9 MB | 146,800: 31.6, 7.3 MB |
+
+What the regions showed, besides the addresses ([ADDRESSES.md](ADDRESSES.md), "What the first regions showed"):
+
+- Malta is islands the world outline does not have: without `coast.rs` the page drew them as sea with streets on it.
+  Its 36 coast rings close within the extract. Gozo and Comino are mapped only as areas, Għawdex and Kemmuna, and are
+  found by either name.
+- Bremen's exclave: the state's outline is two pieces, Bremen and Bremerhaven, each a city that is its own district
+  (level 6, with no level-8 municipality), which is then its town. The Weser is coast as far as Bremen in
+  OpenStreetMap; cut at the state's edges, it is closed across the river.
+- The PBF read once for every builder showed in Bremen: its city boundary, kept for the place finder, was drawn as one
+  34 km building over the city from zoom 15, until buildings took only buildings.
+
+Not covered yet, in the place finder of the engine (not the tools):
+
+- An exact match on a place's other name ranks below names that only start with the query: `Gozo` lists shops called
+  "Gozo …" before the island Għawdex.
+- `L-1648` lists, after the postcode, every lake with a word starting with `l` (the prefix read as a word when the
+  query is loosened).
 
 ## Checking a map change
 
 - `cargo test -p lastbook-tools`: each builder against small sources made in the test, and a whole region from them to
-  what setup installs and what the engine answers.
+  what setup installs and what the engine answers. With a region's zips unpacked into
+  `derived/app-check/<REGION>/LastbookData`, `real.rs` also asks it what people there type and checks the first answer
+  (31 queries for Malta, Luxembourg and Bremen).
 - A change people see is checked in the running app: `lastbook --data <a LastbookData with the map> --snapshot
   FILE.png --eval ...`, and the picture looked at.
 - Nothing a contributor adds may make the app open a connection. New data comes in through a build tool and ships as a

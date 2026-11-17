@@ -28,7 +28,10 @@ The first eight columns are the original Lastbook's American index, kept; four a
 | `country` | ISO 3166-1 alpha-2 code of the country the address is in | `LI`, `CH`, `AT` |
 | `postcode` | The full postcode as the source writes it, shown | `1012 AB`, `00-950`, `D02 X285`, `LV-1050` |
 | `numkey` | The house number's key: `number_key(num)` | `12`, `12a`, `12bis`, `846/1`, `14-16` |
-| `citykey` | The town's key: `text::name_key(city)` | `vaduz`, `praha 1`, `il belt valletta` |
+| `citykey` | The town's key: `text::name_key(city)`, and the keys of its other names a builder adds | `vaduz`, `praha 1`, `il belt valletta`, `il furjana il floriana` |
+
+The search reads `citykey` word by word (a typed town may start at any of its words), so a builder may add the keys of
+a town's other names after its own: Il-Furjana is then found as Floriana, Luxembourg as Luxemburg.
 
 An address with two numbers may be written once under each. Czech and Slovak buildings carry a conscription number
 and an orientation number (`846/1`); people use either, so a builder should write the row three times, with `num`
@@ -87,13 +90,43 @@ region"), from the `addr:*` tags of the region's OpenStreetMap PBF:
   address is left to its own country's index).
 - The town is `addr:city`, written as the region's own municipality or place of that name (`MAuren` is Mauren). A rare
   name the region does not know (`Balzers (FL)`, a street typed in the wrong field), used fewer than three times, gives
-  way to the municipality the address lies in, as does a missing one.
+  way to the municipality the address lies in, as does a missing one. The municipality is the level-8 area, or a
+  level-6 one with none inside it: Bremen and Bremerhaven are cities that are their own districts.
+- The postcode is written in its country's own form: `VLT1117` as `VLT 1117`, `ŻTN 3000` as `ZTN 3000` (Malta's
+  official codes have plain letters; OpenStreetMap sometimes has Maltese ones), `L-1648` as `1648` (shown `L-1648`). One
+  with no shape of the country's postcodes (`1210` in Malta) is left off the address, which stays.
 - One row per number: each of `12;14`; a Czech or Slovak `846/1` also as `846` and `1`.
-- After `FINISH`, a postcode–town pair given by fewer than three addresses, under 2% of the postcode's main town, is
-  taken out of `area` (a postcode typed for the wrong town would otherwise be offered as a town of it). The addresses
-  themselves stay.
+- A street named in more than one language is written once under each name, in the languages the region's addresses
+  are seen written in: a language counts when at least 2% of the streets with a name in it besides their `name` have
+  an address written with that name. Malta: English (501 of 5,055) and Maltese (33 of 248), so `74 Republic Street`
+  finds what is mapped as `74 Triq ir-Repubblika`. Luxembourg: French (278 of 373), Luxembourgish (1,006 of 3,069) and
+  German (32 of 553), so `rue de la Gare` finds what is mapped as `Garer Strooss`; its index holds 201,753 such rows
+  besides its 167,509 addresses, 59 MB instead of 24. Bremen: none. `meta.count` counts addresses, not these rows.
+- A town's other names, from the region's place nodes and areas (its country's languages and the app's six), join its
+  `citykey`: `2 Triq San Anton, Floriana` finds Il-Furjana. Not for a town with a name the search would read as a
+  street (`St Julian's`: the street "St" in a town "Julian's"): typed alone, that name must find the town in the place
+  finder, not streets of San Ġiljan; such a town keeps its own name.
+- After `FINISH`, a postcode–town pair given by five addresses or fewer, under 1% of the postcode's main town, is taken
+  out of `area` (a postcode typed for the wrong town, `27568` written with the state's name Bremen for Bremerhaven,
+  would otherwise be offered as a town of it). The addresses themselves stay.
 
 `meta.publisher` is `OpenStreetMap`, `meta.source` names the Geofabrik extract and its date.
+
+### What the first regions showed
+
+Each was asked what people there type (`crates/tools/src/map/real.rs` checks these on the built regions):
+
+| Region | Addresses | Found as people write them |
+|---|---|---|
+| Liechtenstein | 12,499 | `Städtle 11, Vaduz`, `9490`; `Städtle 12` is not mapped and is not guessed |
+| Malta | 4,553 (6,529 rows) | `74 Triq ir-Repubblika, Valletta`, `74 Republic Street, Valletta`, `115 Old Theatre Street, Valletta VLT 1426`; `VLT 1117`, `VLT1117`, `vlt 1117`, `ZTN 3000`; the towns by their Maltese or English names |
+| Luxembourg | 167,509 (369,262 rows) | `2, place Guillaume II, L-1648 Luxembourg`, `Place Guillaume II 2, Luxemburg`, `Reisduerferstrooss 27, Ermsdorf`, `45 John F. Kennedy Avenue`; `L-1648`, `1648`, `1648 Luxembourg` |
+| Bremen | 146,800 | `Am Markt 21, 28195 Bremen`, `Obernstrasse 1, Bremen`, `Buergermeister-Smidt-Str. 10, 27568 Bremerhaven`; `28195`, `27568` |
+
+Malta's towns are mapped in Maltese (`Il-Belt Valletta`, `Tas-Sliema`), so most English names already start one of
+their words (Valletta, Sliema, Mosta); the others (Floriana, Paola, Cospicua, Msida, Victoria) come from the places'
+`name:en`. Luxembourg's addresses carry no `L-` (the engine adds it when showing them), and the towns are their French
+names; `Luxemburg` and `Lëtzebuerg` after an address are also read as the country's name.
 
 ## The keys
 
