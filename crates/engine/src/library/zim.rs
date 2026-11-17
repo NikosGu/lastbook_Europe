@@ -425,7 +425,7 @@ impl Library {
         let path = dir.join(name);
         let real = path.canonicalize().ok()?;
         let real_name = real.file_name()?.to_string_lossy().into_owned();
-        let ok = real.parent() == Some(dir.as_path()) && real.is_file() && real_name.to_lowercase().ends_with(".zim") && !files::name_refused(&[real_name]) && files::segments_ok(&real.to_string_lossy());
+        let ok = real.parent() == Some(dir.as_path()) && real.is_file() && real_name.to_lowercase().ends_with(".zim") && files::segments_ok(&real_name) && !files::name_refused(&[real_name]); // the name, not the whole path: on Windows that is \\?\D:\...
         ok.then_some(real)
     }
 

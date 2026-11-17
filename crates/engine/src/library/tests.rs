@@ -65,6 +65,13 @@ pub struct Fixture {
     pub linked: bool,
 }
 
+/// A test's folder goes when the test is done. Windows cannot delete files still open (a connection this thread keeps),
+/// so connections are closed first and a folder that still cannot go is left for the next run to remove.
+pub fn cleanup(data: &Path) {
+    crate::db::close_all();
+    let _ = std::fs::remove_dir_all(data);
+}
+
 /// A fresh folder for one test run; ones left by runs more than an hour old go.
 pub fn temp(name: &str) -> PathBuf {
     let base = std::env::temp_dir();
@@ -270,7 +277,7 @@ fn library_info_and_pins() {
     std::fs::write(data.join("derived/geo/map.sqlite"), "x").unwrap();
     assert_eq!(p.library_info()["pins"], true);
     assert_eq!(p.library_info()["pack"], true);
-    std::fs::remove_dir_all(&data).unwrap();
+    cleanup(&data);
 }
 
 /// A library for search: records in several languages and kinds, a video with its transcript, and an index.
@@ -336,7 +343,7 @@ fn find_ranks_groups_and_prefers_the_language() {
     assert_eq!(l.find("zzzz", "all", "en")["results"], json!([]));
     assert_eq!(l.find("", "all", "en"), json!({"q": "", "results": [], "expanded": []}));
     assert_eq!(l.find("\"*(", "all", "en")["results"], json!([]), "what the index cannot take finds nothing");
-    std::fs::remove_dir_all(&data).unwrap();
+    cleanup(&data);
 }
 
 #[test]
@@ -366,7 +373,7 @@ fn keyword_search_for_the_assistant() {
     let r = body_json(&get(&l, "/api/retrieve?q=boil+water&k=3&kind=manual"));
     assert_eq!(r["results"].as_array().unwrap().len(), 3);
     assert_eq!(r["semantic"]["chunks"], 0);
-    std::fs::remove_dir_all(&data).unwrap();
+    cleanup(&data);
 }
 
 #[test]
@@ -396,7 +403,7 @@ fn shelves_collections_videos_and_transcripts() {
     assert_eq!(t["source"], "transcript");
     assert_eq!(t["cues"], json!([{"t": null, "text": "Bring the water to a boil."}, {"t": null, "text": "Let it cool."}]));
     assert_eq!(get(&l, "/api/transcript/nothing").status, 404);
-    std::fs::remove_dir_all(&data).unwrap();
+    cleanup(&data);
 }
 
 #[test]
@@ -451,5 +458,5 @@ fn the_catalog_is_read_again_when_it_changes() {
     assert!(l.catalog().get("a").is_none(), "a video turned down goes at once");
     std::fs::write(lib.join("catalog.json"), "[{\"id\": \"half").unwrap();
     assert!(l.catalog().get("b").is_some(), "half written: the copy already read stays");
-    std::fs::remove_dir_all(&data).unwrap();
+    cleanup(&data);
 }

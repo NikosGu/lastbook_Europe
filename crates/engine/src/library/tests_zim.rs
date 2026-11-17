@@ -207,7 +207,7 @@ fn the_reader_reads_each_kind_of_cluster() {
     assert_eq!(old.main_path().as_deref(), Some("A/Start"), "an older file names its namespace");
     assert!(old.entry_by_path("A/Water").is_some() && old.entry_by_path("Water").is_some() && old.entry_by_path("-/style.css").is_some());
     assert!(Zim::open(&data.join("library-data/collections/broken.zim")).is_err());
-    std::fs::remove_dir_all(&data).unwrap();
+    cleanup(&data);
 }
 
 #[test]
@@ -244,7 +244,7 @@ fn encyclopedia_pages_as_served() {
         assert!(!String::from_utf8_lossy(&r.body).contains(&*data.to_string_lossy()));
         assert!(!r.body.windows(CANARY.len()).any(|w| w == CANARY));
     }
-    std::fs::remove_dir_all(&data).unwrap();
+    cleanup(&data);
 }
 
 #[test]
@@ -267,7 +267,7 @@ fn encyclopedia_search_by_title() {
     let cat = l.catalog();
     assert!(topics::item_here(&json!({"zim": "zim/tiny_en_xz.zim/Rain_barrel"}), &l.zim_names(), &cat));
     assert_eq!(body_json(&zget(&l, "/api/library"))["zims"].as_array().unwrap().len(), 6);
-    std::fs::remove_dir_all(&data).unwrap();
+    cleanup(&data);
 }
 
 #[test]
@@ -281,5 +281,5 @@ fn search_fails_only_when_every_file_does() {
     let r = zget(&l, "/api/collection-search?q=water");
     assert_eq!(r.status, 500);
     assert_eq!(body_json(&r)["error"], "Encyclopedia search failed.");
-    std::fs::remove_dir_all(&data).unwrap();
+    cleanup(&data);
 }
