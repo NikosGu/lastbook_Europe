@@ -66,9 +66,14 @@ fn word_sets(words: &[String]) -> Vec<Vec<String>> {
     out
 }
 
+/// Has this table this column? (An older file may lack it.)
+fn has_column(c: &Connection, table: &str, column: &str) -> bool {
+    c.prepare(&format!("SELECT * FROM {table} LIMIT 0")).map(|st| st.column_names().any(|c| c == column)).unwrap_or(false)
+}
+
 /// Has this FTS table the `key` column of the European files? Older files are searched by their own words.
 fn has_key(c: &Connection, table: &str) -> bool {
-    c.prepare(&format!("SELECT * FROM {table} LIMIT 0")).map(|st| st.column_names().any(|c| c == "key")).unwrap_or(false)
+    has_column(c, table, "key")
 }
 
 /// The FTS5 query for a set of words: each a prefix, in the key's own form or, in an older file, any way it may be
@@ -111,6 +116,8 @@ impl Map {
         }
         let mut out = self.place_index(q, limit, near);
         let areas = self.areas(&parsed, limit, near);
+        // a postcode names no water: L-1648 is not the lakes whose names have a word starting with l
+        let water = if parsed.kind == Kind::Postcode { Vec::new() } else { self.water_places(q, 10, near) };
         if parsed.kind == Kind::Postcode {
             // a postcode from the addresses themselves comes first, in place of the gazetteer's own entry for it
             if !areas.is_empty() {
@@ -133,7 +140,6 @@ impl Map {
                 }
             }
         }
-        let water = self.water_places(q, 10, near);
         let n = water.len();
         if n > 0 {
             // a query that names water puts lakes and dams first; otherwise towns lead
@@ -157,18 +163,21 @@ impl Map {
         if words.is_empty() {
             return Vec::new();
         }
-        type Row = (String, String, String, f64, f64, i64, String);
+        type Row = (String, String, String, f64, f64, i64, String, String); // ..., its other names, one a line
         let mut rows: Vec<Row> = Vec::new();
         let mut full = false;
-        let Ok(mut st) = c.prepare("SELECT p.name,p.kind,p.detail,p.lat,p.lon,p.rank,p.source FROM place_fts f JOIN place p ON p.id=f.rowid \
-                                    WHERE place_fts MATCH ?1 ORDER BY p.rank, bm25(place_fts) LIMIT 200") else { return Vec::new() };
+        // the other names of a place (Gozo for Għawdex), where the file has them
+        let names = if has_column(&c, "place", "names") { "p.names" } else { "''" };
+        let Ok(mut st) = c.prepare(&format!("SELECT p.name,p.kind,p.detail,p.lat,p.lon,p.rank,p.source,{names} FROM place_fts f JOIN place p ON p.id=f.rowid \
+                                             WHERE place_fts MATCH ?1 ORDER BY p.rank, bm25(place_fts) LIMIT 200")) else { return Vec::new() };
         for ws in word_sets(&words) {
             if full && ws.len() < words.len() {
                 break; // every word matched somewhere: no need to loosen
             }
             if let Ok(found) = st.query_map([fts_query(&ws, keyed)], |r| {
                 Ok((r.get::<_, Option<String>>(0)?.unwrap_or_default(), r.get::<_, Option<String>>(1)?.unwrap_or_default(), r.get::<_, Option<String>>(2)?.unwrap_or_default(),
-                    r.get(3)?, r.get(4)?, r.get::<_, Option<i64>>(5)?.unwrap_or(9), r.get::<_, Option<String>>(6)?.unwrap_or_default()))
+                    r.get(3)?, r.get(4)?, r.get::<_, Option<i64>>(5)?.unwrap_or(9), r.get::<_, Option<String>>(6)?.unwrap_or_default(),
+                    r.get::<_, Option<String>>(7)?.unwrap_or_default()))
             }) {
                 rows.extend(found.flatten());
             }
@@ -177,7 +186,7 @@ impl Map {
             }
         }
         let mut seen_rows = HashSet::new();
-        rows.retain(|r| seen_rows.insert((r.0.clone(), r.1.clone(), r.2.clone(), r.3.to_bits(), r.4.to_bits(), r.5, r.6.clone())));
+        rows.retain(|r| seen_rows.insert((r.0.clone(), r.1.clone(), r.2.clone(), r.3.to_bits(), r.4.to_bits(), r.5, r.6.clone(), r.7.clone())));
         let ql = name_key(q);
         let national = self.db(NATIONAL);
         let mut size: HashMap<(i64, i64), i64> = HashMap::new();
@@ -201,21 +210,24 @@ impl Map {
             })
         };
         let home = near.or_else(|| self.home_area());
-        type Rank = (bool, bool, i64, i64, i64); // not the name, not its start, size, nearness, the gazetteer's rank
+        type Rank = (bool, bool, i64, i64, i64); // not a name of it, not a name's start, size, nearness, the gazetteer's rank
         let mut keyed_rows: Vec<(Rank, Row)> = rows
             .into_iter()
             .map(|r| {
                 let n = name_key(&r.0);
-                let exact = n == ql;
+                // any of its names counts as the place's own: Gozo is Għawdex as much as Għawdex is
+                let others: Vec<String> = r.7.lines().map(name_key).filter(|o| !o.is_empty()).collect();
+                let exact = n == ql || others.iter().any(|o| *o == ql);
+                let start = n.starts_with(&ql) || others.iter().any(|o| o.starts_with(&ql));
                 let imp = if r.5 > 2 && exact { importance(&r) } else { 0 };
-                ((!exact, !n.starts_with(&ql), imp, -(near_bonus(home, r.3, r.4).round_ties_even() as i64), r.5), r)
+                ((!exact, !start, imp, -(near_bonus(home, r.3, r.4).round_ties_even() as i64), r.5), r)
             })
             .collect();
         keyed_rows.sort_by_key(|r| r.0);
         let on_map = self.pack_info().is_some_and(|p| !p.is_null() && p != json!({}) && p != json!([]) && p != json!(""));
         let mut seen = HashSet::new();
         let mut out = Vec::new();
-        for (_, (name, kind, detail, lat, lon, _, source)) in keyed_rows {
+        for (_, (name, kind, detail, lat, lon, _, source, _)) in keyed_rows {
             if !seen.insert((name.to_lowercase(), super::pins::round_to(lat, 2).to_bits(), super::pins::round_to(lon, 2).to_bits())) {
                 continue;
             }
@@ -248,6 +260,9 @@ impl Map {
                 for ws in word_sets(&searched) {
                     if !rows.is_empty() && ws.len() < searched.len() && full {
                         break; // every word matched: no need to loosen
+                    }
+                    if ws.iter().all(|w| w.chars().count() < 2) {
+                        continue; // a lone letter names no lake: the l of L-1648 would be every Lac and Lavoir
                     }
                     if let Ok(found) = st.query_map([fts_query(&ws, keyed)], |r| Ok((r.get(0)?, r.get::<_, Option<String>>(1)?.unwrap_or_default(), r.get(2)?, r.get(3)?, r.get(4)?))) {
                         rows.extend(found.flatten());

@@ -630,14 +630,56 @@ type Place<'a> = (&'a str, &'a str, &'a str, f64, f64, i64, &'a [&'a str]); // n
 
 fn places_db(f: &Fx, rows: &[Place]) {
     let c = f.sqlite("derived/geo/places.sqlite", "CREATE TABLE place(id INTEGER PRIMARY KEY, name TEXT, kind TEXT, detail TEXT, lat REAL, lon REAL, rank INTEGER,
-            source TEXT, country TEXT, key TEXT, area TEXT);
+            source TEXT, country TEXT, key TEXT, area TEXT, names TEXT);
         CREATE VIRTUAL TABLE place_fts USING fts5(key, area, content='place', content_rowid='id', tokenize='unicode61 remove_diacritics 0');");
     for (name, kind, detail, lat, lon, rank, other) in rows {
         let names: Vec<&str> = std::iter::once(*name).chain(other.iter().copied()).collect();
-        c.execute("INSERT INTO place(name,kind,detail,lat,lon,rank,source,country,key,area) VALUES (?1,?2,?3,?4,?5,?6,'OpenStreetMap','',?7,?8)",
-                  params![name, kind, detail, lat, lon, rank, text::place_key(&names), text::place_key(&[detail])]).unwrap();
+        c.execute("INSERT INTO place(name,kind,detail,lat,lon,rank,source,country,key,area,names) VALUES (?1,?2,?3,?4,?5,?6,'OpenStreetMap','',?7,?8,?9)",
+                  params![name, kind, detail, lat, lon, rank, text::place_key(&names), text::place_key(&[detail]), other.join("\n")]).unwrap();
     }
     c.execute_batch("INSERT INTO place_fts(place_fts) VALUES ('rebuild')").unwrap();
+}
+
+/// A place found by another of its names ranks as by its own: Gozo is the island Għawdex before the shops whose names
+/// only start with Gozo.
+#[test]
+fn another_name_of_a_place_ranks_with_its_own() {
+    let f = fx("places-other");
+    places_db(&f, &[("Gozo Chemists Pharmacy", "pharmacy", "Ix-Xewkija, Malta", 36.030, 14.260, 4, &[]),
+                    ("Gozo Central Public Library", "library", "Ir-Rabat, Malta", 36.044, 14.239, 4, &[]),
+                    ("Għawdex", "island", "Ix-Xagħra, Malta", 36.045, 14.250, 2, &["Gozo"]),
+                    ("Comino Hotel", "hotel", "Għajnsielem, Malta", 36.010, 14.340, 4, &[]),
+                    ("Kemmuna", "island", "Għajnsielem, Malta", 36.012, 14.335, 2, &["Comino"])]);
+    for (q, want) in [("Gozo", "Għawdex"), ("Comino", "Kemmuna"), ("Ghawdex", "Għawdex"), ("Gozo Chemists", "Gozo Chemists Pharmacy")] {
+        assert_eq!(f.map.places(q, 20, None).first().and_then(|p| p["name"].as_str()), Some(want), "{q}");
+    }
+    assert_eq!(f.map.places("Gozo", 20, None).len(), 3, "the shops still follow");
+}
+
+/// A postcode names no water: L-1648 is Luxembourg's postcode, not every lake with a word starting with l.
+#[test]
+fn a_postcode_brings_no_lakes() {
+    let f = fx("postcode-lakes");
+    let c = f.sqlite("derived/geo/water.sqlite", &format!("{RESOURCE_TABLES} CREATE VIRTUAL TABLE water_fts USING fts5(key, tokenize='unicode61 remove_diacritics 0');"));
+    for (id, name) in [(1, "Lac Beriton"), (2, "Lavoir Kneipp"), (3, "Étang du Centre de l'Oseraie")] {
+        resource(&c, id, "lake", name, 49.6, 6.1, r#"{"country": "Luxembourg"}"#, "test");
+        c.execute("INSERT INTO water_fts(rowid, key) VALUES (?1, ?2)", params![id, text::place_key(&[name])]).unwrap();
+    }
+    drop(c);
+    // Luxembourg's address index, made as a builder makes it
+    let a = f.sqlite("derived/geo/addresses/LU.sqlite", address::SCHEMA);
+    address::Address { num: "2", street: "Place Guillaume II", city: "Luxembourg", state: "", postcode: "1648", country: "LU", lat: 49.6106, lon: 6.1303 }.insert(&a).unwrap();
+    a.execute_batch(address::FINISH).unwrap();
+    a.execute_batch("INSERT INTO meta VALUES ('schema', '2'), ('region', 'LU'), ('countries', 'LU'), ('publisher', 'OpenStreetMap')").unwrap();
+    drop(a);
+    for q in ["L-1648", "1648", "l 1648"] {
+        let r = f.map.places(q, 20, None);
+        assert_eq!(r.first().and_then(|p| p["name"].as_str()), Some("L-1648"), "{q}: {r:?}");
+        assert!(r.iter().all(|p| p["kind"] != "Lake"), "{q}: {r:?}");
+    }
+    assert!(f.map.water_places("L-1648", 10, None).is_empty(), "nor when the lakes are asked alone");
+    assert_eq!(f.map.places("Lac Beriton", 20, None)[0]["name"], "Lac Beriton", "a lake is still found by its name");
+    assert_eq!(f.map.water_places("l oseraie", 10, None)[0]["name"], "Étang du Centre de l'Oseraie", "a letter beside a word still helps");
 }
 
 #[test]

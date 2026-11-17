@@ -25,9 +25,9 @@ const QUERIES: &[(&str, &[(&str, &str, &str)])] = &[
         ("ZTN 3000", "ZTN 3000", ""),
         ("Valletta", "Valletta", "national capital"),
         ("St Julian's", "San Ġiljan", "town"),
-        ("Floriana", "~Il-Furjana", "town"),
+        ("Floriana", "Il-Furjana", "town"),
         ("Comino", "Kemmuna", "island"),
-        ("Gozo", "~Għawdex", "island"),
+        ("Gozo", "Għawdex", "island"),
     ]),
     ("LU", &[
         ("2, place Guillaume II, L-1648 Luxembourg", "2 Place Guillaume II", ""),
@@ -73,6 +73,15 @@ fn real_regions_answer_their_countries_forms() {
             };
             if !ok {
                 wrong.push(format!("{region} {q:?}: {want} {kind} wanted, got {names:?}"));
+            }
+        }
+        // a postcode names no water: no lake whose name has a word starting with the l of L-1648
+        if *region == "LU" {
+            for q in ["L-1648", "1648 Luxembourg"] {
+                let lakes: Vec<String> = map.places(q, 20, None).iter().filter(|v| v["kind"] == "Lake").map(|v| v["name"].to_string()).collect();
+                if !lakes.is_empty() {
+                    wrong.push(format!("LU {q:?} brings lakes: {lakes:?}"));
+                }
             }
         }
         // a postcode offers only its own town, not a stray one (Bremerhaven's 27568 written Bremen)

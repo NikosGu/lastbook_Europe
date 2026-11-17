@@ -2,7 +2,7 @@
 //! postcodes, mountain peaks and named help points of the region, each with the search keys the engine compares
 //! (`map::text::place_key`), so every spelling of a name meets.
 //!
-//!   place(id, name, kind, detail, lat, lon, rank, source, country, key, area)
+//!   place(id, name, kind, detail, lat, lon, rank, source, country, key, area, names)
 //!   place_fts USING fts5(key, area, content='place', content_rowid='id', tokenize='unicode61 remove_diacritics 0')
 //!
 //! rank: 1 a city or town, 2 a village, municipality or postcode, 3 a smaller place or a peak, 4 a named point.
@@ -179,7 +179,7 @@ pub fn write(path: &Path, places: &[Place], source: &str) -> rusqlite::Result<us
     let _ = std::fs::remove_file(path);
     let c = Connection::open(path)?;
     c.execute_batch("PRAGMA journal_mode=OFF; PRAGMA synchronous=OFF;
-        CREATE TABLE place(id INTEGER PRIMARY KEY, name TEXT, kind TEXT, detail TEXT, lat REAL, lon REAL, rank INTEGER, source TEXT, country TEXT, key TEXT, area TEXT);
+        CREATE TABLE place(id INTEGER PRIMARY KEY, name TEXT, kind TEXT, detail TEXT, lat REAL, lon REAL, rank INTEGER, source TEXT, country TEXT, key TEXT, area TEXT, names TEXT);
         CREATE VIRTUAL TABLE place_fts USING fts5(key, area, content='place', content_rowid='id', tokenize='unicode61 remove_diacritics 0');
         CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT);
         BEGIN;")?;
@@ -187,8 +187,8 @@ pub fn write(path: &Path, places: &[Place], source: &str) -> rusqlite::Result<us
         let names: Vec<&str> = std::iter::once(p.name.as_str()).chain(p.other.iter().map(String::as_str)).collect();
         let area: Vec<String> = area_words(&p.detail, &p.country);
         let area: Vec<&str> = area.iter().map(String::as_str).collect();
-        c.execute("INSERT INTO place(name,kind,detail,lat,lon,rank,source,country,key,area) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10)",
-                  params![p.name, p.kind, p.detail, p.lat, p.lon, p.rank, "OpenStreetMap", p.country, place_key(&names), place_key(&area)])?;
+        c.execute("INSERT INTO place(name,kind,detail,lat,lon,rank,source,country,key,area,names) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11)",
+                  params![p.name, p.kind, p.detail, p.lat, p.lon, p.rank, "OpenStreetMap", p.country, place_key(&names), place_key(&area), p.other.join("\n")])?;
     }
     c.execute("INSERT INTO meta VALUES ('source', ?1)", [source])?;
     c.execute_batch("INSERT INTO place_fts(place_fts) VALUES ('rebuild'); COMMIT; VACUUM;")?;
