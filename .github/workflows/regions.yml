@@ -42,7 +42,7 @@ jobs:
     timeout-minutes: 360
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 2   # two at a time: the download sites are shared by everyone
       matrix:
         region: ${{ fromJSON(needs.plan.outputs.regions) }}
     steps:

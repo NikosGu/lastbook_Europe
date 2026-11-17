@@ -30,7 +30,9 @@ fetch() {
     return 1
   fi
   mkdir -p "$(dirname "$file")"
-  if curl -fsSL --retry 3 --retry-delay 10 -o "$file.part" "$url"; then
+  # a refused or broken connection is tried again too, waiting longer each time (Geofabrik turns away bursts)
+  if curl -fsSL -A "lastbook-europe region builder" --retry 8 --retry-connrefused --retry-all-errors --retry-max-time 1500 \
+       -o "$file.part" "$url"; then
     mv "$file.part" "$file"
   else
     rm -f "$file.part"
