@@ -48,6 +48,29 @@ const SHORT = { hurt: 'app.guide.hurt', water: 'app.guide.water', power: 'app.gu
   disaster: 'app.guide.disaster', comms: 'app.guide.comms', grow: 'app.guide.grow', preserve: 'app.guide.preserve', health: 'app.guide.health', repair: 'app.guide.repair', energy: 'app.guide.energy', land: 'app.guide.land' };
 const shortOf = (id, fallback) => SHORT[id] ? t(SHORT[id]) : fallback;   // a guide's short name, else its own title
 const tcStyle = id => `style="--tc:${TC[id] || '#1a6b55'}"`;
+// Who a source is (crates/engine/src/library/catalog.rs TRUST), by its trust_code. Search's passages and the assistant's sources
+// carry only the English label (trust): it is read through TRUST_EN to the same keys. A label neither knows shows as it came.
+const TRUST = { humanitarian: 'app.trust.humanitarian', hesperian: 'app.trust.hesperian', government: 'app.trust.government', university: 'app.trust.university',
+  course: 'app.trust.course', encyclopedia: 'app.trust.encyclopedia', hobbyist: 'app.trust.hobbyist', manufacturer: 'app.trust.manufacturer', reference: 'app.trust.reference' };
+const TRUST_EN = { 'International health & humanitarian guidance': 'humanitarian', 'Hesperian community health guide': 'hesperian', 'Government guidance': 'government',
+  'University / extension service': 'university', 'Course or textbook': 'course', 'Community-written encyclopedia': 'encyclopedia', 'Hobbyist demonstration video': 'hobbyist',
+  'Manufacturer manual (model-specific)': 'manufacturer', 'Reference': 'reference' };
+const trustOf = s => !s ? '' : I18N.said(TRUST, { code: Object.hasOwn(TRUST, s.trust_code) ? s.trust_code : Object.hasOwn(TRUST_EN, s.trust) ? TRUST_EN[s.trust] : null }, s.trust);
+// What kind of item (catalog.rs KINDS), by its kind; a kind the table does not know, as the engine words it (kindLabel)
+const KIND_NAME = { pdf: 'app.kind.pdf', html: 'app.kind.html', video: 'app.kind.video', transcript: 'app.kind.transcript', pptx: 'app.kind.pptx', zim: 'app.kind.zim', metadata: 'app.kind.metadata' };
+const kindOf = d => I18N.said(KIND_NAME, { code: d.kind }, d.kindLabel || d.kind);
+// Shelves and video rows by their ids, a row's note by its note_code (crates/engine/src/library/browse.rs), else as the engine words
+// them. The channels' names stay names, in the table all the same, so a language could still change one.
+const SHELF = { health: 'app.shelf.name.health', water: 'app.shelf.name.water', food: 'app.shelf.name.food', safety: 'app.shelf.name.safety', power: 'app.shelf.name.power',
+  comms: 'app.shelf.name.comms', repair: 'app.shelf.name.repair', making: 'app.shelf.name.making', build: 'app.shelf.name.build', community: 'app.shelf.name.community',
+  science: 'app.shelf.name.science', creators: 'app.shelf.name.creators', other: 'app.shelf.name.other' };
+const VROW = { guides: 'app.vrow.name.guides', health: 'app.vrow.name.health', water: 'app.vrow.name.water', food: 'app.vrow.name.food', power: 'app.vrow.name.power',
+  outdoors: 'app.vrow.name.outdoors', repair: 'app.vrow.name.repair', making: 'app.vrow.name.making', coalcracker: 'app.vrow.name.coalcracker', corporals: 'app.vrow.name.corporals',
+  canterbury: 'app.vrow.name.canterbury', primitive: 'app.vrow.name.primitive', courses: 'app.vrow.name.courses', all: 'app.vrow.name.all' };
+const VNOTE = { guides: 'app.vrow.note.guides', hobbyist: 'app.vrow.note.hobbyist', primitive: 'app.vrow.note.primitive', courses: 'app.vrow.note.courses' };
+const shelfName = s => I18N.said(SHELF, { code: s.id }, s.title);
+const rowName = r => I18N.said(VROW, { code: r.id }, r.title);
+const rowNote = r => I18N.said(VNOTE, { code: r.note_code }, r.note);
 
 /* ------------------------------------------------------------ storage -- */
 const store = {
@@ -100,9 +123,44 @@ function setVprog(id, data) { const p = vprog(); p[id] = { ...(p[id] || {}), ...
 async function api(u, opts) {
   const r = await fetch(u, opts);
   let d; try { d = await r.json() } catch { throw new Error(t('app.err.unreadable')) }
+  if (away.said(r, d)) throw Object.assign(new Error(d.error || d.code), { away: true });   // the banner says it: no page shows this error
   if (!r.ok || (d && d.error && !Array.isArray(d))) throw new Error(d && d.error || t('app.err.server', { status: String(r.status) }));
   return d;
 }
+/* The library out of reach: its disk unplugged, or its network share gone. The engine then answers every library request with
+   503 {code: 'library_unreachable', folder} (crates/engine/src/router.rs), and /api/health with {library: false}. One banner at the
+   top of the window says so, whichever request heard it (fetch is watched for that answer), and /api/health is asked every 5 s
+   while it shows. Once the library answers again the banner goes and the page is drawn again. Meanwhile no page shows an error of
+   its own: api() throws an error marked away, which the error boxes leave out, and here() tells a page whose file failed to load. */
+const away = (() => {
+  const fetch0 = window.fetch.bind(window);
+  let folder = null, timer = 0, box = null;
+  const paint = () => {
+    if (folder === null) return;
+    if (!box) { box = document.createElement('div'); box.className = 'away'; box.setAttribute('role', 'alert'); $('header.top').after(box) }
+    box.innerHTML = `<div class="away-in">${ico('warn')}<span>${th('app.unreachable.text', { folder: I18N.raw(`<b>${esc(folder)}</b>`) })}</span></div>`;
+    box.hidden = false;
+  };
+  const show = f => { const was = folder !== null; folder = String(f ?? ''); paint(); if (!was) timer = setTimeout(check, 5000) };
+  async function check() {
+    let back = false;
+    try { back = (await (await fetch0('/api/health', { cache: 'no-store' })).json()).library === true } catch { }
+    if (!back) { timer = setTimeout(check, 5000); return }
+    folder = null; clearTimeout(timer); if (box) { box.hidden = true; box.replaceChildren() }
+    route();
+  }
+  // whether a response is the library out of reach (and then the banner shows); d: its JSON, when already read
+  const said = (r, d) => r.status === 503 && !!d && d.code === 'library_unreachable' && (show(d.folder), true);
+  window.fetch = async (...a) => {
+    const r = await fetch0(...a);
+    if (r.status === 503) r.clone().json().then(d => said(r, d)).catch(() => { });
+    return r;
+  };
+  // false when the library does not answer: a page's file that failed to load (a picture, a video) is then the banner's to tell
+  const here = async () => { try { const r = await fetch0('/api/library'); return !(r.status === 503 && said(r, await r.json())) } catch { return true } };
+  addEventListener('lastbook:lang', paint);
+  return { said, here, get on() { return folder !== null } };
+})();
 let LIB = null;
 const libInfo = () => LIB || (LIB = api('/api/library').catch(() => { LIB = null; return {} }));   // what this library holds; a failed ask is asked again. An older server leaves out zims, pins and sources: then everything stays offered.
 let TOPICS = null;
@@ -152,7 +210,7 @@ function rcard(item) {
   else if (s && s.kind === 'pdf') pv = `<span class="pv"><img loading="lazy" alt="" src="${pageImg(s.id, item.page, 360)}" onerror="this.remove()"><span class="pg">${item.page ? th('app.src.p', { page: item.page }) : 'PDF'}</span></span>`;
   else pv = `<span class="pv w">${ico('page')}</span>`;
   const label = item.label || item.title || (s && s.title);
-  const src = item.zim ? `<strong>${th('app.row.encyclopedia')}</strong> · ${esc(item.title || '')} · ${th('app.src.community')}` : `${s ? th('app.src.from', { title: s.title }) + ' · ' : ''}${srcText(s, item.page)}<br>${esc(s ? s.trust : '')}`;
+  const src = item.zim ? `<strong>${th('app.row.encyclopedia')}</strong> · ${esc(item.title || '')} · ${th('app.src.community')}` : `${s ? th('app.src.from', { title: s.title }) + ' · ' : ''}${srcText(s, item.page)}<br>${esc(trustOf(s))}`;
   return `<a class="rcard" href="${hrefFor(item)}">${pv}<span><b>${esc(label)}</b>${item.note ? `<p>${esc(item.note)}</p>` : ''}<span class="src">${src}</span></span></a>`;
 }
 function rowItem(item) {
@@ -215,6 +273,7 @@ document.addEventListener('click', e => {
   if (a && !location.hash.startsWith('#/wiki/') && navAt > 0 && navStack[navAt - 1] === a.getAttribute('href')) { e.preventDefault(); history.back() }
 });
 function errorBox(e, what) {
+  if (e && e.away) return '';   // the library out of reach: the banner says so (away)
   return `<div class="err" role="alert"><b>${esc(what || t('app.err.generic'))}</b><br>${esc(e.message || e)}
   <br><span class="small">${th('app.err.persist')}</span></div>`;
 }
@@ -295,7 +354,7 @@ async function route() {
     else if (v === 'collection') await collectionPage(q.get('name') || '', q.get('from'));
     else if (v === 'about') await about();
     else notFound();
-  } catch (e) { setTitle(''); document.body.className = 'v-error'; main.innerHTML = emptyState('warn', t('app.err.page'), e.message || e) }   // v-error: not a reading page, so a phone keeps its tab bar
+  } catch (e) { setTitle(''); document.body.className = 'v-error'; main.innerHTML = e && e.away ? '' : emptyState('warn', t('app.err.page'), e.message || e) }   // v-error: not a reading page, so a phone keeps its tab bar. The library out of reach: the banner says so (away)
   wireRails(); dock(); barState();
   $('#topQ').value = '';
   const big = $('main h1'); if (big) h1seen.observe(big);
@@ -537,7 +596,7 @@ async function videosHome() {
   const GCOL = { health: 'hurt', water: 'water', food: 'food', power: 'power', outdoors: 'shelter', repair: 'repair', making: 'land' };
   $('#vrows').innerHTML =
     (cont.length ? secHead(th('app.videos.continue')) + rail(cont.map(([id, v]) => vcard({ id, title: v.title, thumb: v.thumb, duration: v.d }, { sub: t('app.video.resume_at', { time: clock(v.t) }) })).join('')) : '') +
-    rows.map(r => secHead(esc(r.title), r.note ? esc(r.note) : '', `<a href="#/videos/${r.id}">${th('app.see_all', { count: r.count })}</a>`) +
+    rows.map(r => secHead(esc(rowName(r)), esc(rowNote(r)), `<a href="#/videos/${r.id}">${th('app.see_all', { count: r.count })}</a>`) +
       rail(r.items.map(v => vcard(v, { style: tcStyle(v.guide || GCOL[r.id]) })).join(''))).join('') +
     `<p class="small muted" style="margin-top:24px">${th('app.videos.note')}</p>`;
   wireRails();
@@ -548,8 +607,9 @@ async function videoRow(row, q) {
   const qs = o => { const p = new URLSearchParams({ q: qq, len, sort, ...o }); for (const [k, v] of [...p]) if (!v) p.delete(k); const s = p.toString(); return base + (s ? '?' + s : '') };
   let off = 0;
   const first = await api(`/api/videos/${row}?q=${encodeURIComponent(qq)}&len=${len}&sort=${sort}&offset=0`);
-  setTitle(first.title);
-  main.innerHTML = `<div>${backButton('#/videos', t('nav.videos'))}</div><h1 style="margin-top:12px">${esc(qq ? t('app.videos.query', { q: qq }) : first.title)}</h1>${first.note ? `<p class="lead">${esc(first.note)}</p>` : ''}
+  const title = rowName({ id: first.id ?? row, title: first.title }), note = rowNote(first);   // an older engine sends no id: the address names the row
+  setTitle(title);
+  main.innerHTML = `<div>${backButton('#/videos', t('nav.videos'))}</div><h1 style="margin-top:12px">${esc(qq ? t('app.videos.query', { q: qq }) : title)}</h1>${note ? `<p class="lead">${esc(note)}</p>` : ''}
     <div class="vtools">${searchBox('vq', qq, t('app.videos.search_these'), t('app.videos.go'))}
       <label class="sr" for="vsort">${th('app.videos.sort')}</label><select id="vsort">${[['', 'app.videos.sort_useful'], ['short', 'app.videos.sort_short'], ['new', 'app.videos.sort_new'], ['az', 'app.videos.sort_az']].map(([k, l]) => `<option value="${k}" ${k === sort ? 'selected' : ''}>${th(l)}</option>`).join('')}</select></div>
     <div class="chips" style="margin:8px 0 16px">${[['', 'app.videos.any'], ...LENGTHS].map(([k, l]) => `<a class="chip ${k === len ? 'on' : ''}" href="${qs({ len: k })}">${th(l)}</a>`).join('')}</div>
@@ -619,7 +679,7 @@ async function watch(id, at, from) {
       <div class="player"><video id="vid" controls preload="metadata" playsinline src="${fileUrl(d.path)}${at ? '#t=' + at : ''}"></video></div>
       ${d.remote ? `<p class="small muted" style="margin:6px 0 0">${th('app.video.remote', { name: d.remote })}</p>` : ''}
       <h1 class="vtitle">${esc(d.title)}</h1>
-      <div class="vmeta"><b>${esc(d.publisher || '')}</b><span>${esc(fmtDur(d.duration))}</span>${d.upload_date ? `<span>${esc(dayOf(d.upload_date))}</span>` : ''}<span>${esc(d.trust)}</span></div>
+      <div class="vmeta"><b>${esc(d.publisher || '')}</b><span>${esc(fmtDur(d.duration))}</span>${d.upload_date ? `<span>${esc(dayOf(d.upload_date))}</span>` : ''}<span>${esc(trustOf(d))}</span></div>
       ${resumeAt ? `<div class="resume" id="resume">${th('app.video.stopped_at', { time: clock(resumeAt) })} <button class="btn" id="resYes">${th('app.video.resume')}</button><button class="btn plain" id="resNo">${th('app.video.start_over')}</button></div>` : ''}
       <div class="vactions dock">${saveButton({ key: 'v:' + id, title: d.title, href: selfHref, sub: t('app.video.sub', { dur: fmtDur(d.duration) }) })}<a class="btn plain" title="${th('app.video.ask')}" href="#/ask?about=${encodeURIComponent('video:' + id)}&${fromQ()}" id="askv">${ico('ask')}<span>${th('app.video.ask')}</span></a></div>
       <div class="notice small">${th('app.video.notice')}</div>
@@ -628,12 +688,13 @@ async function watch(id, at, from) {
       <div class="cues" id="cues"><p class="muted" style="padding:12px 14px">${th('app.video.loading_tx')}</p></div><div class="txnote" id="txnote"></div></section>
   </div>
   <div id="morev"></div>
-  <details class="about-src"><summary>${th('app.video.about')}</summary><div class="in"><dl><dt>${th('app.video.channel')}</dt><dd>${esc(d.publisher || '—')}</dd><dt>${th('app.src.kind')}</dt><dd>${esc(d.trust)}</dd><dt>${th('app.video.length')}</dt><dd>${esc(fmtDur(d.duration)) || th('app.video.unknown')}</dd>${d.notes ? `<dt>${th('app.src.note')}</dt><dd>${esc(d.notes)}</dd>` : ''}${d.source_url ? `<dt>${th('app.src.original')}</dt><dd>${esc(hostOf(d.source_url))} <span class="muted">${th('app.video.online_note')}</span></dd>` : ''}</dl></div></details>`;
+  <details class="about-src"><summary>${th('app.video.about')}</summary><div class="in"><dl><dt>${th('app.video.channel')}</dt><dd>${esc(d.publisher || '—')}</dd><dt>${th('app.src.kind')}</dt><dd>${esc(trustOf(d))}</dd><dt>${th('app.video.length')}</dt><dd>${esc(fmtDur(d.duration)) || th('app.video.unknown')}</dd>${d.notes ? `<dt>${th('app.src.note')}</dt><dd>${esc(d.notes)}</dd>` : ''}${d.source_url ? `<dt>${th('app.src.original')}</dt><dd>${esc(hostOf(d.source_url))} <span class="muted">${th('app.video.online_note')}</span></dd>` : ''}</dl></div></details>`;
   const vid = $('#vid');
   if (d.thumb) vid.poster = fileUrl(d.thumb);
   vid.addEventListener('error', async () => {
     const say = why => vid.closest('.player')?.insertAdjacentHTML('afterend', `<div class="err">${why}</div>`);
     if (d.remote) return say(th('app.video.remote_down', { name: d.remote }));
+    if (!(await away.here())) return;   // the library is out of reach: the banner says so
     // Say why when the reason is the format: some library videos are AV1, which a computer without an AV1 decoder (a Mac before the M3) can't play.
     const f = (await videoFormats(fileUrl(d.path)).catch(() => [])).map(x => UNPLAYABLE[x]).find(x => x && !vid.canPlayType(x[1]));
     if (!vid.isConnected) return;   // the person has gone to another page
@@ -683,7 +744,7 @@ async function reader(id, page, from, view) {
   const d = await api('/api/doc/' + encodeURIComponent(id));
   if (d.kind === 'video') { swap('#/watch/' + encodeURIComponent(id) + (from ? '?from=' + encodeURIComponent(from) : '')); return }
   if (d.kind === 'transcript' && d.videoId) { swap('#/watch/' + encodeURIComponent(d.videoId) + (from ? '?from=' + encodeURIComponent(from) : '')); return }
-  setTitle(d.title, [d.publisher, d.year, d.trust].filter(Boolean).join(' · '));
+  setTitle(d.title, [d.publisher, d.year, trustOf(d)].filter(Boolean).join(' · '));
   const isPdf = d.kind === 'pdf', total = d.pages || 1;
   const isWeb = d.kind === 'html' && /\.x?html?$/i.test(d.path);   // a plain text file, such as a lecture transcript, reads as text in the page itself
   page = Math.min(Math.max(page || 1, 1), total);
@@ -696,15 +757,15 @@ async function reader(id, page, from, view) {
   main.innerHTML = `
     <div class="rtop">${backButton(from)}</div>
     <h1 class="rtitle">${esc(d.title)}</h1>
-    <div class="rsrc"><b>${esc(d.publisher || '')}</b>${d.year ? ' · ' + esc(d.year) : ''} · ${esc(d.trust)}</div>
-    <div class="rmodes">${views.length ? `<div class="seg dock" role="group" aria-label="${th('app.reader.views')}">${views.map(([v, l]) => `<button data-view="${v}" aria-pressed="${v === view}">${th(l)}</button>`).join('')}</div>` : ''}<span class="vactions dock">${askLink('doc:' + id + ':' + (isPdf ? page : 1), t('app.ask.short'))}${saveButton({ key, title: isPdf ? t('app.reader.title_page', { title: d.title, page }) : d.title, href: selfHref, sub: d.publisher || d.kindLabel })}<button class="tb-btn insp-btn" data-insp aria-label="${th('app.reader.details_toggle')}" title="${th('app.reader.details')}">${ico('insp')}</button></span></div>
+    <div class="rsrc"><b>${esc(d.publisher || '')}</b>${d.year ? ' · ' + esc(d.year) : ''} · ${esc(trustOf(d))}</div>
+    <div class="rmodes">${views.length ? `<div class="seg dock" role="group" aria-label="${th('app.reader.views')}">${views.map(([v, l]) => `<button data-view="${v}" aria-pressed="${v === view}">${th(l)}</button>`).join('')}</div>` : ''}<span class="vactions dock">${askLink('doc:' + id + ':' + (isPdf ? page : 1), t('app.ask.short'))}${saveButton({ key, title: isPdf ? t('app.reader.title_page', { title: d.title, page }) : d.title, href: selfHref, sub: d.publisher || kindOf(d) })}<button class="tb-btn insp-btn" data-insp aria-label="${th('app.reader.details_toggle')}" title="${th('app.reader.details')}">${ico('insp')}</button></span></div>
     <div id="docbody"></div>
     ${d.imageOnly ? `<div class="notice">${th('app.reader.scanned')}</div>` : ''}
     ${isPdf && view !== 'pdf' ? `<div class="rbar"><a class="btn plain nav" href="${go(page - 1)}" ${page <= 1 ? 'aria-disabled="true" style="opacity:.35;pointer-events:none"' : ''} aria-label="${th('app.reader.prev_page')}">${ico('back')}<span>${th('app.reader.prev')}</span></a>
       <span class="pnum"><label class="sr" for="pg">${th('app.reader.page_number')}</label>${th('app.reader.page_of', { input: I18N.raw(`<input id="pg" inputmode="numeric" value="${page}">`), total })}</span>
       <a class="btn nav" href="${go(page + 1)}" ${page >= total ? 'aria-disabled="true" style="opacity:.35;pointer-events:none"' : ''} aria-label="${th('app.reader.next_page')}"><span>${th('app.reader.next')}</span>${ico('right')}</a></div>` : ''}
     <details class="about-src"><summary>${th('app.src.about')}</summary><div class="in"><p class="insp-h">${esc(d.title)}</p>
-      <dl><dt>${th('app.src.publisher')}</dt><dd>${esc(d.publisher || '—')}</dd><dt>${th('app.src.kind')}</dt><dd>${esc(d.trust)} · ${esc(d.kindLabel)}</dd>
+      <dl><dt>${th('app.src.publisher')}</dt><dd>${esc(d.publisher || '—')}</dd><dt>${th('app.src.kind')}</dt><dd>${esc(trustOf(d))} · ${esc(kindOf(d))}</dd>
       ${d.edition ? `<dt>${th('app.src.edition')}</dt><dd>${esc(d.edition)}</dd>` : ''}${d.year ? `<dt>${th('app.src.year')}</dt><dd>${esc(d.year)}</dd>` : ''}
       <dt>${th('app.src.saved')}</dt><dd>${d.retrieved_at ? esc(dayOf(d.retrieved_at)) : th('app.src.unknown_date')} · ${esc(d.collection)}</dd>
       ${d.notes ? `<dt>${th('app.src.note')}</dt><dd>${esc(d.notes)}</dd>` : ''}
@@ -719,7 +780,7 @@ async function reader(id, page, from, view) {
     const w = Math.min(1600, Math.round(Math.min(innerWidth, 1000) * Math.min(2, devicePixelRatio || 1)));
     body.innerHTML = `<div class="pagewrap"><img class="pageimg" alt="${th('app.reader.page_alt', { page, title: d.title })}" src="${pageImg(id, page, w)}"></div>`;
     const img = $('img', body);
-    img.addEventListener('error', () => { body.innerHTML = `<div class="notice">${th('app.reader.no_image', { link: I18N.raw(`<a href="${go(page, 'text')}">${th('app.reader.show_text')}</a>`) })}</div>` });
+    img.addEventListener('error', async () => { if (await away.here()) body.innerHTML = `<div class="notice">${th('app.reader.no_image', { link: I18N.raw(`<a href="${go(page, 'text')}">${th('app.reader.show_text')}</a>`) })}</div>` });   // the library out of reach: the banner says so
     if (page < total) { const n = new Image(); n.src = pageImg(id, page + 1, w) }
     let sx = null, sy = 0;
     const wrap = $('.pagewrap', body);
@@ -780,6 +841,7 @@ async function wiki(path, from, y) {
   f.addEventListener('load', async () => {
     try {
       const fd = f.contentDocument;
+      if (fd.contentType === 'application/json' && !(await away.here())) { f.hidden = true; return }   // the engine's answer, not an article: the library is out of reach, which the banner says
       lookOf(fd);
       if (!fd.getElementById('lb-article') && !fd.getElementById('lb-host')) {   // an older server adds no look of its own: the window's colour shows through, as crates/engine/src/library/saved_pages.rs does it
         const st = fd.createElement('style'); st.id = 'lb-host';
@@ -926,7 +988,7 @@ async function zimResults(q, el, max = 8, heading = '') {
     hits.sort((a, b) => ord.findIndex(k => a.collection.startsWith(k)) - ord.findIndex(k => b.collection.startsWith(k)));
     el.innerHTML = `${heading ? `<h2>${heading}</h2>` : ''}<ul class="list">${hits.slice(0, max).map(h => `<li><a class="row" href="#/wiki/${esc(h.path.replace(/^zim\//, ''))}?${fromQ()}"><span class="k">${ico('wiki')}</span><span><b>${esc(h.title)}</b><small>${esc(zimLabel(h.collection))}</small></span></a></li>`).join('')}</ul>`;
     return true;
-  } catch (e) { el.innerHTML = heading ? '' : `<p class="muted">${th('app.zim.unavailable', { error: e.message })}</p>`; return false }
+  } catch (e) { el.innerHTML = heading || (e && e.away) ? '' : `<p class="muted">${th('app.zim.unavailable', { error: e.message })}</p>`; return false }   // the library out of reach: the banner says so
 }
 
 /* ------------------------------------------------------------- search -- */
@@ -994,7 +1056,7 @@ async function results(q, kind) {
         ${d.expanded.length ? `<p class="small muted">${th('app.search.also', { words: d.expanded.slice(0, 10).join(', ') })}${d.mode === 'some words' ? ' · ' + th('app.search.some_words') : ''}</p>` : ''}
         <div class="results">${d.results.map(resultCard).join('')}</div>` : '';
       return d.results.length + vids.length > 0;
-    } catch (e) { if (seq === searchSeq) $('#sres').innerHTML = errorBox(e, t('app.search.no_response')) + `<p class="small muted">${th('app.search.busy')}</p>`; return true }
+    } catch (e) { if (seq === searchSeq) $('#sres').innerHTML = e && e.away ? '' : errorBox(e, t('app.search.no_response')) + `<p class="small muted">${th('app.search.busy')}</p>`; return true }   // the library out of reach: the banner says so
   })();
   parts.push(found);
   if (kind === 'all') parts.push(found.then(() => seq === searchSeq && zimResults(q, $('#szim'), 6, th('app.search.in_zims'))));
@@ -1006,7 +1068,7 @@ async function passages(q, seq) {
   try {
     const d = await api('/api/retrieve?q=' + encodeURIComponent(q) + '&k=6&kind=manual&lang=' + I18N.lang);
     if (seq !== searchSeq || !d.results.length || !$('#spass')) return false;
-    $('#spass').innerHTML = secHead(th('app.search.relevant'), d.semantic && !d.semantic.chunks ? th('app.search.by_words') : th('app.search.by_meaning')) + `<div class="rcards">${d.results.map(r => rcard({ src: { id: r.doc_id, kind: r.kind, title: r.title, publisher: r.publisher, year: r.year, pages: r.pages, trust: r.trust }, page: r.page, label: r.title, note: (r.excerpt || '').slice(0, 220) + '…' })).join('')}</div>`;
+    $('#spass').innerHTML = secHead(th('app.search.relevant'), d.semantic && !d.semantic.chunks ? th('app.search.by_words') : th('app.search.by_meaning')) + `<div class="rcards">${d.results.map(r => rcard({ src: { id: r.doc_id, kind: r.kind, title: r.title, publisher: r.publisher, year: r.year, pages: r.pages, trust: r.trust, trust_code: r.trust_code }, page: r.page, label: r.title, note: (r.excerpt || '').slice(0, 220) + '…' })).join('')}</div>`;
     return true;
   } catch { return false }
 }
@@ -1014,7 +1076,7 @@ const emptySearch = q => `<div class="empty"><span class="e-ico">${ico('search')
 function resultCard(r) {
   const base = { src: r };
   return `<article class="result"><h3><a href="${hrefFor({ ...base, page: r.hits[0] && r.hits[0].page })}">${esc(r.title)}</a></h3>
-    <div class="rsrc">${srcText(r)} · ${esc(r.trust)}</div>
+    <div class="rsrc">${srcText(r)} · ${esc(trustOf(r))}</div>
     ${r.hits.slice(0, 2).map(h => `<a class="hit" href="${hrefFor({ ...base, page: h.page })}">${h.page ? `<b>${th('app.search.page', { page: h.page })}</b> ` : ''}${h.snippet}</a>`).join('')}</article>`;
 }
 
@@ -1036,7 +1098,7 @@ async function library() {
   <p style="margin-top:20px"><a href="#/about">${th('app.lib.about_link')}</a>${IN_WINDOW ? ` · <a href="/ui/setup.html#manage">${th('app.lib.setup_link')}</a>` : ''}</p>`;
   try {
     const sh = await api('/api/shelves');
-    $('#shelves').innerHTML = sh.filter(s => s.read + s.video).map(s => `<a class="shelfrow" href="#/shelf/${s.id}"><span><b>${esc(s.title)}</b><small>${s.read ? th('app.lib.to_read', { count: s.read }) : ''}${s.read && s.video ? ' · ' : ''}${s.video ? th('app.lib.videos_n', { n: s.video }) : ''}</small></span>${ico('right')}</a>`).join('');
+    $('#shelves').innerHTML = sh.filter(s => s.read + s.video).map(s => `<a class="shelfrow" href="#/shelf/${s.id}"><span><b>${esc(shelfName(s))}</b><small>${s.read ? th('app.lib.to_read', { count: s.read }) : ''}${s.read && s.video ? ' · ' : ''}${s.video ? th('app.lib.videos_n', { n: s.video }) : ''}</small></span>${ico('right')}</a>`).join('');
   } catch (e) { $('#shelves').innerHTML = errorBox(e) }
 }
 async function prepareHub() {
@@ -1050,15 +1112,16 @@ async function prepareHub() {
 async function shelfPage(id, kind, q) {
   const sh = (await api('/api/shelves')).find(s => s.id === id);
   if (!sh) return notFound();
-  setTitle(sh.title);
-  main.innerHTML = `${backButton('#/library', t('app.lib.title'))}${crumbs([[t('app.lib.title'), '#/library'], [sh.title]])}<h1>${esc(sh.title)}</h1>
+  const title = shelfName(sh);
+  setTitle(title);
+  main.innerHTML = `${backButton('#/library', t('app.lib.title'))}${crumbs([[t('app.lib.title'), '#/library'], [title]])}<h1>${esc(title)}</h1>
   <div style="margin:14px 0 10px">${searchBox('shq', q, t('app.shelf.ph'), t('app.shelf.filter'))}</div>
   <div class="chips">${[['all', 'app.search.kind_all'], ['read', 'app.shelf.read'], ['video', 'nav.videos']].map(([k, l]) => `<a class="chip ${k === kind ? 'on' : ''}" href="#/shelf/${id}?kind=${k}&q=${encodeURIComponent(q)}">${th(l)}</a>`).join('')}</div><div id="shres"><p class="loading">${th('app.loading')}</p></div>`;
   $('#shqF').addEventListener('submit', e => { e.preventDefault(); location.hash = `#/shelf/${id}?kind=${kind}&q=` + encodeURIComponent($('#shq').value.trim()) });
   let off = 0;
   const load = async () => {
     const d = await api(`/api/shelf/${id}?kind=${kind}&q=${encodeURIComponent(q)}&offset=${off}`);
-    const html = d.collections.map(c => `<section class="collection"><h3>${esc(c.collection)}</h3><div class="small muted">${esc(c.trust)} · ${th('app.shelf.items', { n: c.count })}</div><ul class="list">${c.items.map(r => rowItem({ src: r })).join('')}</ul>${c.count > c.items.length ? `<a class="btn ghost" href="#/collection?name=${encodeURIComponent(c.collection)}&${fromQ()}">${th('app.see_all', { count: c.count })}</a>` : ''}</section>`).join('');
+    const html = d.collections.map(c => `<section class="collection"><h3>${esc(c.collection)}</h3><div class="small muted">${esc(trustOf(c))} · ${th('app.shelf.items', { n: c.count })}</div><ul class="list">${c.items.map(r => rowItem({ src: r })).join('')}</ul>${c.count > c.items.length ? `<a class="btn ghost" href="#/collection?name=${encodeURIComponent(c.collection)}&${fromQ()}">${th('app.see_all', { count: c.count })}</a>` : ''}</section>`).join('');
     if (!off) $('#shres').innerHTML = d.collections.length ? '' : `<div class="empty">${th('app.shelf.none')}</div>`;
     $('#shres').insertAdjacentHTML('beforeend', html);
     $('#moreb')?.remove();

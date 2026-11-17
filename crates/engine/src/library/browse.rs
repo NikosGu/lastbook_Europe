@@ -1,6 +1,9 @@
 //! Browsing the whole collection: shelves in plain words, one collection's items, and the video rows. Ported from the
 //! original Lastbook's server.py (SHELVES, shelf_of, shelves, shelf, collection_items, VROWS, vrow_of, vcard, vsort,
 //! guide_videos, videos_home, videos_list, videos_related). Typed filters fold accents, as search does.
+//!
+//! The interface says a shelf's or a row's title by its id (web/locales: app.shelf.name.<id>, app.vrow.name.<id>) and a
+//! row's note by its `note_code` (app.vrow.note.<code>); the English title and note stay beside them.
 
 use super::catalog::Record;
 use super::topics::GuideOrder;
@@ -27,6 +30,8 @@ const SHELVES: [(&str, &str, &str); 12] = [
     ("science", "Science, maths & engineering courses", r"math|physic|chemistr|biolog|astronom|earth|ecolog|science|engineer|control|metrolog|quality|thermo|electromag|circuit|microelec|comput|digital|space|aviation|aircraft|laborator|measurement"),
     ("creators", "Bushcraft & primitive-skills videos", r"^creator-"),
 ];
+/// The shelf of everything no other shelf takes.
+const OTHER: (&str, &str) = ("other", "Other references");
 static SHELF_RX: LazyLock<Vec<Regex>> = LazyLock::new(|| SHELVES.iter().map(|s| Regex::new(s.2).unwrap()).collect());
 static LONG_WORD: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\p{L}{4,}").unwrap());
 
@@ -45,14 +50,28 @@ const VROWS: [(&str, &str, &str); 12] = [
     ("primitive", "Primitive Technology", "creator-primitive-technology"),
     ("courses", "Courses, lectures & more", ""),
 ];
+/// The rows that are not one kind of video: the guides' picks, and every video. (id, title)
+const GUIDES: (&str, &str) = ("guides", "Picked for the guides");
+const ALL: (&str, &str) = ("all", "All videos");
+/// The rows' notes: (code, English). A row's own note has the row's id as its code; the note the channels share, a code of
+/// its own.
+const NOTES: [(&str, &str); 4] = [
+    ("guides", "Chosen to go with the survival guides"),
+    ("hobbyist", "Hobbyist channel"),
+    ("primitive", "Hobbyist channel — no narration"),
+    ("courses", "University lectures (MIT and others)"),
+];
+/// The guides' row's note, which it has on the videos page only.
+const GUIDES_NOTE: (&str, &str) = NOTES[0];
 
-fn vrow_note(id: &str) -> Option<&'static str> {
-    match id {
-        "coalcracker" | "corporals" | "canterbury" => Some("Hobbyist channel"),
-        "primitive" => Some("Hobbyist channel — no narration"),
-        "courses" => Some("University lectures (MIT and others)"),
-        _ => None,
-    }
+/// A row's note, as (code, English).
+fn vrow_note(id: &str) -> Option<(&'static str, &'static str)> {
+    let code = match id {
+        "coalcracker" | "corporals" | "canterbury" => "hobbyist",
+        "primitive" | "courses" => id,
+        _ => return None,
+    };
+    NOTES.iter().copied().find(|n| n.0 == code)
 }
 
 /// The shelf a record is on, from its category.
@@ -114,7 +133,7 @@ impl Library {
             json!({"id": id, "title": title, "read": read, "video": video})
         };
         let mut out: Vec<Value> = SHELVES.iter().map(|(id, t, _)| row(id, t)).collect();
-        out.push(row("other", "Other references"));
+        out.push(row(OTHER.0, OTHER.1));
         Value::Array(out)
     }
 
@@ -151,7 +170,7 @@ impl Library {
         let lib = self.lib().unwrap_or_default();
         let items: Vec<Value> = groups
             .iter()
-            .map(|(c, v)| json!({"collection": c, "count": v.len(), "trust": v[0].trust.0, "items": v.iter().take(6).map(|x| cat.public(x, false, &lib)).collect::<Vec<_>>()}))
+            .map(|(c, v)| json!({"collection": c, "count": v.len(), "trust": v[0].trust.0, "trust_code": v[0].trust_code, "items": v.iter().take(6).map(|x| cat.public(x, false, &lib)).collect::<Vec<_>>()}))
             .collect();
         let (page, more) = offset_page(&items, offset, limit);
         json!({"total": rs.len(), "collections": page, "more": more})
@@ -171,7 +190,7 @@ impl Library {
     fn vcard(&self, r: &Record) -> Value {
         let p = self.public(r, false);
         let mut o = serde_json::Map::new();
-        for k in ["id", "title", "publisher", "duration", "thumb", "transcript", "trust", "year"] {
+        for k in ["id", "title", "publisher", "duration", "thumb", "transcript", "trust", "trust_code", "year"] {
             o.insert(k.into(), p.get(k).cloned().unwrap_or(Value::Null));
         }
         Value::Object(o)
@@ -212,16 +231,18 @@ impl Library {
             rows.entry(vrow_of(r)).or_default().push(r);
         }
         let guides = self.guide_videos();
-        let mut res = vec![json!({"id": "guides", "title": "Picked for the guides", "note": "Chosen to go with the survival guides", "count": guides.len(),
+        let mut res = vec![json!({"id": GUIDES.0, "title": GUIDES.1, "note": GUIDES_NOTE.1, "note_code": GUIDES_NOTE.0, "count": guides.len(),
                                   "items": guides.iter().take(16).cloned().collect::<Vec<_>>()})];
         for (vid, title, _) in VROWS {
             let mut rs = rows.remove(vid).unwrap_or_default();
             self.vsort(&mut rs);
-            if vrow_note(vid).is_some_and(|n| n.starts_with("Hobbyist")) {
+            let note = vrow_note(vid);
+            if matches!(note, Some(("hobbyist" | "primitive", _))) {
                 rs.sort_by(|a, b| b.str("upload_date").cmp(a.str("upload_date"))); // channels: newest first, not A–Z
             }
             if !rs.is_empty() {
-                res.push(json!({"id": vid, "title": title, "note": vrow_note(vid), "count": rs.len(), "items": rs.iter().take(16).map(|r| self.vcard(r)).collect::<Vec<_>>()}));
+                res.push(json!({"id": vid, "title": title, "note": note.map(|n| n.1), "note_code": note.map(|n| n.0), "count": rs.len(),
+                                "items": rs.iter().take(16).map(|r| self.vcard(r)).collect::<Vec<_>>()}));
             }
         }
         Value::Array(res)
@@ -257,9 +278,12 @@ impl Library {
             _ if row != "guides" => self.vsort(&mut rs),
             _ => {}
         }
-        let title = VROWS.iter().find(|v| v.0 == row).map(|v| v.1).unwrap_or(if row == "guides" { "Picked for the guides" } else { "All videos" });
+        // the row the title names: `id` is its code
+        let (id, title) = VROWS.iter().find(|v| v.0 == row).map(|v| (v.0, v.1)).unwrap_or(if row == GUIDES.0 { GUIDES } else { ALL });
+        let note = vrow_note(row);
         let (page, more) = offset_page(&rs, offset, 48);
-        json!({"title": title, "note": vrow_note(row), "total": rs.len(), "items": page.iter().map(|r| self.vcard(r)).collect::<Vec<_>>(), "more": more})
+        json!({"id": id, "title": title, "note": note.map(|n| n.1), "note_code": note.map(|n| n.0), "total": rs.len(),
+               "items": page.iter().map(|r| self.vcard(r)).collect::<Vec<_>>(), "more": more})
     }
 
     /// Videos like this one: from its row by other publishers, then by the same publisher, sharing title words first.
@@ -280,5 +304,28 @@ impl Library {
         same_pub.sort_by(|a, b| shared(b).cmp(&shared(a)).then(a.title.cmp(&b.title)));
         let out: Vec<Value> = same_row.iter().take(limit / 2).chain(same_pub.iter().take(limit)).take(limit).map(|r| self.vcard(r)).collect();
         Value::Array(out)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn every_code_has_words_in_the_interface() {
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web/locales/en.json");
+        let words: Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+        for id in SHELVES.iter().map(|s| s.0).chain([OTHER.0]) {
+            assert!(words[format!("app.shelf.name.{id}")].is_string(), "web/locales/en.json has no app.shelf.name.{id}");
+        }
+        for id in VROWS.iter().map(|v| v.0).chain([GUIDES.0, ALL.0]) {
+            assert!(words[format!("app.vrow.name.{id}")].is_string(), "web/locales/en.json has no app.vrow.name.{id}");
+        }
+        // every note is some row's, and every note has words
+        let given: HashSet<&str> = VROWS.iter().filter_map(|v| vrow_note(v.0)).map(|n| n.0).chain([GUIDES_NOTE.0]).collect();
+        assert_eq!(given, NOTES.iter().map(|n| n.0).collect());
+        for (code, _) in NOTES {
+            assert!(words[format!("app.vrow.note.{code}")].is_string(), "web/locales/en.json has no app.vrow.note.{code}");
+        }
     }
 }

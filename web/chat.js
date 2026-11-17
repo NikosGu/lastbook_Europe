@@ -278,7 +278,7 @@ const Chat = (() => {
       else pv = `<span class="pv w">${ico(s.kind === 'place' ? 'pin' : 'page')}</span>`;
       const where = s.kind === 'video' ? (s.t != null ? th('chat.src.at', { time: clock(s.t) }) : '') : s.page ? (s.pages ? th('chat.src.page_of', { page: String(s.page), pages: String(s.pages) }) : th('chat.src.page', { page: String(s.page) })) : '';
       return `<a class="srccard" href="${srcHref(s)}" id="src-${esc(s.key || '')}">${pv}<span class="sc-body">${s.key ? `<span class="sc-key">${esc(s.key.replace(/^S/, ''))}</span>` : ''}<b>${esc(s.title)}</b>
-        <small>${esc(s.publisher || '')}${s.year ? ' · ' + esc(s.year) : ''}${where ? ' · ' + where : ''}${s.trust ? ' · ' + esc(s.trust) : ''}</small>
+        <small>${esc(s.publisher || '')}${s.year ? ' · ' + esc(s.year) : ''}${where ? ' · ' + where : ''}${s.trust ? ' · ' + esc(trustOf(s)) : ''}</small>
         ${!compact && s.excerpt ? `<span class="sc-ex">${th('chat.src.excerpt', { text: s.excerpt.slice(0, 220) + (s.excerpt.length > 220 ? '…' : '') })}</span>` : ''}
         ${s.image ? `<span class="sc-tag">${th('chat.src.diagram')}</span>` : ''}</span></a>`;
     }).join('')}</div>`;

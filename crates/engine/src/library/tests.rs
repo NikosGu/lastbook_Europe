@@ -382,21 +382,41 @@ fn shelves_collections_videos_and_transcripts() {
     let sh = body_json(&get(&l, "/api/shelves"));
     let water = sh.as_array().unwrap().iter().find(|s| s["id"] == "water").unwrap();
     assert_eq!((water["read"].as_u64(), water["video"].as_u64()), (Some(4), Some(1)));
+    assert_eq!(water["title"], "Water & sanitation", "the id is the title's code, the English beside it");
     assert_eq!(sh.as_array().unwrap().last().unwrap()["id"], "other");
+    assert_eq!(sh.as_array().unwrap().last().unwrap()["title"], "Other references");
     let s = body_json(&get(&l, "/api/shelf/water?kind=read"));
     assert_eq!(s["total"], 4);
     assert_eq!(s["collections"][0]["collection"], "WHO", "most trusted collection first");
+    assert_eq!((&s["collections"][0]["trust_code"], &s["collections"][0]["trust"]), (&json!("humanitarian"), &json!("International health & humanitarian guidance")));
+    assert_eq!(s["collections"][0]["items"][0]["trust_code"], "humanitarian");
     assert_eq!(body_json(&get(&l, "/api/shelf/water?q=acqua"))["total"], 1);
     assert_eq!(body_json(&get(&l, "/api/shelf/water?q=ACQUÀ"))["total"], 1, "typed filters fold");
     let c = body_json(&get(&l, "/api/collection?name=Videos"));
     assert_eq!(c["total"], 2, "everything but the video details");
+    assert!(c["items"].as_array().unwrap().iter().all(|i| i["trust_code"] == "reference"));
+    let d = body_json(&get(&l, "/api/doc/who"));
+    assert_eq!((&d["trust_code"], &d["kind"], &d["kindLabel"]), (&json!("humanitarian"), &json!("pdf"), &json!("PDF")));
     let home = body_json(&get(&l, "/api/videos"));
     assert_eq!(home[0]["id"], "guides");
+    assert_eq!((&home[0]["title"], &home[0]["note_code"], &home[0]["note"]), (&json!("Picked for the guides"), &json!("guides"), &json!("Chosen to go with the survival guides")));
     let row = home.as_array().unwrap().iter().find(|r| r["id"] == "water").unwrap();
-    assert_eq!(row["items"][0], json!({"id": "vid", "title": "How to boil water", "publisher": "Someone", "duration": 300, "thumb": null, "transcript": true, "trust": "Reference", "year": null}));
+    assert_eq!((&row["title"], &row["note"], &row["note_code"]), (&json!("Water & sanitation"), &Value::Null, &Value::Null));
+    assert_eq!(row["items"][0], json!({"id": "vid", "title": "How to boil water", "publisher": "Someone", "duration": 300, "thumb": null, "transcript": true, "trust": "Reference", "trust_code": "reference", "year": null}));
     let list = body_json(&get(&l, "/api/videos/all?len=short&q=BOIL"));
     assert_eq!(list["total"], 1);
-    assert_eq!(list["title"], "All videos");
+    assert_eq!((&list["id"], &list["title"], &list["note_code"]), (&json!("all"), &json!("All videos"), &Value::Null));
+    // a row's list says which row its title is, and its note's code
+    let list = body_json(&get(&l, "/api/videos/courses"));
+    assert_eq!((&list["id"], &list["title"]), (&json!("courses"), &json!("Courses, lectures & more")));
+    assert_eq!((&list["note_code"], &list["note"]), (&json!("courses"), &json!("University lectures (MIT and others)")));
+    for (row, code, note) in [("coalcracker", "hobbyist", "Hobbyist channel"), ("primitive", "primitive", "Hobbyist channel — no narration")] {
+        let list = body_json(&get(&l, &format!("/api/videos/{row}")));
+        assert_eq!((&list["id"], &list["note_code"], &list["note"]), (&json!(row), &json!(code), &json!(note)));
+    }
+    let list = body_json(&get(&l, "/api/videos/guides"));
+    assert_eq!((&list["id"], &list["title"], &list["note"]), (&json!("guides"), &json!("Picked for the guides"), &Value::Null));
+    assert_eq!(body_json(&get(&l, "/api/videos/nothing"))["id"], "all", "a row it does not know: all videos, as titled");
     assert_eq!(body_json(&get(&l, "/api/videos/all?len=long"))["total"], 0);
     assert_eq!(body_json(&get(&l, "/api/videos/related/vid")), json!([]));
     let t = body_json(&get(&l, "/api/transcript/vid"));

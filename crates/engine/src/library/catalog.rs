@@ -11,18 +11,27 @@ use std::path::{Component, Path, PathBuf};
 use std::sync::{Arc, LazyLock};
 
 /// Who a source is, as people are shown it, and how far search trusts it: (pattern on publisher, collection and
-/// category; label; weight), the first that matches.
-const TRUST: [(&str, &str, f64); 7] = [
-    (r"World Health|WHO\b|ICRC|IFRC|Red Cross|Médecins|MSF|UNICEF|Sphere|St John Ambulance|CAWST", "International health & humanitarian guidance", 1.5),
-    (r"Hesperian|Where There Is No|Where Women|Book for Midwives|Community Guide to Environmental|Health Actions|Workers' Guide", "Hesperian community health guide", 1.45),
-    (r"FEMA|Ready\.gov|CDC|Centers for Disease|EPA|Environmental Protection|NOAA|National Weather|USDA|Food Safety|National Park|USGS|Department|Agency|U\.S\.|US Army|Army|Navy|Census|NIOSH|OSHA|NASA|FAA|Cal OES|California|County of|City of", "Government guidance", 1.4),
-    (r"National Center for Home Food Preservation|Extension|University|UC |College|Agricultural|Food Hero|UWyo", "University / extension service", 1.35),
-    (r"MIT|OpenStax|OpenCourseWare|NIST", "Course or textbook", 1.1),
-    (r"Kiwix|Wikipedia|Wikibooks|Appropedia|MDWiki", "Community-written encyclopedia", 1.0),
-    (r"Coalcracker|Corporals Corner|Canterbury|Primitive Technology|creator-", "Hobbyist demonstration video", 0.8),
+/// category; code; label; weight), the first that matches. The interface says the label by its code (web/locales:
+/// app.trust.<code>); the English label stays beside it.
+const TRUST: [(&str, &str, &str, f64); 7] = [
+    (r"World Health|WHO\b|ICRC|IFRC|Red Cross|Médecins|MSF|UNICEF|Sphere|St John Ambulance|CAWST", "humanitarian", "International health & humanitarian guidance", 1.5),
+    (r"Hesperian|Where There Is No|Where Women|Book for Midwives|Community Guide to Environmental|Health Actions|Workers' Guide", "hesperian", "Hesperian community health guide", 1.45),
+    (r"FEMA|Ready\.gov|CDC|Centers for Disease|EPA|Environmental Protection|NOAA|National Weather|USDA|Food Safety|National Park|USGS|Department|Agency|U\.S\.|US Army|Army|Navy|Census|NIOSH|OSHA|NASA|FAA|Cal OES|California|County of|City of", "government", "Government guidance", 1.4),
+    (r"National Center for Home Food Preservation|Extension|University|UC |College|Agricultural|Food Hero|UWyo", "university", "University / extension service", 1.35),
+    (r"MIT|OpenStax|OpenCourseWare|NIST", "course", "Course or textbook", 1.1),
+    (r"Kiwix|Wikipedia|Wikibooks|Appropedia|MDWiki", "encyclopedia", "Community-written encyclopedia", 1.0),
+    (r"Coalcracker|Corporals Corner|Canterbury|Primitive Technology|creator-", "hobbyist", "Hobbyist demonstration video", 0.8),
 ];
+/// A manual for one model (`equipment_class` or `model`), when no pattern matched; and everything else.
+const MANUFACTURER: (&str, &str, f64) = ("manufacturer", "Manufacturer manual (model-specific)", 1.05);
+const REFERENCE: (&str, &str, f64) = ("reference", "Reference", 1.0);
+/// Every trust code a record can have.
+pub const TRUST_CODES: [&str; 9] = ["humanitarian", "hesperian", "government", "university", "course", "encyclopedia", "hobbyist", "manufacturer", "reference"];
 
-static TRUST_RX: LazyLock<Vec<Regex>> = LazyLock::new(|| TRUST.iter().map(|(rx, _, _)| Regex::new(rx).unwrap()).collect());
+/// What kind of item, in words: (kind, label). The interface says them by the kind itself (web/locales: app.kind.<kind>).
+pub const KINDS: [(&str, &str); 7] = [("pdf", "PDF"), ("html", "Saved web page"), ("video", "Video"), ("transcript", "Transcript"), ("pptx", "Slides"), ("zim", "Encyclopedia"), ("metadata", "Video details")];
+
+static TRUST_RX: LazyLock<Vec<Regex>> = LazyLock::new(|| TRUST.iter().map(|(rx, _, _, _)| Regex::new(rx).unwrap()).collect());
 static YEAR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(19|20)\d\d").unwrap());
 static TITLE_YEAR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\b(19[5-9]\d|20[0-2]\d)\b").unwrap());
 static CHAPTER_NUMBER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(\d{3}(\s\d+)?)\s+").unwrap());
@@ -40,6 +49,8 @@ pub struct Record {
     pub path: String,
     /// The label people are shown for the source, and its ranking weight.
     pub trust: (&'static str, f64),
+    /// The label's code (one of [`TRUST_CODES`]).
+    pub trust_code: &'static str,
     /// The languages the record is in (`lang`, a code or a list of codes; English when missing).
     pub langs: Vec<String>,
 }
@@ -53,8 +64,9 @@ impl Record {
             _ => Vec::new(),
         };
         let langs = if langs.is_empty() { vec!["en".to_string()] } else { langs };
-        let mut r = Record { id: s("id"), kind: s("kind"), title: s("title"), path: s("path"), trust: ("Reference", 1.0), langs, raw };
-        r.trust = trust_of(&r);
+        let mut r = Record { id: s("id"), kind: s("kind"), title: s("title"), path: s("path"), trust: (REFERENCE.1, REFERENCE.2), trust_code: REFERENCE.0, langs, raw };
+        let (code, label, weight) = trust_of(&r);
+        (r.trust, r.trust_code) = ((label, weight), code);
         r
     }
 
@@ -85,19 +97,9 @@ impl Record {
         self.langs.iter().any(|l| l == lang)
     }
 
-    /// What kind of item, in words.
+    /// What kind of item, in words ([`KINDS`]); a kind it does not know, as it is.
     pub fn kind_label(&self) -> String {
-        match self.kind.as_str() {
-            "pdf" => "PDF",
-            "html" => "Saved web page",
-            "video" => "Video",
-            "transcript" => "Transcript",
-            "pptx" => "Slides",
-            "zim" => "Encyclopedia",
-            "metadata" => "Video details",
-            k => k,
-        }
-        .to_string()
+        KINDS.iter().find(|(k, _)| *k == self.kind).map_or(self.kind.as_str(), |(_, label)| label).to_string()
     }
 
     /// The year it is from: its edition or dates, else a year in its title.
@@ -144,17 +146,18 @@ pub fn py_str(v: &Value) -> String {
     }
 }
 
-fn trust_of(r: &Record) -> (&'static str, f64) {
+/// (code, label, weight) of the source.
+fn trust_of(r: &Record) -> (&'static str, &'static str, f64) {
     let s = format!("{} {} {}", r.py_str("publisher"), r.py_str("collection"), r.py_str("category"));
-    for (rx, (_, label, w)) in TRUST_RX.iter().zip(TRUST.iter()) {
+    for (rx, (_, code, label, w)) in TRUST_RX.iter().zip(TRUST.iter()) {
         if rx.is_match(&s) {
-            return (label, *w);
+            return (code, label, *w);
         }
     }
     if r.truthy("equipment_class") || r.truthy("model") {
-        return ("Manufacturer manual (model-specific)", 1.05);
+        return MANUFACTURER;
     }
-    ("Reference", 1.0)
+    REFERENCE
 }
 
 /// A path from the catalog, inside the library folder, or None if it would lead out of it.
@@ -228,13 +231,14 @@ impl Catalog {
         self.thumbs.get(video_path).map(String::as_str)
     }
 
-    /// The fields the interface needs, with friendly labels (server.py public). Never local sign-in or worker state.
+    /// The fields the interface needs, with friendly labels (server.py public): `trust` with its code beside it, `trust_code`,
+    /// and `kindLabel` beside `kind`, which the interface says them by. Never local sign-in or worker state.
     pub fn public(&self, r: &Record, full: bool, lib: &Path) -> Value {
         let pages = if r.truthy("pages") { r.get("pages").clone() } else { r.get("slides").clone() };
         let mut out = json!({
             "id": r.id, "title": r.clean_title(), "kind": r.kind, "kindLabel": r.kind_label(), "publisher": r.get("publisher"),
             "collection": r.get("collection"), "path": r.path, "pages": pages, "duration": r.get("duration"), "year": r.year(),
-            "trust": r.trust.0, "bytes": r.get("bytes"),
+            "trust": r.trust.0, "trust_code": r.trust_code, "bytes": r.get("bytes"),
         });
         let o = out.as_object_mut().unwrap();
         if r.kind == "video" {
@@ -283,13 +287,29 @@ mod tests {
 
     #[test]
     fn trust_labels_and_weights() {
-        assert_eq!(rec(json!({"publisher": "World Health Organization"})).trust, ("International health & humanitarian guidance", 1.5));
+        let who = rec(json!({"publisher": "World Health Organization"}));
+        assert_eq!((who.trust, who.trust_code), (("International health & humanitarian guidance", 1.5), "humanitarian"));
         assert_eq!(rec(json!({"publisher": "Hesperian Health Guides"})).trust.1, 1.45);
         assert_eq!(rec(json!({"collection": "FEMA library"})).trust.0, "Government guidance");
         assert_eq!(rec(json!({"category": "creator-coalcracker-bushcraft"})).trust.1, 0.8);
         assert_eq!(rec(json!({"model": "X100"})).trust.0, "Manufacturer manual (model-specific)");
         assert_eq!(rec(json!({"publisher": null, "collection": "Odds"})).trust, ("Reference", 1.0));
         assert_eq!(rec(json!({"publisher": "WHOLESALE"})).trust.0, "Reference"); // WHO\b
+        // each label has its code, the English beside it
+        for (fields, code, label) in [
+            (json!({"publisher": "Hesperian Health Guides"}), "hesperian", "Hesperian community health guide"),
+            (json!({"collection": "FEMA library"}), "government", "Government guidance"),
+            (json!({"publisher": "Oregon State University Extension"}), "university", "University / extension service"),
+            (json!({"publisher": "OpenStax"}), "course", "Course or textbook"),
+            (json!({"collection": "Wikibooks"}), "encyclopedia", "Community-written encyclopedia"),
+            (json!({"category": "creator-coalcracker-bushcraft"}), "hobbyist", "Hobbyist demonstration video"),
+            (json!({"model": "X100"}), "manufacturer", "Manufacturer manual (model-specific)"),
+            (json!({"publisher": "WHOLESALE"}), "reference", "Reference"),
+        ] {
+            let r = rec(fields);
+            assert_eq!((r.trust_code, r.trust.0), (code, label));
+            assert!(TRUST_CODES.contains(&r.trust_code));
+        }
     }
 
     #[test]
@@ -330,6 +350,8 @@ mod tests {
         assert_eq!(p["thumb"], Value::Null); // no such file
         assert_eq!(p["transcriptId"], "t1");
         assert_eq!(p["caption_type"], "auto");
+        // the interface says the trust by its code and the kind by the kind itself; the English stays beside them
+        assert_eq!((&p["trust_code"], &p["trust"], &p["kind"], &p["kindLabel"]), (&json!("reference"), &json!("Reference"), &json!("video"), &json!("Video")));
         assert_eq!(c.public(c.get("t2").unwrap(), true, &lib)["videoId"], "v2");
         // a video turned down goes, with its details and its transcript
         let ex = exclusions(&json!({"videos": {"v2": {"why": "x"}}}));
@@ -345,6 +367,21 @@ mod tests {
         assert_eq!(inside(lib, "text/a.txt"), Some(PathBuf::from("/lib/text/a.txt")));
         for bad in ["", "/etc/passwd", "../x", "text/../../x", "a\\b", "a\0"] {
             assert_eq!(inside(lib, bad), None, "{bad:?}");
+        }
+    }
+
+    #[test]
+    fn every_code_has_words_in_the_interface() {
+        let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web/locales/en.json");
+        let words: Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+        // the codes listed are the codes a record can get
+        let given: Vec<&str> = TRUST.iter().map(|t| t.1).chain([MANUFACTURER.0, REFERENCE.0]).collect();
+        assert_eq!(given, TRUST_CODES);
+        for code in TRUST_CODES {
+            assert!(words[format!("app.trust.{code}")].is_string(), "web/locales/en.json has no app.trust.{code}");
+        }
+        for (kind, _) in KINDS {
+            assert!(words[format!("app.kind.{kind}")].is_string(), "web/locales/en.json has no app.kind.{kind}");
         }
     }
 }
