@@ -1,7 +1,7 @@
 //! What the map holds and says about itself (`/api/map/info`), the data version tiles are cached under, the open pack's
 //! description, a household's home area, and what the assistant can and cannot read (`coverage`).
 
-use super::{Map, ATLAS, BUILDINGS, CROPS, MAPDB, NATIONAL, PLACES, STATUS, TERRAIN, WATER};
+use super::{Map, AERIAL, AERIAL_COAST, AERIAL_DETAIL, ATLAS, BUILDINGS, CROPS, MAPDB, NATIONAL, PLACES, STATUS, TERRAIN, TERRAIN_DETAIL, WATER};
 use crate::regions;
 use serde_json::{json, Value};
 use std::collections::{BTreeSet, HashMap, HashSet};
@@ -19,6 +19,30 @@ pub const CODES: [&str; 12] = ["base", "streets_detail", "streets_whole", "no_de
 fn row(code: &str, params: Value, label: impl Into<String>, status: impl Into<String>) -> Value {
     debug_assert!(CODES.contains(&code), "{code} is not in CODES");
     json!({"code": code, "params": params, "label": label.into(), "status": status.into()})
+}
+
+/// The credits under the map (`credits`): who made what this map shows, from the sources its own files name (`source` and
+/// `base_source` in their meta tables, an address index's `publisher`), each once, in the order the files come.
+/// OpenStreetMap is a code the interface words in the person's language (web/locales: map.credit.<code>, "©
+/// OpenStreetMap contributors"); any other source is its name as its file gives it (a licence in brackets after it left
+/// out), with the licence a file names (`licence`, the elevation's) beside it. The English stays beside each as `text`.
+pub const CREDIT_CODES: [&str; 1] = ["osm"];
+
+/// A source as the credits name it: (code, name), the code '' for a source credited by its own name.
+fn credit_of(source: &str) -> Option<(&'static str, String)> {
+    let s = source.trim();
+    if s.is_empty() {
+        return None;
+    }
+    if s.to_lowercase().contains("openstreetmap") {
+        return Some(("osm", "© OpenStreetMap contributors".into()));
+    }
+    // "Natural Earth (public domain)": the name without its licence
+    let name = match s.rsplit_once(" (") {
+        Some((name, rest)) if rest.ends_with(')') && ["public domain", "odbl", "cc by", "cc-by", "cc0", "licence", "license"].iter().any(|l| rest.to_lowercase().contains(l)) => name.trim(),
+        _ => s,
+    };
+    Some(("", name.to_string()))
 }
 
 fn secs(t: SystemTime) -> f64 {
@@ -121,19 +145,28 @@ impl Map {
             .clone()
     }
 
-    /// What the map can show and where its data comes from, from the map set's own files.
+    /// What the map can show and where its data comes from, from the map set's own files. `meta` is the map's own
+    /// description: map.sqlite's meta table, with what national.sqlite's adds (a region's map: its `source`, `data_as_of`,
+    /// `region`, `bounds`, `built`, `base_source`).
     pub fn map_info(&self) -> Value {
-        let meta: serde_json::Map<String, Value> = self
-            .db(MAPDB)
-            .and_then(|c| {
-                let mut st = c.prepare("SELECT key,value FROM meta").ok()?;
-                let rows = st.query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, rusqlite::types::Value>(1)?))).ok()?;
-                Some(rows.flatten().map(|(k, v)| (k, sql_json(v))).collect())
-            })
-            .unwrap_or_default();
+        let mut meta: serde_json::Map<String, Value> = serde_json::Map::new();
+        for file in [MAPDB, NATIONAL] {
+            let rows: Vec<(String, Value)> = self
+                .db(file)
+                .and_then(|c| {
+                    let mut st = c.prepare("SELECT key,value FROM meta").ok()?;
+                    let rows = st.query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, rusqlite::types::Value>(1)?))).ok()?;
+                    Some(rows.flatten().map(|(k, v)| (k, sql_json(v))).collect())
+                })
+                .unwrap_or_default();
+            for (k, v) in rows {
+                meta.entry(k).or_insert(v);
+            }
+        }
         let mut info = self.map_contents();
         info["aerial"] = json!(self.has_aerial());
         info["datasets"] = json!(self.map_datasets(&info));
+        info["credits"] = json!(self.credits());
         let mut national = self.national_status();
         if let Some(o) = national.as_object_mut() {
             o.remove("source"); // paths on the machine that built it
@@ -158,6 +191,49 @@ impl Map {
                 v => v.to_string(),
             })
             .unwrap_or_default()
+    }
+
+    /// The credits under the map ([`CREDIT_CODES`]): the sources this map set's files name, each once. Building outlines
+    /// that name none are OpenStreetMap's, as the panel beside the map says.
+    fn credits(&self) -> Vec<Value> {
+        let mut named: Vec<(String, String)> = Vec::new(); // (source, licence)
+        for file in [MAPDB, NATIONAL] {
+            for key in ["source", "base_source"] {
+                named.push((self.meta_source(file, key), String::new()));
+            }
+        }
+        for file in [PLACES, WATER] {
+            named.push((self.meta_source(file, "source"), String::new()));
+        }
+        if self.exists(BUILDINGS) {
+            named.push((Some(self.meta_source(BUILDINGS, "source")).filter(|s| !s.is_empty()).unwrap_or_else(|| "OpenStreetMap".into()), String::new()));
+        }
+        for file in [TERRAIN, TERRAIN_DETAIL] {
+            named.push((self.meta_source(file, "source"), self.meta_source(file, "licence")));
+        }
+        for file in [CROPS, AERIAL, AERIAL_DETAIL, AERIAL_COAST] {
+            named.push((self.meta_source(file, "source"), String::new()));
+        }
+        for path in self.address_files() {
+            let meta = |key: &str| self.db_at(&path).and_then(|c| c.query_row("SELECT value FROM meta WHERE key=?1", [key], |r| r.get::<_, String>(0)).ok()).unwrap_or_default();
+            named.push((Some(meta("publisher")).filter(|s| !s.trim().is_empty()).unwrap_or_else(|| meta("source")), String::new()));
+        }
+        let mut out: Vec<Value> = Vec::new();
+        let mut seen: Vec<String> = Vec::new();
+        for (source, licence) in named {
+            let Some((code, text)) = credit_of(&source) else { continue };
+            debug_assert!(code.is_empty() || CREDIT_CODES.contains(&code), "{code} is not in CREDIT_CODES");
+            if seen.contains(&text.to_lowercase()) {
+                continue;
+            }
+            seen.push(text.to_lowercase());
+            let mut c = if code.is_empty() { json!({"text": text}) } else { json!({"code": code, "params": {}, "text": text}) };
+            if !licence.trim().is_empty() {
+                c["licence"] = json!(licence.trim());
+            }
+            out.push(c);
+        }
+        out
     }
 
     /// The panel beside the map says only what this map set's files hold, and names the sources they name themselves:

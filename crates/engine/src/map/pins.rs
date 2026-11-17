@@ -90,16 +90,47 @@ fn plain(v: &Value) -> String {
     }
 }
 
+/// What the line about a resource record says, each part a code the interface words in the person's language
+/// (web/locales: map.pin.<code>), with its params: its area (`ha`, in hectares: whole from 10 up, else to one decimal),
+/// that it is NOT drinking water, the area of a crop in its block (`ha`), what it stores (`m3`, whole cubic metres), and
+/// for a fish stocking that the record is a historical one. A pin of one record and a record of a cluster send the
+/// parts as `summary_parts`, the "Nearest" panel as `detail_parts`, each with its English `text`; the record's own
+/// words (its purpose, its river) are parts with their `text` alone, as the record gives them. The English line
+/// (`summary`, `detail`) stays beside them, for the assistant and for an interface that does not know the codes.
+pub const SUMMARY_CODES: [&str; 5] = ["area_ha", "not_drinking_water", "crop_block_ha", "stored_m3", "stocking_record"];
+
+/// One part of the line: its code (one of [`SUMMARY_CODES`]) and params beside the English.
+fn part(code: &str, params: Value, text: impl Into<String>) -> Value {
+    debug_assert!(SUMMARY_CODES.contains(&code), "{code} is not in SUMMARY_CODES");
+    json!({"code": code, "params": params, "text": text.into()})
+}
+
+/// An area as the line gives it: whole hectares from 10 up, else to one decimal.
 fn hectares(ha: f64) -> String {
+    format!("{} ha", if ha >= 10.0 { thousands(ha.round() as i64) } else { round_to(ha, 1).to_string() })
+}
+
+/// The same area as a number, for the interface to write in the person's language.
+fn hectares_param(ha: f64) -> Value {
     if ha >= 10.0 {
-        format!("{} ha", thousands(ha.round() as i64))
+        json!(ha.round() as i64)
     } else {
-        format!("{} ha", round_to(ha, 1))
+        json!(round_to(ha, 1))
     }
 }
 
 /// One line about a resource record, in metric units: a record carrying US units (acres, acre-feet) is converted.
 pub fn resource_summary(cls: &str, detail: &Value) -> String {
+    summary_text(&summary_parts(cls, detail))
+}
+
+/// The English line of the parts, as [`resource_summary`] gives it.
+fn summary_text(parts: &[Value]) -> String {
+    parts.iter().filter_map(|p| p["text"].as_str()).collect::<Vec<_>>().join(" · ")
+}
+
+/// The line about a resource record as its parts ([`SUMMARY_CODES`]), in the order the English line has them.
+fn summary_parts(cls: &str, detail: &Value) -> Vec<Value> {
     let keys: &[&str] = match cls {
         "mineral" => &["commod1", "commod2", "dev_stat"],
         "oil_gas_well" => &["WellTypeLabel", "FieldName", "API"],
@@ -111,16 +142,16 @@ pub fn resource_summary(cls: &str, detail: &Value) -> String {
         "lake" | "pond" => &["water_type", "state"],
         _ => &[],
     };
-    let mut out: Vec<String> = keys.iter().filter(|k| truthy(detail.get(**k))).map(|k| plain(&detail[*k])).collect();
+    let mut out: Vec<Value> = keys.iter().filter(|k| truthy(detail.get(**k))).map(|k| json!({"text": plain(&detail[*k])})).collect();
     if truthy(detail.get("not_drinking_water")) {
-        out.insert(0, "NOT drinking water".into());
+        out.insert(0, part("not_drinking_water", json!({}), "NOT drinking water"));
     }
     if let Some(ha) = area_ha(detail) {
-        out.insert(0, hectares(ha));
+        out.insert(0, part("area_ha", json!({"ha": hectares_param(ha)}), hectares(ha)));
     }
     let crop = if truthy(detail.get("crop_ha")) { Some(f(&detail["crop_ha"])) } else if truthy(detail.get("crop_acres")) { Some(f(&detail["crop_acres"]) * 0.404_686) } else { None };
     if let Some(ha) = crop {
-        out.push(format!("about {} in this block", hectares(ha)));
+        out.push(part("crop_block_ha", json!({"ha": hectares_param(ha)}), format!("about {} in this block", hectares(ha))));
     }
     let stored = if truthy(detail.get("storage_m3")) {
         Some(number(&detail["storage_m3"]))
@@ -130,9 +161,10 @@ pub fn resource_summary(cls: &str, detail: &Value) -> String {
         None
     };
     if let Some(m3) = stored {
-        out.push(format!("{} m³ stored", thousands(m3.round() as i64)));
+        let m3 = m3.round() as i64;
+        out.push(part("stored_m3", json!({"m3": m3}), format!("{} m³ stored", thousands(m3))));
     }
-    out.join(" · ")
+    out
 }
 
 /// A record's area in hectares (`area_ha`, or `area_acres` converted), when it has one.
@@ -242,12 +274,15 @@ impl Map {
             }
             for (name, y, x, raw, source) in rows {
                 let detail = detail_of(raw);
-                let mut summary = resource_summary(cls, &detail);
+                let mut parts = summary_parts(cls, &detail);
+                let mut summary = summary_text(&parts);
                 if cls == "fish_stocking" {
                     summary.push_str(" · historical stocking record");
+                    parts.push(part("stocking_record", json!({}), "historical stocking record"));
                 }
                 let (d, dir) = haversine(lat, lon, y, x);
-                out.push(json!({"cls": cls, "label": help(cls), "name": name, "lat": y, "lon": x, "km": round_to(d, 2), "dir": dir, "detail": summary, "source": source}));
+                out.push(json!({"cls": cls, "label": help(cls), "name": name, "lat": y, "lon": x, "km": round_to(d, 2), "dir": dir, "detail": summary,
+                                "detail_parts": parts, "source": source}));
             }
         }
         out.sort_by(by_km);
@@ -423,8 +458,10 @@ impl Map {
             let (lat, lon) = (c.lat / c.count as f64, c.lon / c.count as f64);
             let spot = c.count > 1 && c.bbox[2] - c.bbox[0] < 1e-4 && c.bbox[3] - c.bbox[1] < 1e-4; // e.g. one lake stocked many times
             if c.count == 1 {
+                let parts = summary_parts(&c.cls, &c.detail);
                 o.insert("label".into(), json!(help(&c.cls).unwrap_or(&c.cls)));
-                o.insert("summary".into(), json!(resource_summary(&c.cls, &c.detail)));
+                o.insert("summary".into(), json!(summary_text(&parts)));
+                o.insert("summary_parts".into(), json!(parts));
                 o.insert("cls".into(), json!(c.cls));
                 o.insert("name".into(), json!(c.name));
                 o.insert("detail".into(), c.detail);
@@ -467,7 +504,8 @@ impl Map {
                 let Ok(mut st) = c.prepare(&sql) else { continue };
                 let Ok(found) = st.query_map(rusqlite::params_from_iter(params.iter()), |r| Ok((r.get::<_, String>(0)?, r.get::<_, Option<String>>(1)?, r.get::<_, f64>(2)?, r.get::<_, f64>(3)?))) else { continue };
                 for (c, n, x, y) in found.flatten() {
-                    rows.push(json!({"cls": c, "label": help(&c).unwrap_or(&c), "name": n.unwrap_or_default(), "lon": x, "lat": y, "summary": "", "detail": {}, "source": ""}));
+                    rows.push(json!({"cls": c, "label": help(&c).unwrap_or(&c), "name": n.unwrap_or_default(), "lon": x, "lat": y, "summary": "", "summary_parts": [],
+                                     "detail": {}, "source": ""}));
                 }
             }
         }
@@ -483,7 +521,9 @@ impl Map {
             }) else { continue };
             for (k, n, y, x, d, src) in found.flatten() {
                 let detail = detail_of(d);
-                rows.push(json!({"cls": k, "label": help(&k), "name": n.unwrap_or_default(), "lat": y, "lon": x, "summary": resource_summary(&k, &detail), "detail": detail, "source": src.unwrap_or_default()}));
+                let parts = summary_parts(&k, &detail);
+                rows.push(json!({"cls": k, "label": help(&k), "name": n.unwrap_or_default(), "lat": y, "lon": x, "summary": summary_text(&parts), "summary_parts": parts,
+                                 "detail": detail, "source": src.unwrap_or_default()}));
             }
         }
         let (res, svc): (Vec<Value>, Vec<Value>) = rows.into_iter().partition(|r| is_resource(r["cls"].as_str().unwrap_or("")));

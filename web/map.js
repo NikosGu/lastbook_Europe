@@ -90,6 +90,17 @@ const MapView = (() => {
   const KIND = { street_address: 'map.kind.street_address', street: 'map.kind.street', postcode: 'map.kind.postcode', town: 'map.kind.town', city: 'map.kind.city',
     village: 'map.kind.village', hamlet: 'map.kind.hamlet', suburb: 'map.kind.suburb', island: 'map.kind.island', county: 'map.kind.county', region: 'map.kind.region',
     lake: 'map.kind.lake', reservoir: 'map.kind.reservoir', dam: 'map.kind.dam', pond: 'map.kind.pond', water: 'map.kind.water' };
+  // The line under a lake's or dam's name, after where it is: each part's code (crates/engine/src/map/places.rs PLACE_CODES) → its words
+  const PLACE_PART = { also_called: 'map.place.also_called', km_away: 'map.place.km_away', nearby: 'map.place.nearby' };
+  // A resource's line (crates/engine/src/map/pins.rs SUMMARY_CODES): its area, NOT drinking water, a crop's area in its block, what it
+  // stores, a historical stocking record. A part with no code is the record's own word, shown as it comes.
+  const PIN_PART = { area_ha: 'map.pin.area_ha', not_drinking_water: 'map.pin.not_drinking_water', crop_block_ha: 'map.pin.crop_block_ha',
+    stored_m3: 'map.pin.stored_m3', stocking_record: 'map.pin.stocking_record' };
+  // The credits under the map (crates/engine/src/map/info.rs CREDIT_CODES): OpenStreetMap in the interface's language, any other source
+  // by the name its file gives. The outline of the world this page draws itself (world-context.json, geographic-context.json) is
+  // Natural Earth's, so that credit is always there.
+  const CREDIT = { osm: 'map.credit.osm' };
+  const OUTLINE_CREDIT = 'Natural Earth';
   let st = null, world = null, geography = null;
 
   const load = (k, d) => { try { return JSON.parse(localStorage.getItem('sg.' + k)) ?? d } catch { return d } };
@@ -116,8 +127,39 @@ const MapView = (() => {
   }
   const kindKey = k => typeof k === 'string' && Object.hasOwn(KIND, k) ? KIND[k] : null;
   const kindName = p => { const k = kindKey(p.kind_code) || kindKey(String(p.kind || '').trim().toLowerCase().replace(/[\s-]+/g, '_')); return k ? t(k) : p.kind || '' };
-  // The line under a place's name: an address's town and postcode with its country in the interface's language (locality, country), else the engine's detail
-  const placeDetail = p => typeof p.locality === 'string' && /^[A-Z]{2}$/.test(p.country || '') ? [p.locality, I18N.country(p.country)].filter(Boolean).join(', ') : p.detail || '';
+  // A line the engine says in parts (detail_parts, summary_parts): each part in the interface's language when this page knows its code,
+  // else as the engine's English text gives it; a number in a part (km, ha, m3) written the way the language writes numbers
+  const saidParts = (table, parts) => parts.map(d => I18N.said(table, d, d && d.text)).filter(Boolean).join(' · ');
+  // The line about a resource (a lake's area, a dam's storage), from its parts; an engine that sends none gives its English line
+  const summaryOf = (parts, english) => Array.isArray(parts) && parts.length ? saidParts(PIN_PART, parts) : english || '';
+  // The line under a place's name: where it is (an address's town and postcode, a lake's municipality: locality) with its country in the
+  // interface's language, then what more the engine says of it (detail_parts: its other names, how far it is). A place the engine sends
+  // no locality for (the place files' own detail) keeps the engine's detail.
+  const placeDetail = p => {
+    if (typeof p.locality !== 'string') return p.detail || '';
+    const where = [p.locality, /^[A-Z]{2}$/.test(p.country || '') ? I18N.country(p.country) : ''].filter(Boolean).join(', ');
+    return [where, Array.isArray(p.detail_parts) ? saidParts(PLACE_PART, p.detail_parts) : ''].filter(Boolean).join(' · ');
+  };
+  // The note under the heading: the day the installed map's data was taken (its meta.data_as_of, "2026-11-16T21:22:36Z"), the way the
+  // interface's language writes a day; a map that names no day gets the note that names none.
+  const asOf = meta => {
+    const m = /^(\d{4})-(\d\d)-(\d\d)/.exec(String(meta && meta.data_as_of || ''));
+    return m ? th('map.offline_note', { date: I18N.date(new Date(+m[1], +m[2] - 1, +m[3]), { year: 'numeric', month: 'long', day: 'numeric' }) }) : th('map.offline_note_undated');
+  };
+  // The credits under the map, as HTML: each source the map's files name, with its licence (when its file names one) shown on hover
+  function credits(list) {
+    const shown = (Array.isArray(list) ? list : []).filter(c => c && typeof c === 'object')
+      .map(c => ({ text: I18N.said(CREDIT, c, c.text), licence: typeof c.licence === 'string' ? c.licence : '' })).filter(c => c.text);
+    if (!shown.some(c => c.text === OUTLINE_CREDIT)) shown.push({ text: OUTLINE_CREDIT, licence: '' });
+    return shown.map(c => `<span${c.licence ? ` title="${escH(c.licence)}"` : ''}>${escH(c.text)}</span>`).join(' · ');
+  }
+  // Is there an address index for the map's own region? The panel's addresses row names the regions whose indexes are installed (a whole
+  // country's index counts for its regions); a map that names no region of its own counts any index. Until the map has said, none is known.
+  function addressesHere() {
+    const have = st && st.addressRegions, region = st && st.region;
+    if (!Array.isArray(have) || !have.length) return false;
+    return !/^[A-Z]{2}(-[A-Z0-9]{1,3})?$/.test(region || '') || have.includes(region) || have.includes(region.split('-')[0]);
+  }
 
   let askedHome = false;
   async function localHome() {
@@ -135,7 +177,7 @@ const MapView = (() => {
     if (!on.length) on = DEFAULT_LAYERS;
     main.classList.add('map-page');
     document.title = t('map.page_title') + ' · Lastbook';
-    main.innerHTML = `<div class="maphead"><h1>${th('map.heading')}</h1><p class="small muted">${th('map.offline_note')}</p>${IN_WINDOW ? `<a class="btn plain" href="/ui/setup.html#manage">${th('map.downloads')}</a>` : ''}</div>
+    main.innerHTML = `<div class="maphead"><h1>${th('map.heading')}</h1><p class="small muted" id="mnote">${asOf(null)}</p>${IN_WINDOW ? `<a class="btn plain" href="/ui/setup.html#manage">${th('map.downloads')}</a>` : ''}</div>
     <div class="mapgrid"><div class="mapwrap" id="mapwrap">
       <canvas id="mapc" tabindex="0" role="application" aria-label="${th('map.canvas_label')}"></canvas>
       <div class="map-top">
@@ -150,7 +192,7 @@ const MapView = (() => {
       <div class="map-card" id="card" hidden></div>
       <div class="map-tip" id="tip" hidden></div>
       <div class="map-status" id="mstatus" aria-live="polite"></div>
-      <div class="mapelev" id="melev" hidden></div><div class="mapscale" id="mscale"></div><div class="mapattr">${th('map.attribution')}</div>
+      <div class="mapelev" id="melev" hidden></div><div class="mapscale" id="mscale"></div><div class="mapattr" id="mattr">${credits([])}</div>
     </div>
     <div class="maptools">
       <section class="panel"><h2>${th('map.nearest_title')}</h2><p class="small muted" style="margin:0 0 4px">${th('map.nearest_note')}</p><div class="nearres" id="near" aria-live="polite"></div></section>
@@ -207,10 +249,21 @@ const MapView = (() => {
     st.onKey = e => { if (e.key === 'Escape' && st) { if (!$('layers').hidden) { $('layers').hidden = true; $('layers-btn').setAttribute('aria-expanded', 'false') } else if (!$('pres').hidden) $('pres').hidden = true; else if (!$('card').hidden) closeCard(); else if ($('mapwrap').classList.contains('max')) toggleFull() } };
     document.addEventListener('keydown', st.onKey);
     layerCount();
+    // What the map's own files say of themselves: the day its data was taken (the note under the heading), who made it (the credits),
+    // and whose addresses it can find (the place finder offers address search only for a region that has none)
+    const own = info => {
+      const rows = Array.isArray(info.datasets) ? info.datasets : [], addr = rows.find(d => d && d.code === 'addresses');
+      st.addressRegions = addr && addr.params && Array.isArray(addr.params.regions) ? addr.params.regions : [];
+      st.region = info.meta && typeof info.meta.region === 'string' ? info.meta.region : '';
+      const note = $('mnote'), at = $('mattr');
+      if (note) note.innerHTML = asOf(info.meta);
+      if (at) at.innerHTML = credits(info.credits);
+      fitMap();
+    };
     fetch('/api/map/info').then(r => r.json()).then(info => {
       if (!st) return;
       st.national = info.national; st.ver = info.version; st.aerialDetail = info.aerial_detail; st.aerialRev = info.aerial_rev; st.terrainCircle = info.terrain_circle;
-      describe(info); if (openWhole) fit(wholeMap(), 0.92, true); coverage(); draw();
+      own(info); describe(info); if (openWhole) fit(wholeMap(), 0.92, true); coverage(); draw();
       $('mdata').innerHTML = info.datasets.map(d => { const c = covers(d); return `<li class="row" style="display:block"><b>${escH(c.label)}</b><span class="muted">${escH(c.status)}</span>${d.bytes ? ` · ${I18N.unit(d.bytes / 1073741824, 'gigabyte', 1)}` : ''}</li>` }).join('') +
         (st.have && !st.have.size ? '' : `<li class="row small muted" style="display:block">${st.have ? '' : th('map.not_drawn') + ' '}${th('map.records_note')}</li>`);
     }).catch(() => { $('mdata').innerHTML = `<li class="muted">${th('map.details_unavailable')}</li>`; if (openWhole && st) fit(EUROPE, 0.92, true) });
@@ -219,7 +272,7 @@ const MapView = (() => {
       if (!st) return;
       try { const info = await fetch('/api/map/info').then(r => r.json()); if (!st) return; st.national = info.national; coverage();
         if (info.aerial_rev !== st.aerialRev) { st.aerialRev = info.aerial_rev; st.aerialDetail = info.aerial_detail; for (const v of st.aerial?.values() || []) v.close?.(); st.aerial = new Map(); draw() }  // new sharp photos: new URLs
-        if (info.version !== st.ver) { st.ver = info.version; st.gen++; st.pinBox = null; draw(); loadPins() } } catch { }
+        if (info.version !== st.ver) { st.ver = info.version; st.gen++; st.pinBox = null; own(info); draw(); loadPins() } } catch { }
     }, 60000);
     if (!openWhole) { draw(); settle() }
   }
@@ -821,9 +874,10 @@ const MapView = (() => {
       .map(([k, v]) => `<tr><th>${th(FIELD[k])}</th><td>${escH(fieldValue(k, v))}</td></tr>`).join('');
     const notWater = detail.not_drinking_water ? `<p class="caveat"><b>${th('map.caveat.not_water_head')}</b> ${th('map.caveat.not_water', { kind: detail.reservoir_type ? String(detail.reservoir_type).toLowerCase() : t('map.caveat.waste_pond') })}</p>` : '';
     const tailings = /tailings/i.test(detail.purposes || '') ? `<p class="caveat"><b>${th('map.caveat.tailings_head')}</b> ${th('map.caveat.tailings')}</p>` : '';
+    const summary = summaryOf(p.summary_parts, p.summary);
     const el = openCard(`${back ? `<button class="back">← ${escH(back.title)}</button>` : ''}<div class="kind">${sym(l, 20)}${escH(lname(l))}</div><h3>${escH(unnamed(p))}</h3>
       ${p.records > 1 ? `<p class="muted small">${th('map.card.source_records', { n: p.records })}</p>` : ''}
-      ${rows ? `<table>${rows}</table>` : p.summary ? `<p>${escH(p.summary)}</p>` : ''}${notWater}${tailings}${CAVEAT[p.cls] && !detail.not_drinking_water ? `<p class="caveat">${th(CAVEAT[p.cls])}</p>` : ''}${coordsBlock(p)}
+      ${rows ? `<table>${rows}</table>` : summary ? `<p>${escH(summary)}</p>` : ''}${notWater}${tailings}${CAVEAT[p.cls] && !detail.not_drinking_water ? `<p class="caveat">${th(CAVEAT[p.cls])}</p>` : ''}${coordsBlock(p)}
       <div class="acts"><button data-a="zoom">${th('map.card.zoom_here')}</button><button data-a="copy">${th('map.card.copy')}</button></div>`);   // no web links: the words stay, the addresses go
     if (back) el.querySelector('.back').onclick = () => showMembers(back.p);
     wireCoords(p); reveal(p.lat, p.lon);
@@ -844,7 +898,7 @@ const MapView = (() => {
       const head = p.spot && names.size === 1 && items[0]?.name ? items[0].name : title;
       const el = openCard(`<div class="kind">${sym(layerOf(p.cls), 20)}${kind}</div><h3>${escH(head)}</h3>${breakdown(p)}
         <p class="muted small">${r.total > items.length ? th('map.card.showing_nearest', { n: items.length, total: I18N.num(r.total) + (r.capped ? '+' : '') }) : th('map.card.n_records', { n: items.length })}</p>
-        <div class="members">${items.map((m, i) => `<button data-i="${i}">${sym(layerOf(m.cls), 20)}<span><b>${escH(unnamed(m))}</b><small>${escH([m.summary || lname(layerOf(m.cls)), m.detail?.WeekOfPlantStart ? t('map.card.stocked', { week: String(m.detail.WeekOfPlantStart) }) : ''].filter(Boolean).join(' · '))}</small></span></button>`).join('')}</div>
+        <div class="members">${items.map((m, i) => `<button data-i="${i}">${sym(layerOf(m.cls), 20)}<span><b>${escH(unnamed(m))}</b><small>${escH([summaryOf(m.summary_parts, m.summary) || lname(layerOf(m.cls)), m.detail?.WeekOfPlantStart ? t('map.card.stocked', { week: String(m.detail.WeekOfPlantStart) }) : ''].filter(Boolean).join(' · '))}</small></span></button>`).join('')}</div>
         <div class="acts"><button data-a="zoom">${th('map.card.zoom_here')}</button></div>`);
       el.querySelectorAll('.members button').forEach(bt => bt.onclick = () => showDetail(items[+bt.dataset.i], { title, p }));
       el.querySelector('[data-a=zoom]').onclick = () => fit(b);
@@ -892,10 +946,10 @@ const MapView = (() => {
       box.classList.remove('busy');
       if (!Array.isArray(r) || !r.length) { box.innerHTML = `<p class="muted small">${th('map.near.nothing')}</p>`; return }
       const list = r.sort((a, b) => a.km - b.km).slice(0, 14);
-      box.innerHTML = list.map((p, i) => `<button data-i="${i}">${sym(layerOf(p.cls), 24)}<span><b>${escH(unnamed(p))}</b><small>${th('map.near.line', { kind: lname(layerOf(p.cls)), dist: dist(p.km), dir: DIR[p.dir] ? t(DIR[p.dir]) : p.dir || '' })}</small>${p.detail ? `<small>${escH(p.detail)}</small>` : ''}</span></button>`).join('');
+      box.innerHTML = list.map((p, i) => { const line = summaryOf(p.detail_parts, p.detail); return `<button data-i="${i}">${sym(layerOf(p.cls), 24)}<span><b>${escH(unnamed(p))}</b><small>${th('map.near.line', { kind: lname(layerOf(p.cls)), dist: dist(p.km), dir: DIR[p.dir] ? t(DIR[p.dir]) : p.dir || '' })}</small>${line ? `<small>${escH(line)}</small>` : ''}</span></button>` }).join('');
       box.querySelectorAll('button').forEach(b => b.onclick = () => {
         const p = list[+b.dataset.i]; box.querySelectorAll('button.on').forEach(x => x.classList.remove('on')); b.classList.add('on');
-        st.z = Math.max(st.z, 16); st.lat = p.lat; st.lon = p.lon; st.listAt = 1; showDetail({ ...p, summary: p.detail, detail: {} }); settle(true); b.classList.add('on');
+        st.z = Math.max(st.z, 16); st.lat = p.lat; st.lon = p.lon; st.listAt = 1; showDetail({ ...p, summary: p.detail, summary_parts: p.detail_parts, detail: {} }); settle(true); b.classList.add('on');
         if (innerWidth < 1000) $('mapwrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     } catch { if (st === state) box.innerHTML = `<p class="muted small">${th('map.near.unavailable')}</p>` }
@@ -910,7 +964,8 @@ const MapView = (() => {
       if (st !== state || serial !== st.serial.place) return;
       if (!r.length) {
         const address = res.headers.get('X-Query-Kind') === 'address';   // the engine says how it read the query: address, postcode or place
-        box.innerHTML = `<p class="muted small" style="padding:8px">${address ? th('map.find.no_address') + (IN_WINDOW ? ` <a href="/ui/setup.html#manage">${th('map.find.add_addresses')}</a>.` : '') : th('map.find.no_place')}</p>`;
+        const offer = IN_WINDOW && !addressesHere();   // address search for the region is offered only where it is not there yet
+        box.innerHTML = `<p class="muted small" style="padding:8px">${address ? th('map.find.no_address') + (offer ? ` <a href="/ui/setup.html#manage">${th('map.find.add_addresses')}</a>.` : '') : th('map.find.no_place')}</p>`;
         return;
       }
       // the marker keeps the kind and the line under the name as shown; the zoom goes by the engine's own kind

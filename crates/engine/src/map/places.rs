@@ -6,12 +6,33 @@
 //! (`address`, `postcode` or `place`), so the page can say "address not found" without guessing from the text.
 
 use super::address::{self, Kind};
-use super::text::{fts_term, loose, name_key, variants, words};
+use super::text::{fts_term, loose, name_key, thousands, variants, words};
 use super::{haversine, param, Map, NATIONAL, PLACES, WATER};
 use crate::http::{Request, Response};
+use crate::regions;
 use rusqlite::Connection;
 use serde_json::{json, Value};
 use std::collections::{HashMap, HashSet};
+
+/// What the line under a lake's or dam's name says after where it is, each a code the interface words in the person's
+/// language (web/locales: map.place.<code>), with its params: its other names (`names`), how far it is from where the
+/// person is looking (`km`, whole kilometres), or that it is nearby (under a kilometre). A result sends them in order as
+/// `detail_parts`, each with its English `text`; where it is comes apart as `locality` (its municipality, region...)
+/// and `country` (the country's code, '' when the record names none the engine knows), as an address's does. The English
+/// `detail` stays beside them, for the assistant and for an interface that does not know the codes.
+pub const PLACE_CODES: [&str; 3] = ["also_called", "km_away", "nearby"];
+
+/// One part of the line: its code (one of [`PLACE_CODES`]) and params beside the English.
+fn part(code: &str, params: Value, text: impl Into<String>) -> Value {
+    debug_assert!(PLACE_CODES.contains(&code), "{code} is not in PLACE_CODES");
+    json!({"code": code, "params": params, "text": text.into()})
+}
+
+/// A country's code from its name as a record gives it: in English (Liechtenstein, Italy) or in its own language
+/// (Italia, Österreich, Svizzera).
+fn country_code(name: &str) -> Option<&'static str> {
+    regions::COUNTRIES.iter().find(|(_, own, en)| *en == name || own.split(" / ").any(|o| o == name)).map(|c| c.0)
+}
 
 /// Words that name a kind of water, in the languages of the 31 countries: they help ranking but are not searched for,
 /// so "Lago di Garda" finds Garda and "Bodensee" stays one word.
@@ -263,15 +284,31 @@ impl Map {
                 + f64::from(u8::from(loose(&name) == ql)) * 3.0
                 + (area + 1.0).log10() / 3.0
                 + near_bonus(near, lat, lon);
-            let mut parts: Vec<String> = ["county", "region", "state", "country"].iter().filter_map(|k| d[*k].as_str()).filter(|s| !s.is_empty()).map(str::to_string).collect();
-            let place = parts.join(", ");
-            parts = vec![place];
+            let at = |keys: &[&str]| -> Vec<String> { keys.iter().filter_map(|k| d[*k].as_str()).filter(|s| !s.is_empty()).map(str::to_string).collect() };
+            let mut parts = vec![at(&["county", "region", "state", "country"]).join(", ")];
+            // where it is, for the interface: the country by its code, or (one the engine does not know) by its name as given
+            let named = d["country"].as_str().filter(|s| !s.is_empty());
+            let country = named.and_then(country_code).unwrap_or("");
+            let mut local = at(&["county", "region", "state"]);
+            if country.is_empty() {
+                local.extend(named.map(str::to_string));
+            }
+            let mut said = Vec::new();
             if !other.is_empty() {
-                parts.push(format!("also called {other}"));
+                let text = format!("also called {other}");
+                parts.push(text.clone());
+                said.push(part("also_called", json!({"names": other}), text));
             }
             if let Some((a, b)) = near {
                 let km = haversine(a, b, lat, lon).0;
-                parts.push(if km >= 1.0 { format!("{} km away", super::text::thousands(km.round_ties_even() as i64)) } else { "nearby".into() });
+                let p = if km >= 1.0 {
+                    let km = km.round_ties_even() as i64;
+                    part("km_away", json!({"km": km}), format!("{} km away", thousands(km)))
+                } else {
+                    part("nearby", json!({}), "nearby")
+                };
+                parts.push(p["text"].as_str().unwrap_or("").to_string());
+                said.push(p);
             }
             let shown = match kind.as_str() {
                 "dam" => "Dam",
@@ -281,6 +318,7 @@ impl Map {
                 _ => "Water",
             };
             out.push((score, json!({"name": name, "kind": shown, "detail": parts.into_iter().filter(|p| !p.is_empty()).collect::<Vec<_>>().join(" · "),
+                                    "detail_parts": said, "locality": local.join(", "), "country": country,
                                     "lat": lat, "lon": lon, "source": "water", "onMap": true})));
         }
         out.sort_by(|a, b| b.0.total_cmp(&a.0));

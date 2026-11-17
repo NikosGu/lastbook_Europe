@@ -117,9 +117,10 @@ fn map_info_has_what_the_ui_reads_and_no_personal_paths() {
     assert!(!String::from_utf8_lossy(&r.body).contains("/Users/"), "no paths from the machine that built it");
     let info: Value = serde_json::from_slice(&r.body).unwrap();
     assert_eq!(info["national"], json!({"state": "complete", "features": 7}));
-    for k in ["national", "version", "aerial_detail", "aerial_rev", "terrain_circle", "datasets", "layers", "bounds", "detail", "contours", "aerial", "meta"] {
+    for k in ["national", "version", "aerial_detail", "aerial_rev", "terrain_circle", "datasets", "layers", "bounds", "detail", "contours", "aerial", "meta", "credits"] {
         assert!(info.get(k).is_some(), "{k}");
     }
+    assert_eq!((&info["meta"], &info["credits"]), (&json!({}), &json!([])), "no map files: nothing to describe, no one to credit");
     assert!(info["layers"].is_array());
     assert_eq!(info["aerial"], false);
     assert_eq!(f.map.national_status()["source"], "/Users/someone/library-data/x.pbf", "the engine itself still sees it");
@@ -170,6 +171,59 @@ fn map_info_names_what_the_files_hold() {
     ]));
     assert!(info["version"].as_str().unwrap().starts_with("n7."), "the water and elevation files are part of the version");
     assert_eq!(f.map.pack_info().unwrap()["map"], "LI");
+    assert_eq!(info["credits"], json!([{"text": "Copernicus DEM GLO-30"}, {"text": "Landesverwaltung Liechtenstein"}]),
+               "only the sources the files name: this national map and its lake name none");
+}
+
+/// A region's map as `lastbook-tools build-map` writes it (crates/tools/src/map/mapset.rs): national.sqlite's meta says
+/// when its data was taken and names OpenStreetMap and Natural Earth; the other files name their own sources.
+fn liechtenstein(f: &Fx) {
+    let meta = "CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT);";
+    let osm = "OpenStreetMap contributors (ODbL 1.0), Geofabrik extract as of 2026-11-16T21:22:36Z";
+    vaduz(f);
+    let c = f.sqlite("derived/geo/national.sqlite", "");
+    for (k, v) in [("source", osm), ("data_as_of", "2026-11-16T21:22:36Z"), ("region", "LI"), ("bounds", "9.32,46.90,9.79,47.43"), ("built", "2026-11-17"),
+                   ("base_source", "Natural Earth (public domain)")] {
+        c.execute("INSERT INTO meta VALUES (?1,?2)", params![k, v]).unwrap();
+    }
+    drop(c);
+    places_db(f, &[("Vaduz", "town", "Liechtenstein", 47.14, 9.52, 2, &[])]);
+    f.sqlite("derived/geo/places.sqlite", meta).execute("INSERT INTO meta VALUES ('source', ?1)", [osm]).unwrap();
+    f.sqlite("derived/geo/water.sqlite", &format!("{RESOURCE_TABLES} {meta}")).execute("INSERT INTO meta VALUES ('source', ?1)", [osm]).unwrap();
+    f.sqlite("derived/geo/buildings.sqlite", &format!("CREATE TABLE bldg(x INT, y INT, part INT, n INT, data BLOB, PRIMARY KEY(x,y,part)) WITHOUT ROWID; {meta}
+        INSERT INTO meta VALUES ('source', 'OpenStreetMap');"));
+    f.sqlite("derived/geo/terrain.sqlite", &format!("CREATE TABLE tile(z INT, x INT, y INT, png BLOB, PRIMARY KEY(z,x,y)) WITHOUT ROWID; {meta}
+        INSERT INTO meta VALUES ('source', 'Copernicus DEM GLO-30'), ('licence', '© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018');"));
+    let a = f.sqlite("derived/geo/addresses/LI.sqlite", meta);
+    a.execute_batch("INSERT INTO meta VALUES ('publisher', 'OpenStreetMap'), ('region', 'LI');").unwrap();
+    a.execute("INSERT INTO meta VALUES ('source', ?1)", [osm]).unwrap();
+}
+
+#[test]
+fn map_info_says_when_its_data_was_taken_and_who_made_it() {
+    let f = fx("info-li");
+    liechtenstein(&f);
+    let info = f.json("/api/map/info");
+    let meta = &info["meta"];
+    assert_eq!((meta["data_as_of"].as_str(), meta["region"].as_str(), meta["base_source"].as_str()), (Some("2026-11-16T21:22:36Z"), Some("LI"), Some("Natural Earth (public domain)")),
+               "a region's map: national.sqlite's meta");
+    assert_eq!(info["credits"], json!([
+        {"code": "osm", "params": {}, "text": "© OpenStreetMap contributors"},
+        {"text": "Natural Earth"},
+        {"text": "Copernicus DEM GLO-30", "licence": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018"},
+    ]), "each source once, OpenStreetMap as a code, a licence in brackets left out of a name");
+    let said: Vec<&str> = info["credits"].as_array().unwrap().iter().filter_map(|c| c["code"].as_str()).collect();
+    assert_eq!(said, info::CREDIT_CODES, "every credit code is said");
+    assert!(info["datasets"].as_array().unwrap().iter().any(|d| d["code"] == "addresses" && d["params"]["regions"] == json!(["LI"])),
+            "the panel names the region whose addresses are there");
+    // map.sqlite's own meta comes first; national.sqlite adds what it lacks
+    let c = f.sqlite("derived/geo/map.sqlite", MAP_TABLES);
+    c.execute_batch("INSERT INTO meta VALUES ('source', 'Overture Maps Foundation'), ('data_as_of', '2026-10-25');").unwrap();
+    drop(c);
+    let info = f.json("/api/map/info");
+    assert_eq!((info["meta"]["data_as_of"].as_str(), info["meta"]["region"].as_str()), (Some("2026-10-25"), Some("LI")));
+    assert_eq!(info["credits"][0], json!({"text": "Overture Maps Foundation"}));
+    assert_eq!(info["credits"][1]["code"], "osm");
 }
 
 /// The panel's rows for three more map sets: a region with its places, buildings and crops; a map of everything whose
@@ -250,6 +304,12 @@ fn every_code_has_words_in_the_interface() {
         for key in [format!("map.info.{code}"), format!("map.info.{code}_status")] {
             assert!(words[&key].is_string(), "web/locales/en.json has no {key}");
         }
+    }
+    let keys = info::CREDIT_CODES.iter().map(|c| format!("map.credit.{c}"))
+        .chain(places::PLACE_CODES.iter().map(|c| format!("map.place.{c}")))
+        .chain(pins::SUMMARY_CODES.iter().map(|c| format!("map.pin.{c}")));
+    for key in keys {
+        assert!(words[&key].is_string(), "web/locales/en.json has no {key}");
     }
 }
 
@@ -422,17 +482,71 @@ fn water_and_crop_resources_in_metric() {
     drop(c);
     let near = f.map.near(47.1, 9.6, &["lake", "dam", "vineyard"], 3);
     assert_eq!(near[0]["detail"], "3.2 ha · fresh");
+    assert_eq!(near[0]["detail_parts"], json!([{"code": "area_ha", "params": {"ha": 3.2}, "text": "3.2 ha"}, {"text": "fresh"}]),
+               "the area a code with its number, for the interface to write; the record's own word as it is");
     let dam = near.iter().find(|p| p["cls"] == "dam").unwrap();
     assert_eq!(dam["detail"], "hydropower · 1,500,000 m³ stored");
+    assert_eq!(dam["detail_parts"], json!([{"text": "hydropower"}, {"code": "stored_m3", "params": {"m3": 1500000}, "text": "1,500,000 m³ stored"}]));
     let vine = near.iter().find(|p| p["cls"] == "vineyard").unwrap();
     assert_eq!(vine["detail"], "Grapes · about 4 ha in this block", "acres become hectares");
+    assert_eq!(vine["detail_parts"], json!([{"text": "Grapes"}, {"code": "crop_block_ha", "params": {"ha": 4.0}, "text": "about 4 ha in this block"}]));
     let all = near.iter().map(|p| p.to_string()).collect::<String>();
     assert!(!all.contains("acre") && !all.contains(" mi"));
     let pins = f.json("/api/map/pins?west=9.4&south=47&east=9.7&north=47.3&zoom=17&kinds=lake,dam");
     assert_eq!(pins["sites"], 2);
+    let lake = pins["points"].as_array().unwrap().iter().find(|p| p["cls"] == "lake").unwrap();
+    assert_eq!((lake["summary"].as_str(), &lake["summary_parts"]), (Some("3.2 ha · fresh"), &near[0]["detail_parts"]), "a pin of one record: the same parts");
+    let m = f.json("/api/map/members?west=9.59&south=47.09&east=9.61&north=47.11&lat=47.1&lon=9.6&kinds=lake");
+    assert_eq!((m["items"][0]["summary"].as_str(), &m["items"][0]["summary_parts"]), (Some("3.2 ha · fresh"), &near[0]["detail_parts"]), "and a record of a cluster");
     assert_eq!(resource_summary("reservoir", &json!({"area_acres": 100})), "40 ha");
     // the library's atlas holds none here
     assert_eq!(f.json("/api/map/resources?west=9&south=47&east=10&north=48"), json!({"points": [], "records": 0}));
+}
+
+/// Every part of a resource's line, as codes with their params beside the English: a pond of 0.2 ha (the number the
+/// interface writes "0,2" in Italian), a lake of whole hectares, a pond that is NOT drinking water, a dam's storage, a
+/// crop block, a fish stocking. Between them, every code is said.
+#[test]
+fn resource_lines_as_codes() {
+    let f = fx("res-codes");
+    let w = f.sqlite("derived/geo/water.sqlite", RESOURCE_TABLES);
+    resource(&w, 1, "pond", "", 47.153, 9.515, r#"{"area_ha": 0.2, "region": "Vaduz", "country": "Liechtenstein"}"#, "OpenStreetMap");
+    resource(&w, 2, "lake", "Bodensee", 47.6, 9.4, r#"{"area_ha": 53600}"#, "OpenStreetMap");
+    resource(&w, 3, "pond", "Klärteich", 47.16, 9.52, r#"{"area_ha": 1.26, "not_drinking_water": true}"#, "OpenStreetMap");
+    resource(&w, 4, "dam", "Steg", 47.11, 9.57, r#"{"normal_storage_af": 1000}"#, "OpenStreetMap");
+    drop(w);
+    let c = f.sqlite("derived/geo/crops.sqlite", RESOURCE_TABLES);
+    resource(&c, 1, "vineyard", "", 47.13, 9.52, r#"{"crop_ha": 0.6}"#, "crop map");
+    drop(c);
+    let a = f.sqlite("library-data/geography/resources/atlas.sqlite", RESOURCE_TABLES);
+    resource(&a, 1, "fish_stocking", "Gampriner Seele", 47.22, 9.51, r#"{"FishType": "Trout"}"#, "stocking list");
+    drop(a);
+    let near = f.map.near(47.153, 9.515, &["pond", "lake", "dam", "vineyard", "fish_stocking"], 3);
+    let of = |name: &str, cls: &str| near.iter().find(|p| p["cls"] == cls && p["name"].as_str().unwrap_or("") == name).unwrap_or_else(|| panic!("{name}: {near:?}"));
+    let pond = of("", "pond");
+    assert_eq!(pond["detail"], "0.2 ha");
+    assert_eq!(pond["detail_parts"], json!([{"code": "area_ha", "params": {"ha": 0.2}, "text": "0.2 ha"}]));
+    let lake = of("Bodensee", "lake");
+    assert_eq!(lake["detail"], "53,600 ha");
+    assert_eq!(lake["detail_parts"], json!([{"code": "area_ha", "params": {"ha": 53600}, "text": "53,600 ha"}]), "whole hectares from 10 up");
+    let waste = of("Klärteich", "pond");
+    assert_eq!(waste["detail"], "1.3 ha · NOT drinking water");
+    assert_eq!(waste["detail_parts"], json!([{"code": "area_ha", "params": {"ha": 1.3}, "text": "1.3 ha"}, {"code": "not_drinking_water", "params": {}, "text": "NOT drinking water"}]));
+    let dam = of("Steg", "dam");
+    assert_eq!(dam["detail"], "1,233,480 m³ stored", "acre-feet become cubic metres");
+    assert_eq!(dam["detail_parts"], json!([{"code": "stored_m3", "params": {"m3": 1233480}, "text": "1,233,480 m³ stored"}]));
+    let vine = of("", "vineyard");
+    assert_eq!(vine["detail"], "about 0.6 ha in this block");
+    assert_eq!(vine["detail_parts"], json!([{"code": "crop_block_ha", "params": {"ha": 0.6}, "text": "about 0.6 ha in this block"}]));
+    let fish = of("Gampriner Seele", "fish_stocking");
+    assert_eq!(fish["detail"], "Trout · historical stocking record");
+    assert_eq!(fish["detail_parts"], json!([{"text": "Trout"}, {"code": "stocking_record", "params": {}, "text": "historical stocking record"}]));
+    let mut said: Vec<String> = near.iter().flat_map(|p| p["detail_parts"].as_array().unwrap().iter().filter_map(|d| d["code"].as_str().map(str::to_string))).collect();
+    said.sort();
+    said.dedup();
+    let mut all: Vec<String> = pins::SUMMARY_CODES.iter().map(|c| c.to_string()).collect();
+    all.sort();
+    assert_eq!(said, all, "every code is said");
 }
 
 #[test]
@@ -537,6 +651,51 @@ fn lakes_and_dams_by_name() {
     assert!(detail.starts_with("Lombardia, Italia · ") && detail.ends_with(" km away"), "{detail}");
     assert_eq!(f.map.places("Vajont", 20, None)[0]["kind"], "Dam");
     assert!(f.map.water_places("lago", 10, None).is_empty(), "a word for water alone names no lake");
+}
+
+/// The line under a lake's or dam's name: where it is apart (its country by its code), and what more it says as codes
+/// with their params, the English detail beside them. Between them, every code is said.
+#[test]
+fn a_lakes_line_as_codes() {
+    let f = fx("water-codes");
+    let c = f.sqlite("derived/geo/water.sqlite", &format!("{RESOURCE_TABLES} CREATE VIRTUAL TABLE water_fts USING fts5(key, tokenize='unicode61 remove_diacritics 0');"));
+    for (id, kind, name, lat, lon, detail) in [(1, "lake", "Lago di Garda", 45.6, 10.6, r#"{"area_ha": 36800, "region": "Lombardia", "country": "Italia"}"#),
+                                               (2, "lake", "Lac Léman", 46.45, 6.55, r#"{"area_ha": 58000, "other_names": "Genfersee", "country": "Switzerland"}"#),
+                                               (3, "reservoir", "Stausee Steg", 47.1098, 9.5757, r#"{"region": "Triesenberg", "country": "Liechtenstein"}"#),
+                                               (4, "dam", "Kölnbreinsperre", 47.08, 13.34, r#"{"region": "Malta", "country": "Republik Österreich"}"#)] {
+        resource(&c, id, kind, name, lat, lon, detail, "test");
+        let other = serde_json::from_str::<Value>(detail).unwrap()["other_names"].as_str().unwrap_or("").to_string();
+        c.execute("INSERT INTO water_fts(rowid, key) VALUES (?1, ?2)", params![id, text::place_key(&[name, &other])]).unwrap();
+    }
+    drop(c);
+    let one = |q: &str, near: Option<(f64, f64)>| f.map.water_places(q, 10, near).into_iter().next().unwrap_or_else(|| panic!("{q}"));
+    let garda = one("Garda", Some((45.4, 10.9)));
+    let km = garda["detail_parts"][0]["params"]["km"].as_i64().unwrap();
+    assert!((25..40).contains(&km), "{garda}");
+    assert_eq!(garda["detail"], format!("Lombardia, Italia · {km} km away"), "the English as before");
+    assert_eq!((garda["locality"].as_str(), garda["country"].as_str()), (Some("Lombardia"), Some("IT")), "a country in its own language, by its code");
+    assert_eq!(garda["detail_parts"], json!([{"code": "km_away", "params": {"km": km}, "text": format!("{km} km away")}]));
+    let leman = one("Genfersee", None);
+    assert_eq!(leman["detail"], "Switzerland · also called Genfersee");
+    assert_eq!((leman["locality"].as_str(), leman["country"].as_str()), (Some(""), Some("CH")), "and in English");
+    assert_eq!(leman["detail_parts"], json!([{"code": "also_called", "params": {"names": "Genfersee"}, "text": "also called Genfersee"}]));
+    let steg = one("Stausee Steg", Some((47.11, 9.575)));
+    assert_eq!(steg["detail"], "Triesenberg, Liechtenstein · nearby", "under a kilometre away");
+    assert_eq!((steg["locality"].as_str(), steg["country"].as_str()), (Some("Triesenberg"), Some("LI")));
+    assert_eq!(steg["detail_parts"], json!([{"code": "nearby", "params": {}, "text": "nearby"}]));
+    let far = one("Kölnbreinsperre", Some((47.14, 9.52)));
+    let km = haversine(47.14, 9.52, 47.08, 13.34).0.round_ties_even() as i64;
+    assert!((280..300).contains(&km), "{km}");
+    assert_eq!(far["detail"], format!("Malta, Republik Österreich · {km} km away"));
+    assert_eq!((far["locality"].as_str(), far["country"].as_str()), (Some("Malta, Republik Österreich"), Some("")), "a country the engine does not know stays as its name");
+    assert_eq!(far["detail_parts"], json!([{"code": "km_away", "params": {"km": km}, "text": format!("{km} km away")}]));
+    let mut said: Vec<&str> = [&garda, &leman, &steg, &far].iter().flat_map(|p| p["detail_parts"].as_array().unwrap().iter().filter_map(|d| d["code"].as_str())).collect();
+    said.sort_unstable();
+    said.dedup();
+    let mut all = places::PLACE_CODES.to_vec();
+    all.sort_unstable();
+    assert_eq!(said, all, "every code is said");
+    assert_eq!(f.get("/api/places?q=Genfersee").header("X-Query-Kind"), Some("place"));
 }
 
 #[test]
