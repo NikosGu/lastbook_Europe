@@ -28,8 +28,10 @@ jobs:
       - run: cargo build --release --locked -p lastbook-tools
       - name: The entries in the release
         run: |
-          if [ "$(gh release view "$RELEASE" --json isDraft --jq .isDraft)" != true ]; then
-            echo "$RELEASE is not a draft, or not there: its manifest is not changed here" >&2
+          # every release tagged so, drafts included: exactly one, a draft
+          draft=$(gh api "repos/$GH_REPO/releases?per_page=100" --paginate --jq ".[] | select(.tag_name == \"$RELEASE\") | .draft")
+          if [ "$draft" != true ]; then
+            echo "$RELEASE is not one draft (\"$draft\"): its manifest is not changed here" >&2
             exit 1
           fi
           gh release view "$RELEASE" --json assets > "$RUNNER_TEMP/assets.json"

@@ -45,24 +45,22 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # two drafts under one tag would split the data between them
-          same=$(gh release list --limit 1000 --json tagName --jq "[.[] | select(.tagName == \"$RELEASE\")] | length")
-          if [ "$same" -gt 1 ]; then
-            echo "$same releases are tagged $RELEASE: keep one" >&2
-            exit 1
-          fi
-          if said=$(gh release view "$RELEASE" --json isDraft --jq .isDraft 2>&1); then
-            if [ "$said" != true ]; then
-              echo "$RELEASE is published: this workflow adds only to the draft. Make it a draft again, or start another data release." >&2
-              exit 1
-            fi
-          elif grep -qi "not found" <<<"$said"; then
-            gh release create "$RELEASE" --draft --title "Lastbook Europe data" \
-              --notes "The region maps, address indexes and packs setup downloads, and manifest-v1.json, which lists them. Built by the Regions workflow; the maintainer publishes it."
-          else
-            echo "$said" >&2
-            exit 1
-          fi
+          # every release tagged so, drafts included (the list shows them to writers; a failure to read it stops here)
+          gh api "repos/$GH_REPO/releases?per_page=100" --paginate --jq ".[] | select(.tag_name == \"$RELEASE\") | .draft" > "$RUNNER_TEMP/drafts.txt"
+          case "$(wc -l < "$RUNNER_TEMP/drafts.txt" | tr -d ' ')" in
+            0)
+              gh release create "$RELEASE" --draft --target "$GITHUB_SHA" --title "Lastbook Europe data" \
+                --notes "The region maps, address indexes and packs setup downloads, and manifest-v1.json, which lists them. Built by the Regions and Library workflows; a draft until the maintainer publishes it." ;;
+            1)
+              if [ "$(cat "$RUNNER_TEMP/drafts.txt")" != true ]; then
+                echo "$RELEASE is published: this workflow adds only to the draft. Make it a draft again, or start another data release." >&2
+                exit 1
+              fi ;;
+            *)
+              # two drafts under one tag would split the data between them
+              echo "$(wc -l < "$RUNNER_TEMP/drafts.txt") releases are tagged $RELEASE: keep one" >&2
+              exit 1 ;;
+          esac
       - name: The regions asked for, in the order to build them
         id: list
         env:
@@ -234,8 +232,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           packs="$OUT/$REGION/packs"
-          if [ "$(gh release view "$RELEASE" --json isDraft --jq .isDraft)" != true ]; then
-            echo "$RELEASE is no longer a draft: nothing is added to it" >&2
+          draft=$(gh api "repos/$GH_REPO/releases?per_page=100" --paginate --jq ".[] | select(.tag_name == \"$RELEASE\") | .draft")
+          if [ "$draft" != true ]; then
+            echo "$RELEASE is not one draft any more (\"$draft\"): nothing is added to it" >&2
             exit 1
           fi
           # upload FILE...: tried again after a broken connection; --clobber replaces a file already there
