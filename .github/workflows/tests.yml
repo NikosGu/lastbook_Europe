@@ -42,7 +42,8 @@ jobs:
         run: |
           mkdir -p shots
           if [ "$RUNNER_OS" = "Linux" ]; then sudo apt-get install -y -qq xvfb >/dev/null; RUN="xvfb-run -a"; else RUN=""; fi
-          timeout 180 $RUN ./target/debug/lastbook --home "$RUNNER_TEMP/lb-home" --size 1000x800 --after 6 --snapshot "shots/$RUNNER_OS-setup.png"
+          T=""; if command -v timeout >/dev/null; then T="timeout 180"; fi   # macOS has no timeout; the app quits after its picture anyway
+          $T $RUN ./target/debug/lastbook --home "$RUNNER_TEMP/lb-home" --size 1000x800 --after 6 --snapshot "shots/$RUNNER_OS-setup.png"
           ls -la shots
       - uses: actions/upload-artifact@v4
         if: always()

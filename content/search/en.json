@@ -1,0 +1,631 @@
+{
+ "about": "Search words for English, as the Python engine had them (server.py STOP, SYN, PHRASES). stop: words left out of a search. synonyms: an everyday word and the words the manuals use for it; each group is OR-ed, groups are AND-ed. phrases: regular expressions checked before single words, on the folded query (lower case, no accents), each giving one or more groups. plural: a word longer than longer_than ending in one of suffixes also looks for itself without it. Words are folded as web/words.js fold() does.",
+ "stop": [
+  "a",
+  "an",
+  "and",
+  "are",
+  "as",
+  "at",
+  "be",
+  "but",
+  "by",
+  "can",
+  "do",
+  "does",
+  "for",
+  "from",
+  "get",
+  "got",
+  "have",
+  "help",
+  "how",
+  "i",
+  "if",
+  "in",
+  "into",
+  "is",
+  "it",
+  "its",
+  "me",
+  "my",
+  "need",
+  "no",
+  "not",
+  "of",
+  "on",
+  "or",
+  "our",
+  "please",
+  "should",
+  "so",
+  "some",
+  "that",
+  "the",
+  "their",
+  "them",
+  "then",
+  "there",
+  "these",
+  "they",
+  "this",
+  "to",
+  "up",
+  "us",
+  "was",
+  "we",
+  "what",
+  "when",
+  "where",
+  "which",
+  "who",
+  "why",
+  "will",
+  "with",
+  "without",
+  "you",
+  "your"
+ ],
+ "synonyms": {
+  "cut": [
+   "wound",
+   "wounds",
+   "laceration",
+   "bleeding"
+  ],
+  "cuts": [
+   "wound",
+   "wounds",
+   "laceration"
+  ],
+  "bleed": [
+   "bleeding",
+   "haemorrhage",
+   "hemorrhage"
+  ],
+  "bleeding": [
+   "haemorrhage",
+   "hemorrhage",
+   "blood loss"
+  ],
+  "blood": [
+   "bleeding"
+  ],
+  "burn": [
+   "burns",
+   "scald"
+  ],
+  "burned": [
+   "burns"
+  ],
+  "burnt": [
+   "burns"
+  ],
+  "broken": [
+   "fracture",
+   "fractures"
+  ],
+  "bone": [
+   "fracture",
+   "bones"
+  ],
+  "sprain": [
+   "sprains",
+   "strain",
+   "twisted"
+  ],
+  "poop": [
+   "faeces",
+   "feces",
+   "excreta",
+   "latrine"
+  ],
+  "pee": [
+   "urine"
+  ],
+  "toilet": [
+   "latrine",
+   "toilets",
+   "sanitation",
+   "excreta"
+  ],
+  "sewage": [
+   "sewer",
+   "wastewater",
+   "excreta"
+  ],
+  "trash": [
+   "garbage",
+   "refuse",
+   "waste",
+   "rubbish"
+  ],
+  "garbage": [
+   "refuse",
+   "waste",
+   "rubbish"
+  ],
+  "purify": [
+   "purification",
+   "disinfect",
+   "disinfection",
+   "treatment"
+  ],
+  "clean": [
+   "disinfect",
+   "safe"
+  ],
+  "drinking": [
+   "potable",
+   "drinking"
+  ],
+  "filter": [
+   "filtration",
+   "filters"
+  ],
+  "bleach": [
+   "chlorine",
+   "hypochlorite"
+  ],
+  "blackout": [
+   "outage",
+   "power outage"
+  ],
+  "outage": [
+   "blackout"
+  ],
+  "electricity": [
+   "electric",
+   "power"
+  ],
+  "power": [
+   "electricity",
+   "outage"
+  ],
+  "light": [
+   "lighting",
+   "flashlight",
+   "lantern"
+  ],
+  "flashlight": [
+   "torch",
+   "lantern"
+  ],
+  "generator": [
+   "generators"
+  ],
+  "solar": [
+   "photovoltaic",
+   "pv"
+  ],
+  "battery": [
+   "batteries"
+  ],
+  "cook": [
+   "cooking",
+   "stove"
+  ],
+  "cooking": [
+   "stove",
+   "cook"
+  ],
+  "stove": [
+   "stoves",
+   "cooking"
+  ],
+  "fridge": [
+   "refrigerator",
+   "refrigerated"
+  ],
+  "spoiled": [
+   "spoilage",
+   "unsafe food"
+  ],
+  "rotten": [
+   "spoilage",
+   "spoiled"
+  ],
+  "canning": [
+   "canned",
+   "canner"
+  ],
+  "pickle": [
+   "pickling",
+   "pickled"
+  ],
+  "cold": [
+   "hypothermia",
+   "cold weather",
+   "winter"
+  ],
+  "freezing": [
+   "hypothermia",
+   "frostbite"
+  ],
+  "hot": [
+   "heat"
+  ],
+  "heat": [
+   "heat stroke",
+   "heat exhaustion",
+   "hyperthermia",
+   "extreme heat"
+  ],
+  "heatstroke": [
+   "heat stroke"
+  ],
+  "smoke": [
+   "air quality",
+   "wildfire smoke"
+  ],
+  "quake": [
+   "earthquake"
+  ],
+  "earthquake": [
+   "earthquakes",
+   "seismic"
+  ],
+  "flood": [
+   "flooding",
+   "floods"
+  ],
+  "tsunami": [
+   "tsunamis"
+  ],
+  "fire": [
+   "fires",
+   "wildfire"
+  ],
+  "wildfire": [
+   "wildfires",
+   "fire"
+  ],
+  "baby": [
+   "newborn",
+   "infant",
+   "babies"
+  ],
+  "pregnant": [
+   "pregnancy"
+  ],
+  "birth": [
+   "childbirth",
+   "labor",
+   "delivery"
+  ],
+  "kid": [
+   "child",
+   "children"
+  ],
+  "kids": [
+   "children",
+   "child"
+  ],
+  "old": [
+   "elderly",
+   "older"
+  ],
+  "fever": [
+   "temperature",
+   "fevers"
+  ],
+  "diarrhea": [
+   "diarrhoea",
+   "dehydration"
+  ],
+  "diarrhoea": [
+   "diarrhea"
+  ],
+  "vomit": [
+   "vomiting"
+  ],
+  "puke": [
+   "vomiting"
+  ],
+  "sick": [
+   "illness",
+   "disease"
+  ],
+  "medicine": [
+   "medicines",
+   "drugs",
+   "medication"
+  ],
+  "pills": [
+   "medicines",
+   "tablets",
+   "medication"
+  ],
+  "painkiller": [
+   "analgesic",
+   "paracetamol",
+   "pain"
+  ],
+  "heart": [
+   "cardiac",
+   "heart attack"
+  ],
+  "cpr": [
+   "resuscitation",
+   "chest compressions"
+  ],
+  "choking": [
+   "choke",
+   "airway"
+  ],
+  "unconscious": [
+   "unresponsive",
+   "recovery position"
+  ],
+  "bite": [
+   "bites"
+  ],
+  "snake": [
+   "snakebite",
+   "snakes"
+  ],
+  "sting": [
+   "stings"
+  ],
+  "allergic": [
+   "allergy",
+   "anaphylaxis"
+  ],
+  "infection": [
+   "infected",
+   "infections"
+  ],
+  "teeth": [
+   "tooth",
+   "dental"
+  ],
+  "tooth": [
+   "teeth",
+   "dental"
+  ],
+  "stress": [
+   "anxiety",
+   "mental health"
+  ],
+  "depressed": [
+   "depression"
+  ],
+  "grow": [
+   "growing",
+   "planting",
+   "garden"
+  ],
+  "garden": [
+   "gardening",
+   "vegetable"
+  ],
+  "seeds": [
+   "seed",
+   "seed saving"
+  ],
+  "plant": [
+   "planting",
+   "sowing"
+  ],
+  "soil": [
+   "compost",
+   "soils"
+  ],
+  "potato": [
+   "potatoes"
+  ],
+  "potatoes": [
+   "potato"
+  ],
+  "chickens": [
+   "poultry",
+   "hens"
+  ],
+  "chicken": [
+   "poultry"
+  ],
+  "goat": [
+   "goats"
+  ],
+  "bees": [
+   "beekeeping",
+   "honey bee"
+  ],
+  "radio": [
+   "radios",
+   "amateur radio",
+   "ham"
+  ],
+  "ham": [
+   "amateur radio"
+  ],
+  "phone": [
+   "telephone",
+   "cell phone",
+   "mobile"
+  ],
+  "map": [
+   "maps",
+   "navigation"
+  ],
+  "compass": [
+   "navigation",
+   "bearing"
+  ],
+  "lost": [
+   "navigation",
+   "lost"
+  ],
+  "shelter": [
+   "shelters",
+   "sheltering"
+  ],
+  "tent": [
+   "tents",
+   "tarp",
+   "shelter"
+  ],
+  "warm": [
+   "warmth",
+   "heating",
+   "insulation"
+  ],
+  "fix": [
+   "repair",
+   "repairs"
+  ],
+  "repair": [
+   "repairs",
+   "maintenance"
+  ],
+  "engine": [
+   "engines",
+   "small engine"
+  ],
+  "weld": [
+   "welding"
+  ],
+  "wood": [
+   "woodworking",
+   "timber",
+   "lumber"
+  ],
+  "knife": [
+   "knives",
+   "sharpening"
+  ],
+  "sharpen": [
+   "sharpening"
+  ],
+  "knot": [
+   "knots"
+  ],
+  "rope": [
+   "ropes",
+   "knots"
+  ],
+  "pump": [
+   "pumps"
+  ],
+  "well": [
+   "wells",
+   "borehole"
+  ],
+  "rain": [
+   "rainwater"
+  ],
+  "gas": [
+   "natural gas",
+   "propane",
+   "gas leak"
+  ],
+  "leak": [
+   "leaks",
+   "leaking"
+  ],
+  "carbon": [
+   "monoxide"
+  ],
+  "co": [
+   "carbon monoxide"
+  ],
+  "mold": [
+   "mould"
+  ],
+  "rats": [
+   "rodents",
+   "rodent"
+  ],
+  "mosquito": [
+   "mosquitoes"
+  ]
+ },
+ "phrases": [
+  {
+   "pattern": "power (cut|outage|failure)|no (power|electricity)|lights? (are )?out|blackout",
+   "groups": [
+    [
+     "outage",
+     "blackout",
+     "power outage"
+    ]
+   ]
+  },
+  {
+   "pattern": "(phone|cell|mobile)( is| was)? (dead|flat|out of battery)|(dead|flat) (phone|battery)",
+   "groups": [
+    [
+     "phone",
+     "phones",
+     "cell phone"
+    ],
+    [
+     "charge",
+     "charging",
+     "charger",
+     "power bank"
+    ]
+   ]
+  },
+  {
+   "pattern": "(water|tap) (is )?(off|not working|stopped)|no (running )?water",
+   "groups": [
+    [
+     "water"
+    ]
+   ]
+  },
+  {
+   "pattern": "toilet (is )?(not working|won'?t flush|broken)|can'?t flush",
+   "groups": [
+    [
+     "latrine",
+     "toilet",
+     "excreta"
+    ]
+   ]
+  },
+  {
+   "pattern": "heart attack",
+   "groups": [
+    [
+     "heart attack",
+     "chest pain"
+    ]
+   ]
+  },
+  {
+   "pattern": "(passed|blacked) out|fainted",
+   "groups": [
+    [
+     "unconscious",
+     "fainting",
+     "unresponsive"
+    ]
+   ]
+  },
+  {
+   "pattern": "food (went|gone|is) bad|spoiled food",
+   "groups": [
+    [
+     "spoilage",
+     "food safety"
+    ]
+   ]
+  },
+  {
+   "pattern": "can'?t breathe|not breathing|stopped breathing",
+   "groups": [
+    [
+     "breathing",
+     "resuscitation",
+     "airway"
+    ]
+   ]
+  }
+ ],
+ "plural": {
+  "suffixes": ["s"],
+  "longer_than": 4
+ }
+}
