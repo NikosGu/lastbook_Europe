@@ -163,14 +163,19 @@ jobs:
         run: |
           chmod +x "$TOOLS"
           "$TOOLS" region-sources --region "$REGION" --neighbours "$NEIGHBOURS" > "$RUNNER_TEMP/sources.json"
-          # each Geofabrik extract kept in the cache for the ISO week, under its own name; Natural Earth's zips for good
+          # each Geofabrik extract kept in the cache for the ISO week, under its own name, its two files; Natural Earth's
+          # six zips for good
           jq --arg s "$SOURCES" --arg w "$(date -u +%G-W%V)" '[(.extracts + .neighbours)[] | (.path | gsub("/"; "_")) as $f
-              | {path: "\($s)/geofabrik/\($f)", key: "geofabrik-\($f)-\($w)"}] + [{path: "\($s)/ne", key: "natural-earth-10m"}]' \
+              | {path: "\($s)/geofabrik/\($f)", key: "geofabrik-\($f)-\($w)", files: 2}]
+              + [{path: "\($s)/ne", key: "natural-earth-10m", files: (.natural_earth | length)}]' \
             "$RUNNER_TEMP/sources.json" > "$RUNNER_TEMP/caches.json"
-          # GitHub's own cache library, for a number of entries a workflow's steps cannot list in advance
-          npm install --silent --no-save --no-audit --no-fund --prefix "$RUNNER_TEMP/js" @actions/cache@4
+          # GitHub's own cache library, for a number of entries a workflow's steps cannot list in advance; without it,
+          # everything is fetched
+          npm install --silent --no-save --no-audit --no-fund --prefix "$RUNNER_TEMP/js" @actions/cache@4 \
+            || echo "::warning::GitHub's cache library could not be installed: every source is fetched"
       - name: This week's downloads, from the cache
         uses: actions/github-script@v7
+        continue-on-error: true   # a cache that cannot be read only means fetching
         env:
           ACTIONS_CACHE_SERVICE_V2: "true"
         with:
@@ -184,6 +189,8 @@ jobs:
                 if (await cache.restoreCache([c.path], c.key)) found.push(c.key)
                 core.info(`${c.key}: ${found.includes(c.key) ? 'from the cache' : 'not in the cache'}`)
               } catch (e) {
+                // what a broken restore left is not taken for whole files
+                fs.rmSync(c.path, { recursive: true, force: true })
                 core.warning(`${c.key}: the cache could not be read (${e.message}); fetched instead`)
               }
             }
@@ -195,6 +202,7 @@ jobs:
       - name: This week's downloads, into the cache
         if: always() && steps.sources.outcome == 'success'
         uses: actions/github-script@v7
+        continue-on-error: true   # a cache that cannot be written only means fetching next time
         env:
           ACTIONS_CACHE_SERVICE_V2: "true"
         with:
@@ -204,8 +212,10 @@ jobs:
             const cache = require(`${temp}/js/node_modules/@actions/cache`)
             const found = fs.existsSync(`${temp}/from-cache.json`) ? JSON.parse(fs.readFileSync(`${temp}/from-cache.json`)) : []
             for (const c of JSON.parse(fs.readFileSync(`${temp}/caches.json`))) {
-              // a folder is there only whole (build-region.sh): a neighbour left out has none
-              if (found.includes(c.key) || !fs.existsSync(c.path) || fs.readdirSync(c.path).length === 0) continue
+              // a folder kept only with all its files, none of them half fetched: a neighbour left out has none
+              const whole = fs.existsSync(c.path) && fs.readdirSync(c.path).filter(f => !f.endsWith('.part')).length >= c.files
+                && !fs.readdirSync(c.path).some(f => f.endsWith('.part'))
+              if (found.includes(c.key) || !whole) continue
               try {
                 await cache.saveCache([c.path], c.key)
                 core.info(`${c.key}: kept`)
@@ -218,7 +228,7 @@ jobs:
           OFFLINE: 1
         run: |
           packaging/regions/build-region.sh "$REGION" "$NEIGHBOURS"
-          df -h / "$DATA"
+          df -h / "$DATA/"
       - name: Into the data release
         env:
           GH_TOKEN: ${{ github.token }}
