@@ -854,7 +854,11 @@ impl Local {
                     Some("exit") => return Err(tell(fixed("stopped_unexpectedly"))),
                     _ if ev["id"].as_u64() != Some(rid) => continue,
                     Some("tok") => on_text(ev["t"].as_str().unwrap_or("")),
-                    Some("done") => return Ok(ev),
+                    Some("done") => {
+                        // the runner's numbers (words read and written, the time each took), for the log on this computer
+                        eprintln!("local AI: done {ev}");
+                        return Ok(ev);
+                    }
                     Some("error") => return Err(tell(plain_error(&ev))),
                     _ => {}
                 }
