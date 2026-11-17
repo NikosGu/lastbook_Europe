@@ -258,6 +258,6 @@ mod tests {
         assert_eq!(near.len(), 3);
         assert_eq!(near[0]["name"], "Apotheke am Städtle");
         lastbook_engine::db::close_all();
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 }

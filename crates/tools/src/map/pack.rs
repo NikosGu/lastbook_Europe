@@ -138,7 +138,7 @@ mod tests {
         let mut z = zip::ZipArchive::new(std::fs::File::open(out.join("Lastbook-Addresses-LI.zip")).unwrap()).unwrap();
         assert_eq!(z.len(), 1);
         assert_eq!(z.by_index(0).unwrap().name().unwrap(), "derived/geo/addresses/LI.sqlite");
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 
     fn map_entry_checked(map_dir: &Path, out: &Path, base: &str) -> Value {

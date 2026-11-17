@@ -334,7 +334,7 @@ mod tests {
         assert!((m - 550.0).abs() < 2.0, "the engine reads back {m} m where the DEM says 550 m");
         assert_eq!(map.map_contents()["contours"], true);
         lastbook_engine::db::close_all();
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 
     #[test]
@@ -376,6 +376,6 @@ mod tests {
             written.push(std::fs::read(&path).unwrap());
         }
         assert!(written[0] == written[1], "the same file, whatever the memory");
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 }

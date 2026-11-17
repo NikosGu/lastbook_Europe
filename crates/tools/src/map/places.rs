@@ -241,7 +241,7 @@ mod tests {
         assert_eq!(first("Landesspital"), Some(("Landesspital".into(), "hospital".into())));
         assert_eq!(first("Schaan Liechtenstein"), Some(("Schaan".into(), "town".into())), "the country's name finds its places");
         lastbook_engine::db::close_all();
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 
     #[test]
@@ -281,6 +281,6 @@ mod tests {
         assert_eq!(first("Gozo"), Some(("Għawdex".into(), "island".into())));
         assert_eq!(first("Comino"), Some(("Kemmuna".into(), "island".into())));
         lastbook_engine::db::close_all();
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 }

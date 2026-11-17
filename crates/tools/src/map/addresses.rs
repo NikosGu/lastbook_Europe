@@ -337,7 +337,7 @@ mod tests {
         let pc = map.places("9490", 20, None);
         assert_eq!((pc[0]["kind"].as_str(), pc[0]["name"].as_str()), (Some("Postcode"), Some("9490")));
         lastbook_engine::db::close_all();
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 
     #[test]
@@ -361,7 +361,7 @@ mod tests {
         assert_eq!(towns("27619"), vec!["Schiffdorf", "Spaden"], "six addresses are a place of the postcode's own");
         assert_eq!(c.query_row("SELECT count(*) FROM addr WHERE city='Bremen'", [], |r| r.get::<_, i64>(0)).unwrap(), 5, "the addresses themselves stay");
         drop(c);
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 
     #[test]
@@ -422,7 +422,7 @@ mod tests {
         assert_eq!(found("2 Triq San Anton, Floriana").as_deref(), Some("2 Triq San Anton | Il-Furjana, Malta"), "the town by its English name");
         assert_eq!(map.places("VLT1117", 5, None)[0]["name"], "VLT 1117");
         lastbook_engine::db::close_all();
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 
     #[test]
@@ -439,7 +439,7 @@ mod tests {
         let things = crate::map::osm::read(&src, &|k, t| wanted(k, t) || street_wanted(k, t)).unwrap();
         let rows = rows(&things, "LU", &Admin::default(), &[]);
         assert_eq!(rows.iter().map(|r| r.street.as_str()).collect::<Vec<_>>(), vec!["Avenue de la Gare"]);
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 
     #[test]
@@ -469,7 +469,7 @@ mod tests {
         let shown: Vec<String> = rows.iter().map(|r| format!("{} {}, {} {}", r.street, r.num, r.postcode, r.city)).collect();
         assert_eq!(shown, vec!["Am Markt 21, 28195 Bremen", "Bürgermeister-Smidt-Straße 10, 27568 Bremerhaven", "Hauptstraße 5,  Ritterhude"],
                    "the exclave's address with its own town; Lower Saxony's between them only when it says its country");
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 
     #[test]

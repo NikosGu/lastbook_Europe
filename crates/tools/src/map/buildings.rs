@@ -199,6 +199,6 @@ mod tests {
         let part = osm.chunks(12).find(|r| r[3] == 1).unwrap();
         assert_eq!((part[0], part[1], part[2]), (4, 300, 100), "30 m from 10 m, a part");
         lastbook_engine::db::close_all();
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 }

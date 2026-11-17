@@ -276,7 +276,10 @@ mod tests {
         let fine = Sources { terrain_zoom: 13, gpkg: coarse.gpkg.clone(), pbf: coarse.pbf.clone(), neighbour_gpkg: Vec::new(), neighbour_pbf: Vec::new(),
                              dem: coarse.dem.clone(), ne: None };
         assert!(build("LI", &fine, &dir.join("fine")).is_err(), "zoom 12 at most");
-        std::fs::remove_dir_all(&dir).unwrap();
+        // the open file first: Windows removes no folder that holds one
+        drop(t);
+        lastbook_engine::db::close_all();
+        let _ = std::fs::remove_dir_all(&dir);
     }
 
     #[test]
@@ -316,6 +319,6 @@ mod tests {
         assert_eq!(report["buildings"], 2, "Liechtenstein's building once, and the one on the bank");
         assert_eq!(report["address_index"]["addresses"], 2, "Liechtenstein's outline still says where its addresses are, not Switzerland's");
         drop(c);
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 }

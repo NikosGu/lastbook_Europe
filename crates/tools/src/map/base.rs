@@ -125,6 +125,6 @@ mod tests {
         assert_eq!(at(9)["layers"]["place"][0][1], "Vaduz");
         assert!(at(10)["layers"].get("road").is_none() && at(10)["layers"].get("place").is_none(), "from zoom 10 the region's own detail draws it");
         lastbook_engine::db::close_all();
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 }

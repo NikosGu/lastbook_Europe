@@ -130,6 +130,6 @@ mod tests {
         assert_eq!(near.len(), 3);
         assert!(near.iter().any(|p| p["cls"] == "reservoir" && p["detail"].as_str().unwrap().contains("ha")), "{near:?}");
         lastbook_engine::db::close_all();
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 }

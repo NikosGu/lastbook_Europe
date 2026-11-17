@@ -204,6 +204,6 @@ mod tests {
         assert_eq!(s.len(), 2);
         assert_eq!((s[0].kind, s[0].parts.len(), s[0].parts[1].len()), (Kind::Line, 2, 3));
         assert_eq!((s[0].get("type"), s[1].num("min_zoom")), (Some("Major Highway"), Some(7.5)));
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 }

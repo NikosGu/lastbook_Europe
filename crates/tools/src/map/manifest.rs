@@ -159,7 +159,7 @@ mod tests {
         assert_eq!((held["maps"].clone(), held["address_indexes"].clone()), (json!(["LI"]), json!(["LI"])));
         assert_eq!(held["left_out"].as_array().unwrap().len(), 2, "{held}");
         assert_eq!(m["packs"][0]["records"], 42);
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 
     #[test]
@@ -180,6 +180,6 @@ mod tests {
         std::fs::remove_file(dir.join("map-entry-LI.json")).unwrap();
         let (m, held) = build(&base(), &dir, None).unwrap();
         assert_eq!((held["maps"].clone(), m["models"].clone()), (json!([]), base()["models"].clone()));
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
     }
 }

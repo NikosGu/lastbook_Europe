@@ -318,7 +318,7 @@ mod tests {
         assert_eq!(got[2].rings[0].len(), 5);
         assert_eq!(got[2].tags.get("height"), Some("12 m"));
         assert!((got[2].point.0 - 9.6005).abs() < 1e-7);
-        std::fs::remove_dir_all(&dir).unwrap();
+        let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
         let rings = join(vec![vec![1, 2], vec![3, 2], vec![3, 1], vec![7, 8]]);
         assert_eq!(rings.len(), 1, "reversed pieces fit, loose ones go");
         assert_eq!((rings[0].len(), rings[0][0] == rings[0][3]), (4, true));
