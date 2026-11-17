@@ -35,7 +35,7 @@ const START_WAIT: Duration = Duration::from_secs(600);
 const DISK_MB_S_MIN: f64 = 150.0;
 
 /// What the local AI can say, each a code the interface words in the person's language (web/locales: chat.code.<code>).
-pub const CODES: [&str; 27] = [
+pub const CODES: [&str; 29] = [
     // a state's message, and why the model cannot answer now (ensure_running, generate)
     "no_runtime", "unfinished", "wrong_size", "wrong_contents", "cannot_read", "unknown_model", "cannot_measure", "not_set_up",
     "cannot_start", "did_not_start", "start_timeout", "start_failed", "not_running", "busy", "stopped_unexpectedly",
@@ -43,7 +43,13 @@ pub const CODES: [&str; 27] = [
     "too_long", "load", "context", "model_file", "failed",
     // why a model fits this computer or not (judge, judge_disk, and setup's measure)
     "from_disk", "too_big", "too_big_graphics", "disk_too_slow", "disk_speed_unknown", "measured_fits", "from_disk_ssd",
+    // a button the local AI cannot act on (action)
+    "no_model", "unknown_action",
 ];
+
+/// The system's reasons the interface words (web/locales: chat.code.kind.<kind>), after the sentence of cannot_read or
+/// cannot_start: their params.kind, an error's kind as kind_code() writes it. Any other kind is said without its reason.
+pub const KINDS: [&str; 6] = ["not_found", "permission_denied", "out_of_memory", "timed_out", "read_only_filesystem", "storage_full"];
 
 /// The sentences without params: code, English.
 const FIXED: [(&str, &str); 18] = [
@@ -764,8 +770,13 @@ impl Local {
 
     /// The local AI page's buttons: on, off, stop (Stop it now: it starts again when asked), rescan (Look again),
     /// from_disk_on / from_disk_off (the person's choice to run a model too large for the memory from the disk), and use:<id>
-    /// (another model found here).
+    /// (another model found here). The status after it, or what refused it: {error, code, params}.
     pub fn action(&self, action: &str) -> Value {
+        let refused = |s: Said| {
+            let mut out = json!({});
+            s.put(&mut out, "error");
+            out
+        };
         match action {
             "on" => {
                 self.set_saved("enabled", json!(true));
@@ -783,7 +794,7 @@ impl Local {
             "stop" => self.stop("stopped from About"),
             "rescan" => self.rediscover(),
             "from_disk_on" | "from_disk_off" => {
-                let Some(id) = self.st().model.as_ref().map(|m| m.id.clone()) else { return json!({"error": "no model"}) };
+                let Some(id) = self.st().model.as_ref().map(|m| m.id.clone()) else { return refused(said("no_model", json!({}), "no model")) };
                 let mut choice = self.saved("from_disk");
                 if !choice.is_object() {
                     choice = json!({});
@@ -809,7 +820,8 @@ impl Local {
                 }
                 self.rediscover();
             }
-            _ => return json!({"error": "unknown action"}),
+            // a page newer or older than this engine: its action, at most 64 characters, for a log
+            _ => return refused(said("unknown_action", json!({"action": action.chars().take(64).collect::<String>()}), "unknown action")),
         }
         self.status()
     }
@@ -1102,11 +1114,47 @@ mod tests {
     }
 
     #[test]
+    fn the_systems_reasons_are_its_kinds() {
+        use std::io::{Error, ErrorKind as K};
+        // each reason the interface words is the kind_code() of the system's error it stands for
+        for (kind, code) in [(K::NotFound, "not_found"), (K::PermissionDenied, "permission_denied"), (K::OutOfMemory, "out_of_memory"), (K::TimedOut, "timed_out"),
+                             (K::ReadOnlyFilesystem, "read_only_filesystem"), (K::StorageFull, "storage_full")] {
+            assert_eq!(kind_code(Error::from(kind).kind()), code);
+            assert!(KINDS.contains(&code), "{code} is not in KINDS");
+        }
+        // as the system reports them
+        #[cfg(unix)]
+        for (errno, code) in [(libc::ENOENT, "not_found"), (libc::EACCES, "permission_denied"), (libc::ENOMEM, "out_of_memory"), (libc::ETIMEDOUT, "timed_out"),
+                              (libc::EROFS, "read_only_filesystem"), (libc::ENOSPC, "storage_full")] {
+            assert_eq!(kind_code(Error::from_raw_os_error(errno).kind()), code);
+        }
+        // another kind keeps its name, and is said without a reason
+        assert_eq!(kind_code(K::Interrupted), "interrupted");
+        assert!(!KINDS.contains(&"interrupted"));
+    }
+
+    #[test]
+    fn the_buttons_it_cannot_act_on_say_why_by_their_codes() {
+        let (l, d) = local("buttons", vec![]);
+        // no model found yet: nothing to run from the disk
+        for action in ["from_disk_on", "from_disk_off"] {
+            assert_eq!(l.action(action), json!({"error": "no model", "code": "no_model", "params": {}}), "{action}");
+        }
+        // a button this engine does not have (a page newer or older than it): its action, for a log
+        assert_eq!(l.action("fly"), json!({"error": "unknown action", "code": "unknown_action", "params": {"action": "fly"}}));
+        assert_eq!(l.action(&"x".repeat(100))["params"]["action"], "x".repeat(64));
+        let _ = std::fs::remove_dir_all(d);
+    }
+
+    #[test]
     fn every_code_has_words_in_the_interface() {
         let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web/locales/en.json");
         let words: Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
         for code in CODES {
             assert!(words[format!("chat.code.{code}")].is_string(), "web/locales/en.json has no chat.code.{code}");
+        }
+        for kind in KINDS {
+            assert!(words[format!("chat.code.kind.{kind}")].is_string(), "web/locales/en.json has no chat.code.kind.{kind}");
         }
     }
 

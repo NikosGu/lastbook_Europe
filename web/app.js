@@ -68,9 +68,12 @@ const VROW = { guides: 'app.vrow.name.guides', health: 'app.vrow.name.health', w
   outdoors: 'app.vrow.name.outdoors', repair: 'app.vrow.name.repair', making: 'app.vrow.name.making', coalcracker: 'app.vrow.name.coalcracker', corporals: 'app.vrow.name.corporals',
   canterbury: 'app.vrow.name.canterbury', primitive: 'app.vrow.name.primitive', courses: 'app.vrow.name.courses', all: 'app.vrow.name.all' };
 const VNOTE = { guides: 'app.vrow.note.guides', hobbyist: 'app.vrow.note.hobbyist', primitive: 'app.vrow.note.primitive', courses: 'app.vrow.note.courses' };
+// A shelf's group of records without a collection, by its collection_code (browse.rs); a collection keeps its own name
+const COLL = { other: 'app.coll.other' };
 const shelfName = s => I18N.said(SHELF, { code: s.id }, s.title);
 const rowName = r => I18N.said(VROW, { code: r.id }, r.title);
 const rowNote = r => I18N.said(VNOTE, { code: r.note_code }, r.note);
+const collName = c => I18N.said(COLL, { code: c.collection_code }, c.collection);
 
 /* ------------------------------------------------------------ storage -- */
 const store = {
@@ -1121,7 +1124,7 @@ async function shelfPage(id, kind, q) {
   let off = 0;
   const load = async () => {
     const d = await api(`/api/shelf/${id}?kind=${kind}&q=${encodeURIComponent(q)}&offset=${off}`);
-    const html = d.collections.map(c => `<section class="collection"><h3>${esc(c.collection)}</h3><div class="small muted">${esc(trustOf(c))} · ${th('app.shelf.items', { n: c.count })}</div><ul class="list">${c.items.map(r => rowItem({ src: r })).join('')}</ul>${c.count > c.items.length ? `<a class="btn ghost" href="#/collection?name=${encodeURIComponent(c.collection)}&${fromQ()}">${th('app.see_all', { count: c.count })}</a>` : ''}</section>`).join('');
+    const html = d.collections.map(c => `<section class="collection"><h3>${esc(collName(c))}</h3><div class="small muted">${esc(trustOf(c))} · ${th('app.shelf.items', { n: c.count })}</div><ul class="list">${c.items.map(r => rowItem({ src: r })).join('')}</ul>${c.count > c.items.length ? `<a class="btn ghost" href="#/collection?name=${encodeURIComponent(c.collection)}&${fromQ()}">${th('app.see_all', { count: c.count })}</a>` : ''}</section>`).join('');
     if (!off) $('#shres').innerHTML = d.collections.length ? '' : `<div class="empty">${th('app.shelf.none')}</div>`;
     $('#shres').insertAdjacentHTML('beforeend', html);
     $('#moreb')?.remove();
@@ -1188,7 +1191,9 @@ function localAbout(st) {
   return `${th('app.ai.status', { status })} ${l.state === 'absent' ? `<a class="btn plain" href="/ui/setup.html#manage">${th('app.ai.add')}</a>` : ''}${btn('rescan', th('app.ai.rescan'))}${models}`;
 }
 async function localAI(action) {
-  try { await fetch('/api/assistant/local', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) }) } catch { }
+  let a = null;
+  try { a = await (await fetch('/api/assistant/local', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) })).json() } catch { }
+  const no = Chat.refusal(a); if (no) toast(no);   // the button could not act (no model found, no library open): said by its code
   setTimeout(() => { if (location.hash.startsWith('#/about')) route() }, 400);
 }
 // How sources are labelled: the label, and who it covers

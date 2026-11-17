@@ -128,10 +128,19 @@
     if (!current || pack.id !== current.pack) return true;
     return Boolean(pack.revision && pack.revision !== current.content_revision);
   }
-  // The published packs by id: their names and summaries in each language. Another id keeps the manifest's own words.
-  const PACK = { small: ['setup.pack.small', 'setup.pack.small_summary'], medium: ['setup.pack.medium', 'setup.pack.medium_summary'], all: ['setup.pack.all', 'setup.pack.all_summary'] };
+  // The published packs by id: their names and summaries in each language, and whether the name already says "library" (whole: the
+  // starter pack, content/library/starter.json), so that it is never said twice. Another id keeps the manifest's own words.
+  const PACK = { small: ['setup.pack.small', 'setup.pack.small_summary'], medium: ['setup.pack.medium', 'setup.pack.medium_summary'], all: ['setup.pack.all', 'setup.pack.all_summary'],
+    starter: ['setup.pack.starter', 'setup.pack.starter_summary', 'whole'] };
   const packTitle = p => !p ? '' : english() && p.title ? p.title : PACK[p.id] ? t(PACK[p.id][0]) : p.title || p.id;
   const packSummary = p => !p ? '' : english() && p.summary ? p.summary : PACK[p.id] ? t(PACK[p.id][1]) : p.summary || '';
+  /* a pack as the library it is: "Small library"; a name that already says library ("Starter library", "Biblioteca di base") stays as
+     it is. In English, and for a pack the table does not know, the name itself shows whether it does. */
+  const packItem = p => {
+    if (!p) return '';
+    const name = packTitle(p), whole = english() || !PACK[p.id] ? /library/i.test(name) : PACK[p.id][2] === 'whole';
+    return whole ? name : t('setup.item.library', { name });
+  };
 
   /* region maps (docs/SETUP-API.md, Region maps). A region is a country, or for the five largest a part of one: its code is
      LU or DE-BY (crates/engine/src/regions.rs). The person picks the country, then the region; Lastbook never looks for where it is.
@@ -157,8 +166,14 @@
   const packDl = p => p.download_bytes || (p.files || []).reduce((n, f) => n + (f.size || 0), 0);
   const SEP = WIN ? '\\' : '/', DATA = 'LastbookData';
   const asData = p => /[\\/]LastbookData[\\/]?$/i.test(p) ? p.replace(/[\\/]$/, '') : String(p).replace(/[\\/]$/, '') + SEP + DATA;
-  /* a file already on this computer, of the right size, for a pack or the model: setup uses it instead of downloading */
+  /* a file already on this computer, of the right size, for a pack, a map, an address index or the model: setup uses it instead of
+     downloading (the engine does, for each of them) */
   const foundFor = (kind, id) => (S.found || []).find(f => f.kind === kind && (f.size_ok !== false) && (kind === 'model' || f.id === id || f.pack === id));
+  /* a file found here, named as the done page names what it holds (itemTitle: "Map: Liechtenstein", a pack by its own name); a file of
+     something the manifest does not list, by its file name */
+  const foundTitle = f => f.kind === 'library' ? t('setup.found.library') : f.kind === 'model' ? t('setup.found.model')
+    : (f.kind === 'pack' ? packById(f.id) : (f.kind === 'map' || f.kind === 'addresses') && mapById(f.id)) ? itemTitle({ kind: f.kind, id: f.id, title: f.name })
+    : f.name || baseName(f.path);
   const aiFits = () => !!(S.hardware && S.hardware.ai && S.hardware.ai.fits);
   // why the local AI does not fit this computer
   const aiWhy = () => { const a = (S.hardware && S.hardware.ai) || {}; return sayWhy(a.why_codes, a.why) };
@@ -199,7 +214,7 @@
     const mp = mapAdds();
     if (mp) { const got = foundFor('map', mp.id); if (!got) dl += packDl(mp); need += (got ? 0 : packDl(mp)) + (mp.installed_bytes || 0) }
     const a = addressAdds();
-    if (a) { dl += packDl(a); need += packDl(a) + (a.installed_bytes || 0) }
+    if (a) { const got = foundFor('addresses', a.id); if (!got) dl += packDl(a); need += (got ? 0 : packDl(a)) + (a.installed_bytes || 0) }
     if (need) need += 2 * 1000 ** 3;
     return { dl, need };
   }
@@ -305,8 +320,8 @@
         : `<div class="s-opt s-ai off" role="group" aria-label="${th('setup.ai.title')}"><span class="s-opt-in"><span class="s-opt-h"><b>${th('setup.ai.title')}</b><span class="s-badge later">${th('setup.badge.not_here')}</span></span>
             <small>${esc(aiWhy())}</small></span></div>`;
     }
-    const found = (S.found || []).map((f, i) => f.rejected ? `<div class="s-found off">${ico('file')}<span><b>${esc(f.name || f.path.split(/[\\/]/).pop())}</b><small>${th('setup.found.rejected', { path: home(f.path) })}</small></span></div>`
-      : f.size_ok === false ? '' : `<div class="s-found">${ico(f.kind === 'library' ? 'folder' : 'file')}<span><b>${esc(f.kind === 'library' ? t('setup.found.library') : f.kind === 'model' ? t('setup.found.model') : (packById(f.id) ? t('setup.item.library', { name: packTitle(packById(f.id)) }) : f.title || f.name))}</b><small>${esc(home(f.path))}${f.size ? ' · ' + size(f.size) : ''}</small></span>
+    const found = (S.found || []).map((f, i) => f.rejected ? `<div class="s-found off">${ico('file')}<span><b>${esc(foundTitle(f))}</b><small>${th('setup.found.rejected', { path: home(f.path) })}</small></span></div>`
+      : f.size_ok === false ? '' : `<div class="s-found">${ico(f.kind === 'library' ? 'folder' : 'file')}<span><b>${esc(foundTitle(f))}</b><small>${esc(home(f.path))}${f.size ? ' · ' + size(f.size) : ''}</small></span>
         <button class="btn plain" data-use="${i}">${th('setup.found.use')}</button></div>`).join('');
 
     main.innerHTML = `${missingCard()}${c ? `<button class="s-link" id="toManage">${ico('back')}<span>${th('setup.manage.title')}</span></button>` : ''}
@@ -368,28 +383,34 @@
     if (box.hidden) return;
     main.querySelectorAll('[data-pack-summary]').forEach(el => { el.textContent = packSummary(packById(el.dataset.packSummary)) });
     const selected = selectedRegion(), cc = selectedCountry();
-    const bytesFor = m => {
-      const a = addressById(m.id), included = now === 'europe' || m.id === now;
-      const addressIncluded = ((cur() || {}).address_indexes || []).includes(m.id);
-      return (included ? 0 : packDl(m)) + (a && a.available !== false && !addressIncluded ? packDl(a) : 0);
+    /* what choosing region m adds, [kind, entry]: its map unless the library has it, its address index unless the library has it.
+       Of that, what still downloads: a file already on this computer (found[]) is used instead, as plan() counts it. */
+    const adds = m => {
+      const a = addressById(m.id), out = [];
+      if (!(now === 'europe' || m.id === now)) out.push(['map', m]);
+      if (a && a.available !== false && !((cur() || {}).address_indexes || []).includes(m.id)) out.push(['addresses', a]);
+      return out;
     };
+    const dlOf = add => add.reduce((n, [kind, x]) => n + (foundFor(kind, x.id) ? 0 : packDl(x)), 0);
+    const usesFound = add => add.some(([kind, x]) => foundFor(kind, x.id));
     const offFor = m => !(now === 'europe' || m.id === now) && m.available === false;
-    const details = m => offFor(m) ? t('setup.map.later') : bytesFor(m) ? t('setup.size.download', { size: size(bytesFor(m)) }) : t('setup.map.included');
+    const details = m => { const add = adds(m), dl = dlOf(add);
+      return offFor(m) ? t('setup.map.later') : dl ? t('setup.size.download', { size: size(dl) }) : usesFound(add) ? t('setup.map.found') : t('setup.map.included') };
     const countryOpts = countries().map(k => {
       const rs = regionsOf(k), one = !split(k) ? rs[0] : null;
       const off = rs.every(offFor);
       return `<option value="${esc(k)}"${cc === k ? ' selected' : ''}${off ? ' disabled' : ''}>${esc(countryName(k))}${one ? ' — ' + esc(details(one)) : off ? ' — ' + th('setup.map.later') : ''}</option>`;
     }).join('');
     const regionOpts = cc && split(cc) ? regionsOf(cc).map(m => `<option value="${esc(m.id)}"${selected === m.id ? ' selected' : ''}${offFor(m) ? ' disabled' : ''}>${esc(m.title)} — ${esc(details(m))}</option>`).join('') : '';
-    const sel = mapById(selected), a = addressAdds();
-    const mapIncluded = now === 'europe' || selected === now;
-    const bytes = (sel && !mapIncluded ? packDl(sel) : 0) + (a ? packDl(a) : 0);
-    const disk = (sel && !mapIncluded ? sel.installed_bytes || 0 : 0) + (a ? a.installed_bytes || 0 : 0);
+    const sel = mapById(selected), add = sel ? adds(sel) : [], dl = dlOf(add), found = usesFound(add);
+    const mapIncluded = !add.some(([kind]) => kind === 'map'), a = add.some(([kind]) => kind === 'addresses');
+    const disk = add.reduce((n, [, x]) => n + (x.installed_bytes || 0), 0);
     const unavailable = selected && addresses().length && (!addressById(selected) || addressById(selected).available === false);
-    const sizes = { download: size(bytes), disk: size(disk) };
+    const sizes = { download: size(dl), disk: size(disk) };
+    // its sizes: what downloads and the room it takes; with nothing to download, what is already here, else all included
     let hint = !cc ? t('setup.map.pick_country_hint') : !sel ? t('setup.map.pick_region_hint')
-      : bytes ? t(mapIncluded && a ? 'setup.map.sizes_addresses' : 'setup.map.sizes', sizes) : t('setup.map.all_included');
-    if (sel && unavailable) hint = (bytes ? t('setup.map.sizes', sizes) + '.' : t('setup.map.map_included')) + ' ' + t('setup.map.no_addresses');
+      : dl ? t(mapIncluded && a ? 'setup.map.sizes_addresses' : 'setup.map.sizes', sizes) : found ? t('setup.map.sizes_found', sizes) : t('setup.map.all_included');
+    if (sel && unavailable) hint = (dl ? t('setup.map.sizes', sizes) + '.' : found ? t('setup.map.sizes_found', sizes) + '.' : t('setup.map.map_included')) + ' ' + t('setup.map.no_addresses');
     box.innerHTML = `<h2>${ico('map')}${th('setup.map.title')}</h2>
       <p class="s-mapnote">${th('setup.map.note')}</p>
       ${now === 'europe' ? `<p class="s-mapnote">${th('setup.map.europe_note')}</p>` : ''}
@@ -503,7 +524,7 @@
     const bigger = larger.filter(x => x.available !== false), later = larger.find(x => x.available === false);
     main.innerHTML = `<h1>${th('setup.manage.title')}</h1>
       <div class="s-have">
-        <div class="s-row">${ico('book', 's-ri')}<span><b>${p || c.pack ? th('setup.item.library', { name: p ? packTitle(p) : c.pack }) : th('setup.manage.library')}</b><small>${libraryUpdate ? th('setup.manage.update_available') + ' · ' : p ? size(p.installed_bytes) + ' · ' : ''}${esc(home(c.folder))}</small>${LIVES[c.disk_kind] ? `<small class="s-where${c.disk_kind === 'local' ? '' : ' s-ext'}">${ico(c.disk_kind === 'network' ? 'nas' : c.disk_kind === 'removable' ? 'usb' : 'disk')}${th(LIVES[c.disk_kind])}</small>` : ''}</span>
+        <div class="s-row">${ico('book', 's-ri')}<span><b>${p ? esc(packItem(p)) : c.pack ? th('setup.item.library', { name: c.pack }) : th('setup.manage.library')}</b><small>${libraryUpdate ? th('setup.manage.update_available') + ' · ' : p ? size(p.installed_bytes) + ' · ' : ''}${esc(home(c.folder))}</small>${LIVES[c.disk_kind] ? `<small class="s-where${c.disk_kind === 'local' ? '' : ' s-ext'}">${ico(c.disk_kind === 'network' ? 'nas' : c.disk_kind === 'removable' ? 'usb' : 'disk')}${th(LIVES[c.disk_kind])}</small>` : ''}</span>
           ${libraryUpdate ? `<button class="btn" id="libraryUpdate">${th('setup.manage.update', { name: packTitle(p) })}</button>` : bigger.length ? `<button class="btn" id="upgrade">${ico('up')}${th('setup.manage.get', { name: packTitle(bigger[0]) })}</button>` : later ? `<span class="s-badge later">${th('setup.manage.comes_later', { name: packTitle(later) })}</span>` : `<span class="s-badge here">${th('setup.manage.largest')}</span>`}</div>
         ${m && m.available !== false ? `<div class="s-row">${ico('ai', 's-ri')}<span><b>${th('setup.ai.title')}</b><small>${c.model ? th('setup.manage.ai_here', { size: size(m.size) }) : aiFits() ? th('setup.manage.ai_absent', { size: size(m.size) }) : esc(aiWhy())}</small></span>
           ${c.model ? (!CAN.removeAi ? '' : confirmRemove ? `<span class="s-confirm"><button class="btn danger" id="rmYes">${th('setup.manage.remove')}</button><button class="btn plain" id="rmNo">${th('setup.manage.keep')}</button></span>` : `<button class="btn plain" id="rmAi">${th('setup.manage.remove')}</button>`) : aiFits() ? `<button class="btn" id="addAi">${th('setup.manage.add')}</button>` : ''}</div>` : ''}
@@ -590,8 +611,8 @@
   }
   // an item's name: the local AI, a region's map or address search, a library (by the pack's name; the engine's title for a library of the person's own)
   const itemTitle = it => it.kind === 'model' ? t('setup.ai.title') : it.kind === 'map' ? t('setup.item.map', { name: mapById(it.id) ? mapName(it.id) : it.title || it.id })
-    : it.kind === 'addresses' ? (mapById(it.id) ? t('setup.item.addresses', { name: mapName(it.id) }) : it.title) : it.id === 'library' || it.id === 'repair' || /library/i.test(it.title) ? it.title
-    : t('setup.item.library', { name: packTitle(packById(it.id) || { id: it.id, title: it.title }) });
+    : it.kind === 'addresses' ? (mapById(it.id) ? t('setup.item.addresses', { name: mapName(it.id) }) : it.title) : it.id === 'library' || it.id === 'repair' ? it.title
+    : packItem(packById(it.id) || { id: it.id, title: it.title });
   /* an item that needs nothing from the internet: the person's own file, or one stopped after its download was complete.
      source and paused_from come from the engine (docs/SETUP-API.md); without them, a complete download still counts */
   const noDownload = it => it.source === 'found' || (!!it.paused_from && it.paused_from !== 'downloading') || (it.bytes_total > 0 && it.bytes_done >= it.bytes_total);

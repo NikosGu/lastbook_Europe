@@ -2,8 +2,9 @@
 //! original Lastbook's server.py (SHELVES, shelf_of, shelves, shelf, collection_items, VROWS, vrow_of, vcard, vsort,
 //! guide_videos, videos_home, videos_list, videos_related). Typed filters fold accents, as search does.
 //!
-//! The interface says a shelf's or a row's title by its id (web/locales: app.shelf.name.<id>, app.vrow.name.<id>) and a
-//! row's note by its `note_code` (app.vrow.note.<code>); the English title and note stay beside them.
+//! The interface says a shelf's or a row's title by its id (web/locales: app.shelf.name.<id>, app.vrow.name.<id>), a
+//! row's note by its `note_code` (app.vrow.note.<code>), and a shelf's group of records without a collection by its
+//! `collection_code` (app.coll.<code>); the English title, note and group name stay beside them.
 
 use super::catalog::Record;
 use super::topics::GuideOrder;
@@ -32,6 +33,8 @@ const SHELVES: [(&str, &str, &str); 12] = [
 ];
 /// The shelf of everything no other shelf takes.
 const OTHER: (&str, &str) = ("other", "Other references");
+/// A shelf's records without a collection, as one group: (code, name). The name is what the group's "See all" asks for.
+const NO_COLLECTION: (&str, &str) = ("other", "Other");
 static SHELF_RX: LazyLock<Vec<Regex>> = LazyLock::new(|| SHELVES.iter().map(|s| Regex::new(s.2).unwrap()).collect());
 static LONG_WORD: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\p{L}{4,}").unwrap());
 
@@ -156,11 +159,12 @@ impl Library {
             .filter(|r| fq.is_empty() || fold(&format!("{} {} {}", r.title, r.str("collection"), r.str("publisher"))).contains(&fq))
             .collect();
         rs.sort_by(|a, b| b.trust.1.partial_cmp(&a.trust.1).unwrap_or(Ordering::Equal).then(by_text(a.str("collection"), b.str("collection"))).then(by_text(&a.title, &b.title)));
-        // a 300-chapter manual shows as one entry
-        let mut groups: Vec<(String, Vec<&Arc<Record>>)> = Vec::new();
-        let mut at: HashMap<String, usize> = HashMap::new();
+        // a 300-chapter manual shows as one entry; the records without a collection, as one group with a code (None: a
+        // collection's own name)
+        let mut groups: Vec<((String, Option<&str>), Vec<&Arc<Record>>)> = Vec::new();
+        let mut at: HashMap<(String, Option<&str>), usize> = HashMap::new();
         for r in &rs {
-            let c = if r.truthy("collection") { r.str("collection").to_string() } else { "Other".to_string() };
+            let c = if r.truthy("collection") { (r.str("collection").to_string(), None) } else { (NO_COLLECTION.1.to_string(), Some(NO_COLLECTION.0)) };
             let i = *at.entry(c.clone()).or_insert_with(|| {
                 groups.push((c, Vec::new()));
                 groups.len() - 1
@@ -170,7 +174,8 @@ impl Library {
         let lib = self.lib().unwrap_or_default();
         let items: Vec<Value> = groups
             .iter()
-            .map(|(c, v)| json!({"collection": c, "count": v.len(), "trust": v[0].trust.0, "trust_code": v[0].trust_code, "items": v.iter().take(6).map(|x| cat.public(x, false, &lib)).collect::<Vec<_>>()}))
+            .map(|((c, code), v)| json!({"collection": c, "collection_code": code, "count": v.len(), "trust": v[0].trust.0, "trust_code": v[0].trust_code,
+                                         "items": v.iter().take(6).map(|x| cat.public(x, false, &lib)).collect::<Vec<_>>()}))
             .collect();
         let (page, more) = offset_page(&items, offset, limit);
         json!({"total": rs.len(), "collections": page, "more": more})
@@ -327,5 +332,35 @@ mod tests {
         for (code, _) in NOTES {
             assert!(words[format!("app.vrow.note.{code}")].is_string(), "web/locales/en.json has no app.vrow.note.{code}");
         }
+        assert!(words[format!("app.coll.{}", NO_COLLECTION.0)].is_string(), "web/locales/en.json has no app.coll.{}", NO_COLLECTION.0);
+    }
+
+    #[test]
+    fn records_without_a_collection_are_one_group_said_by_its_code() {
+        use crate::library::tests::{cleanup, repo, temp};
+        let data = temp("browse-other");
+        let lib = data.join("library-data");
+        std::fs::create_dir_all(&lib).unwrap();
+        let cat = json!([
+            {"id": "a", "kind": "pdf", "path": "documents/a.pdf", "title": "Wells", "publisher": "WHO", "collection": "WHO", "category": "water"},
+            {"id": "b", "kind": "pdf", "path": "documents/b.pdf", "title": "Rain barrels", "publisher": "Someone", "category": "water"},
+            {"id": "c", "kind": "html", "path": "pages/c.html", "title": "Filters", "publisher": "Someone", "collection": "", "category": "water"},
+            {"id": "d", "kind": "pdf", "path": "documents/d.pdf", "title": "Splints", "publisher": "Someone", "collection": null, "category": "first-aid"}
+        ]);
+        std::fs::write(lib.join("catalog.json"), serde_json::to_vec(&cat).unwrap()).unwrap();
+        let l = Library::new(crate::paths::Paths::new(repo(), Some(data.clone())));
+        let groups = |shelf: &str| l.shelf(shelf, "all", "", 0)["collections"].as_array().unwrap().clone();
+        let water = groups("water");
+        let who = water.iter().find(|g| g["collection"] == "WHO").unwrap();
+        assert_eq!((&who["collection_code"], &who["count"]), (&Value::Null, &json!(1)), "a collection by its own name");
+        // no collection, or an empty one: one group, its name for "See all" and its code for the interface
+        let other = water.iter().find(|g| g["collection_code"] == "other").unwrap();
+        assert_eq!((&other["collection"], &other["count"]), (&json!("Other"), &json!(2)));
+        let ids: HashSet<&str> = other["items"].as_array().unwrap().iter().map(|i| i["id"].as_str().unwrap()).collect();
+        assert_eq!(ids, HashSet::from(["b", "c"]));
+        // each shelf its own
+        let health = groups("health");
+        assert_eq!((health.len(), &health[0]["collection"], &health[0]["collection_code"], &health[0]["count"]), (1, &json!("Other"), &json!("other"), &json!(1)));
+        cleanup(&data);
     }
 }

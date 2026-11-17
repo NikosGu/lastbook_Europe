@@ -20,6 +20,32 @@ const MAX_BODY: usize = 64 * 1024;
 /// A chat request carries the conversation so far.
 const MAX_CHAT_BODY: usize = 256 * 1024;
 
+/// What the assistant's and the chat's routes say when they cannot answer, each a code the interface words in the person's
+/// language (web/locales: chat.code.<code>, beside the local AI's and the chat's own codes), with its params; the English
+/// stays beside them, in `error`, for logs and for an interface that does not know the code.
+pub const CODES: [&str; 6] = ["no_library", "answer_gone", "no_messages", "answer_not_started", "chat_too_long", "bad_request"];
+const NO_LIBRARY: &str = "There is no library open, so there is no local AI.";
+const GONE: &str = "This answer is no longer kept.";
+
+/// A refusal: its English as `error`, beside its code and params.
+fn refused(status: u16, code: &str, params: Value, english: &str) -> Response {
+    Response::json_status(status, &json!({"error": english, "code": code, "params": params}))
+}
+
+/// Starting an answer refused (ai/chat.rs, Chats::start): a request without its messages, or an answer the system could not
+/// start (no thread for it).
+fn not_started(e: &str) -> Response {
+    let code = if e == "messages are missing" { "no_messages" } else { "answer_not_started" };
+    refused(400, code, json!({}), e)
+}
+
+/// A poll for an answer no longer kept (forgotten after a while unread, or never started): 404, saying so as a poll's last
+/// answer would, an error event and done, so the page script that polls stops there and the chat says why.
+fn gone() -> Response {
+    let ev = json!({"type": "error", "error": "gone", "code": "answer_gone", "params": {}, "text": GONE});
+    Response::json_status(404, &json!({"error": GONE, "code": "answer_gone", "params": {}, "events": [ev], "done": true}))
+}
+
 pub struct Engine {
     pub paths: Paths,
     pub setup: Option<Setup>,
@@ -109,33 +135,33 @@ impl Engine {
     fn ai_route(&self, method: &str, path: &str, req: &Request) -> Option<Response> {
         let body = || -> Result<Value, Response> {
             if req.body.len() > MAX_CHAT_BODY {
-                return Err(Response::json_status(413, &json!({"error": "request too large"})));
+                return Err(refused(413, "chat_too_long", json!({}), "request too large")); // a chat carries all it said so far
             }
             match serde_json::from_slice::<Value>(&req.body) {
                 Ok(v) if v.is_object() => Ok(v),
                 _ if req.body.is_empty() => Ok(json!({})),
-                _ => Err(Response::json_status(400, &json!({"error": "bad request"}))),
+                _ => Err(refused(400, "bad_request", json!({}), "bad request")),
             }
         };
         Some(match (method, path) {
             ("GET" | "HEAD", "/api/assistant/status") => Response::json(&self.assistant_status()),
             ("POST", "/api/assistant/local") => match (&self.ai, body()) {
                 (_, Err(r)) => r,
-                (None, _) => Response::json_status(404, &json!({"error": "There is no library open, so there is no local AI."})),
+                (None, _) => refused(404, "no_library", json!({}), NO_LIBRARY),
                 (Some(ai), Ok(b)) => Response::json(&ai.action(b["action"].as_str().unwrap_or(""))),
             },
             ("POST", "/api/chat/start") => match body() {
                 Err(r) => r,
                 Ok(b) => match self.chats.start(&b, self.ai.clone(), self.knowledge.clone()) {
                     Ok(id) => Response::json(&json!({"id": id})),
-                    Err(e) => Response::json_status(400, &json!({"error": e})),
+                    Err(e) => not_started(&e),
                 },
             },
             ("GET" | "HEAD", p) if p.starts_with("/api/chat/poll/") => {
                 let from = req.param("from").and_then(|f| f.parse().ok()).unwrap_or(0);
                 match self.chats.poll(&p["/api/chat/poll/".len()..], from) {
                     Some(v) => Response::json(&v),
-                    None => Response::json_status(404, &json!({"error": "This answer is no longer kept."})),
+                    None => gone(),
                 }
             }
             ("POST", p) if p.starts_with("/api/chat/cancel/") => Response::json(&json!({"ok": self.chats.cancel(&p["/api/chat/cancel/".len()..])})),
@@ -143,7 +169,7 @@ impl Engine {
                 Err(r) => r,
                 Ok(b) => match self.chats.whole(&b, self.ai.clone(), self.knowledge.clone()) {
                     Ok(text) => Response::new(200, "text/event-stream; charset=utf-8", text),
-                    Err(e) => Response::json_status(400, &json!({"error": e})),
+                    Err(e) => not_started(&e),
                 },
             },
             _ => return None,
@@ -191,7 +217,8 @@ impl Engine {
                 json!({"model": local["name"], "online": ai.available(), "error": null, "local": local, "vision": false, "index": {"state": "off"},
                        "coverage": self.map.coverage()})
             }
-            None => json!({"model": null, "online": false, "error": "no library", "local": null, "vision": false, "index": {"state": "off"}}),
+            None => json!({"model": null, "online": false, "error": "no library", "code": "no_library", "params": {}, "local": null, "vision": false,
+                           "index": {"state": "off"}}),
         }
     }
 
@@ -299,5 +326,56 @@ mod tests {
         let page = |e: &Engine| String::from_utf8_lossy(&e.handle(&Request::get("/")).body).into_owned();
         assert!(page(&engine(None)).contains("setup.js"));
         assert!(page(&engine(Some(PathBuf::from("/tmp")))).contains("app.js"));
+    }
+
+    /// (status, error, code, params) of an answer.
+    fn said(r: &Response) -> (u16, String, String, Value) {
+        let v: Value = serde_json::from_slice(&r.body).unwrap();
+        (r.status, v["error"].as_str().unwrap_or("").into(), v["code"].as_str().unwrap_or("").into(), v["params"].clone())
+    }
+
+    #[test]
+    fn the_assistant_and_the_chat_say_why_they_cannot_answer_by_their_codes() {
+        let e = engine(None);
+        let said_as = |code: &str, english: &str, status: u16| (status, english.to_string(), code.to_string(), json!({}));
+        // no library open: no local AI, in its status and when a button asks it
+        let s = e.assistant_status();
+        assert_eq!((&s["error"], &s["code"], &s["params"], &s["online"]), (&json!("no library"), &json!("no_library"), &json!({}), &json!(false)));
+        assert_eq!(serde_json::from_slice::<Value>(&e.handle(&Request::get("/api/assistant/status")).body).unwrap()["code"], "no_library");
+        assert_eq!(said(&e.handle(&Request::post("/api/assistant/local", r#"{"action": "rescan"}"#))),
+                   said_as("no_library", "There is no library open, so there is no local AI.", 404));
+        // a chat request without its messages, as it starts and whole
+        for path in ["/api/chat/start", "/api/chat"] {
+            assert_eq!(said(&e.handle(&Request::post(path, "{}"))), said_as("no_messages", "messages are missing", 400), "{path}");
+        }
+        // an answer the system could not start
+        assert_eq!(said(&not_started("Resource temporarily unavailable (os error 35)")),
+                   said_as("answer_not_started", "Resource temporarily unavailable (os error 35)", 400));
+        // a body that is not an object, and a chat too long to send
+        assert_eq!(said(&e.handle(&Request::post("/api/chat/start", "not json"))), said_as("bad_request", "bad request", 400));
+        assert_eq!(said(&e.handle(&Request::post("/api/assistant/local", "[1]"))), said_as("bad_request", "bad request", 400));
+        let long = serde_json::to_vec(&json!({"messages": [{"role": "user", "content": "x".repeat(MAX_CHAT_BODY)}]})).unwrap();
+        assert_eq!(said(&e.handle(&Request::post("/api/chat", long))), said_as("chat_too_long", "request too large", 413));
+        // an answer no longer kept: said as a poll's last answer, so the page's poller stops and the chat says why
+        let r = e.handle(&Request::get("/api/chat/poll/nothing?from=3"));
+        assert_eq!(said(&r), said_as("answer_gone", "This answer is no longer kept.", 404));
+        let v: Value = serde_json::from_slice(&r.body).unwrap();
+        assert_eq!(v["done"], true);
+        assert_eq!(v["events"], json!([{"type": "error", "error": "gone", "code": "answer_gone", "params": {}, "text": "This answer is no longer kept."}]));
+        // an answer that is kept is polled as before
+        let r = e.handle(&Request::post("/api/chat/start", r#"{"messages": [{"role": "user", "content": "Ciao"}]}"#));
+        let id = serde_json::from_slice::<Value>(&r.body).unwrap()["id"].as_str().unwrap().to_string();
+        assert_eq!(e.handle(&Request::get(&format!("/api/chat/poll/{id}"))).status, 200);
+    }
+
+    #[test]
+    fn every_code_has_words_in_the_interface() {
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web/locales/en.json");
+        let words: Value = serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+        for code in CODES {
+            assert!(words[format!("chat.code.{code}")].is_string(), "web/locales/en.json has no chat.code.{code}");
+            // the same words' table as the local AI's and the chat's codes: none is two things
+            assert!(!crate::ai::local::CODES.contains(&code) && !crate::ai::chat::CODES.contains(&code), "{code} is also the local AI's or the chat's");
+        }
     }
 }

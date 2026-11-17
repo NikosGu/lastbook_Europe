@@ -20,9 +20,9 @@ const Chat = (() => {
   const STAGES = ['chat.stage.search', 'chat.stage.read', 'chat.stage.write'], STAGE_AT = { starting: -1, thinking: 0, searching: 0, reading: 1, writing: 2 };
   // the kinds search_library may be limited to (the engine's assistant, crates/engine/src/ai/assistant.rs); another kind shows as the model sent it
   const KIND = { manual: 'chat.kind.manual', video: 'chat.kind.video' };
-  // What the local AI and the chat say, as codes with params (crates/engine/src/ai/local.rs and ai/chat.rs, CODES there), each
-  // beside the engine's English sentence, which shows only for a code this page does not know. measured_fits and from_disk_ssd
-  // are setup's (its measure of a model file).
+  // What the local AI and the chat say, as codes with params (crates/engine/src/ai/local.rs and ai/chat.rs, CODES there; the
+  // assistant's and the chat's routes, router.rs CODES), each beside the engine's English sentence, which shows only for a code
+  // this page does not know. measured_fits and from_disk_ssd are setup's (its measure of a model file).
   const CODE = {
     no_runtime: 'chat.code.no_runtime', unfinished: 'chat.code.unfinished', wrong_size: 'chat.code.wrong_size', wrong_contents: 'chat.code.wrong_contents',
     cannot_read: 'chat.code.cannot_read', unknown_model: 'chat.code.unknown_model', cannot_measure: 'chat.code.cannot_measure', not_set_up: 'chat.code.not_set_up',
@@ -31,8 +31,21 @@ const Chat = (() => {
     too_long: 'chat.code.too_long', load: 'chat.code.load', context: 'chat.code.context', model_file: 'chat.code.model_file', failed: 'chat.code.failed',
     from_disk: 'chat.code.from_disk', too_big: 'chat.code.too_big', too_big_graphics: 'chat.code.too_big_graphics', disk_too_slow: 'chat.code.disk_too_slow',
     disk_speed_unknown: 'chat.code.disk_speed_unknown', measured_fits: 'chat.code.measured_fits', from_disk_ssd: 'chat.code.from_disk_ssd',
-    no_local_ai: 'chat.code.no_local_ai', too_many: 'chat.code.too_many', model_unavailable: 'chat.code.model_unavailable', empty: 'chat.code.empty' };
-  const said = (msg, english) => I18N.said(CODE, msg, english);
+    no_model: 'chat.code.no_model', unknown_action: 'chat.code.unknown_action',
+    no_local_ai: 'chat.code.no_local_ai', too_many: 'chat.code.too_many', model_unavailable: 'chat.code.model_unavailable', empty: 'chat.code.empty',
+    no_library: 'chat.code.no_library', answer_gone: 'chat.code.answer_gone', no_messages: 'chat.code.no_messages', answer_not_started: 'chat.code.answer_not_started',
+    chat_too_long: 'chat.code.chat_too_long', bad_request: 'chat.code.bad_request' };
+  // Why the file could not be read or the local AI could not start: the system's reason (params.kind, local.rs KINDS), as a sentence
+  // after the code's own. A reason not listed here, the code's sentence alone.
+  const WHY_KIND = { not_found: 'chat.code.kind.not_found', permission_denied: 'chat.code.kind.permission_denied', out_of_memory: 'chat.code.kind.out_of_memory',
+    timed_out: 'chat.code.kind.timed_out', read_only_filesystem: 'chat.code.kind.read_only_filesystem', storage_full: 'chat.code.kind.storage_full' };
+  function said(msg, english) {
+    const text = I18N.said(CODE, msg, english), kind = msg && msg.params && msg.params.kind;
+    const why = !!msg && (msg.code === 'cannot_read' || msg.code === 'cannot_start') && typeof kind === 'string' && Object.hasOwn(WHY_KIND, kind);
+    return why ? text + ' ' + t(WHY_KIND[kind]) : text;
+  }
+  // What a refusal says ({error, code, params}), or '' for an answer that is no refusal or one this page does not know
+  const refusal = r => r && r.error && Object.hasOwn(CODE, r.code) ? said(r, r.error) : '';
   // Why the model fits this computer or not (l.why, with why_code and why_params)
   const why = l => said({ code: l.why_code, params: l.why_params }, l.why || '');
   function progress(m) {
@@ -172,7 +185,9 @@ const Chat = (() => {
     box.innerHTML = html;
     $$('[data-ai]', box).forEach(b => b.onclick = async () => {
       b.disabled = true;
-      try { await fetch('/api/assistant/local', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: b.dataset.ai }) }) } catch { }
+      let a = null;
+      try { a = await (await fetch('/api/assistant/local', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: b.dataset.ai }) })).json() } catch { }
+      const no = refusal(a); if (no) toast(no);   // the button could not act (no model found, no library open): said by its code
       setTimeout(statusLine, 300);
     });
   }
@@ -425,9 +440,12 @@ const Chat = (() => {
     const redraw = throttle(() => { if (cur === c) { updateBot(idx); scrollEnd() } }, 80);
     try {
       const st = await getStatus();
-      if (!st.online) throw Object.assign(new Error('offline'), { offline: true, why: st.local && localLine(st.local)[2] });
+      if (!st.online) throw Object.assign(new Error('offline'), { offline: true, why: st.local ? localLine(st.local)[2] : refusal(st) });   // no local AI, or no library open
       const r = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history_(c).slice(0, -1).concat([{ role: 'user', content: text }]), about: c.about }), signal: ctl.signal });
-      if (!r.ok || !r.body) throw new Error(t('chat.err.refused', { status: String(r.status) }));
+      if (!r.ok || !r.body) {   // refused, saying why as a code (router.rs CODES: a chat too long to send…), else by its status
+        let no = null; try { no = await r.json() } catch { }
+        throw new Error(refusal(no) || t('chat.err.refused', { status: String(r.status) }));
+      }
       const rd = r.body.getReader(), dec = new TextDecoder();
       let buf = '';
       for (;;) {
@@ -498,6 +516,6 @@ const Chat = (() => {
   }
   function throttle(f, ms) { let last = 0, p = null; return () => { const n = Date.now(); if (n - last > ms) { last = n; f() } else { clearTimeout(p); p = setTimeout(() => { last = Date.now(); f() }, ms) } } }
 
-  // said, why, localLine and models also word the local AI in About (web/app.js)
-  return { page, count, said, why, localLine, models: modelList, diskWarning };
+  // said, why, refusal, localLine and models also word the local AI in About (web/app.js)
+  return { page, count, said, why, refusal, localLine, models: modelList, diskWarning };
 })();
