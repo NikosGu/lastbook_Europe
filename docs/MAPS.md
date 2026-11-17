@@ -2,8 +2,8 @@
 
 Which files the map reads, what is in them, and how a region's files are built and packed from public data. The app
 draws only from files on the computer and never asks the network for a tile, a place or an address. The tools that
-build the files (`lastbook-tools` in `crates/tools`, its map subcommands) run on a build machine and read sources downloaded
-beforehand; they are never part of the app.
+build the files (the map subcommands of `lastbook-tools`, in `crates/tools`) run on a build machine and read sources
+downloaded beforehand; they are never part of the app.
 
 ## What the app reads
 
@@ -95,8 +95,9 @@ cargo run --release -p lastbook-tools -- pack-addresses --index derived/maps/LI/
 
 `build-map` writes `<out>/map/` (the map set: `map-set.json` and `derived/geo/*`) and
 `<out>/addresses/<REGION>.sqlite`, and prints what it made; `build-terrain` writes the elevation tiles alone. Each
-subcommand prints its options with `--help`. Everything kept lies inside the region's boxes (`crates/engine/src/regions.rs`); the DEM
-tiles given must cover them (Liechtenstein's box reaches 46.90°N, so it needs N46 as well as N47).
+subcommand prints its options with `--help`. Everything kept lies inside the region's boxes
+(`crates/engine/src/regions.rs`); the DEM tiles given must cover them (Liechtenstein's box reaches 46.90°N, so it
+needs N46 as well as N47).
 
 The detail is what the two extracts hold, and Geofabrik's country extracts stop at the border. A region's boxes reach
 into its neighbours, so that strip has only the base map and the elevation: Liechtenstein's map has no streets on the

@@ -1,8 +1,8 @@
 # Address indexes and address search
 
 How "Find a place" finds a street address in Europe, and the file that holds the addresses. The search is in
-`crates/engine/src/map/address/`; the builder is `lastbook-tools build-map` (`crates/tools`, see "Building one"). Nothing here
-opens a connection: an index is a file installed with a region map, and the search only reads it.
+`crates/engine/src/map/address/`; the builder is `lastbook-tools build-map` (`crates/tools`, see "Building one").
+Nothing here opens a connection: an index is a file installed with a region map, and the search only reads it.
 
 ## The file
 
@@ -77,8 +77,8 @@ The engine gives the builder what it needs, so the keys are the ones the search 
 4. Write `meta`.
 
 The tests in `crates/engine/src/map/address/tests.rs` build their tiny indexes exactly this way, and so does the
-builder, `crates/tools/src/map/addresses.rs`, run by `lastbook-tools build-map` ([MAPS.md](MAPS.md), "Building a region"),
-from the `addr:*` tags of the region's OpenStreetMap PBF:
+builder, `crates/tools/src/map/addresses.rs`, run by `lastbook-tools build-map` ([MAPS.md](MAPS.md), "Building a
+region"), from the `addr:*` tags of the region's OpenStreetMap PBF:
 
 - An address is a node, or a way or relation (mostly a building) at the middle of its outline. One mapped on both,
   close together, is kept once. Only what the extract holds is there: Geofabrik's extracts stop at the border, so
