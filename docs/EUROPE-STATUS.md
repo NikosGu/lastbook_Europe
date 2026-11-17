@@ -22,7 +22,7 @@ None of these blocks the work: each has a placeholder.
 
 | Decision | Placeholder now | Where it is used |
 |---|---|---|
-| Native-speaker review of the Italian, German, French, Spanish and Polish text | translations marked for review | `web/locales/`, `content/` |
+| Native-speaker review of the Italian, German, French, Spanish and Polish text | reviewed line by line on 17 Nov 2026, interface and guides, every string against the English (what changed: "The five translations, reviewed" below); still advised: a native speaker's read of the first-aid wording each language lists there; German and French keep "Sie" and "vous" as the interface had them (switching to "du" and "tu" would be one pass) | `web/locales/`, `content/topics/<lang>/`, `content/uncovered.json` |
 | Publishing the first release, and the data release `data-v1` (setup downloads only from published releases) | each push makes a **draft** release; the data is uploaded to the `data-v1` draft | GitHub's Releases page |
 | How all 110 regions are built: Geofabrik, free and shared, refused GitHub's machines' connections for Finland and Lombardy, even after eight tries over several minutes (the four test regions and Bavaria got their extracts) | the regions workflow, one region at a time | a schedule kind to Geofabrik (extracts kept between runs, regions spread over days), a machine of the project's own, or another source of the same extracts |
 
@@ -97,7 +97,7 @@ rest on the documents themselves and on the sites they were downloaded from.
 | The assistant and the chat | the question searched at once, tools (search, read pages, transcripts, places and nearest help), every citation checked against what the tools returned, the answer in the person's language; the chat streamed to the page by polls | tests with a scripted model |
 | Check for updates | only when asked; nothing while the download site is the placeholder | tests against a local HTTPS server |
 | Pictures on all three systems | `--snapshot` with WKWebView, WebView2 and WebKitGTK; CI photographs the app on each | the pictures from GitHub's Windows and Ubuntu machines, looked at |
-| Six languages | the interface in English, Italian, German, French, Spanish and Polish (1,271 keys each, the five translations marked for review), chosen in setup and the app, kept, changed in place; metric only; Europe on the map; what the engine says (setup, the map, the library, the local AI, updates) comes as a code with its numbers, which the interface words in the person's language, the English kept for the log | `tools/check_locales.mjs`; a test in each engine module that every code has words; pictures in Italian, German, Spanish and Polish |
+| Six languages | the interface in English, Italian, German, French, Spanish and Polish (1,318 keys each, the five translations reviewed line by line on 17 Nov 2026), chosen in setup and the app, kept, changed in place; metric only; Europe on the map; what the engine says (setup, the map, the library, the local AI, updates) comes as a code with its numbers, which the interface words in the person's language, the English kept for the log | `tools/check_locales.mjs`; a test in each engine module that every code has words; pictures in Italian, German, Spanish and Polish |
 | Storage anywhere | a library and its models on this computer, an external disk, a USB stick or a NAS (SMB, NFS, mapped drives, UNC paths); disk kinds shown in setup; SQLite read immutable; a library out of reach said plainly at start and while running; models beside the library or on this computer; a library on a read-only share or stick keeps its local AI, whose choices and log go to the app's own folder | tests on each system, and a library read through a network path on Windows in CI |
 | The map's data tools | `lastbook-tools build-map`, `pack-map`, `pack-addresses`, `build-terrain`: the detailed map from Geofabrik's GeoPackage, addresses and buildings from OpenStreetMap's PBF, places and water, elevation from Copernicus DEM GLO-30, the zoomed-out base from Natural Earth ([MAPS.md](MAPS.md)); Liechtenstein built in 3 seconds: 32,191 map features, 441 help points, 12,499 addresses, 12 MB to download | 23 tools tests; packs checked by setup's own zip check; the map, an address and a postcode photographed |
 | Regions on GitHub's machines | `.github/workflows/regions.yml`, run by hand with a list of region codes: one job per region, its Geofabrik extracts from a table of all 110 (`crates/tools/data/region-sources.json`), its DEM tiles and Natural Earth, then build, pack and `check-map` (setup's own checks on the zips, the region's town found, addresses above a floor, the first address found as typed, detail in every box); the neighbours' extracts read only inside the region's boxes; the place search ranks another name as the place's own ("Gozo" finds Għawdex first) and brings no lakes for a postcode | 33 tools tests and 222 engine tests; the script run here without downloads for Liechtenstein and Malta, all checks passed |
@@ -108,6 +108,48 @@ rest on the documents themselves and on the sites they were downloaded from.
 | The whole path in Italian with Liechtenstein | setup finds the three packs on this computer, suggests the starter library, Liechtenstein chosen, installed and opened; the map of Vaduz with relief, help points and the nearest help in metres; "Städtle 11, Vaduz" and "9490" found; the chat with Qwen3.6-35B-A3B Q8_0 (37.8 GB) from the disk on a 16 GB Mac, offered after its file was checked and chosen by a click: "how much water per person" answered in Italian with each point cited to the Swiss federal leaflet's pages (9 litres a person, for 3 days), and "the nearest pharmacy to Städtle 11" through the offline map (Schloss Apotheke, 0.27 km south) | photographed in the app on this Mac |
 | "From the disk", measured | Qwen3.6-35B-A3B Q8_0 on a 16 GB Mac, processor only, experts read ahead: a question read at about 20 words a second (3,558 in 174 s), an answer written at 0.9 to 1.4 words a second; an answer with a map look-up took about 6 minutes in all; the model loads in 4 seconds, and its 37.8 GB file is checked once, in about 2 minutes | the runner's own numbers in the log |
 | The guides for Europe | fourteen guides rewritten on the starter library: water, food, power cuts, heat and cold, disasters, first aid, health, toilets and hygiene, warnings and calls; 316 readings and warnings, each on a real page of a document the library holds; in the six languages (the five translations marked for review), each guide in the interface's language where it is translated, the French, Spanish and Polish ones opening pages in their own language wherever a page there says the same; what the library lacks, and where its sources disagree, in `content/gaps.json` | engine tests (every reading on a page of a listed document, every translation with the English items, each on the same page or a page in its own language); the app photographed in Italian, and the water guide in French, Spanish and Polish |
+
+### The five translations, reviewed (17 November 2026)
+
+Each language read string by string against the English (the interface, setup and the map; the 14 guides), fixed in
+place; a guide still says what its cited page says, no more. Form of address unchanged: tu, Sie, vous, tú, ty.
+
+- **Italian** (63 interface values, 83 in the guides): agreement and articles; notes that name the person; labels as
+  imperatives; terms (comprimi forte e veloce, rianimazione cardiopolmonare (RCP), DAE, carbone attivo, Centro
+  antiveleni, sali di reidratazione orale, medicazione non aderente, allerta alluvione); acqua potabile; Swiss usage
+  replaced (fornelli elettrici); "Drogherie e profumerie" apart from pharmacies. To check first: colpi sulla schiena or
+  interscapolari, laccio emostatico, the first-aid guide's title.
+- **German** (166 interface values, 179 in the guides): list commas, relative clauses, indirect speech; no capital "Sie"
+  that means a thing; terms (Herz-Lungen-Wiederbelebung, stabile Seitenlage, Defibrillator (AED), 30-mal drücken und
+  2-mal beatmen, Rückenschläge, Eigenschutz, Notruf absetzen, Wasserschutzsäcke as the Austrian source says); German
+  dashes; Kraftstoff, Ärztezentrum. To check first: kaltschweißig, Oberbauchkompressionen, the tourniquet line;
+  Giftnotruf is German usage (Austria and Switzerland name theirs otherwise).
+- **French** (157 interface values, 84 in the guides): agreement and negation; terms (position latérale de sécurité
+  (PLS), RCP, DAE, fait un malaise, pastilles de purification); French typography throughout (non-breaking spaces,
+  numbers kept with their units); Belgian and Swiss usage replaced (foyer ouvert, plan de prise des médicaments); advice
+  a French page added beyond the English guide removed. To check first: RCP or "massage cardiaque", FAST or VITE,
+  "mise à l'abri".
+- **Spanish** (67 interface values, 75 in the guides): agreement; Spain's terms (servicio de información toxicológica,
+  compresiones 30:2, inmovilízalo, suero casero de rehidratación, llave de paso, puntos de encuentro); English-style
+  dashes replaced; agua potable, frutos rojos, condado. To check first: ventilaciones or insuflaciones, DEA or DESA, the
+  FAST test.
+- **Polish** (93 interface values, 41 in the guides): agreement with any number; no guesses about the reader's gender;
+  terms (nie wymiataj na ślepo palcem jamy ustnej, nie oddycha prawidłowo, RKO, przegotować, plecak ewakuacyjny, wiaty
+  for shelters, sinice); the map's search hint shortened. To check first: the first-aid warnings and labels, uciśnięcia
+  nadbrzusza.
+- Also: route titles lose a numbered "Step N:" prefix in any language (the list numbers them); setup names an installed
+  pack the manifest does not list by its name.
+
+Found along the way, for the maintainer:
+- `setup.pack.starter_summary` (English) names Italian, German and English documents only; the starter library now has
+  French, Spanish and Polish ones too.
+- Where a translated guide opens a document in its own language: in a library older than the current starter, those
+  items are hidden instead of opening the English item's page (Polish first aid loses its recovery-position and CPR
+  readings there); some French pages lack warnings the English items give (four in the disasters guide); three Spanish
+  items open DGPCE pages whose notes differ from the English item (water, heat and cold). Each needs a decision on the
+  document or the page.
+- The guides' own `_review` notes still say "machine-assisted": `crates/engine/src/library/topics.rs` expects that text;
+  change it there and in `content/topics/*/*.json` together.
 
 ## Being done now
 
@@ -124,7 +166,8 @@ rest on the documents themselves and on the sites they were downloaded from.
    The fix is in llama.cpp itself: copy the graphics processor's tensors into buffers of their own when the experts stay
    in the mapped file. Then the same model at 4 bits (about 21 GB) and a cache of experts kept by use, as BigMoeOnEdge
    does; each measured as above.
-3. Native-speaker review of the five translations of the interface and the guides.
+3. A native speaker's read of the first-aid wording in the five translations (the line-by-line review is done; what
+   each language should check first is in "The five translations, reviewed").
 4. Pictures with no alt text: of the ten Spanish readings on infographic pages, seven now have the infographics' alt
    text; the three on the weather guide (Fenómenos meteorológicos, pages 17 and 20), a PDF with no tags, need OCR.
 5. The 13 starter documents left out of the published pack: ask their publishers for permission (BWL, BBK, the Styrian

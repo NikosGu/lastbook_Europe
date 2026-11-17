@@ -14,7 +14,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const WEB = join(ROOT, 'web'), LOCALES = join(WEB, 'locales');
 const LANGS = ['en', 'it', 'de', 'fr', 'es', 'pl'];
 const NAMESPACES = ['lang', 'common', 'nav', 'setup', 'app', 'map', 't3d', 'chat', 'update'];
-const REVIEW = 'machine-assisted, needs native-speaker review';
+// What each translation says about its review, first in the file: the line-by-line review's note.
+const REVIEW = 'reviewed line by line on 17 Nov 2026; a native speaker\'s read is still advised for first-aid wording';
 const KEY = `(?:${NAMESPACES.join('|')})\\.[a-z0-9_]+(?:\\.[a-z0-9_]+)*`;
 
 const errors = [], notes = [];
