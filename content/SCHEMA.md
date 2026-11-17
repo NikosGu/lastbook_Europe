@@ -66,8 +66,9 @@ Rules
 - A pack may hold fewer documents than the guides name: the pack that may be published holds only those whose terms let
   them be passed on (`"redistribute": "yes"` in `content/library/starter.json`). A reading, warning, preparing or
   learning item whose document is not in the library is not shown, and a step left with nothing to open goes. A guide
-  left with none of its documents says so in place of its short line and intro, in the words of
-  `content/uncovered.json` (one entry for each interface language).
+  left with none of its documents says so in place of its short line and intro, and one left with some of them says
+  after its intro that the others are not here, in the words of `content/uncovered.json` (one entry for each interface
+  language).
 
 Other languages (`content/topics/<lang>/<id>.json`)
 - The app asks for the guides in the interface's language (`/api/topics?lang=it`) and takes each guide from

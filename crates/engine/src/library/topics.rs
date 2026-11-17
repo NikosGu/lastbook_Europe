@@ -43,8 +43,9 @@ impl Library {
     /// left out too, as a reading is (a pack may leave out the documents that may not be passed on); only with no
     /// library in reach (not set up yet, or on a drive that is away) does it keep its words without its source, as the
     /// original did. A guide that reads from documents of which this library holds none says so, in place of its short
-    /// line and intro, in the words of `content/uncovered.json`. What the library lacks comes from `content/gaps.json`,
-    /// unless a guide in another language carries it in its own words.
+    /// line and intro, in the words of `content/uncovered.json`; one whose documents are here only in part says that
+    /// after its intro, which may name sources the library does not hold. What the library lacks comes from
+    /// `content/gaps.json`, unless a guide in another language carries it in its own words.
     pub fn topics_resolved_in(&self, lang: &str) -> Vec<Value> {
         let cat = self.catalog();
         let lib = self.lib().unwrap_or_default();
@@ -96,21 +97,32 @@ impl Library {
                     .collect();
                 t.insert(k.into(), Value::Array(steps));
             }
-            if let Some((short, intro)) = none_here.as_ref().filter(|_| reads_from > 0 && openers(&t) == 0) {
-                t.insert("short".into(), json!(short));
-                t.insert("intro".into(), json!(intro));
-                t.insert("uncovered".into(), json!(true));
+            if let Some(w) = none_here.as_ref().filter(|_| reads_from > 0) {
+                let left = openers(&t);
+                if left == 0 {
+                    t.insert("short".into(), json!(w.short));
+                    t.insert("intro".into(), json!(w.intro));
+                    t.insert("uncovered".into(), json!(true));
+                } else if left < reads_from {
+                    // its intro may name sources this library does not hold: one sentence says some are not here
+                    let intro = t.get("intro").and_then(Value::as_str).unwrap_or("").trim_end().to_string();
+                    t.insert("intro".into(), json!(if intro.is_empty() { w.partial.clone() } else { format!("{intro} {}", w.partial) }));
+                    t.insert("partial".into(), json!(true));
+                }
             }
             res.push(Value::Object(t));
         }
         res
     }
 
-    /// What a guide says when this library holds none of the documents it reads from: the short line and intro of
+    /// What a guide says when this library holds none of the documents it reads from, or only some: the words of
     /// `content/uncovered.json` in `lang`, else in English. None when the file is not there.
-    fn uncovered_words(&self, lang: &str) -> Option<(String, String)> {
+    fn uncovered_words(&self, lang: &str) -> Option<Uncovered> {
         let v: Value = serde_json::from_slice(&std::fs::read(self.paths.content().join("uncovered.json")).ok()?).ok()?;
-        let words = |l: &str| Some((v[l]["short"].as_str()?.to_string(), v[l]["intro"].as_str()?.to_string()));
+        let words = |l: &str| {
+            let s = |k: &str| v[l][k].as_str().map(str::to_string);
+            Some(Uncovered { short: s("short")?, intro: s("intro")?, partial: s("partial")? })
+        };
         words(lang).or_else(|| words("en"))
     }
 
@@ -152,6 +164,14 @@ pub fn zim_names(lib: &Path) -> Vec<String> {
     let mut v: Vec<String> = std::fs::read_dir(lib.join("collections")).into_iter().flatten().flatten().filter_map(|e| e.file_name().into_string().ok()).filter(|n| n.ends_with(".zim")).collect();
     v.sort();
     v
+}
+
+/// What a guide says when the library holds none of its documents (its short line and intro, in place of its own), and
+/// the sentence its intro gets when the library holds only some of them.
+struct Uncovered {
+    short: String,
+    intro: String,
+    partial: String,
 }
 
 /// How many of a guide's items open a document or an encyclopedia article: its readings, warnings, preparing and
@@ -418,8 +438,13 @@ mod tests {
                     let w = if words[lang].is_object() { &words[lang] } else { &words["en"] };
                     assert_eq!((&t["short"], &t["intro"], &t["uncovered"]), (&w["short"], &w["intro"], &json!(true)), "{lang} {id}");
                     said_empty += 1;
+                } else if items(t).len() < items(file).len() {
+                    // some of its documents are here, not all: its intro says so after its own words
+                    let w = if words[lang].is_object() { &words[lang] } else { &words["en"] };
+                    let intro = format!("{} {}", file["intro"].as_str().unwrap().trim_end(), w["partial"].as_str().unwrap());
+                    assert_eq!((&t["short"], &t["intro"], &t["partial"], t.get("uncovered")), (&file["short"], &json!(intro), &json!(true), None), "{lang} {id}");
                 } else {
-                    assert_eq!((&t["short"], &t["intro"], t.get("uncovered")), (&file["short"], &file["intro"], None), "{lang} {id}");
+                    assert_eq!((&t["short"], &t["intro"], t.get("uncovered"), t.get("partial")), (&file["short"], &file["intro"], None, None), "{lang} {id}");
                 }
             }
         }

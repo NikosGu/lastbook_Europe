@@ -1,28 +1,34 @@
 {
- "_about": "What a guide says, in place of its short line and intro, when the library holds none of the documents it reads from (a pack of only the documents that may be passed on, or a smaller pack): as a guide the library cannot support yet says it in its own words. One entry per interface language; English where a language has none.",
+ "_about": "What a guide says when the library holds none of the documents it reads from (short and intro, in place of its own: as a guide the library cannot support yet says it in its own words), and the sentence added to its intro when the library holds some of them but not all (partial). A pack may hold fewer documents than the guides name: the pack of only the documents that may be passed on, or a smaller pack. One entry per interface language; English where a language has none.",
  "_review": "machine-assisted, needs native-speaker review (all but en)",
  "en": {
   "short": "None of its documents are in this library",
-  "intro": "None of the documents this guide reads from are in this library, so it has nothing to open here. A search may still find pages on this in the documents the library holds."
+  "intro": "None of the documents this guide reads from are in this library, so it has nothing to open here. A search may still find pages on this in the documents the library holds.",
+  "partial": "Some of the documents this guide reads from are not in this library: what they say is left out here."
  },
  "it": {
   "short": "Nessuno dei suoi documenti è in questa biblioteca",
-  "intro": "Nessuno dei documenti su cui si basa questa guida è in questa biblioteca, quindi qui non ha nulla da aprire. Una ricerca può comunque trovare pagine su questo argomento nei documenti che la biblioteca contiene."
+  "intro": "Nessuno dei documenti su cui si basa questa guida è in questa biblioteca, quindi qui non ha nulla da aprire. Una ricerca può comunque trovare pagine su questo argomento nei documenti che la biblioteca contiene.",
+  "partial": "Alcuni dei documenti su cui si basa questa guida non sono in questa biblioteca: ciò che dicono qui manca."
  },
  "de": {
   "short": "Keines seiner Dokumente ist in dieser Bibliothek",
-  "intro": "Keines der Dokumente, auf die sich dieser Ratgeber stützt, ist in dieser Bibliothek, darum kann er hier nichts öffnen. Eine Suche findet vielleicht trotzdem Seiten zum Thema in den Dokumenten, die die Bibliothek enthält."
+  "intro": "Keines der Dokumente, auf die sich dieser Ratgeber stützt, ist in dieser Bibliothek, darum kann er hier nichts öffnen. Eine Suche findet vielleicht trotzdem Seiten zum Thema in den Dokumenten, die die Bibliothek enthält.",
+  "partial": "Einige der Dokumente, auf die sich dieser Ratgeber stützt, sind nicht in dieser Bibliothek: Was sie sagen, fehlt hier."
  },
  "fr": {
   "short": "Aucun de ses documents n’est dans cette bibliothèque",
-  "intro": "Aucun des documents sur lesquels s’appuie ce guide n’est dans cette bibliothèque : il n’a donc rien à ouvrir ici. Une recherche peut tout de même trouver des pages sur ce sujet dans les documents que contient la bibliothèque."
+  "intro": "Aucun des documents sur lesquels s’appuie ce guide n’est dans cette bibliothèque : il n’a donc rien à ouvrir ici. Une recherche peut tout de même trouver des pages sur ce sujet dans les documents que contient la bibliothèque.",
+  "partial": "Certains des documents sur lesquels s’appuie ce guide ne sont pas dans cette bibliothèque : ce qu’ils disent manque ici."
  },
  "es": {
   "short": "Ninguno de sus documentos está en esta biblioteca",
-  "intro": "Ninguno de los documentos en los que se basa esta guía está en esta biblioteca, así que aquí no tiene nada que abrir. Una búsqueda puede encontrar aun así páginas sobre el tema en los documentos que tiene la biblioteca."
+  "intro": "Ninguno de los documentos en los que se basa esta guía está en esta biblioteca, así que aquí no tiene nada que abrir. Una búsqueda puede encontrar aun así páginas sobre el tema en los documentos que tiene la biblioteca.",
+  "partial": "Algunos de los documentos en los que se basa esta guía no están en esta biblioteca: lo que dicen falta aquí."
  },
  "pl": {
   "short": "Żadnego z jego dokumentów nie ma w tej bibliotece",
-  "intro": "Żadnego z dokumentów, na których opiera się ten poradnik, nie ma w tej bibliotece, więc nie ma tu nic do otwarcia. Wyszukiwanie może jednak znaleźć strony na ten temat w dokumentach, które zawiera biblioteka."
+  "intro": "Żadnego z dokumentów, na których opiera się ten poradnik, nie ma w tej bibliotece, więc nie ma tu nic do otwarcia. Wyszukiwanie może jednak znaleźć strony na ten temat w dokumentach, które zawiera biblioteka.",
+  "partial": "Niektórych dokumentów, na których opiera się ten poradnik, nie ma w tej bibliotece: tego, co mówią, tu brakuje."
  }
 }
