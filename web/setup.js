@@ -121,7 +121,12 @@
   let note = '', noteOk = false;
   let repair = null;      // a repair under way: {fixed} turns true once it had to download something
 
-  const packs = () => (S.manifest && S.manifest.packs) || [];
+  // the packs as setup lists them: the starter first, then the interface language's encyclopedias, then the others
+  const encLang = id => (/^enc-([a-z]{2})$/.exec(id || '') || [])[1] || null;
+  const packs = () => ((S.manifest && S.manifest.packs) || []).slice().sort((a, b) => {
+    const rank = p => p.id === 'starter' ? 0 : encLang(p.id) === I18N.lang ? 1 : 2;
+    return rank(a) - rank(b);
+  });
   /* the local AI's models: the catalogue's, each with how it fits this computer (hardware.ai_models), and the model files other
      programs downloaded here (found, kind model_file: LM Studio, Ollama, Jan…), used where they are */
   const catalogue = () => ((S.manifest && S.manifest.models) || []).filter(m => m.available !== false);
@@ -151,13 +156,19 @@
   // starter pack, content/library/starter.json), so that it is never said twice. Another id keeps the manifest's own words.
   const PACK = { small: ['setup.pack.small', 'setup.pack.small_summary'], medium: ['setup.pack.medium', 'setup.pack.medium_summary'], all: ['setup.pack.all', 'setup.pack.all_summary'],
     starter: ['setup.pack.starter', 'setup.pack.starter_summary', 'whole'] };
-  const packTitle = p => !p ? '' : english() && p.title ? p.title : PACK[p.id] ? t(PACK[p.id][0]) : p.title || p.id;
-  const packSummary = p => !p ? '' : english() && p.summary ? p.summary : PACK[p.id] ? t(PACK[p.id][1]) : p.summary || '';
+  /* a language's encyclopedias with the starter's documents (enc-<language>, packaging/data/encyclopedias.sh): named by
+     the language in itself, and by what they hold (the pack's contents) in the interface's words */
+  const ENC = { wikipedia_top: 'setup.enc.wikipedia_top', wikipedia_medicine: 'setup.enc.wikipedia_medicine', wikivoyage: 'setup.enc.wikivoyage',
+    wikipedia_mini: 'setup.enc.wikipedia_mini' };
+  const encTitle = p => t('setup.pack.encyclopedias', { language: I18N.NAME[encLang(p.id)] || encLang(p.id) });
+  const encSummary = p => { const got = (p.contents || []).filter(c => ENC[c]); return got.length ? t('setup.pack.encyclopedias_summary', { list: I18N.list(got.map(c => t(ENC[c]))) }) : p.summary || '' };
+  const packTitle = p => !p ? '' : english() && p.title ? p.title : PACK[p.id] ? t(PACK[p.id][0]) : encLang(p.id) ? encTitle(p) : p.title || p.id;
+  const packSummary = p => !p ? '' : english() && p.summary ? p.summary : PACK[p.id] ? t(PACK[p.id][1]) : encLang(p.id) ? encSummary(p) : p.summary || '';
   /* a pack as the library it is: "Small library"; a name that already says library ("Starter library", "Biblioteca di base") stays as
      it is. In English, and for a pack the table does not know, the name itself shows whether it does. */
   const packItem = p => {
     if (!p) return '';
-    const name = packTitle(p), whole = english() || !PACK[p.id] ? /library/i.test(name) : PACK[p.id][2] === 'whole';
+    const name = packTitle(p), whole = encLang(p.id) ? true : english() || !PACK[p.id] ? /library/i.test(name) : PACK[p.id][2] === 'whole';
     return whole ? name : t('setup.item.library', { name });
   };
 

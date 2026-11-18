@@ -184,13 +184,14 @@ fn the_sources_list_is_checked() {
     assert!(sources::parse(&twice).unwrap_err().contains("used twice"));
     assert!(sources::parse(&json!({"pack": {"id": "p", "title": "P"}, "documents": []})).is_err());
     assert!(sources::parse(&json!({"pack": {"id": "p q", "title": "P"}, "documents": [ok]})).is_err());
-    // the starter list in the repository is well formed: documents in the interface's six languages, under 100 MB
+    // the starter list in the repository is well formed: documents in the interface's six languages, together under
+    // 1.5 GB (the published zip is one file of a GitHub release, at most 2 GiB)
     let starter = sources::load(&repo().join("content/library/starter.json")).unwrap();
-    assert!((10..=40).contains(&starter.docs.len()));
+    assert!((150..=400).contains(&starter.docs.len()), "{}", starter.docs.len());
     assert!(starter.docs.iter().all(|d| d.sha256.is_some() && d.bytes.is_some() && d.url.as_deref().is_some_and(|u| u.starts_with("https://"))));
     let langs: std::collections::BTreeSet<&str> = starter.docs.iter().map(|d| d.lang.as_str()).collect();
     assert_eq!(langs.into_iter().collect::<Vec<_>>(), ["de", "en", "es", "fr", "it", "pl"]);
-    assert!(starter.docs.iter().map(|d| d.bytes.unwrap()).sum::<u64>() <= 100_000_000);
+    assert!(starter.docs.iter().map(|d| d.bytes.unwrap()).sum::<u64>() <= 1_500_000_000);
     // each document's terms are settled: whether it may be passed on, where its publisher says so, and in what words
     for d in &starter.docs {
         assert!(d.redistribute.is_some() && d.terms_quote.is_some() && d.licence_url.as_deref().is_some_and(|u| u.starts_with("https://")), "{}", d.id);

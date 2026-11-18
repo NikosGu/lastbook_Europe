@@ -1,9 +1,10 @@
 #!/bin/bash
 # manifest-v1.json written again from what the data release holds now, and put into it: the model catalogue
-# (packaging/data/manifest-base.json), every map-entry-*.json and addresses-entry-*.json among the release's files, and
-# starter-entry.json when it is there, checked by `lastbook-tools build-manifest` as setup checks a manifest (an entry
-# whose zip is not in the release whole is left out). Setup reads this file to learn what it can install, so it is
-# written after every change to the release: by the Data manifest workflow, after each region, and after a library pack.
+# (packaging/data/manifest-base.json), every map-entry-*.json and addresses-entry-*.json among the release's files,
+# starter-entry.json when it is there, and each pack-entry-*.json (a language's encyclopedias with the starter's
+# documents), checked by `lastbook-tools build-manifest` as setup checks a manifest (an entry whose zip is not in the
+# release whole is left out). Setup reads this file to learn what it can install, so it is written after every change
+# to the release: by the Data manifest workflow, after each region, and after a library pack.
 #
 #   RELEASE=data-v1 GH_REPO=owner/repo [TOOLS=lastbook-tools] [BRANCH=name] packaging/data/write-manifest.sh [SUMMARY_FILE]
 #
@@ -28,7 +29,7 @@ fi
 gh release view "$RELEASE" --json assets > "$work/assets.json"
 mkdir -p "$work/entries"
 jq -r '.assets[] | select(.state == null or .state == "uploaded") | .name
-       | select(test("^(map|addresses)-entry-[A-Z0-9-]+[.]json$") or . == "starter-entry.json")' "$work/assets.json" > "$work/names.txt"
+       | select(test("^(map|addresses)-entry-[A-Z0-9-]+[.]json$") or . == "starter-entry.json" or test("^pack-entry-[a-z0-9._-]+[.]json$"))' "$work/assets.json" > "$work/names.txt"
 echo "$(wc -l < "$work/names.txt" | tr -d ' ') entries in $RELEASE"
 while read -r name; do
   gh release download "$RELEASE" --dir "$work/entries" --pattern "$name"

@@ -73,9 +73,12 @@ pub fn validate(m: &Value, allow: &Allow) -> Option<Value> {
         }
         let download: u64 = fs.iter().map(|f| f["size"].as_u64().unwrap_or(0)).sum();
         let map = p["map"].as_str().filter(|m| name_ok(m) && *m != "base");
+        // what the pack holds besides the documents, by short names the interface words (the encyclopedias:
+        // "wikipedia_top", "wikivoyage"…); a name that is not one is left out
+        let contents: Vec<&str> = p["contents"].as_array().into_iter().flatten().filter_map(Value::as_str).filter(|c| name_ok(c)).take(16).collect();
         packs.push(json!({"id": id, "title": text(&p["title"], id), "summary": text(&p["summary"], ""), "records": int(&p["records"]),
                           "revision": revision, "installed_bytes": int(&p["installed_bytes"]), "download_bytes": download,
-                          "available": available, "files": fs, "map": map}));
+                          "available": available, "files": fs, "map": map, "contents": contents}));
     }
     let mut out = Map::new();
     for key in ["maps", "address_indexes"] {
@@ -340,6 +343,15 @@ mod tests {
         let mut elsewhere = json!({"version": 1, "packs": [pack("small", &h(), '0', 1)]});
         elsewhere["packs"][0]["files"][0]["url"] = json!("https://github.com/someone/else/releases/download/v1/small.zip");
         assert!(validate(&elsewhere, &Allow::Product).is_none());
+    }
+
+    #[test]
+    fn a_pack_says_what_it_holds_besides_the_documents() {
+        let mut p = pack("enc-it", &h(), '3', 7);
+        p["contents"] = json!(["wikipedia_medicine", "wikipedia_top", "../x", 4, "wikivoyage"]);
+        let v = validate(&json!({"version": 1, "packs": [p, pack("starter", &h(), '4', 2)]}), &Allow::Product).unwrap();
+        assert_eq!(v["packs"][0]["contents"], json!(["wikipedia_medicine", "wikipedia_top", "wikivoyage"]), "names only, the rest left out");
+        assert_eq!(v["packs"][1]["contents"], json!([]));
     }
 
     #[test]

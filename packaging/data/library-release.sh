@@ -1,17 +1,18 @@
 #!/bin/bash
-# The starter library's releases on GitHub: the copies of its sources that may be passed on, and the pack that may be
-# published. Nothing here publishes a release: each is made, when missing, as a draft, and only the release named is
-# touched. Needs gh (signed in, with write access to the repository), jq, curl and unzip.
+# The starter library's releases on GitHub: the copies of its sources, and the published pack, which holds every
+# document of content/library/starter.json (the maintainer's decision of 18 Nov 2026, whatever each publisher's terms
+# say; "redistribute" records them). Nothing here publishes a release: each is made, when missing, as a draft, and only
+# the release named is touched. Needs gh (signed in, with write access to the repository), jq, curl and unzip.
 #
 #   packaging/data/library-release.sh sources [DOCS]
-#       Each document content/library/starter.json marks "redistribute": "yes", exactly as its publisher published it
-#       (downloaded into DOCS, default derived/sources/library, if it is not there; checked against the list's size and
-#       SHA-256), uploaded to the draft release sources-v1 with a note naming each document's publisher, licence and
-#       terms. The library workflow takes a document from there when its publisher turns GitHub's machines away.
+#       Each document of the list, exactly as its publisher published it (downloaded into DOCS, default
+#       derived/sources/library, if it is not there; checked against the list's size and SHA-256), uploaded to the
+#       draft release sources-v1 with a note naming each document's publisher, licence and terms. The library workflow
+#       takes a document from there when its publisher turns GitHub's machines away. (The Library sources workflow does
+#       the same on GitHub's machines for documents not yet measured.)
 #   packaging/data/library-release.sh check ZIP ENTRY
-#       The checks a pack that may be published must pass: the entry names the zip by its size and SHA-256 and the
-#       redistributable revision; the zip holds no file of a document not marked yes, and its catalog lists only the
-#       documents marked yes and the Sources page.
+#       The checks the published pack must pass: the entry names the zip by its size and SHA-256 and the list's
+#       revision, and the zip's catalog lists every document of the list and the Sources page.
 #   packaging/data/library-release.sh starter ZIP ENTRY
 #       The checks, then the zip and its entry uploaded to the draft release data-v1 (crates/engine/src/dist.rs DATA_TAG),
 #       replacing the files of the same names.
@@ -56,15 +57,12 @@ check() { # ZIP ENTRY
   tmp="$(mktemp -d)"
   [ "$(jq -r '.files[0].sha256' "$entry")" = "$(sha256 "$zip")" ] || die "$entry does not name $zip's SHA-256"
   [ "$(jq -r '.files[0].size' "$entry")" = "$(size "$zip")" ] || die "$entry does not name $zip's size"
-  [ "$(jq -r '.revision' "$entry")" = "$(jq -r '.pack.redistributable.revision' "$LIST")" ] || die "$entry is not the pack of what may be passed on (its revision)"
-  unzip -Z1 "$zip" > "$tmp/files"
-  jq -r '.documents[] | select(.redistribute != "yes") | "LastbookData/library-data/documents/\(.file)", "LastbookData/library-data/pages/\(.file)", "LastbookData/library-data/text/\(.id).txt"' "$LIST" > "$tmp/not-here"
-  if grep -xFf "$tmp/not-here" "$tmp/files"; then die "files of documents that may not be passed on are in $zip"; fi
+  [ "$(jq -r '.revision' "$entry")" = "$(jq -r '.pack.revision' "$LIST")" ] || die "$entry is not the pack of the list's revision"
   unzip -p "$zip" LastbookData/library-data/catalog.json | jq -r '.[].id' | sort > "$tmp/listed"
-  { jq -r '.documents[] | select(.redistribute == "yes") | .id' "$LIST"; echo lastbook-sources; } | sort > "$tmp/allowed"
-  diff "$tmp/allowed" "$tmp/listed" >&2 || die "$zip's catalog is not the documents marked yes and the Sources page"
+  { jq -r '.documents[].id' "$LIST"; echo lastbook-sources; } | sort > "$tmp/all"
+  diff "$tmp/all" "$tmp/listed" >&2 || die "$zip's catalog is not every document of the list and the Sources page"
   [ "$(jq -r '.records' "$entry")" = "$(wc -l < "$tmp/listed" | tr -d ' ')" ] || die "$entry's record count is not the catalog's"
-  echo "$zip: $(wc -l < "$tmp/listed" | tr -d ' ') records, each a document that may be passed on (or the Sources page); its entry matches"
+  echo "$zip: $(wc -l < "$tmp/listed" | tr -d ' ') records, every document of the list and the Sources page; its entry matches"
   rm -rf "$tmp"
 }
 
@@ -79,12 +77,12 @@ sources() { # [DOCS]
     fi
     [ "$(size "$docs/$file")" = "$bytes" ] && [ "$(sha256 "$docs/$file")" = "$sum" ] || die "$id: $docs/$file is not the file the list names ($bytes bytes, SHA-256 $sum)"
     files+=("$docs/$file")
-  done < <(jq -r '.documents[] | select(.redistribute == "yes") | [.id, .file, .url, (.bytes | tostring), .sha256] | @tsv' "$LIST")
+  done < <(jq -r '.documents[] | [.id, .file, .url, (.bytes | tostring), .sha256] | @tsv' "$LIST")
   notes="$(mktemp)"
   {
-    echo "Copies of the starter library's documents whose terms let them be passed on, exactly as their publishers published them: each is the file content/library/starter.json names by its size and SHA-256. They are kept here so the library can be built again when a publisher's site turns automated downloads away (the library workflow takes a document from here only then, and checks it as always). Each document stays its publisher's; download it from its publisher where you can, as they keep their guidance up to date."
+    echo "Copies of the starter library's documents, exactly as their publishers published them: each is the file content/library/starter.json names by its size and SHA-256. They are kept here so the library can be built again when a publisher's site turns automated downloads away (the library workflow takes a document from here only then, and checks it as always). Each document stays its publisher's; download it from its publisher where you can, as they keep their guidance up to date."
     echo
-    jq -r '.documents[] | select(.redistribute == "yes") | "- **\(.title)**\(if .year then " (\(.year))" else "" end), \(.publisher). `\(.file)`, from \(.url)\n  Licence: \(.licence)\(if .conditions then "; \(.conditions)" else "" end). Terms: \(.licence_url)"' "$LIST"
+    jq -r '.documents[] | "- **\(.title)**\(if .year then " (\(.year))" else "" end), \(.publisher). `\(.file)`, from \(.url)\n  Licence: \(.licence)\(if .conditions then "; \(.conditions)" else "" end). Terms: \(.licence_url)"' "$LIST"
   } > "$notes"
   draft_if_missing "$SOURCES_TAG" "Lastbook Europe: the starter library's sources" "$notes"
   gh_write release upload "$SOURCES_TAG" --repo "$REPO" --clobber "${files[@]}"

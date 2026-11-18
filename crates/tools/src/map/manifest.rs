@@ -1,8 +1,9 @@
 //! The data release's manifest-v1.json, which setup fetches to learn what it can install: the model catalogue it starts
 //! from (packaging/data/manifest-base.json), every region's map and address index whose entry is among the release's
-//! files (map-entry-<REGION>.json, addresses-entry-<REGION>.json, as pack-map and pack-addresses print them), and the
-//! starter pack's (starter-entry.json, as build-pack prints it). It is checked as setup checks a fetched manifest:
-//! every address in the data release on this project's hosts, every entry kept and available.
+//! files (map-entry-<REGION>.json, addresses-entry-<REGION>.json, as pack-map and pack-addresses print them), the
+//! starter pack's (starter-entry.json, as build-pack prints it), and every other pack's (pack-entry-<PACK>.json: the
+//! starter's documents with a language's encyclopedias, packaging/data/encyclopedias.sh). It is checked as setup checks
+//! a fetched manifest: every address in the data release on this project's hosts, every entry kept and available.
 
 use lastbook_engine::dist;
 use lastbook_engine::setup::{manifest, net};
@@ -49,6 +50,8 @@ pub fn build(base: &Value, entries: &Path, assets: Option<&Value>) -> Result<(Va
             ("address_indexes", Some(r))
         } else if name == "starter-entry.json" {
             ("packs", None)
+        } else if let Some(p) = region("pack-entry-") {
+            ("packs", Some(p))
         } else {
             continue;
         };
@@ -84,6 +87,10 @@ pub fn build(base: &Value, entries: &Path, assets: Option<&Value>) -> Result<(Va
         if let Some(list) = m[key].as_array_mut() {
             list.sort_by(|a, b| a["id"].as_str().cmp(&b["id"].as_str()));
         }
+    }
+    // the starter pack first, as setup lists them, then the others by id
+    if let Some(list) = m["packs"].as_array_mut() {
+        list.sort_by_key(|p| (p["id"] != "starter", p["id"].as_str().unwrap_or("").to_string()));
     }
     // as setup takes it: the whole manifest refused for one bad entry, so every entry must come through, available
     let v = manifest::validate(&m, &net::Allow::Product).ok_or("setup would refuse this manifest: an entry is not as it should be")?;
@@ -143,10 +150,17 @@ mod tests {
         let mut starter = entry("starter", "", "Lastbook-starter.zip", 5000);
         starter["records"] = json!(42);
         std::fs::write(dir.join("starter-entry.json"), starter.to_string()).unwrap();
+        // a language's encyclopedias with the starter's documents: the same zip, and its own
+        let mut enc = entry("enc-it", "", "Lastbook-starter.zip", 5000);
+        let zim = entry("enc-it", "", "Lastbook-Encyclopedia-wikivoyage_it.zip", 700)["files"][0].clone();
+        enc["files"].as_array_mut().unwrap().push(zim);
+        enc["contents"] = json!(["wikivoyage"]);
+        std::fs::write(dir.join("pack-entry-enc-it.json"), enc.to_string()).unwrap();
         let (m, held) = build(&base(), &dir, None).unwrap();
         assert_eq!(held["maps"], json!(["LI", "LU"]), "sorted by region");
         assert_eq!(held["address_indexes"], json!(["LI", "LU"]));
-        assert_eq!(held["packs"], json!(["starter"]));
+        assert_eq!(held["packs"], json!(["starter", "enc-it"]), "the starter first");
+        assert_eq!(m["packs"][1]["files"].as_array().unwrap().len(), 2);
         assert_eq!(held["models"], base()["models"].as_array().unwrap().iter().map(|x| x["id"].clone()).collect::<Value>(), "the catalogue kept");
         assert_eq!(m["maps"][0]["files"][0]["url"], format!("{}/Lastbook-Map-LI.zip", dist::download_base()));
         assert!(manifest::validate(&m, &net::Allow::Product).is_some());
@@ -157,9 +171,18 @@ mod tests {
             {"name": "Lastbook-starter.zip", "size": 5000}]});
         let (m, held) = build(&base(), &dir, Some(&assets)).unwrap();
         assert_eq!((held["maps"].clone(), held["address_indexes"].clone()), (json!(["LI"]), json!(["LI"])));
-        assert_eq!(held["left_out"].as_array().unwrap().len(), 2, "{held}");
+        assert_eq!(held["left_out"].as_array().unwrap().len(), 3, "the encyclopedia's zip not uploaded yet: {held}");
+        assert_eq!(held["packs"], json!(["starter"]));
         assert_eq!(m["packs"][0]["records"], 42);
         let _ = std::fs::remove_dir_all(&dir); // a temporary folder left behind (Windows, a file still held) fails no test
+    }
+
+    #[test]
+    fn a_pack_entry_of_another_pack_stops_it() {
+        let dir = folder("pack");
+        std::fs::write(dir.join("pack-entry-enc-de.json"), entry("enc-fr", "", "Lastbook-starter.zip", 10).to_string()).unwrap();
+        assert!(build(&base(), &dir, None).unwrap_err().contains("enc-fr"));
+        let _ = std::fs::remove_dir_all(&dir);
     }
 
     #[test]

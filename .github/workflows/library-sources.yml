@@ -1,16 +1,21 @@
-# Documents waiting to join the library (content/library/pending.json), each downloaded on GitHub's machines from its
-# publisher, checked to be a PDF, measured (size and SHA-256), and kept in the draft release sources-v1, from which the
-# library workflow takes a document whenever its publisher turns GitHub's machines away or changes the file. The
-# measurements come back as the artifact "pinned" (pinned.json; failed.tsv names what could not be downloaded here), to
-# be written into content/library/starter.json. Run by hand; only the draft release sources-v1 is touched.
+# Documents of a library list (by default content/library/starter.json: those not measured yet, or those named), each
+# downloaded on GitHub's machines from its publisher, checked to be a PDF, measured (size and SHA-256), and kept in the
+# draft release sources-v1, from which the library workflow takes a document whenever its publisher turns GitHub's
+# machines away or changes the file. The measurements come back as the artifact "pinned" (pinned.json; failed.tsv
+# names what could not be downloaded here), to be written into the list. A publisher that turns GitHub's machines away
+# is respected: such a document is downloaded once by the maintainer and uploaded to sources-v1 by hand. Run by hand;
+# only the draft release sources-v1 is touched.
 name: Library sources
 
 on:
   workflow_dispatch:
     inputs:
       list:
-        description: "The list of documents to download and measure"
-        default: "content/library/pending.json"
+        description: "The list of documents"
+        default: "content/library/starter.json"
+      ids:
+        description: "The documents to download, by id, separated by spaces (none: those the list gives no SHA-256)"
+        default: ""
 
 permissions:
   contents: write   # to add to the draft release sources-v1
@@ -26,6 +31,7 @@ jobs:
     timeout-minutes: 120
     env:
       LIST: ${{ inputs.list }}
+      IDS: ${{ inputs.ids }}
       SOURCES_TAG: sources-v1
       GH_TOKEN: ${{ github.token }}
       UA: "lastbook-tools/0.1 (offline library builder)"
@@ -37,7 +43,10 @@ jobs:
           mkdir -p "$RUNNER_TEMP/docs" out
           echo '{}' > out/pinned.json
           : > out/failed.tsv
-          jq -r '.documents[] | [.id, .file, .url] | @tsv' "$LIST" > "$RUNNER_TEMP/want.tsv"
+          jq -r --arg ids "$IDS" '($ids | split(" ") | map(select(length > 0))) as $want
+            | .documents[] | select(if ($want | length) > 0 then (.id as $i | $want | index($i)) != null else .sha256 == null end)
+            | [.id, .file, .url] | @tsv' "$LIST" > "$RUNNER_TEMP/want.tsv"
+          echo "$(wc -l < "$RUNNER_TEMP/want.tsv") documents to download"
           while IFS=$'\t' read -r id file url; do
             doc="$RUNNER_TEMP/docs/$file"
             if curl -fsSL --retry 3 --retry-delay 10 --max-time 600 -A "$UA" -o "$doc" "$url" && [ "$(head -c 5 "$doc")" = "%PDF-" ]; then

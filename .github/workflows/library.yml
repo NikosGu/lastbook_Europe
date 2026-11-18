@@ -1,10 +1,10 @@
-# The starter library that may be published, built on GitHub's machines only when asked: the documents of
-# content/library/starter.json whose terms let them be passed on ("redistribute": "yes"), each downloaded from its
-# publisher (or, where a publisher turns GitHub's machines away, from this repository's copy of it in the draft release
-# sources-v1, made by packaging/data/library-release.sh sources) and checked against the size and SHA-256 the list
-# gives, read with the PDFium pinned in packaging/rust/pdfium.txt, packed, checked, and uploaded with its manifest entry
-# to the data release (data-v1, a draft or published), whose manifest is then written again. No other release is
-# touched, and nothing is published here.
+# The starter library, built on GitHub's machines only when asked: every document of content/library/starter.json
+# (the maintainer decided on 18 Nov 2026 that the published library holds them all, whatever each publisher's terms
+# say; "redistribute" records those terms), each downloaded from its publisher (or, where a publisher turns GitHub's
+# machines away or has changed the file, from this repository's copy of it in the draft release sources-v1, made by the
+# Library sources workflow) and checked against the size and SHA-256 the list gives, read with the PDFium pinned in
+# packaging/rust/pdfium.txt, packed, checked, and uploaded with its manifest entry to the data release (data-v1, a draft
+# or published), whose manifest is then written again. No other release is touched, and nothing is published here.
 name: Library
 
 on:
@@ -19,12 +19,12 @@ concurrency:
 
 jobs:
   starter:
-    name: Starter library (what may be passed on)
+    name: Starter library
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 150
     env:
       TAG: data-v1   # crates/engine/src/dist.rs DATA_TAG: where setup downloads the data from
-      SOURCES_TAG: sources-v1   # the copies of the documents that may be passed on (packaging/data/library-release.sh)
+      SOURCES_TAG: sources-v1   # the copies of the documents (the Library sources workflow)
       LIST: content/library/starter.json
     steps:
       - uses: actions/checkout@v4
@@ -34,12 +34,12 @@ jobs:
         run: cargo build --release --locked -p lastbook-tools
       - name: PDFium, the build pinned in packaging/rust/pdfium.txt
         run: packaging/rust/pdfium.sh pdfium-linux-x64.tgz "$RUNNER_TEMP/pdfium/lib" "$RUNNER_TEMP/pdfium/licences"
-      - name: The documents that may be passed on, from their publishers or this repository's copy
+      - name: The documents, from their publishers or this repository's copy
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p "$RUNNER_TEMP/docs"
-          jq -r '.documents[] | select(.redistribute == "yes") | [.id, .file, .url, (.bytes | tostring), .sha256] | @tsv' "$LIST" > "$RUNNER_TEMP/wanted.tsv"
+          jq -r '.documents[] | [.id, .file, .url, (.bytes | tostring), .sha256] | @tsv' "$LIST" > "$RUNNER_TEMP/wanted.tsv"
           test -s "$RUNNER_TEMP/wanted.tsv"
           listed() { [ "$(stat -c %s "$1")" = "$2" ] && [ "$(sha256sum "$1" | cut -d' ' -f1)" = "$3" ]; }
           while IFS=$'\t' read -r id file url bytes sum; do
@@ -49,9 +49,9 @@ jobs:
               continue
             fi
             # A publisher may turn GitHub's machines away, and that is respected; or it may serve something other than
-            # the listed file (a web page changes from one request to the next). The document's terms let it be passed
-            # on, so this repository keeps the listed file in the draft release sources-v1 (packaging/data/library-release.sh
-            # sources), checked below against the list like any download.
+            # the listed file (a web page changes from one request to the next). This repository keeps the listed file
+            # in the draft release sources-v1 (the Library sources workflow), checked below against the list like any
+            # download.
             if [ -s "$doc" ]; then why="served a file other than the one listed"; else why="turned this machine away"; fi
             rm -f "$doc"
             echo "$id: $url $why; taken from this repository's copy in $SOURCES_TAG"
@@ -64,16 +64,16 @@ jobs:
           LASTBOOK_PDFIUM: ${{ runner.temp }}/pdfium/lib
         run: |
           # the date of its content revision, so the same revision builds the same bytes
-          BUILT=$(jq -r '.pack.redistributable.revision' "$LIST" | grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2}' || date -u +%F)
+          BUILT=$(jq -r '.pack.revision' "$LIST" | grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2}' || date -u +%F)
           target/release/lastbook-tools build-library --sources "$LIST" --docs "$RUNNER_TEMP/docs" \
-            --out "$RUNNER_TEMP/starter/LastbookData" --redistributable-only --built "$BUILT"
+            --out "$RUNNER_TEMP/starter/LastbookData" --built "$BUILT"
       - name: Pack it, with its manifest entry
         run: |
           mkdir -p "$RUNNER_TEMP/out"
           target/release/lastbook-tools build-pack --data "$RUNNER_TEMP/starter/LastbookData" --out "$RUNNER_TEMP/out" \
             --base "https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG" > "$RUNNER_TEMP/out/starter-entry.json"
           cat "$RUNNER_TEMP/out/starter-entry.json"
-      - name: Nothing of the other documents is in the zip, and the entry names it
+      - name: Every document is in the zip, and the entry names it
         run: packaging/data/library-release.sh check "$RUNNER_TEMP/out/Lastbook-starter.zip" "$RUNNER_TEMP/out/starter-entry.json"
       - name: Upload to the data release
         env:
