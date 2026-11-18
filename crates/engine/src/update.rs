@@ -17,7 +17,7 @@ use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
 const MAX_BODY: usize = 4096;
-const OFFLINE: &str = "Lastbook could not reach the internet. Everything else in Lastbook still works without it; try again when you are online.";
+const OFFLINE: &str = "Lastbook Europe could not reach the internet. Everything else in Lastbook Europe still works without it; try again when you are online.";
 
 /// What the check can say, each a code the interface words in the person's language (web/locales: update.code.<code>), with
 /// its params; the English sentence stays beside them, for logs and for an interface that does not know the code.
@@ -137,7 +137,7 @@ impl Updater {
             None => Tls::product().map_err(|m| said("error", "network", json!({}), m))?,
         };
         let mut r = net::get(url, 0, None, &self.0.allow, &tls, Duration::from_secs(15)).map_err(|e| match e {
-            NetError::Certificate(_) => said("error", "certificate", json!({}), "Lastbook could not confirm it was talking to the real download site, so it stopped. A network that intercepts secure connections (some offices, hotels) can cause this."),
+            NetError::Certificate(_) => said("error", "certificate", json!({}), "Lastbook Europe could not confirm it was talking to the real download site, so it stopped. A network that intercepts secure connections (some offices, hotels) can cause this."),
             NetError::Refused(m) => said("error", "refused", json!({}), m),
             NetError::Io(_) => said("error", "offline", json!({}), OFFLINE),
         })?;

@@ -16,7 +16,7 @@
   const LANGS = ['en', 'it', 'de', 'fr', 'es', 'pl'];
   const NAME = { en: 'English', it: 'Italiano', de: 'Deutsch', fr: 'Français', es: 'Español', pl: 'Polski' };
   const STORE = 'lastbook.lang';
-  const VERSION = 9;   // part of the locale files' address: raise it with them, so no older copy is used
+  const VERSION = 10;   // part of the locale files' address: raise it with them, so no older copy is used
   const html = document.documentElement;
 
   function chosen() {

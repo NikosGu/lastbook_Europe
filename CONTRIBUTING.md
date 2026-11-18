@@ -24,7 +24,7 @@ Run it before you open a pull request; GitHub Actions runs it on macOS, Windows 
 person sees, also look at it in the running app (`lastbook --snapshot shot.png`) in light and dark, and in a long
 language such as German. If you change the packaging, build the installer for your system.
 
-## Rules that keep Lastbook what it is
+## Rules that keep Lastbook Europe what it is
 
 **No network.** The app opens no port and makes no connection, except setup's downloads, started by the person, through
 `crates/engine/src/setup/net.rs`, to the hosts in `crates/engine/src/dist.rs` only, trusting only the roots built into

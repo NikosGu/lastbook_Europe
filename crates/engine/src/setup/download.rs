@@ -204,7 +204,7 @@ impl Download {
                     etag = None;
                 }
                 Err(Fetch::Net(NetError::Certificate(_))) => {
-                    return Err(SetupError::failed("network", "Lastbook could not confirm it is talking to the download server, so it stopped. A network that intercepts secure connections (some offices, hotels) can cause this."));
+                    return Err(SetupError::failed("network", "Lastbook Europe could not confirm it is talking to the download server, so it stopped. A network that intercepts secure connections (some offices, hotels) can cause this."));
                 }
                 Err(Fetch::Net(NetError::Refused(m))) => return Err(SetupError::failed("network", m)),
                 Err(Fetch::Net(NetError::Io(e))) | Err(Fetch::Io(e)) => {
@@ -257,7 +257,7 @@ impl Download {
                 }
                 if let Some(len) = r.header("Content-Length").and_then(|v| v.trim().parse::<u64>().ok()) {
                     if len != self.size {
-                        return Err(Fetch::Err(SetupError::BadChecksum(format!("The file on the server is {len} bytes, not the {} Lastbook expects.", self.size))));
+                        return Err(Fetch::Err(SetupError::BadChecksum(format!("The file on the server is {len} bytes, not the {} Lastbook Europe expects.", self.size))));
                     }
                 }
             }
@@ -304,7 +304,7 @@ fn io_failed(e: io::Error) -> SetupError {
     if disk_full(&e) {
         SetupError::failed("no_space", "The disk filled up while downloading. Free some space, then try again.")
     } else {
-        SetupError::failed("network", format!("Lastbook could not write a file ({e})."))
+        SetupError::failed("network", format!("Lastbook Europe could not write a file ({e})."))
     }
 }
 

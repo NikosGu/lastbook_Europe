@@ -158,7 +158,7 @@ pub fn get(url: &str, start: u64, etag: Option<&str>, allow: &Allow, tls: &Tls, 
     let mut url = url.to_string();
     for _ in 0..=MAX_REDIRECTS {
         if !url_allowed(&url, allow) {
-            return Err(NetError::Refused("Lastbook refused to download from an address it does not know.".into()));
+            return Err(NetError::Refused("Lastbook Europe refused to download from an address it does not know.".into()));
         }
         let mut headers = vec![("User-Agent", USER_AGENT.to_string()), ("Accept-Encoding", "identity".to_string()), ("Connection", "close".to_string())];
         if start > 0 {
@@ -172,12 +172,12 @@ pub fn get(url: &str, start: u64, etag: Option<&str>, allow: &Allow, tls: &Tls, 
             let Some(loc) = resp.header("Location").map(str::to_string) else {
                 return Err(NetError::Io(io::Error::new(io::ErrorKind::InvalidData, "The download server answered with a move to nowhere.")));
             };
-            url = Url::parse(&url).and_then(|base| base.join(&loc)).map(|u| u.to_string()).map_err(|_| NetError::Refused("The download server moved the file to an address Lastbook cannot read.".into()))?;
+            url = Url::parse(&url).and_then(|base| base.join(&loc)).map(|u| u.to_string()).map_err(|_| NetError::Refused("The download server moved the file to an address Lastbook Europe cannot read.".into()))?;
             continue;
         }
         return Ok(resp);
     }
-    Err(NetError::Io(io::Error::new(io::ErrorKind::InvalidData, "The download server sent Lastbook round in circles.")))
+    Err(NetError::Io(io::Error::new(io::ErrorKind::InvalidData, "The download server sent Lastbook Europe round in circles.")))
 }
 
 /// One small GET: the bytes, or None on any failure, a status other than 200, or more than `limit` bytes.

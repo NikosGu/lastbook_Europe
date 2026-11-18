@@ -34,6 +34,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
   <key>LSMinimumSystemVersion</key><string>13.0</string>
   <key>LSApplicationCategoryType</key><string>public.app-category.education</string>
   <key>NSHighResolutionCapable</key><true/>
+  <key>NSHumanReadableCopyright</key><string>Lastbook Europe: problems and questions to nikos.gu.devs@gmail.com</string>
 </dict></plist>
 PLIST
 codesign --force --deep --sign - "$APP"

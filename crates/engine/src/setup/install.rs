@@ -41,7 +41,7 @@ fn io_error(e: std::io::Error) -> SetupError {
     if super::download::disk_full(&e) {
         SetupError::failed("no_space", "The disk filled up. Free some space, then try again.")
     } else {
-        refused(format!("Lastbook could not write a file ({e})."))
+        refused(format!("Lastbook Europe could not write a file ({e})."))
     }
 }
 
@@ -83,7 +83,7 @@ pub struct Member {
 
 fn member_parts(name: &str, is_dir: bool, unix_mode: Option<u32>, encrypted: bool, top_optional: bool) -> Result<Vec<String>, SetupError> {
     if name.contains('\\') || name.contains('\0') {
-        return Err(refused(format!("The pack holds a file with a name Lastbook does not accept ({}).", short(name))));
+        return Err(refused(format!("The pack holds a file with a name Lastbook Europe does not accept ({}).", short(name))));
     }
     let first = name.split('/').next().unwrap_or("");
     if name.starts_with('/') || first.contains(':') {
@@ -143,7 +143,7 @@ pub fn check_zip(path: &Path, installed_bytes: Option<u64>, allowed: Option<Allo
                 }
             }
             zip::CompressionMethod::Deflated => {}
-            _ => return Err(refused(format!("The pack uses a kind of compression Lastbook does not accept ({}).", short(&name)))),
+            _ => return Err(refused(format!("The pack uses a kind of compression Lastbook Europe does not accept ({}).", short(&name)))),
         }
         total += f.size();
         spans.push((f.header_start(), f.compressed_size(), name.clone()));
@@ -391,14 +391,14 @@ pub fn switch(new_lib: &Path, target: &Path) -> Result<Option<PathBuf>, SetupErr
         if is_library(target) {
             carry_over(target, new_lib);
         }
-        fs::rename(target, &o).map_err(|e| activate(format!("Lastbook could not move the old library aside ({e}). Close anything using it, then try again.")))?;
+        fs::rename(target, &o).map_err(|e| activate(format!("Lastbook Europe could not move the old library aside ({e}). Close anything using it, then try again.")))?;
         old = Some(o);
     }
     if let Err(e) = fs::rename(new_lib, target) {
         if let Some(o) = &old {
             let _ = fs::rename(o, target);
         }
-        return Err(activate(format!("Lastbook could not put the new library in place ({e}).")));
+        return Err(activate(format!("Lastbook Europe could not put the new library in place ({e}).")));
     }
     Ok(old)
 }
@@ -503,7 +503,7 @@ pub fn swap_map(lib: &Path, new: &Path, old_dir: &Path) -> Result<(), SetupError
         for rel in &moved_out {
             let _ = fs::rename(old_dir.join(rel), lib.join(rel));
         }
-        return Err(activate(format!("Lastbook could not put the new map in place ({e}).")));
+        return Err(activate(format!("Lastbook Europe could not put the new map in place ({e}).")));
     }
     Ok(())
 }
@@ -571,7 +571,7 @@ fn apply_map(work: &Path, pend: &Path, mut d: Value, target: &Path, mut note: Ma
                 let _ = fs::rename(&f, dest);
             }
         }
-        note.insert("error".into(), json!("The new map did not open, so Lastbook put the old one back."));
+        note.insert("error".into(), json!("The new map did not open, so Lastbook Europe put the old one back."));
     }
     (is_library(target).then(|| target.to_path_buf()), Some(note))
 }
@@ -677,7 +677,7 @@ pub fn apply_pending(pend: &Path, work: &Path) -> (Option<PathBuf>, Option<Map<S
             let _ = fs::rename(&target, &broken);
             let _ = fs::rename(&old, &target);
             carry_over(&broken, &target); // the model file, moved into the new one, goes back too
-            note.insert("error".into(), json!("The new library did not open, so Lastbook put the old one back."));
+            note.insert("error".into(), json!("The new library did not open, so Lastbook Europe put the old one back."));
             note.insert("old".into(), Value::Null);
         }
     }

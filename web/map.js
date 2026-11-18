@@ -159,7 +159,7 @@ const MapView = (() => {
     if (!on.length) on = (load('mapLayers', DEFAULT_LAYERS) || []).filter(id => LAYERS.some(l => l.id === id));  // drop retired layers (e.g. toilets)
     if (!on.length) on = DEFAULT_LAYERS;
     main.classList.add('map-page');
-    document.title = t('map.page_title') + ' · Lastbook';
+    document.title = t('map.page_title') + ' · Lastbook Europe';
     main.innerHTML = `<div class="maphead"><h1>${th('map.heading')}</h1><p class="small muted" id="mnote">${asOf(null)}</p>${IN_WINDOW ? `<a class="btn plain" href="/ui/setup.html#manage">${th('map.downloads')}</a>` : ''}</div>
     <div class="mapgrid"><div class="mapwrap" id="mapwrap">
       <canvas id="mapc" tabindex="0" role="application" aria-label="${th('map.canvas_label')}"></canvas>

@@ -376,7 +376,7 @@ pub fn reason(code: &str, params: Value) -> Value {
 pub fn estimate_ai(ram: Option<u64>, gpus: &[Value], unified: bool, memory_bytes: u64) -> Value {
     let needs = memory_bytes + RESERVE;
     let Some(ram) = ram else {
-        return json!({"fits": false, "needs_bytes": needs, "estimate": true, "why": "Lastbook could not tell how much memory this computer has.",
+        return json!({"fits": false, "needs_bytes": needs, "estimate": true, "why": "Lastbook Europe could not tell how much memory this computer has.",
                       "why_codes": [reason("ram_unknown", json!({}))]});
     };
     let shared = unified || gpus.is_empty();
@@ -391,7 +391,7 @@ pub fn estimate_ai(ram: Option<u64>, gpus: &[Value], unified: bool, memory_bytes
         (format!("The local AI needs about {} of memory, and this computer has {}{}", gbs(needs), gbs(ram), if shared { "." } else { " plus its graphics memory." }),
          reason(if shared { "fits" } else { "fits_graphics" }, json!({"need_bytes": needs, "ram_bytes": ram})))
     } else {
-        (format!("The local AI needs about {} of this computer’s memory, and it has {}. Lastbook works without it: search and reading are the same.", gbs(in_ram), gbs(ram)),
+        (format!("The local AI needs about {} of this computer’s memory, and it has {}. Lastbook Europe works without it: search and reading are the same.", gbs(in_ram), gbs(ram)),
          reason("too_big", json!({"need_bytes": in_ram, "ram_bytes": ram})))
     };
     json!({"fits": fits, "needs_bytes": needs, "estimate": true, "why": why, "why_codes": [code]})
@@ -474,7 +474,7 @@ mod tests {
         assert_eq!((r["fits"].as_bool(), &r["why_codes"]), (Some(false), &json!([{"code": "too_big", "params": {"need_bytes": in_ram, "ram_bytes": 8 * GIB}}])));
         let unknown = estimate_ai(None, &[], true, 1);
         assert_eq!(unknown["fits"], false);
-        assert_eq!((unknown["why"].as_str(), &unknown["why_codes"]), (Some("Lastbook could not tell how much memory this computer has."), &json!([{"code": "ram_unknown", "params": {}}])));
+        assert_eq!((unknown["why"].as_str(), &unknown["why_codes"]), (Some("Lastbook Europe could not tell how much memory this computer has."), &json!([{"code": "ram_unknown", "params": {}}])));
     }
 
     #[test]

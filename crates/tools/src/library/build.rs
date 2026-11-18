@@ -118,7 +118,7 @@ fn source_file(d: &Doc, docs: &Path) -> Result<PathBuf, String> {
 /// terms, and where it came from. Addresses are words, not links: in the app a link to the web can only do nothing.
 pub(super) fn sources_page(docs: &[Doc]) -> (String, String) {
     let removal = match dist::CONTACT {
-        Some(c) => format!("To ask for anything to be removed, write to {c}."),
+        Some(c) => format!("For a problem, or to ask for anything to be removed, write to {c}."),
         None => "To ask for anything to be removed, open an issue where this project is published.".to_string(),
     };
     let mut by_publisher: BTreeMap<String, Vec<&Doc>> = BTreeMap::new();

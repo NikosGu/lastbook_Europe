@@ -57,7 +57,7 @@ cat > "$STAGE/DEBIAN/control" <<CTRL
 Package: lastbook-europe
 Version: $VER
 Architecture: $ARCH
-Maintainer: Lastbook Europe <noreply@github.com>
+Maintainer: NikosGu <nikos.gu.devs@gmail.com>
 Installed-Size: $SIZE
 Depends: libwebkit2gtk-4.1-0 (>= 2.40), libgtk-3-0, libgstreamer1.0-0, gstreamer1.0-plugins-base, gstreamer1.0-plugins-good
 Recommends: gstreamer1.0-libav, libvulkan1, mesa-vulkan-drivers

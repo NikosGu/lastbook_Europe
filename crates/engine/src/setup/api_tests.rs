@@ -539,7 +539,7 @@ fn recommend_says_why_as_codes() {
     let r = s.recommend(&json!({"disks": [stick]}));
     assert_eq!((r["pack"].as_str(), r["folder"].as_str()), (Some("small"), Some("/dev")));
     assert_eq!(r["why_codes"], json!([{"code": "other_disk", "params": {"free_bytes": 1_000_000, "pack": "small", "disk": "STICK"}}]));
-    assert_eq!(r["why"], "This computer’s own disk has 0.0 GB free, not enough for any library, so small goes on STICK. Keep that disk connected: Lastbook reads the library from it.");
+    assert_eq!(r["why"], "This computer’s own disk has 0.0 GB free, not enough for any library, so small goes on STICK. Keep that disk connected: Lastbook Europe reads the library from it.");
     let mut nas = stick.clone();
     nas["kind"] = json!("network");
     nas["name"] = Value::Null;      // no name: its path names it
@@ -563,7 +563,7 @@ fn recommend_says_why_as_codes() {
     assert_eq!(r["why_codes"], json!([{"code": "start_small", "params": {"pack": "small"}}, {"code": "ai_no_room", "params": {}}]));
     assert!(r["why"].as_str().unwrap().ends_with(" The local AI fits this computer’s memory, but not on the disk as well."));
     // no model fits this computer: the AI's own reasons follow
-    let too_big = json!({"fits": false, "why": "The local AI needs about 22 GB of this computer’s memory, and it has 17 GB. Lastbook works without it: search and reading are the same.",
+    let too_big = json!({"fits": false, "why": "The local AI needs about 22 GB of this computer’s memory, and it has 17 GB. Lastbook Europe works without it: search and reading are the same.",
                          "why_codes": [{"code": "too_big", "params": {"need_bytes": 21_711_738_816u64, "ram_bytes": 17_179_869_184u64}}]});
     let r = s.recommend(&json!({"ai_models": {"gemma-small": {"fits": false}}, "ai": too_big}));
     assert_eq!(r["why_codes"], json!([{"code": "start_small", "params": {"pack": "small"}}, too_big["why_codes"][0]]));
@@ -650,10 +650,10 @@ fn routes_and_their_codes() {
                json!({"error": "That region’s address search is not available yet.", "code": "addresses_unavailable", "params": {}}));
     assert_eq!(s.handle("POST", "start", &json!({"ai": true})).1, json!({"error": "No local AI is offered for this version.", "code": "no_ai_offered", "params": {}}));
     assert_eq!(s.handle("POST", "start", &json!({"repair": true})).1, json!({"error": "There is no library to repair yet.", "code": "nothing_to_repair", "params": {}}));
-    assert_eq!(s.handle("POST", "use", &json!({"path": "/nowhere/at/all"})), (400, json!({"error": "Lastbook cannot find that file or folder.", "code": "missing", "params": {}})));
+    assert_eq!(s.handle("POST", "use", &json!({"path": "/nowhere/at/all"})), (400, json!({"error": "Lastbook Europe cannot find that file or folder.", "code": "missing", "params": {}})));
     assert_eq!(s.handle("POST", "pick", &json!({})).1, json!({"path": null, "cancelled": true}));
     assert_eq!(s.handle("POST", "delete-old", &json!({"path": "/etc"})).1,
-               json!({"error": "Lastbook only deletes an old library it moved aside itself.", "code": "not_moved_aside", "params": {}}));
+               json!({"error": "Lastbook Europe only deletes an old library it moved aside itself.", "code": "not_moved_aside", "params": {}}));
     assert_eq!(s.handle("POST", "remove-ai", &json!({})).1, json!({"error": "There is no local AI in this library to remove.", "code": "no_ai_to_remove", "params": {}}));
     assert!(path_too_deep(Path::new(&format!("C:\\{}", "x".repeat(70))), true));
     assert!(!path_too_deep(Path::new("C:\\Users\\a\\Documents\\LastbookData"), true));
@@ -685,7 +685,7 @@ fn every_refusal_says_its_code_and_params() {
     std::fs::write(&file, b"x").unwrap();
     let r = s.start(Some("small"), None, Some(&file.join("inside").to_string_lossy()), Map::new(), false, false, None, None);
     assert_eq!(said(&r), c("cannot_make_folder", json!({})));
-    assert!(r["error"].as_str().unwrap().starts_with("Lastbook cannot make a folder there ("), "the system's reason stays in the English");
+    assert!(r["error"].as_str().unwrap().starts_with("Lastbook Europe cannot make a folder there ("), "the system's reason stays in the English");
     let taken = env.dir.join("taken");
     std::fs::create_dir_all(taken.join(DATA_NAME)).unwrap();
     std::fs::write(taken.join(DATA_NAME).join("notes.txt"), b"mine").unwrap();
@@ -715,7 +715,7 @@ fn every_refusal_says_its_code_and_params() {
     std::fs::create_dir_all(&plain).unwrap();
     let r = s.use_path(&plain.to_string_lossy());
     assert_eq!(said(&r), c("not_library", json!({"name": "Holiday photos"})));
-    assert_eq!(r["error"], "“Holiday photos” is not a Lastbook library. Choose the folder called LastbookData.");
+    assert_eq!(r["error"], "“Holiday photos” is not a Lastbook Europe library. Choose the folder called LastbookData.");
     let short = env.dir.join("Lastbook-small.zip");
     std::fs::write(&short, b"too short").unwrap();
     let published = env.srv.files.lock().unwrap().data["Lastbook-small.zip"].len() as u64;

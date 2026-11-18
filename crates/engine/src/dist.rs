@@ -26,8 +26,9 @@ pub const DATA_TAG: &str = "data-v1";
 pub const PUBLISHED: bool = true;
 /// Where the update check sends people for a new version.
 pub const WEBSITE: Option<&str> = Some("https://github.com/NikosGu/lastbook_Europe/releases");
-/// Where to ask for a source to be removed (each pack's Sources page): the project's public issues.
-pub const CONTACT: Option<&str> = Some("https://github.com/NikosGu/lastbook_Europe/issues");
+/// Who to write to about a problem, or to ask for a source to be removed (each pack's Sources page, the README, the
+/// installers): the maintainer, at the email of the GitHub account that publishes the project.
+pub const CONTACT: Option<&str> = Some("nikos.gu.devs@gmail.com");
 
 /// The local AI's model files.
 pub const MODEL_HOST: &str = "huggingface.co";

@@ -1,6 +1,6 @@
 # Code of Conduct
 
-Lastbook is built for people in hard moments. We want working on it to feel safe for everyone, whatever their
+Lastbook Europe is built for people in hard moments. We want working on it to feel safe for everyone, whatever their
 background, identity, experience or country.
 
 ## What we expect
@@ -17,11 +17,11 @@ background, identity, experience or country.
 - Harassment, insults, threats, or unwelcome sexual attention.
 - Discrimination, or slurs about anyone's identity or background.
 - Sharing other people's private information without their permission.
-- Pushing changes that would make Lastbook track, profile or expose the people who use it.
+- Pushing changes that would make Lastbook Europe track, profile or expose the people who use it.
 
 ## Reporting
 
-Email hello@lastbook.org. Reports are kept confidential. The maintainers will look at every report, respond, and act
+Email nikos.gu.devs@gmail.com. Reports are kept confidential. The maintainers will look at every report, respond, and act
 fairly. They may warn someone, remove content, or remove someone from the project.
 
 ## Scope

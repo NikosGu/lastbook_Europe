@@ -59,10 +59,10 @@ pub fn check(folder: &Path) -> (Option<PathBuf>, Option<String>) {
             return (Some(f), None);
         }
         let name = f.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
-        return (None, Some(format!("Lastbook cannot save in “{name}”. Move the LastbookData folder somewhere you can save to, then choose it there.")));
+        return (None, Some(format!("Lastbook Europe cannot save in “{name}”. Move the LastbookData folder somewhere you can save to, then choose it there.")));
     }
     let name = folder.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
-    (None, Some(format!("“{name}” is not a Lastbook library. Choose the folder called LastbookData, inside the library you unzipped.")))
+    (None, Some(format!("“{name}” is not a Lastbook Europe library. Choose the folder called LastbookData, inside the library you unzipped.")))
 }
 
 /// The library remembered from last time when it cannot be reached now: its folder is not there at all, as when its disk
@@ -156,7 +156,7 @@ mod tests {
         let data = d.join("data");
         std::fs::create_dir_all(&settings).unwrap();
         assert_eq!(check(&d).0, None);
-        assert!(check(&d).1.unwrap().contains("not a Lastbook library"));
+        assert!(check(&d).1.unwrap().contains("not a Lastbook Europe library"));
         let lib = data.join(DATA_NAME);
         std::fs::create_dir_all(lib.join("library-data")).unwrap();
         std::fs::write(lib.join("library-data/catalog.json"), b"{}").unwrap();

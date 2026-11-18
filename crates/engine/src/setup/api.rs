@@ -204,7 +204,7 @@ fn map_need(mp: Option<&Value>, have: &HashSet<String>) -> u64 {
 
 fn sha256_file(path: &Path, control: &Control, progress: &mut dyn FnMut(u64, u64)) -> Result<String, SetupError> {
     let mut f = std::fs::File::open(path)
-        .map_err(|e| download::failed_with("network", json!({"name": file_name(path)}), format!("Lastbook could not read {} ({e}).", path.display())))?;
+        .map_err(|e| download::failed_with("network", json!({"name": file_name(path)}), format!("Lastbook Europe could not read {} ({e}).", path.display())))?;
     let total = f.metadata().map(|m| m.len()).unwrap_or(0);
     let mut h = Sha256::new();
     let mut buf = vec![0u8; 8 * 1024 * 1024];
@@ -725,10 +725,10 @@ impl Setup {
                 let params = json!({"free_bytes": free, "pack": choice["id"], "disk": name});
                 if s(&d["kind"]) == "network" {     // a NAS: the network, not a cable, keeps it there
                     codes.push(hardware::reason("other_disk_network", params));
-                    format!("This computer’s own disk has {} free, not enough for any library, so {} goes on {name}, a network share. Keep this computer on that network: Lastbook reads the library from it.", gb(free), s(&choice["title"]))
+                    format!("This computer’s own disk has {} free, not enough for any library, so {} goes on {name}, a network share. Keep this computer on that network: Lastbook Europe reads the library from it.", gb(free), s(&choice["title"]))
                 } else {
                     codes.push(hardware::reason("other_disk", params));
-                    format!("This computer’s own disk has {} free, not enough for any library, so {} goes on {name}. Keep that disk connected: Lastbook reads the library from it.", gb(free), s(&choice["title"]))
+                    format!("This computer’s own disk has {} free, not enough for any library, so {} goes on {name}. Keep that disk connected: Lastbook Europe reads the library from it.", gb(free), s(&choice["title"]))
                 }
             }
             None => {
@@ -898,10 +898,10 @@ impl Setup {
             return err("nothing_to_add", json!({}), "Nothing to add: this library and the local AI are already here.");
         }
         if let Err(e) = std::fs::create_dir_all(&parent) {
-            return err("cannot_make_folder", json!({}), format!("Lastbook cannot make a folder there ({e})."));
+            return err("cannot_make_folder", json!({}), format!("Lastbook Europe cannot make a folder there ({e})."));
         }
         if tempfile_in(&parent).is_err() {
-            return err("cannot_save_there", json!({}), "Lastbook cannot save in that folder. Choose another.");
+            return err("cannot_save_there", json!({}), "Lastbook Europe cannot save in that folder. Choose another.");
         }
         if path_too_deep(&target, self.o().windows_paths) {
             let room = WINDOWS_MAX_PATH - LONGEST_INSIDE - 1 - DATA_NAME.len() - 1;
@@ -1000,7 +1000,7 @@ impl Setup {
         };
         let pack = cur["pack"].as_str().and_then(|id| self.manifest().pack(id));
         let Some(pack) = pack.filter(|p| p["available"].as_bool().unwrap_or(false)) else {
-            return err("repair_unknown", json!({}), "Lastbook cannot tell which library this is, so it cannot repair it. Download a library instead.");
+            return err("repair_unknown", json!({}), "Lastbook Europe cannot tell which library this is, so it cannot repair it. Download a library instead.");
         };
         let model = if ai || !cur["models"].as_array().map(|a| a.is_empty()).unwrap_or(true) {
             cur["model"].as_str().and_then(|id| self.manifest().model(Some(id))).or_else(|| ai.then(|| self.manifest().model(None)).flatten())
@@ -1139,7 +1139,7 @@ impl Setup {
     pub fn use_path(&self, path: &str) -> Value {
         let p = expand(path);
         if path.trim().is_empty() || !p.exists() {
-            return err("missing", json!({}), "Lastbook cannot find that file or folder.");
+            return err("missing", json!({}), "Lastbook Europe cannot find that file or folder.");
         }
         if p.is_dir() {
             let lib = if install::is_library(&p) { p.clone() } else { p.join(DATA_NAME) };
@@ -1156,11 +1156,11 @@ impl Setup {
                     return self.use_path(&first.to_string_lossy()); // the person explicitly chose this folder
                 }
                 let name = file_name(&p);
-                return err("not_library", json!({"name": name}), format!("“{name}” is not a Lastbook library. Choose the folder called {DATA_NAME}."));
+                return err("not_library", json!({"name": name}), format!("“{name}” is not a Lastbook Europe library. Choose the folder called {DATA_NAME}."));
             }
             if tempfile_in(&lib).is_err() {
                 let name = file_name(&lib);
-                return err("library_read_only", json!({"name": name}), format!("Lastbook cannot save in “{name}”. Move it somewhere you can save to, then choose it there."));
+                return err("library_read_only", json!({"name": name}), format!("Lastbook Europe cannot save in “{name}”. Move it somewhere you can save to, then choose it there."));
             }
             let _g = self.0.action.lock().unwrap();
             if self.0.job.lock().unwrap().as_ref().is_some_and(|j| ACTIVE.contains(&s(&j["state"]))) {
@@ -1236,7 +1236,7 @@ impl Setup {
                 return if j.is_null() { json!({"job": null, "noted": true}) } else { j };
             }
         }
-        err("unknown_file", json!({}), "That is not a file Lastbook knows. Choose a Lastbook library zip or the model file.")
+        err("unknown_file", json!({}), "That is not a file Lastbook Europe knows. Choose a Lastbook Europe library zip or the model file.")
     }
 
     pub fn finish(&self) -> Value {
@@ -1294,7 +1294,7 @@ impl Setup {
         for p in targets {
             let n = std::fs::metadata(&p).map(|m| m.len()).unwrap_or(0);
             if let Err(e) = std::fs::remove_file(&p) {
-                return err("cannot_remove_model", json!({}), format!("Lastbook could not remove the model file ({e}). Quit anything using it, then try again."));
+                return err("cannot_remove_model", json!({}), format!("Lastbook Europe could not remove the model file ({e}). Quit anything using it, then try again."));
             }
             freed += n;
         }
@@ -1309,7 +1309,7 @@ impl Setup {
         let st = self.settings();
         let olds: Vec<String> = st["old"].as_array().into_iter().flatten().filter_map(|v| v.as_str().map(str::to_string)).collect();
         if !olds.contains(&path.to_string()) {
-            return err("not_moved_aside", json!({}), "Lastbook only deletes an old library it moved aside itself.");
+            return err("not_moved_aside", json!({}), "Lastbook Europe only deletes an old library it moved aside itself.");
         }
         let p = PathBuf::from(path);
         if !p.file_name().is_some_and(|n| n.to_string_lossy().contains(".old-")) {

@@ -9,6 +9,40 @@ It covers the 31 countries of the EU and EFTA (the 27 EU countries, Switzerland,
 
 The app is written in Rust; the interface is plain HTML, CSS and JavaScript.
 
+## Lastbook Europe and Lastbook
+
+Lastbook Europe is an independent European version of [Lastbook](https://github.com/Immortal-Protocols/lastbook)
+("offline knowledge AI, maps and videos for survival and rebuilding"), made by the Lastbook contributors, published by
+the Immortal-Protocols organization on GitHub ([lastbook.org](https://lastbook.org)) under the MIT licence. Lastbook was
+made for the United States: a map of each US state, American address search, guides and sources from American agencies,
+in English, with one local AI model. Its authors did not make Lastbook Europe, are not responsible for it and have not
+endorsed it: for a problem with this version, write to its maintainer (see [Contact](#contact)), not to them.
+
+**Kept from Lastbook:** its idea and rules (it works offline, sources come first, plain words, nothing about the person
+leaves the computer), the design of its interface and much of the interface's code (`web/`), the formats of its library
+and maps, and the way its setup works.
+
+**Done in this version:**
+
+- **Europe instead of the United States.** The 31 EU and EFTA countries in 110 regions; the US states, the American
+  datasets and map layers, the US units and the American guides are gone.
+- **New maps.** Each region's map is built from OpenStreetMap (through Geofabrik), Copernicus terrain and Natural Earth,
+  with a map builder Lastbook did not have; addresses are found the way each country writes them (street first, the
+  country's postcodes, several languages where a country has them).
+- **Six languages.** The interface and the guides in English, Italian, German, French, Spanish and Polish; Lastbook was in
+  English only.
+- **A new library.** A starter library of 32 public documents from European civil-protection and health bodies, the WHO,
+  the European Commission and the IFRC, each with its terms checked; the 19 whose terms let them be passed on are in the
+  published pack. The guides were written again on them: 112, metric units, Europe's own hazards.
+- **Rewritten in Rust.** The engine, setup, the window, the local AI's runner and the data tools, which in Lastbook were
+  Python, with a C++ runner and an iPad app in Swift; no Python is left.
+- **The local AI.** A catalogue of models instead of a single one, and a "from the disk" mode that runs a model larger
+  than the computer's memory (Qwen3.6-35B-A3B on a 16 GB Mac); llama.cpp is built without its model downloader.
+- **The library anywhere.** The library and the models can live on an external disk or a network share.
+- **Its own releases.** The installers and the data are published on this repository's GitHub releases, built by
+  GitHub Actions.
+- **Left out:** Lastbook's iPad app and website.
+
 > **Status: under construction.** The window, setup with the region choice, the map with European address search,
 > the library, the local AI with its chat, and the installers are written in Rust and tested on macOS, Windows and Linux.
 > The tools that build the European map data and a first small library are being written now; the library packs,
@@ -38,7 +72,7 @@ taken from files already on the computer.
   files), with search everywhere.
 - **The offline map.** A base map of Europe and a detailed map of the region chosen in setup: streets, buildings, terrain,
   water, and places to get help (hospitals, pharmacies, drinking water, shelters). Addresses can be found offline, written
-  the way each country writes them. Distances are metric. The person chooses the region; Lastbook never detects location.
+  the way each country writes them. Distances are metric. The person chooses the region; Lastbook Europe never detects location.
 - **The local AI, optional.** Ask in plain words, in your language, and get an answer that cites the library's pages,
   from a model running on the computer itself (see below). Without it, the chat still finds the right pages.
 - **Setup in one step.** On first run, setup shows this computer's free space and memory, suggests a library and the
@@ -62,13 +96,13 @@ says which kind each is, and downloads to the one chosen; the app then reads the
 ## The local AI
 
 The model is never part of the app. The person adds one in setup, or points setup at a GGUF model file already on the
-computer. Lastbook knows each model it offers by name, size and SHA-256, and checks the file before using it.
+computer. Lastbook Europe knows each model it offers by name, size and SHA-256, and checks the file before using it.
 
-**Which models.** Lastbook prompts two families, telling them apart by the model file's own header: **Qwen 3.5 / 3.6**
+**Which models.** Lastbook Europe prompts two families, telling them apart by the model file's own header: **Qwen 3.5 / 3.6**
 (including mixtures of experts such as Qwen3.6-35B-A3B) and **Gemma 4**. The answers cite the library in every
 language.
 
-**Does it fit this computer?** Lastbook asks llama.cpp to fit the model to this computer's memory, then gives one of
+**Does it fit this computer?** Lastbook Europe asks llama.cpp to fit the model to this computer's memory, then gives one of
 three answers:
 
 - **In memory.** The model fits. It runs on the graphics processor where there is one: Metal on a Mac, Vulkan on Windows
@@ -228,10 +262,16 @@ saves a picture of it, on macOS, Windows and Linux; CI photographs the app on ea
 
 ## Credits and licence
 
-Lastbook Europe started from [Lastbook](https://github.com/Immortal-Protocols/lastbook), whose interface it keeps, and is
-rewritten in Rust for Europe, with guides written anew from European sources. Its code and documentation use the
+Lastbook Europe started from [Lastbook](https://github.com/Immortal-Protocols/lastbook), by the Lastbook contributors, whose
+interface it keeps (see [Lastbook Europe and Lastbook](#lastbook-europe-and-lastbook)), and is rewritten in Rust for Europe,
+with guides written anew from European sources. Its code and documentation use the
 [MIT License](LICENSE), which keeps Lastbook's notice. Third-party software keeps its own licence: see
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The regions' boxes are made from Eurostat's NUTS 2024 boundaries,
 © EuroGeographics for the administrative boundaries.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+## Contact
+
+For a problem, a question, or to ask for something to be removed from the library or the maps, write to the
+maintainer at nikos.gu.devs@gmail.com, or open an issue on GitHub.

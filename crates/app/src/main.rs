@@ -180,7 +180,7 @@ fn main() {
         None => None,
         Some(d) if install::is_library(&d) => Some(d.canonicalize().unwrap_or(d)),
         Some(d) => {
-            show_error(&format!("Lastbook could not find its library.\n\nIt looked in:\n{}\n\nThat folder must hold library-data/catalog.json.", d.display()));
+            show_error(&format!("Lastbook Europe could not find its library.\n\nIt looked in:\n{}\n\nThat folder must hold library-data/catalog.json.", d.display()));
             std::process::exit(2);
         }
     };

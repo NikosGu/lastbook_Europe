@@ -116,7 +116,7 @@ const Chat = (() => {
     if (id && !cur) { swap('#/ask'); return }
     const about = q.get('about');
     aboutCtx = !cur && about ? await describe(about) : (cur && cur.about ? cur.aboutInfo : null);
-    document.title = (cur ? cur.title : t('chat.title')) + ' · Lastbook';
+    document.title = (cur ? cur.title : t('chat.title')) + ' · Lastbook Europe';
     $('#tbTitle').textContent = cur ? cur.title : t('chat.title');
     main.innerHTML = `<div class="chat">
       <aside class="chat-side" id="chatSide" aria-label="${th('chat.side.label')}">

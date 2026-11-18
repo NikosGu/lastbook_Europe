@@ -4,11 +4,11 @@
   "id": "starter",
   "title": "Starter library",
   "summary": "Drinking water, food, hygiene, first aid, power cuts, emergency supplies, floods and keeping warm, in Italian, German, English, French, Spanish and Polish, from public bodies of Switzerland, Austria, Germany, Italy, France, Spain and Poland, the European Commission, the WHO and the IFRC.",
-  "revision": "2026-11-18-starter-v5",
+  "revision": "2026-11-18-starter-v6",
   "map": "base",
   "redistributable": {
    "summary": "Drinking water, food, hygiene, first aid, floods, earthquakes, severe weather, cold, power cuts and emergency supplies, in English, Italian, Spanish, Polish, French and German, from the WHO, the European Commission, the IFRC and public bodies of Italy, Spain, Poland, France and Austria: the documents whose publishers let them be passed on.",
-   "revision": "2026-11-18-starter-redistributable-v3"
+   "revision": "2026-11-18-starter-redistributable-v4"
   }
  },
  "documents": [

@@ -2,6 +2,7 @@
 //! engine/library.py Handler.do_GET).
 
 use super::Library;
+use crate::dist;
 use crate::http::{Request, Response};
 use regex::Regex;
 use serde_json::{json, Value};
@@ -99,6 +100,7 @@ impl Library {
 
     /// What this library holds, for the interface (`/api/library`). `pins` is whether the map has help pins: whether a
     /// pack has any of the files they come from (crate::map::PIN_FILES); a library that is not a pack is taken to.
+    /// `contact` is who to write to about a problem (dist::CONTACT).
     pub fn library_info(&self) -> Value {
         let lib = self.lib().unwrap_or_default();
         let data = self.paths.data.clone().unwrap_or_default();
@@ -113,6 +115,7 @@ impl Library {
         out.insert("zims".into(), json!(self.zim_names()));
         out.insert("sources".into(), sources);
         out.insert("pack".into(), json!(pack));
+        out.insert("contact".into(), json!(dist::CONTACT));   // who to write to about a problem (About, Contact)
         out.insert("pins".into(), json!(!pack || crate::map::PIN_FILES.iter().any(|f| data.join(f).is_file())));
         Value::Object(out)
     }

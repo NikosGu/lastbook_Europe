@@ -53,8 +53,8 @@ pub const KINDS: [&str; 6] = ["not_found", "permission_denied", "out_of_memory",
 
 /// The sentences without params: code, English.
 const FIXED: [(&str, &str); 18] = [
-    ("no_runtime", "This copy of Lastbook has no local AI runtime."),
-    ("unknown_model", "Lastbook does not know how to ask this model questions."),
+    ("no_runtime", "This copy of Lastbook Europe has no local AI runtime."),
+    ("unknown_model", "Lastbook Europe does not know how to ask this model questions."),
     ("cannot_measure", "The local AI program could not read the model file."),
     ("not_set_up", "The local AI is not set up on this computer."),
     ("did_not_start", "The local AI did not start."),
@@ -514,7 +514,7 @@ impl Local {
                 let short = size < want;
                 st.said = Some(said(if short { "unfinished" } else { "wrong_size" }, json!({"folder": folder_param(&p), "size_bytes": size, "expected_bytes": want}),
                                     format!("The file in {} is {} of {}. {}", folder_name(&p), gb(size), gb(want),
-                                            if short { "The download may not have finished." } else { "It is not the file Lastbook expects." })));
+                                            if short { "The download may not have finished." } else { "It is not the file Lastbook Europe expects." })));
             } else {
                 st.state = "absent".into();
             }
@@ -594,7 +594,7 @@ impl Local {
             }
             Err(e) => {
                 (st.state, st.pct) = ("wrong".into(), None);
-                st.said = Some(said("cannot_read", json!({"kind": kind_code(e.kind())}), format!("Lastbook could not read the model file ({}).", e.kind())));
+                st.said = Some(said("cannot_read", json!({"kind": kind_code(e.kind())}), format!("Lastbook Europe could not read the model file ({}).", e.kind())));
                 false
             }
         }
@@ -1024,7 +1024,7 @@ fn tie_to_this_process(_child: &mut Child) {
             job as usize
         });
         if AssignProcessToJobObject(job as _, _child.as_raw_handle() as _) == 0 {
-            eprintln!("local AI: could not tie the program to Lastbook");
+            eprintln!("local AI: could not tie the program to Lastbook Europe");
         }
     }
 }
@@ -1211,7 +1211,7 @@ mod tests {
         l.discover();
         let s = l.status();
         assert_eq!(coded(&s, "state", "code"), ("error", "no_runtime", &json!({})));
-        assert_eq!(s["message"], "This copy of Lastbook has no local AI runtime.", "the English stays beside the code");
+        assert_eq!(s["message"], "This copy of Lastbook Europe has no local AI runtime.", "the English stays beside the code");
         // nothing there: no message, no code
         let (l, d) = local("states", vec![entry("tiny", "tiny.gguf", &bytes)]);
         l.discover();
@@ -1230,7 +1230,7 @@ mod tests {
         l.discover();
         let s = l.status();
         assert_eq!(coded(&s, "state", "code"), ("wrong", "wrong_size", &json!({"folder": folder, "size_bytes": 36, "expected_bytes": 27})));
-        assert!(s["message"].as_str().unwrap().ends_with("It is not the file Lastbook expects."));
+        assert!(s["message"].as_str().unwrap().ends_with("It is not the file Lastbook Europe expects."));
         // the right size, other contents
         std::fs::write(&file, b"GGUF but not really a mode!").unwrap();
         l.discover();
@@ -1247,14 +1247,14 @@ mod tests {
             std::fs::set_permissions(&file, std::fs::Permissions::from_mode(0o644)).unwrap();
             let s = l.status();
             assert_eq!(coded(&s, "state", "code"), ("wrong", "cannot_read", &json!({"kind": "permission_denied"})));
-            assert_eq!(s["message"], "Lastbook could not read the model file (permission denied).");
+            assert_eq!(s["message"], "Lastbook Europe could not read the model file (permission denied).");
         }
         // the right file, but not a model Lastbook knows how to ask
         std::fs::write(&file, &bytes).unwrap();
         l.discover();
         let s = l.status();
         assert_eq!(coded(&s, "state", "code"), ("error", "unknown_model", &json!({})));
-        assert_eq!(s["message"], "Lastbook does not know how to ask this model questions.");
+        assert_eq!(s["message"], "Lastbook Europe does not know how to ask this model questions.");
         // turned off: no message
         let s = l.action("off");
         assert_eq!((s["state"].as_str(), s["message"].as_str(), s.get("code")), (Some("off"), Some(""), None));

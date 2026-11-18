@@ -282,7 +282,7 @@ function errorBox(e, what) {
 }
 // The window title, and on reading pages the toolbar's title and the line under it.
 // bar: what the toolbar shows when it is not the page's own title (an article names itself; the toolbar names the encyclopedia).
-const setTitle = (t, sub, bar) => { document.title = t ? t + ' · Lastbook' : 'Lastbook'; const b = $('#tbTitle'); b.textContent = b.title = bar ?? t ?? ''; if (sub !== undefined) $('#tbSub').textContent = $('#tbSub').title = sub };
+const setTitle = (t, sub, bar) => { document.title = t ? t + ' · Lastbook Europe' : 'Lastbook Europe'; const b = $('#tbTitle'); b.textContent = b.title = bar ?? t ?? ''; if (sub !== undefined) $('#tbSub').textContent = $('#tbSub').title = sub };
 
 /* ------------------------------------------------------------- router -- */
 // Where this tab is in its history. Each entry carries its own index in history.state, so Back and Forward are known exactly:
@@ -1235,6 +1235,8 @@ async function about() {
    <li>${th('app.about.nd_practice')}</li>
    ${s.pack ? '' : `<li>${th('app.about.nd_lists')}</li>`}</ul>
   ${s.sources ? `<h2>${th('app.about.sources')}</h2><p>${th('app.about.sources_text', { link: I18N.raw(`<a href="#/read/${encodeURIComponent(s.sources)}?${fromQ()}">${th('app.about.sources_link')}</a>`) })}</p>` : ''}
+  <h2>${th('app.about.origin')}</h2><p>${th('app.about.origin_text')}</p>
+  ${s.contact ? `<h2>${th('app.about.contact')}</h2><p>${th('app.about.contact_text', { email: s.contact })}</p>` : ''}
   ${oldServer ? `<h2>${th('app.about.other')}</h2><p><a href="/reports/gap-closure-status.html" target="_blank">${th('app.about.r_gap')}</a> · <a href="/reports/learning-pathways.html" target="_blank">${th('app.about.r_paths')}</a> · <a href="/reports/survival-tools-cart.html" target="_blank">${th('app.about.r_supplies')}</a></p>` : ''}`;
   if (IN_WINDOW && window.LBUpdate) LBUpdate.mount(main);   // Check for updates (web/update.js): only when the person asks
 }
