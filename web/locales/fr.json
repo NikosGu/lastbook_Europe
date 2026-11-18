@@ -22,7 +22,7 @@
   "setup.pack.all": "Complète",
   "setup.pack.all_summary": "Tout, avec les encyclopédies en entier.",
   "setup.pack.starter": "Bibliothèque de base",
-  "setup.pack.starter_summary": "Premiers secours, inondations, séismes, intempéries, coupures de courant et réserves d’urgence, par des organismes publics d’Italie, d’Espagne et de Pologne et la FICR, en italien, anglais, espagnol et polonais.",
+  "setup.pack.starter_summary": "Eau potable, alimentation, hygiène, premiers secours, inondations, séismes, intempéries, grand froid, coupures de courant et réserves d’urgence, par l’OMS, la Commission européenne, la FICR et des organismes publics d’Italie, d’Espagne, de Pologne, de France et d’Autriche, en anglais, italien, espagnol, polonais, français et allemand.",
   "setup.map.every_region": "toutes les régions",
   "setup.map.region_country": "{region} ({country})",
   "setup.map.title": "Votre carte locale",

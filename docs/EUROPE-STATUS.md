@@ -158,13 +158,15 @@ place; a guide still says what its cited page says, no more. Form of address unc
   pack the manifest does not list by its name.
 
 Found along the way, for the maintainer:
-- `setup.pack.starter_summary` (English) names Italian, German and English documents only; the starter library now has
-  French, Spanish and Polish ones too.
+- Done on 18 Nov: `setup.pack.starter_summary`, in the six languages, describes the published pack as it now is (19
+  documents: the WHO, the European Commission, the IFRC and public bodies of Italy, Spain, Poland, France and Austria, in
+  six languages); it described the first one, of nine.
 - Where a translated guide opens a document in its own language: in a library older than the current starter, those
   items are hidden instead of opening the English item's page (Polish first aid loses its recovery-position and CPR
   readings there); some French pages lack warnings the English items give (four in the disasters guide); three Spanish
   items open DGPCE pages whose notes differ from the English item (water, heat and cold). Each needs a decision on the
-  document or the page.
+  document or the page. The Spanish heat and cold notes match their pages' infographics, whose words the page texts now
+  hold.
 - The guides' own `_review` notes still say "machine-assisted": `crates/engine/src/library/topics.rs` expects that text;
   change it there and in `content/topics/*/*.json` together.
 

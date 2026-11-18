@@ -22,7 +22,7 @@
   "setup.pack.all": "Completa",
   "setup.pack.all_summary": "Todo, con las enciclopedias completas.",
   "setup.pack.starter": "Biblioteca básica",
-  "setup.pack.starter_summary": "Primeros auxilios, inundaciones, terremotos, fenómenos meteorológicos adversos, apagones y reservas de emergencia, de organismos públicos de Italia, España y Polonia y de la FICR, en italiano, inglés, español y polaco.",
+  "setup.pack.starter_summary": "Agua potable, alimentos, higiene, primeros auxilios, inundaciones, terremotos, fenómenos meteorológicos adversos, frío, apagones y reservas de emergencia, de la OMS, la Comisión Europea, la FICR y organismos públicos de Italia, España, Polonia, Francia y Austria, en inglés, italiano, español, polaco, francés y alemán.",
   "setup.map.every_region": "todas las regiones",
   "setup.map.region_country": "{region} ({country})",
   "setup.map.title": "Tu mapa local",
