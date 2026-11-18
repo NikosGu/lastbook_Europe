@@ -12,12 +12,12 @@
       "label": "¿Qué comida deberíamos tener en casa?",
       "hint": "Alimentos de larga duración para una semana o más",
       "read": [
-        {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Una lista de comprobación para siete días",
-         "note": "En alemán. Bebidas, comida lista para comer, alimentos secos, material médico y de higiene, luz, algo para cocinar, dinero en efectivo."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Qué es una buena comida de emergencia",
-         "note": "En alemán. 10 días si puedes, al menos 3: comida que no necesite nevera, que no haya que cocinar o que se cocine rápido; alergias, niños, mascotas."},
-        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Una lista de la compra por grupos de alimentos",
-         "note": "En alemán. Bebidas, cereales, latas, legumbres, leche de larga duración y más; revisa las fechas y repón lo que uses."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Una lista de reservas de casa para al menos 3 días",
+         "note": "En polaco. De la guía de seguridad del Gobierno polaco: agua, comida lista para comer, botiquín, productos de limpieza e higiene; la lista sigue en la página siguiente."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "Qué comida se conserva bien en la reserva",
+         "note": "En polaco. De la guía del RCB: alimentos duraderos que se comen fríos, sin nevera ni cocción, como latas y barritas; guardarlos en un lugar fresco, seco y oscuro."},
+        {"doc": "eu-72h-preparedness-guidelines-2026", "page": 16, "label": "Lo que según la UE necesita cada hogar para 72 horas",
+         "note": "En inglés. De las directrices de la Comisión Europea para las autoridades nacionales: comida, agua potable, calefacción o refrigeración, luz, medicinas, higiene y un modo de informarse, para al menos 72 horas."}
       ]
     },
     {
@@ -29,8 +29,8 @@
          "note": "En alemán. Cuánto tiempo se conservan, a qué temperatura, y cuánto duran una vez abierta la lata."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Legumbres, frutos secos, aceite, carne y el congelador",
          "note": "En alemán. Temperaturas de conservación, y cuántos meses se conservan los alimentos en el congelador."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Consumir y reponer, o una reserva aparte revisada cada año",
-         "note": "En alemán."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Reservas duraderas y otras que se usan y reponen, revisadas cada pocos meses",
+         "note": "En polaco. De la guía de seguridad del Gobierno polaco: revisar también las fechas de caducidad."}
       ]
     },
     {
@@ -49,8 +49,8 @@
       "label": "La nevera y el congelador no funcionan",
       "hint": "Qué comer primero, mantener las puertas cerradas, el agua del deshielo",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Alimentos perecederos y el congelador",
-         "note": "En alemán. Come o cocina pronto los alimentos perecederos y vigila si el congelador suelta agua del deshielo; los frigoríficos combi se descongelan antes."},
+        {"doc": "moncloa-alimentos-apagon-2025", "page": 1, "label": "Tras un apagón: qué tirar del frigorífico y del congelador",
+         "note": "Del Ministerio de Consumo, tras el apagón de abril de 2025: con cortes de más de 4 horas, tirar los alimentos perecederos del frigorífico, como carne, pollo, pescado, huevos, leche o sobras; nunca probar un alimento para saber si es seguro."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Abre la nevera y el congelador lo menos posible",
          "note": "En italiano. Forma parte de los consejos para un apagón."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Consume primero los perecederos y recoge la basura en bolsas",
@@ -64,8 +64,8 @@
       "read": [
         {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Latas hinchadas y queso con moho",
          "note": "En alemán. Cuándo hay que tirar una lata, y cuándo se puede cortar el moho de un queso duro."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Frutos secos, aceite y carne en mal estado",
-         "note": "En alemán. Las señales de que hay que tirarlos."},
+        {"doc": "sanidad-salud-tras-inundaciones-2024", "page": 1, "label": "Fuera lo que tocó el agua o el barro",
+         "note": "Del Ministerio de Sanidad tras la DANA de 2024: no comer alimentos que hayan estado en contacto con el agua o el barro, salvo latas y tarros herméticos sin daños, que se lavan y se hierven antes de abrirlos."},
         {"doc": "dgpce-guia-inundaciones", "page": 20, "label": "Comida mojada por el agua de la inundación",
          "note": "De la guía de Protección Civil sobre inundaciones. Entre lo que hay que hacer después: no comer alimentos mojados por el agua de la inundación."}
       ]
@@ -90,15 +90,15 @@
     {"text": "Después de una inundación, no comas alimentos mojados por el agua.", "doc": "dgpce-guia-inundaciones", "page": 20}
   ],
   "prepare": [
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Una lista de comprobación para siete días", "note": "En alemán."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Una lista para al menos 3 días", "note": "En polaco."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista de comprobación: comida y agua para 3, 5, 7 o 10 días", "note": "En alemán."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Haz tus provisiones poco a poco", "note": "En alemán."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Revisa las provisiones una vez al año", "note": "En alemán."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Revisar la reserva cada pocos meses", "note": "En polaco."},
     {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Una lista por grupos de alimentos", "note": "En alemán."}
   ],
   "learn": [
     {"doc": "oezsv-bevorratungsratgeber", "label": "Guía de provisiones", "note": "En alemán. De la protección civil austriaca: necesidades, almacenamiento y duración, agua, medicamentos, lo que se suele olvidar en casa. Sus páginas sobre comer plantas silvestres son consejos de supervivencia que ninguna otra fuente de aquí comprueba."},
-    {"doc": "bwl-kluger-rat-notvorrat", "label": "Buen consejo: provisiones de emergencia", "note": "En alemán. El folleto federal suizo, de cuatro páginas."}
+    {"doc": "eu-72h-preparedness-guidelines-2026", "label": "Directrices para 72 horas de autosuficiencia", "note": "En inglés. Las directrices de la Comisión Europea (2026), escritas para las autoridades nacionales, sobre lo que cada hogar debería poder cubrir por sí mismo durante 72 horas."}
   ],
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {

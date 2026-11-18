@@ -13,8 +13,8 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "When the heating fails",
          "note": "In German. Heaters approved for indoor use, warm clothes, blankets and sleeping bags; windows shut, but air the rooms briefly."},
-        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Dress in layers, drink something warm",
-         "note": "Clothing for the cold, warm drinks and no alcohol, changing out of wet clothes, and when to get medical help."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 24, "label": "Dress warmly and drink water",
+         "note": "In Spanish. From the Spanish civil protection guide to severe weather: in the cold, thick clothes and closed shoes that cover the body, plenty to drink, and mouth and nose covered."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Heating without power",
          "note": "In German. Even oil and gas heating stop in a power cut; camping or paraffin stoves, planned with ventilation and a flue."}
       ]
@@ -26,10 +26,10 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Carbon monoxide: what is safe indoors",
          "note": "In German. Only devices approved for indoor use; an open fire indoors can make carbon monoxide; fit a CO alarm."},
-        {"doc": "ifrc-extreme-cold", "page": 5, "label": "No generator or outdoor heater inside",
-         "note": "Do not use a generator, or heaters and cookers meant for outdoors, inside the home."},
-        {"doc": "ifrc-extreme-cold", "page": 1, "label": "Why heaters and fireplaces raise the risk",
-         "note": "In a cold wave, space heaters and fireplaces indoors make carbon monoxide poisoning and house fires more likely."}
+        {"doc": "who-floods-health-2024", "page": 6, "label": "No generator indoors",
+         "note": "WHO advice after floods: never run a petrol or diesel generator indoors, and have gas and electrical appliances checked before you use them again."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Braziers and stoves in closed rooms",
+         "note": "In Spanish. From the Spanish civil protection guide to severe weather: in cold and snow, braziers and wood, coal or gas stoves in closed rooms without ventilation can poison you."}
       ]
     },
     {
@@ -37,8 +37,8 @@
       "label": "Get the home through a cold wave",
       "hint": "Frozen pipes, supplies, a safe way to keep warm",
       "read": [
-        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Get the home ready for a winter storm",
-         "note": "Water in case pipes freeze, food for several days, a torch and a radio, a properly ventilated heat source."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Get the home ready for cold and snow",
+         "note": "In Spanish. From the Spanish civil protection guide to severe weather: a stove, food and medicines in reserve, a portable radio, the roof and heating checked, and a tap left slightly open in a hard frost."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Frozen pipes, and dangers after the storm",
          "note": "A trickle of running water, checking pipes, power cuts, floods from melting snow, icy paths."}
       ]
@@ -52,8 +52,8 @@
          "note": "Avoid driving, stay in a trapped vehicle, drive slowly on snow; how to judge ice on ponds and lakes."},
         {"doc": "ifrc-extreme-cold", "page": 3, "label": "A winter kit for the car",
          "note": "Tyres, jump leads, a first aid kit, a charger, warm clothes, a shovel, a full tank."},
-        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Shovelling snow and other hard work in the cold",
-         "note": "Overexertion in the cold can cause a cardiac arrest."}
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 25, "label": "Clearing snow without overdoing it",
+         "note": "In Spanish. From the Spanish civil protection guide to severe weather, in a snowfall: do not overexert yourself clearing snow, protect your face, head and hands, and stay in if there is a blizzard."}
       ]
     },
     {
@@ -90,7 +90,7 @@
   "limits": [
     {"text": "Indoors, use only heaters and stoves approved for indoor use.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "Carbon monoxide poisoning can kill, and an open fire indoors can cause it too. A tested CO alarm warns you.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
-    {"text": "Do not use a generator, or heaters and cookers meant for outdoors, inside the home.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "Do not use a petrol or diesel generator indoors.", "doc": "who-floods-health-2024", "page": 6},
     {"text": "Get medical help if signs of hypothermia or frostbite appear.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Avoid overexertion in the cold, such as clearing snow: it can cause a cardiac arrest.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Keep windows and doors shut against the cold, but air the rooms briefly and regularly.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
@@ -100,11 +100,11 @@
   "prepare": [
     {"doc": "ifrc-extreme-cold", "page": 3, "label": "Supplies, heat source and car kit for winter storms"},
     {"doc": "ifrc-extreme-cold", "page": 2, "label": "Know the risks where you live, and the nearest medical help"},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Checklist: light and warmth", "note": "In German. Torch, candles, warm clothes and blankets, sleeping bags, a heater that needs no mains power, and fuel."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Smoke alarm, extinguisher, CO alarm", "note": "In German. At the end of the checklist."}
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 22, "label": "Checklist: light and warmth", "note": "In Polish."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 18, "label": "Smoke, carbon monoxide and gas alarms, and an extinguisher", "note": "In Polish."}
   ],
   "learn": [
-    {"doc": "ifrc-extreme-cold", "label": "Extreme cold and winter storms: key messages", "note": "IFRC public-education messages: plan, prepare the home and car, stay warm, after the storm."}
+    {"doc": "dgpce-guia-fenomenos-meteorologicos", "label": "Severe weather: a guide for citizens", "note": "In Spanish. From Spain's civil protection: heat, cold and snow, storms, rain, wind, waves, dust and drought, with advice and answers to common questions."}
   ],
   "related": ["power", "hurt", "health", "disaster"]
 }

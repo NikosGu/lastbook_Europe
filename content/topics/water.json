@@ -11,10 +11,10 @@
       "label": "Tap water is off or might be unsafe",
       "hint": "A flood, a broken pipe, a warning not to drink it",
       "read": [
-        {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Why every home needs a water reserve",
-         "note": "In German. A storm can damage a pipe or make tap water unsafe; keep a reserve until the supply is back."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "What treating water at home can and cannot do",
-         "note": "Only water for drinking and food needs treating, about 5 litres a person a day. These methods do not remove chemicals."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "Why every home needs a water reserve",
+         "note": "In Polish. From the RCB guide: in a crisis or a war water may be hard to get; 14 litres for each person in the home is enough for a week without running water."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Boil it, or drink sealed bottled water",
+         "note": "WHO advice after floods: boil water before you drink it or use it to brush teeth, clean wounds or prepare food; if tap water is not safe, use bottled water with its seal intact."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "After a flood: before you drink from the tap",
          "note": "In Italian. Among the steps after a flood: check that no local notice forbids drinking tap water, and do not eat food the water touched."}
       ]
@@ -24,8 +24,8 @@
       "label": "I can boil water",
       "hint": "A gas stove, a camping stove, a fire",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Boiling, chlorine and sunlight",
-         "note": "Bring water to a rolling boil; it is effective but uses a lot of fuel. The page also covers chlorine and sun disinfection."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Bring it to a rolling boil, then let it cool",
+         "note": "WHO advice: once the water is at a rolling boil, take it off the heat and let it cool without adding ice; keep hot water away from children and store it covered."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "A simple filter, then boil the water",
          "note": "In German. An improvised sand filter for cloudy water, after which the water is boiled for about a minute."}
       ]
@@ -35,10 +35,10 @@
       "label": "I have water tablets or chlorine",
       "hint": "Tablets or drops from a pharmacy or a camping shop",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Using chlorine tablets, step by step",
-         "note": "A picture guide for clear and for dirty water, then a 30-minute wait. The dose depends on the product: follow its instructions."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "What chlorine does, and what it does not",
-         "note": "Chlorine kills most germs but not all; products differ in strength, so always use the maker's instructions."},
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Chlorine, bleach or tablets: the dose and the wait",
+         "note": "A WHO table, written for travellers: prepare the product as its instructions say and add it to clear or settled water; wait at least 30 minutes at 25 °C, twice as long for every 10 °C colder."},
+        {"doc": "who-gdwq-2026", "page": 165, "label": "What chlorine does not kill",
+         "note": "From WHO's guidelines, written for water suppliers: Cryptosporidium is highly resistant to chlorine; UV light inactivates it, and filtering can remove it."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Tablets, the bathtub, and the sun",
          "note": "In German. Disinfecting tablets from the pharmacy, filling the bathtub as a reserve, and sun disinfection in bottles."}
       ]
@@ -48,10 +48,10 @@
       "label": "No fuel and no tablets",
       "hint": "Only clear bottles, sunlight, cloth or sand",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Let it settle, then filter it",
-         "note": "Shaking for air, letting dirt settle, and household filters. Settled water still needs a proven treatment."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Sun disinfection in clear bottles (SODIS)",
-         "note": "Clear one- or two-litre bottles of clear water in direct sun; how long depends on the sun and the bottle."},
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Filters, and clearing cloudy water first",
+         "note": "A WHO table, written for travellers: portable filters with pores of 1 µm or less hold back bacteria and protozoa, but the water must be clear; chlorine works best in clear or settled water."},
+        {"doc": "who-gdwq-2026", "page": 182, "label": "Sun disinfection in clear bottles (SODIS)",
+         "note": "From WHO's guidelines, written for water professionals: the SODIS method leaves water in clear plastic bottles in the sun, whose UV light, heat and oxygen together kill germs."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Sun disinfection, as an Austrian guide explains it",
          "note": "In German. Bottle size, how long to leave it in the sun, and how many germs it kills."}
       ]
@@ -61,12 +61,12 @@
       "label": "How much water do we need?",
       "hint": "Per person, per day, for how many days",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "About 2 litres a person a day",
-         "note": "In German. Half a litre of it for cooking; how much a family of three needs for 3, 5 or 10 days; water for pets."},
-        {"doc": "who-tn09-how-much-water", "page": 2, "label": "The least people need to survive, and for hygiene",
-         "note": "Written for relief planners: litres a day to drink and eat, for washing and for cooking; a flushing toilet uses up to 7 litres each time."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Seven bottles a person for a week",
-         "note": "In German. The Austrian rule of a week without shopping or power, and a yearly check of the stock."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "At least 3 litres a person a day",
+         "note": "In Polish. From the government's safety guide: water and ready-to-eat food at home for at least 3 days, next to a first aid kit and hygiene supplies."},
+        {"doc": "who-domestic-water-quantity-2020", "page": 57, "label": "The least people need in an emergency",
+         "note": "From a WHO review: in emergencies, at least 15 litres a person a day for drinking, cooking and basic hygiene; 7.5 litres only for a short time, an absolute minimum that is not enough for hygiene."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litres a person for a week",
+         "note": "In Polish. From the RCB guide: enough for each person in the home to get through a week without running water, next to advice on storing food."}
       ]
     },
     {
@@ -76,8 +76,8 @@
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 20, "label": "Bottled water, and keeping tap water for months",
          "note": "In German. Why water comes first, which bottled water keeps best, and storing tap water in very clean containers, dark and cool."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Keep treated water clean",
-         "note": "Clean covered containers in a cool dark place, clean hands, and a tap on the container so no one dips into it."}
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Keep treated water clean",
+         "note": "WHO advice: let boiled water cool and keep it in a clean, covered container so that it is not contaminated again."}
       ]
     },
     {
@@ -85,8 +85,8 @@
       "label": "The power is out: will the water keep running?",
       "hint": "A long power cut, the waterworks, the sewers",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 6, "label": "Waterworks need electricity",
-         "note": "In German. Without power the water supply can stop; what else a long outage can disrupt."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Without power you may lose your water",
+         "note": "In Polish. From the government's safety guide: a power cut may last several days, and with it water, heating, the internet, phones and card payments may all stop."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "First steps in a blackout: fill containers",
          "note": "In German. Check the stock, fill pots, buckets and bottles while water still runs, and use it sparingly."}
       ]
@@ -95,22 +95,22 @@
   "limits": [
     {"text": "Treating water at home removes dirt and germs, but not chemicals.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
     {"text": "Water that has been left to settle still needs a proven treatment before you drink it.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
-    {"text": "Chlorine does not kill every germ: some, such as cryptosporidium, resist it. Always follow the maker's instructions.", "doc": "who-tn05-emergency-water-treatment", "page": 2},
+    {"text": "Chlorine does not kill every germ: Cryptosporidium, for one, is highly resistant to it.", "doc": "who-gdwq-2026", "page": 165},
     {"text": "During a flood, do not drink tap water: it may be contaminated.", "doc": "dpc-io-non-rischio", "page": 29},
     {"text": "After a flood, drink tap water only once no local order or notice forbids it.", "doc": "dpc-io-non-rischio", "page": 31},
     {"text": "Diseases carried by dirty water, such as cholera or typhoid, can kill if they are not treated.", "doc": "oezsv-bevorratungsratgeber", "page": 15},
     {"text": "9 litres a person cover drinking and cooking for three days, not washing or flushing the toilet.", "doc": "bwl-kluger-rat-notvorrat", "page": 3}
   ],
   "prepare": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "How much water to keep for 3, 5 or 10 days", "note": "In German."},
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "At least 9 litres a person: one pack of six bottles", "note": "In German. Easy to carry and keeps for months."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "A week's stock, checked once a year", "note": "In German."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "How much water to keep: at least 3 litres a person a day", "note": "In Polish."},
+    {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litres for each person in the home", "note": "In Polish."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Supplies for at least 3 days, checked every few months", "note": "In Polish."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Know where to turn off the water, and ask your town", "note": "In German. Also water for washing and flushing, not only for drinking."},
-    {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Containers that keep water clean"}
+    {"doc": "who-floods-health-2024", "page": 5, "label": "Clean, covered containers for drinking water"}
   ],
   "learn": [
-    {"doc": "who-tn05-emergency-water-treatment", "label": "Emergency treatment of drinking water at the point of use", "note": "WHO technical note (2013), written for relief workers: settling, filters, boiling, chlorine, sunlight, storage."},
-    {"doc": "who-tn09-how-much-water", "label": "How much water is needed in emergencies", "note": "WHO technical note (2013) for relief planners."},
+    {"doc": "who-gdwq-2026", "label": "Guidelines for drinking-water quality", "note": "WHO (2026), written for water suppliers and health authorities; its table 6.1 sets out boiling, filters and chlorine for anyone away from a safe supply."},
+    {"doc": "who-domestic-water-quantity-2020", "label": "Domestic water quantity, service level and health", "note": "A WHO review (2020) of how much water people need, emergencies included."},
     {"doc": "oezsv-bevorratungsratgeber", "label": "Supplies guide", "note": "In German. Austrian civil protection: water, food, storage, medicines."}
   ],
   "related": ["food", "sanitation", "power"]

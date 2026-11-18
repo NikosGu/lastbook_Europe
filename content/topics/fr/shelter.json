@@ -14,8 +14,8 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Quand le chauffage tombe en panne",
          "note": "En allemand. Des chauffages autorisés pour l’intérieur, des vêtements chauds, des couvertures et des sacs de couchage ; fenêtres fermées, mais aérer brièvement les pièces."},
-        {"doc": "ifrc-extreme-cold", "page": 4, "label": "S’habiller en plusieurs couches, boire chaud",
-         "note": "En anglais. Les vêtements pour le froid, des boissons chaudes et pas d’alcool, retirer les vêtements mouillés, et quand demander une aide médicale."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 24, "label": "Bien se couvrir et boire de l'eau",
+         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques : par grand froid, des vêtements épais et des chaussures fermées qui couvrent le corps, boire beaucoup et se couvrir la bouche et le nez."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Se chauffer sans électricité",
          "note": "En allemand. Même le chauffage au fioul ou au gaz s’arrête lors d’une coupure de courant ; des réchauds de camping ou des poêles à pétrole, prévus avec une aération et un conduit d’évacuation."}
       ]
@@ -27,10 +27,10 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Monoxyde de carbone : ce qui est sûr à l’intérieur",
          "note": "En allemand. Seulement des appareils autorisés pour l’intérieur ; un foyer ouvert à l’intérieur peut produire du monoxyde de carbone ; installer un détecteur de CO."},
-        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Pas de groupe électrogène ni de chauffage d’extérieur à l’intérieur",
-         "note": "En anglais. Ne pas utiliser de groupe électrogène, ni de chauffages ou de réchauds prévus pour l’extérieur, à l’intérieur de la maison."},
-        {"doc": "ifrc-extreme-cold", "page": 1, "label": "Pourquoi les chauffages et les cheminées augmentent le risque",
-         "note": "En anglais. Lors d’une vague de froid, les chauffages d’appoint et les cheminées à l’intérieur rendent plus probables les intoxications au monoxyde de carbone et les incendies domestiques."}
+        {"doc": "service-public-monoxyde-carbone-2024", "page": 1, "label": "Groupes électrogènes et chauffages : le risque de monoxyde de carbone",
+         "note": "De Service-Public : un groupe électrogène s'installe toujours à l'extérieur ; ne jamais se chauffer avec une cuisinière, un brasero ou un barbecue ; faire entretenir les appareils chaque année et aérer chaque jour."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Braseros et poêles dans des pièces fermées",
+         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques : par froid et neige, braseros et poêles à bois, à charbon ou à gaz dans des pièces fermées sans aération peuvent intoxiquer."}
       ]
     },
     {
@@ -38,8 +38,8 @@
       "label": "Protéger la maison pendant une vague de froid",
       "hint": "Canalisations gelées, provisions, un moyen sûr de se chauffer",
       "read": [
-        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Préparer la maison à une tempête d’hiver",
-         "note": "En anglais. De l’eau au cas où les canalisations gèlent, de la nourriture pour plusieurs jours, une lampe de poche et une radio, une source de chaleur bien ventilée."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Préparer la maison au froid et à la neige",
+         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques : un poêle, des réserves de nourriture et de médicaments, une radio portable, le toit et le chauffage vérifiés, et un robinet un peu ouvert par fort gel."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Canalisations gelées, et dangers après la tempête",
          "note": "En anglais. Laisser couler un filet d’eau, vérifier les canalisations, les coupures de courant, les inondations dues à la fonte des neiges, les chemins verglacés."}
       ]
@@ -53,8 +53,8 @@
          "note": "En anglais. Éviter de conduire, rester dans un véhicule bloqué, rouler lentement sur la neige ; comment juger la glace sur les étangs et les lacs."},
         {"doc": "ifrc-extreme-cold", "page": 3, "label": "Un équipement d’hiver pour la voiture",
          "note": "En anglais. Pneus, câbles de démarrage, une trousse de secours, un chargeur, des vêtements chauds, une pelle, un réservoir plein."},
-        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Pelleter la neige et les autres efforts dans le froid",
-         "note": "En anglais. Un effort excessif dans le froid peut provoquer un arrêt cardiaque."}
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 25, "label": "Déneiger sans trop forcer",
+         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques, lors d'une chute de neige : ne pas trop forcer en déneigeant, protéger le visage, la tête et les mains, et rester à l'intérieur en cas de tempête de neige."}
       ]
     },
     {
@@ -91,7 +91,7 @@
   "limits": [
     {"text": "À l’intérieur, n’utilisez que des chauffages et des poêles autorisés pour l’intérieur.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "L’intoxication au monoxyde de carbone peut tuer, et un foyer ouvert à l’intérieur peut aussi la provoquer. Un détecteur de CO testé vous avertit.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
-    {"text": "N’utilisez pas de groupe électrogène, ni de chauffages ou de réchauds prévus pour l’extérieur, à l’intérieur de la maison.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "N'utilisez pas de groupe électrogène à essence ou à gazole à l'intérieur.", "doc": "who-floods-health-2024", "page": 6},
     {"text": "Demandez une aide médicale si des signes d’hypothermie ou de gelures apparaissent.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Évitez les efforts excessifs dans le froid, comme déblayer la neige : ils peuvent provoquer un arrêt cardiaque.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Gardez les fenêtres et les portes fermées contre le froid, mais aérez les pièces brièvement et régulièrement.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
@@ -101,11 +101,11 @@
   "prepare": [
     {"doc": "ifrc-extreme-cold", "page": 3, "label": "Provisions, source de chaleur et équipement de la voiture pour les tempêtes d’hiver", "note": "En anglais."},
     {"doc": "ifrc-extreme-cold", "page": 2, "label": "Connaître les risques là où vous vivez, et l’aide médicale la plus proche", "note": "En anglais."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Liste de contrôle : lumière et chaleur", "note": "En allemand. Lampe de poche, bougies, vêtements chauds et couvertures, sacs de couchage, un chauffage qui fonctionne sans le courant du secteur, et du combustible."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Détecteur de fumée, extincteur, détecteur de CO", "note": "En allemand. À la fin de la liste de contrôle."}
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 22, "label": "Liste : lumière et chaleur", "note": "En polonais."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 18, "label": "Détecteurs de fumée, de monoxyde de carbone et de gaz, et un extincteur", "note": "En polonais."}
   ],
   "learn": [
-    {"doc": "ifrc-extreme-cold", "label": "Grand froid et tempêtes d’hiver : messages clés", "note": "En anglais. Messages de la FICR pour informer le public : planifier, préparer la maison et la voiture, rester au chaud, après la tempête."}
+    {"doc": "dgpce-guia-fenomenos-meteorologicos", "label": "Phénomènes météorologiques : un guide pour les citoyens", "note": "En espagnol. De la protection civile espagnole : chaleur, froid et neige, orages, pluie, vent, vagues, poussière et sécheresse, avec des conseils et des réponses aux questions fréquentes."}
   ],
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {

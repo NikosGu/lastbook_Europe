@@ -12,8 +12,8 @@
       "label": "Non si può tirare lo sciacquone",
       "hint": "Niente acqua, un lungo blackout, fognature danneggiate",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 21, "label": "Sacchetti per il WC, un secchio o un WC da campeggio",
-         "note": "In tedesco. Perché il bagno diventa un problema in un lungo blackout, e cosa tenere: sacchetti richiudibili, secchi, un WC da campeggio."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 45, "label": "Un gabinetto di fortuna: un sacchetto su un secchio",
+         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: senza acqua corrente, mettere un sacchetto di plastica su un secchio, buttarlo dopo l'uso in un contenitore a parte e coprire l'odore con terra, segatura o lettiera."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Sacchi resistenti da sistemare nella tazza del WC",
          "note": "In tedesco. La lista di controllo per l'igiene: sacchi della spazzatura grandi e robusti per il WC, un WC da campeggio e altri articoli per l'igiene."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Un WC di fortuna se mancano l'acqua o le fognature",
@@ -27,8 +27,8 @@
       "label": "Tenere le mani pulite con poca acqua",
       "hint": "Niente acqua corrente, il sapone sta finendo",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "Quando bisogna lavarsi le mani",
-         "note": "In inglese. Dopo aver usato il WC, prima di preparare il cibo, prima di mangiare o di dare da mangiare a un bambino, e dopo aver pulito un bambino."},
+        {"doc": "er-vademecum-alluvione-2023", "page": 1, "label": "Lavarsi le mani dopo il contatto con acqua e fango",
+         "note": "Dal vademecum della Regione Emilia-Romagna dopo l'alluvione del 2023: guanti quando si tocca fango o acqua dell'alluvione, poi lavarsi bene le mani con sapone e acqua corrente."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Mani pulite prima di toccare l'acqua da bere",
          "note": "In inglese. Lavarsi le mani prima di maneggiare l'acqua conservata, e un rubinetto sul contenitore."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Guanti, piatti e posate usa e getta",
@@ -40,8 +40,8 @@
       "label": "I rifiuti si accumulano",
       "hint": "Nessuna raccolta, avanzi di cibo, cattivi odori, mosche",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Perché i rifiuti diventano pericolosi in pochi giorni",
-         "note": "In tedesco. In un lungo blackout, rifiuti ed escrementi fanno presto proliferare insetti e malattie."},
+        {"doc": "who-floods-health-2024", "page": 4, "label": "Rifiuti in contenitori chiusi",
+         "note": "In inglese. Consigli dell'OMS dopo un'alluvione: tenere i rifiuti in bidoni chiusi e il cibo in contenitori sigillati, lontano dai ratti."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Evita di produrre rifiuti e raccoglili in sacchi",
          "note": "In tedesco."}
       ]
@@ -64,7 +64,7 @@
     {"text": "In un lungo blackout lavarsi viene dopo: l'acqua da bere va risparmiata.", "doc": "zsv-steiermark-blackout", "page": 21}
   ],
   "prepare": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Lista di controllo: igiene", "note": "In tedesco."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Lista: prodotti per la pulizia e l'igiene", "note": "In polacco."},
     {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Liste per l'igiene e la salute", "note": "In tedesco."},
     {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Cosa dimenticano le famiglie: carta igienica, sacchetti, guanti", "note": "In tedesco."}
   ],

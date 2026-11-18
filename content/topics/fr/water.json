@@ -12,10 +12,10 @@
       "label": "L’eau du robinet est coupée ou n’est peut-être pas sûre",
       "hint": "Une inondation, une canalisation cassée, un avis de ne pas la boire",
       "read": [
-        {"doc": "bwl-provisions-providentielles", "page": 5, "label": "Pourquoi chaque foyer a besoin d’une réserve d’eau",
-         "note": "Du dépliant fédéral suisse. Une rupture de canalisation peut mettre les robinets à sec, et l’eau peut être contaminée ; une réserve permet de tenir jusqu’à ce que l’approvisionnement reprenne."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Ce que le traitement de l’eau à la maison peut faire, ou non",
-         "note": "En anglais. Seule l’eau destinée à la boisson et à la cuisine doit être traitée, environ 5 litres par personne et par jour. Ces méthodes n’éliminent pas les produits chimiques."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "Pourquoi chaque foyer a besoin d'une réserve d'eau",
+         "note": "En polonais. Du guide du RCB : en cas de crise ou de guerre, l'eau peut manquer ; 14 litres par personne du foyer suffisent pour une semaine sans eau courante."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "La faire bouillir, ou boire de l'eau en bouteille scellée",
+         "note": "En anglais. Conseils de l'OMS après une inondation : faire bouillir l'eau avant de la boire ou de s'en servir pour se brosser les dents, nettoyer une plaie ou préparer à manger ; si l'eau du robinet n'est pas sûre, prendre de l'eau en bouteille au bouchon intact."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Après une inondation : avant de boire l’eau du robinet",
          "note": "En italien. Parmi les mesures après une inondation : vérifier qu’aucun avis local n’interdit de boire l’eau du robinet, et ne pas manger les aliments que l’eau a touchés."}
       ]
@@ -25,8 +25,8 @@
       "label": "Je peux faire bouillir de l’eau",
       "hint": "Une cuisinière à gaz, un réchaud de camping, un feu",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "L’ébullition, le chlore et le soleil",
-         "note": "En anglais. Porter l’eau à gros bouillons ; c’est efficace mais cela consomme beaucoup de combustible. La page traite aussi du chlore et de la désinfection par le soleil."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Porter à gros bouillons, puis laisser refroidir",
+         "note": "En anglais. Conseils de l'OMS : dès que l'eau bout à gros bouillons, la retirer du feu et la laisser refroidir sans ajouter de glace ; tenir l'eau chaude loin des enfants et la garder couverte."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "Un filtre simple, puis faire bouillir l’eau",
          "note": "En allemand. Un filtre à sable improvisé pour l’eau trouble, après quoi on fait bouillir l’eau pendant environ une minute."}
       ]
@@ -36,10 +36,10 @@
       "label": "J’ai des pastilles de purification ou du chlore",
       "hint": "Des pastilles ou des gouttes achetées en pharmacie ou dans un magasin de camping",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Utiliser des pastilles de chlore, étape par étape",
-         "note": "En anglais. Un guide en images pour l’eau claire et pour l’eau sale, puis 30 minutes d’attente. La dose dépend du produit : suivez son mode d’emploi."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Ce que fait le chlore, et ce qu’il ne fait pas",
-         "note": "En anglais. Le chlore tue la plupart des germes, mais pas tous ; les produits n’ont pas tous la même concentration, alors suivez toujours le mode d’emploi du fabricant."},
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Chlore, eau de Javel ou comprimés : la dose et le temps",
+         "note": "En anglais. Un tableau de l'OMS pour les voyageurs : préparer le produit selon sa notice et l'ajouter à de l'eau claire ou décantée ; attendre au moins 30 minutes à 25 °C, deux fois plus par tranche de 10 °C en moins."},
+        {"doc": "who-gdwq-2026", "page": 165, "label": "Ce que le chlore ne tue pas",
+         "note": "En anglais. Des lignes directrices de l'OMS, écrites pour les distributeurs d'eau : le cryptosporidium résiste très bien au chlore ; la lumière UV l'inactive et la filtration peut l'éliminer."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Les pastilles, la baignoire et le soleil",
          "note": "En allemand. Des pastilles désinfectantes de la pharmacie, remplir la baignoire comme réserve, et la désinfection par le soleil en bouteilles."}
       ]
@@ -49,10 +49,10 @@
       "label": "Ni combustible ni pastilles",
       "hint": "Seulement des bouteilles transparentes, le soleil, du tissu ou du sable",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "La laisser reposer, puis la filtrer",
-         "note": "En anglais. Secouer pour aérer, laisser la saleté se déposer, et les filtres domestiques. L’eau décantée doit encore être traitée par une méthode éprouvée."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "La désinfection par le soleil en bouteilles transparentes (SODIS)",
-         "note": "En anglais. Des bouteilles transparentes d’un ou deux litres remplies d’eau claire, en plein soleil ; la durée dépend du soleil et de la bouteille."},
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Les filtres, et clarifier d'abord l'eau trouble",
+         "note": "En anglais. Un tableau de l'OMS pour les voyageurs : les filtres portables aux pores de 1 µm ou moins retiennent bactéries et protozoaires, mais l'eau doit être claire ; le chlore agit mieux dans une eau claire ou décantée."},
+        {"doc": "who-gdwq-2026", "page": 182, "label": "Désinfection au soleil en bouteilles transparentes (SODIS)",
+         "note": "En anglais. Des lignes directrices de l'OMS, écrites pour les professionnels de l'eau : la méthode SODIS laisse l'eau au soleil dans des bouteilles en plastique transparent, où la lumière UV, la chaleur et l'oxygène tuent ensemble les germes."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "La désinfection par le soleil, expliquée par un guide autrichien",
          "note": "En allemand. La taille des bouteilles, combien de temps les laisser au soleil, et la part des germes qu’elle tue."}
       ]
@@ -62,12 +62,12 @@
       "label": "De combien d’eau avons-nous besoin ?",
       "hint": "Par personne, par jour, pour combien de jours",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Environ 2 litres par personne et par jour",
-         "note": "En allemand. Dont un demi-litre pour cuisiner ; ce dont une famille de trois personnes a besoin pour 3, 5 ou 10 jours ; l’eau pour les animaux domestiques."},
-        {"doc": "who-tn09-how-much-water", "page": 2, "label": "Le minimum pour survivre, et pour l’hygiène",
-         "note": "En anglais. Rédigé pour ceux qui organisent l’aide d’urgence : les litres par jour pour boire et manger, pour se laver et pour cuisiner ; une chasse d’eau utilise jusqu’à 7 litres à chaque fois."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Sept bouteilles par personne pour une semaine",
-         "note": "En allemand. La règle autrichienne d’une semaine sans courses ni électricité, et un contrôle des provisions une fois par an."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Au moins 3 litres par personne et par jour",
+         "note": "En polonais. Du guide de sécurité du gouvernement polonais : de l'eau et des aliments prêts à manger pour au moins 3 jours, avec une trousse de secours et des produits d'hygiène."},
+        {"doc": "who-domestic-water-quantity-2020", "page": 57, "label": "Le minimum en cas d'urgence",
+         "note": "En anglais. D'une revue de l'OMS : en situation d'urgence, au moins 15 litres par personne et par jour pour boire, cuisiner et l'hygiène de base ; 7,5 litres seulement pour peu de temps, un minimum absolu qui ne suffit pas à l'hygiène."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litres par personne pour une semaine",
+         "note": "En polonais. Du guide du RCB : de quoi permettre à chaque personne du foyer de tenir une semaine sans eau courante, à côté de conseils pour stocker la nourriture."}
       ]
     },
     {
@@ -77,8 +77,8 @@
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 20, "label": "L’eau en bouteille, et garder l’eau du robinet pendant des mois",
          "note": "En allemand. Pourquoi l’eau passe en premier, quelle eau en bouteille se conserve le mieux, et stocker l’eau du robinet dans des récipients très propres, au frais et dans l’obscurité."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Garder propre l’eau traitée",
-         "note": "En anglais. Des récipients propres et couverts dans un endroit frais et sombre, des mains propres, et un robinet sur le récipient pour que personne n’y puise directement."}
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Garder propre l'eau traitée",
+         "note": "En anglais. Conseils de l'OMS : laisser refroidir l'eau bouillie et la garder dans un récipient propre et couvert, pour qu'elle ne soit pas recontaminée."}
       ]
     },
     {
@@ -86,8 +86,8 @@
       "label": "Plus d’électricité : l’eau va-t-elle continuer à couler ?",
       "hint": "Une longue coupure de courant, la distribution d’eau, les égouts",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 6, "label": "La distribution d’eau a besoin d’électricité",
-         "note": "En allemand. Sans électricité, l’approvisionnement en eau peut s’arrêter ; ce qu’une longue panne peut aussi perturber."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Sans électricité, l'eau peut manquer",
+         "note": "En polonais. Du guide de sécurité du gouvernement polonais : une coupure peut durer plusieurs jours, et avec elle l'eau, le chauffage, internet, le téléphone et le paiement par carte peuvent s'arrêter."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Premières mesures lors d’un black-out : remplir des récipients",
          "note": "En allemand. Vérifier les provisions, remplir casseroles, seaux et bouteilles tant que l’eau coule encore, et l’utiliser avec parcimonie."}
       ]
@@ -96,22 +96,22 @@
   "limits": [
     {"text": "Traiter l’eau à la maison élimine la saleté et les germes, mais pas les produits chimiques.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
     {"text": "Même décantée, l’eau doit être traitée par une méthode éprouvée avant d’être bue.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
-    {"text": "Le chlore ne tue pas tous les germes : certains, comme le cryptosporidium, lui résistent. Suivez toujours le mode d’emploi du fabricant.", "doc": "who-tn05-emergency-water-treatment", "page": 2},
+    {"text": "Le chlore ne tue pas tous les germes : le cryptosporidium, par exemple, y résiste très bien.", "doc": "who-gdwq-2026", "page": 165},
     {"text": "Pendant une inondation, ne buvez pas l’eau du robinet : elle peut être contaminée.", "doc": "dpc-io-non-rischio", "page": 29},
     {"text": "Après une inondation, ne buvez l’eau du robinet que lorsque aucun arrêté ni avis local ne l’interdit.", "doc": "dpc-io-non-rischio", "page": 31},
     {"text": "Les maladies transmises par l’eau sale, comme le choléra ou la typhoïde, peuvent tuer si elles ne sont pas soignées.", "doc": "oezsv-bevorratungsratgeber", "page": 15},
     {"text": "Les 9 litres par personne devraient suffire pour boire et cuisiner pendant les trois jours critiques, mais pas pour la toilette ni la lessive.", "doc": "bwl-provisions-providentielles", "page": 5}
   ],
   "prepare": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Combien d’eau garder pour 3, 5 ou 10 jours", "note": "En allemand."},
-    {"doc": "bwl-provisions-providentielles", "page": 5, "label": "9 litres par personne : un lot de six bouteilles", "note": "Du dépliant fédéral suisse. Facile à transporter et à stocker ; l’eau se conserve des mois."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Des provisions pour une semaine, vérifiées une fois par an", "note": "En allemand."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Combien d'eau garder : au moins 3 litres par personne et par jour", "note": "En polonais."},
+    {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litres par personne du foyer", "note": "En polonais."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Des réserves pour au moins 3 jours, vérifiées tous les quelques mois", "note": "En polonais."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Savoir où couper l’eau, et se renseigner auprès de sa commune", "note": "En allemand. Aussi de l’eau pour se laver et pour la chasse d’eau, pas seulement pour boire."},
-    {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Des récipients qui gardent l’eau propre", "note": "En anglais."}
+    {"doc": "who-floods-health-2024", "page": 5, "label": "Des récipients propres et couverts pour l'eau à boire", "note": "En anglais."}
   ],
   "learn": [
-    {"doc": "who-tn05-emergency-water-treatment", "label": "Le traitement d’urgence de l’eau de boisson sur le lieu d’utilisation", "note": "En anglais. Note technique de l’OMS (2013), rédigée pour les travailleurs humanitaires : décantation, filtres, ébullition, chlore, soleil, stockage."},
-    {"doc": "who-tn09-how-much-water", "label": "Quantité d’eau nécessaire en situation d’urgence", "note": "En anglais. Note technique de l’OMS (2013) pour ceux qui organisent l’aide d’urgence."},
+    {"doc": "who-gdwq-2026", "label": "Directives de qualité pour l'eau de boisson", "note": "En anglais. OMS (2026), écrites pour les distributeurs d'eau et les autorités sanitaires ; le tableau 6.1 résume ébullition, filtres et chlore pour qui n'a pas d'eau sûre."},
+    {"doc": "who-domestic-water-quantity-2020", "label": "Quantité d'eau domestique, niveau de service et santé", "note": "En anglais. Une revue de l'OMS (2020) sur la quantité d'eau dont les gens ont besoin, y compris en situation d'urgence."},
     {"doc": "oezsv-bevorratungsratgeber", "label": "Guide des provisions", "note": "En allemand. Protection civile autrichienne : eau, nourriture, stockage, médicaments."}
   ],
   "related": ["food", "sanitation", "power"],

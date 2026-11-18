@@ -14,8 +14,8 @@
       "read": [
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "Dlaczego każdy dom potrzebuje zapasu wody",
          "note": "Z poradnika RCB „Bądź gotowy!”: w czasie kryzysu i wojny dostęp do wody może być utrudniony; 14 litrów na każdego domownika pozwoli przetrwać tydzień bez bieżącego źródła wody."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Co daje, a czego nie daje uzdatnianie wody w domu",
-         "note": "Po angielsku. Uzdatniać trzeba tylko wodę do picia i do przygotowania jedzenia, około 5 litrów na osobę dziennie. Te metody nie usuwają chemikaliów."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Przegotuj ją albo pij wodę butelkowaną z nienaruszonym zamknięciem",
+         "note": "Po angielsku. Rady WHO po powodzi: przegotuj wodę, zanim ją wypijesz albo użyjesz do mycia zębów, przemywania ran czy przygotowania jedzenia; jeśli woda z kranu nie jest bezpieczna, pij wodę butelkowaną z nienaruszonym zamknięciem."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Po powodzi: zanim napijesz się wody z kranu",
          "note": "Po włosku. Wśród kroków po powodzi: sprawdź, czy żaden lokalny komunikat nie zakazuje picia wody z kranu, i nie jedz żywności, która miała kontakt z wodą."}
       ]
@@ -25,8 +25,8 @@
       "label": "Mogę przegotować wodę",
       "hint": "Kuchenka gazowa, kuchenka turystyczna, ogień",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Przegotowanie, chlor i słońce",
-         "note": "Po angielsku. Zagotuj wodę, aż zacznie mocno wrzeć; to skuteczne, ale zużywa dużo paliwa. Strona omawia też chlor i dezynfekcję słońcem."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Doprowadź do wrzenia i odstaw do ostygnięcia",
+         "note": "Po angielsku. Rady WHO: gdy woda intensywnie wrze, zdejmij ją z ognia i pozwól jej ostygnąć bez dodawania lodu; trzymaj gorącą wodę z dala od dzieci i przechowuj ją pod przykryciem."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "Prosty filtr, a potem przegotuj wodę",
          "note": "Po niemiecku. Prowizoryczny filtr piaskowy do mętnej wody, po którym wodę gotuje się przez około minutę."}
       ]
@@ -36,10 +36,10 @@
       "label": "Mam tabletki do uzdatniania wody albo chlor",
       "hint": "Tabletki lub krople z apteki albo ze sklepu turystycznego",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Tabletki z chlorem krok po kroku",
-         "note": "Po angielsku. Instrukcja obrazkowa dla wody klarownej i dla brudnej, potem 30 minut czekania. Dawka zależy od produktu: stosuj się do jego instrukcji."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Co chlor robi, a czego nie",
-         "note": "Po angielsku. Chlor zabija większość zarazków, ale nie wszystkie; produkty mają różną moc, więc zawsze stosuj się do instrukcji producenta."},
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Chlor, wybielacz lub tabletki: dawka i czas",
+         "note": "Po angielsku. Tabela WHO dla podróżnych: przygotuj środek zgodnie z instrukcją i dodaj go do czystej lub odstanej wody; czekaj co najmniej 30 minut w 25 °C, dwa razy dłużej na każde 10 °C mniej."},
+        {"doc": "who-gdwq-2026", "page": 165, "label": "Czego chlor nie zabija",
+         "note": "Po angielsku. Z wytycznych WHO dla dostawców wody: kryptosporydium jest bardzo odporne na chlor; unieszkodliwia je światło UV, a filtrowanie może je usunąć."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Tabletki, wanna i słońce",
          "note": "Po niemiecku. Tabletki dezynfekujące z apteki, napełnienie wanny na zapas i dezynfekcja słońcem w butelkach."}
       ]
@@ -49,10 +49,10 @@
       "label": "Nie mam paliwa ani tabletek",
       "hint": "Tylko przezroczyste butelki, słońce, tkanina albo piasek",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Odstaw wodę, a potem ją przefiltruj",
-         "note": "Po angielsku. Potrząsanie, by napowietrzyć wodę, odstawianie, by brud opadł, i domowe filtry. Odstana woda nadal wymaga sprawdzonej metody uzdatniania."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Dezynfekcja słońcem w przezroczystych butelkach (SODIS)",
-         "note": "Po angielsku. Przezroczyste butelki jedno- lub dwulitrowe z klarowną wodą na pełnym słońcu; jak długo, zależy od słońca i butelki."},
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Filtry, a najpierw sklarowanie mętnej wody",
+         "note": "Po angielsku. Tabela WHO dla podróżnych: przenośne filtry o porach 1 µm lub mniejszych zatrzymują bakterie i pierwotniaki, ale woda musi być klarowna; chlor działa najlepiej w czystej lub odstanej wodzie."},
+        {"doc": "who-gdwq-2026", "page": 182, "label": "Dezynfekcja słońcem w przezroczystych butelkach (SODIS)",
+         "note": "Po angielsku. Z wytycznych WHO dla specjalistów od wody: w metodzie SODIS woda stoi na słońcu w przezroczystych plastikowych butelkach, a światło UV, ciepło i tlen razem zabijają zarazki."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Dezynfekcja słońcem według austriackiego poradnika",
          "note": "Po niemiecku. Wielkość butelki, jak długo trzymać ją na słońcu i ile zarazków to zabija."}
       ]
@@ -64,8 +64,8 @@
       "read": [
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Co najmniej 3 litry na osobę na dobę",
          "note": "Z rządowego „Poradnika bezpieczeństwa”: woda i gotowa żywność w domowych zapasach na co najmniej 3 dni, obok apteczki i środków higieny."},
-        {"doc": "who-tn09-how-much-water", "page": 2, "label": "Minimum potrzebne do przeżycia i do higieny",
-         "note": "Po angielsku. Napisane dla planujących pomoc humanitarną: ile litrów dziennie do picia i jedzenia, do mycia i do gotowania; toaleta ze spłukiwaniem zużywa do 7 litrów za każdym razem."},
+        {"doc": "who-domestic-water-quantity-2020", "page": 57, "label": "Minimum w sytuacji kryzysowej",
+         "note": "Po angielsku. Z przeglądu WHO: w sytuacjach kryzysowych co najmniej 15 litrów na osobę dziennie do picia, gotowania i podstawowej higieny; 7,5 litra tylko na krótko, to absolutne minimum, które nie wystarcza do higieny."},
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litrów na osobę na tydzień",
          "note": "Z poradnika RCB „Bądź gotowy!”: tyle wody na każdego domownika pozwoli przetrwać tydzień bez bieżącego źródła; obok rady, jak przechowywać zapas jedzenia."}
       ]
@@ -77,8 +77,8 @@
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 20, "label": "Woda butelkowana i przechowywanie wody z kranu przez miesiące",
          "note": "Po niemiecku. Dlaczego woda jest najważniejsza, która woda butelkowana najdłużej się przechowuje i jak trzymać wodę z kranu w bardzo czystych pojemnikach, w ciemnym i chłodnym miejscu."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Chroń uzdatnioną wodę przed zabrudzeniem",
-         "note": "Po angielsku. Czyste, przykryte pojemniki w chłodnym i ciemnym miejscu, czyste ręce i kranik w pojemniku, żeby nikt nie sięgał do środka."}
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Utrzymuj uzdatnioną wodę w czystości",
+         "note": "Po angielsku. Rady WHO: przegotowaną wodę ostudź i trzymaj w czystym, przykrytym naczyniu, żeby znowu się nie zanieczyściła."}
       ]
     },
     {
@@ -96,7 +96,7 @@
   "limits": [
     {"text": "Uzdatnianie wody w domu usuwa brud i zarazki, ale nie chemikalia.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
     {"text": "Woda, którą odstawiono, by brud opadł, nadal wymaga sprawdzonego uzdatnienia, zanim ją wypijesz.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
-    {"text": "Chlor nie zabija wszystkich zarazków: niektóre, na przykład Cryptosporidium, są na niego odporne. Zawsze stosuj się do instrukcji producenta.", "doc": "who-tn05-emergency-water-treatment", "page": 2},
+    {"text": "Chlor nie zabija wszystkich zarazków: na przykład kryptosporydium jest na niego bardzo odporne.", "doc": "who-gdwq-2026", "page": 165},
     {"text": "Podczas powodzi nie pij wody z kranu: może być skażona.", "doc": "dpc-io-non-rischio", "page": 29},
     {"text": "Po powodzi pij wodę z kranu dopiero wtedy, gdy żadne lokalne zarządzenie ani komunikat tego nie zakazuje.", "doc": "dpc-io-non-rischio", "page": 31},
     {"text": "Choroby przenoszone przez brudną wodę, takie jak cholera czy dur brzuszny, mogą zabić, jeśli się ich nie leczy.", "doc": "oezsv-bevorratungsratgeber", "page": 15},
@@ -107,11 +107,11 @@
     {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litrów wody na każdego domownika", "note": "Z poradnika RCB „Bądź gotowy!”: tyle wystarczy, by przetrwać tydzień bez bieżącego źródła wody."},
     {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Zapasy na co najmniej 3 dni, przeglądane co kilka miesięcy", "note": "Z rządowego „Poradnika bezpieczeństwa”: zapasy trwałe i takie, które zużywasz i regularnie uzupełniasz; sprawdzaj terminy przydatności."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Sprawdź, gdzie zakręca się wodę, i zapytaj w swojej gminie", "note": "Po niemiecku. Także woda do mycia i spłukiwania, nie tylko do picia."},
-    {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Pojemniki, w których woda pozostaje czysta", "note": "Po angielsku."}
+    {"doc": "who-floods-health-2024", "page": 5, "label": "Czyste, przykryte naczynia na wodę do picia", "note": "Po angielsku."}
   ],
   "learn": [
-    {"doc": "who-tn05-emergency-water-treatment", "label": "Awaryjne uzdatnianie wody pitnej w miejscu jej użycia", "note": "Po angielsku. Nota techniczna WHO (2013) napisana dla pracowników pomocy humanitarnej: odstawianie, filtry, gotowanie, chlor, słońce, przechowywanie."},
-    {"doc": "who-tn09-how-much-water", "label": "Ile wody potrzeba w sytuacjach kryzysowych", "note": "Po angielsku. Nota techniczna WHO (2013) dla planujących pomoc humanitarną."},
+    {"doc": "who-gdwq-2026", "label": "Wytyczne dotyczące jakości wody pitnej", "note": "Po angielsku. WHO (2026), dla dostawców wody i służb sanitarnych; tabela 6.1 zbiera gotowanie, filtry i chlor dla tych, którzy nie mają bezpiecznej wody."},
+    {"doc": "who-domestic-water-quantity-2020", "label": "Ilość wody w domu, poziom usług i zdrowie", "note": "Po angielsku. Przegląd WHO (2020) o tym, ile wody potrzebują ludzie, także w sytuacjach kryzysowych."},
     {"doc": "oezsv-bevorratungsratgeber", "label": "Poradnik o zapasach", "note": "Po niemiecku. Austriacka ochrona ludności: woda, jedzenie, przechowywanie, leki."}
   ],
   "related": ["food", "sanitation", "power"],

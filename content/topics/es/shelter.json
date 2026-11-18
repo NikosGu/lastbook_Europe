@@ -27,8 +27,8 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Monóxido de carbono: qué es seguro dentro de casa",
          "note": "En alemán. Solo aparatos aptos para interiores; un fuego abierto dentro de casa puede producir monóxido de carbono; instala un detector de CO."},
-        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Ni generadores ni estufas de exterior dentro de casa",
-         "note": "En inglés. No uses dentro de casa un generador, ni estufas u hornillos pensados para el exterior."},
+        {"doc": "who-floods-health-2024", "page": 6, "label": "Nada de generadores dentro de casa",
+         "note": "En inglés. Consejos de la OMS tras inundaciones: no usar nunca un generador de gasolina o gasóleo en el interior, y revisar los aparatos de gas y eléctricos antes de volver a usarlos."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Braseros y estufas en sitios cerrados",
          "note": "De la guía de Protección Civil sobre fenómenos meteorológicos: con frío y nieve, braseros y estufas de leña, carbón o gas en sitios cerrados sin ventilación pueden causar intoxicaciones."}
       ]
@@ -91,7 +91,7 @@
   "limits": [
     {"text": "Dentro de casa, usa solo estufas y hornillos aptos para interiores.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "La intoxicación por monóxido de carbono puede matar, y un fuego abierto dentro de casa también puede causarla. Un detector de CO comprobado te avisa.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
-    {"text": "No uses dentro de casa un generador, ni estufas u hornillos pensados para el exterior.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "No uses un generador de gasolina o gasóleo en el interior.", "doc": "who-floods-health-2024", "page": 6},
     {"text": "Busca ayuda médica si aparecen signos de hipotermia o de congelación.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Evita los esfuerzos excesivos con frío, como quitar nieve: pueden provocar una parada cardiaca.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Mantén las ventanas y las puertas cerradas contra el frío, pero ventila las habitaciones un rato, con regularidad.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
@@ -101,8 +101,8 @@
   "prepare": [
     {"doc": "ifrc-extreme-cold", "page": 3, "label": "Provisiones, fuente de calor y kit para el coche ante temporales de invierno", "note": "En inglés."},
     {"doc": "ifrc-extreme-cold", "page": 2, "label": "Conoce los riesgos de donde vives y la ayuda médica más cercana", "note": "En inglés."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista de comprobación: luz y calor", "note": "En alemán. Linterna, velas, ropa de abrigo y mantas, sacos de dormir, una estufa que no necesite la corriente de la red, y combustible."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Detector de humo, extintor, detector de CO", "note": "En alemán. Al final de la lista de comprobación."}
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 22, "label": "Lista: luz y calor", "note": "En polaco."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 18, "label": "Detectores de humo, monóxido de carbono y gas, y un extintor", "note": "En polaco."}
   ],
   "learn": [
     {"doc": "dgpce-guia-fenomenos-meteorologicos", "label": "Guía de información al ciudadano ante fenómenos meteorológicos adversos", "note": "De la Dirección General de Protección Civil y Emergencias: calor, frío y nieve, tormentas, lluvias, viento, oleaje, calima y sequía, con consejos y preguntas frecuentes. Escrita para España."}

@@ -14,8 +14,8 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Gdy ogrzewanie przestaje działać",
          "note": "Po niemiecku. Grzejniki dopuszczone do użytku w pomieszczeniach, ciepłe ubrania, koce i śpiwory; okna zamknięte, ale krótko wietrz pokoje."},
-        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Ubierz się na cebulkę, napij się czegoś ciepłego",
-         "note": "Po angielsku. Ubranie na zimno, ciepłe napoje i żadnego alkoholu, przebieranie się z mokrych ubrań i kiedy szukać pomocy medycznej."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 24, "label": "Ubierz się ciepło i pij wodę",
+         "note": "Po hiszpańsku. Z poradnika hiszpańskiej obrony cywilnej o groźnych zjawiskach pogodowych: na mróz gruba odzież i zakryte buty, które okrywają ciało, dużo picia i zasłonięte usta i nos."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Ogrzewanie bez prądu",
          "note": "Po niemiecku. Przy braku prądu przestaje działać nawet ogrzewanie olejowe i gazowe; piecyki turystyczne lub naftowe, z zaplanowaną wentylacją i odprowadzeniem spalin."}
       ]
@@ -27,10 +27,10 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Tlenek węgla: co jest bezpieczne w pomieszczeniach",
          "note": "Po niemiecku. Tylko urządzenia dopuszczone do użytku w pomieszczeniach; otwarty ogień w pomieszczeniu może wytwarzać tlenek węgla; zamontuj czujnik czadu."},
-        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Nie używaj w domu agregatu ani grzejnika przeznaczonego na zewnątrz",
-         "note": "Po angielsku. Nie używaj w domu agregatu ani grzejników i kuchenek przeznaczonych do użytku na zewnątrz."},
-        {"doc": "ifrc-extreme-cold", "page": 1, "label": "Dlaczego grzejniki i kominki zwiększają ryzyko",
-         "note": "Po angielsku. Podczas fali mrozów przenośne grzejniki i kominki w domu zwiększają ryzyko zatrucia tlenkiem węgla i pożaru domu."}
+        {"doc": "who-floods-health-2024", "page": 6, "label": "Żadnego agregatu w pomieszczeniach",
+         "note": "Po angielsku. Rady WHO po powodzi: nigdy nie uruchamiaj agregatu benzynowego ani diesla w pomieszczeniach, a urządzenia gazowe i elektryczne daj sprawdzić przed ponownym użyciem."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Koksowniki i piecyki w zamkniętych pomieszczeniach",
+         "note": "Po hiszpańsku. Z poradnika hiszpańskiej obrony cywilnej o groźnych zjawiskach pogodowych: przy mrozie i śniegu koksowniki oraz piecyki na drewno, węgiel lub gaz w zamkniętych, niewietrzonych pomieszczeniach mogą zatruć."}
       ]
     },
     {
@@ -38,8 +38,8 @@
       "label": "Zabezpiecz dom na czas fali mrozów",
       "hint": "Zamarznięte rury, zapasy, bezpieczny sposób na ogrzanie się",
       "read": [
-        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Przygotuj dom na śnieżycę",
-         "note": "Po angielsku. Woda na wypadek zamarznięcia rur, jedzenie na kilka dni, latarka i radio, źródło ciepła z właściwą wentylacją."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Przygotuj dom na mróz i śnieg",
+         "note": "Po hiszpańsku. Z poradnika hiszpańskiej obrony cywilnej o groźnych zjawiskach pogodowych: piecyk, zapas jedzenia i leków, przenośne radio, sprawdzony dach i ogrzewanie, a przy silnym mrozie lekko odkręcony kran."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Zamarznięte rury i zagrożenia po śnieżycy",
          "note": "Po angielsku. Cienki strumień wody z kranu, sprawdzanie rur, przerwy w dostawie prądu, podtopienia z topniejącego śniegu, oblodzone chodniki."}
       ]
@@ -53,8 +53,8 @@
          "note": "Po angielsku. Unikaj jazdy, zostań w unieruchomionym pojeździe, po śniegu jedź powoli; jak ocenić lód na stawach i jeziorach."},
         {"doc": "ifrc-extreme-cold", "page": 3, "label": "Zimowy zestaw do samochodu",
          "note": "Po angielsku. Opony, kable rozruchowe, apteczka, ładowarka, ciepłe ubrania, łopata, pełny bak."},
-        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Odśnieżanie i inna ciężka praca na mrozie",
-         "note": "Po angielsku. Przemęczenie na mrozie może spowodować zatrzymanie krążenia."}
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 25, "label": "Odśnieżanie bez nadmiernego wysiłku",
+         "note": "Po hiszpańsku. Z poradnika hiszpańskiej obrony cywilnej o groźnych zjawiskach pogodowych, podczas śnieżycy: nie przemęczaj się przy odśnieżaniu, chroń twarz, głowę i dłonie, a w zamieć zostań w domu."}
       ]
     },
     {
@@ -91,7 +91,7 @@
   "limits": [
     {"text": "W pomieszczeniach używaj tylko grzejników i piecyków dopuszczonych do użytku wewnątrz.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "Zatrucie tlenkiem węgla może zabić, a otwarty ogień w pomieszczeniu też może je spowodować. Sprawdzony czujnik czadu cię ostrzeże.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
-    {"text": "Nie używaj w domu agregatu ani grzejników i kuchenek przeznaczonych do użytku na zewnątrz.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "Nie używaj agregatu benzynowego ani diesla w pomieszczeniach.", "doc": "who-floods-health-2024", "page": 6},
     {"text": "Szukaj pomocy medycznej, jeśli pojawią się objawy hipotermii lub odmrożeń.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Unikaj przemęczenia na mrozie, na przykład przy odśnieżaniu: może spowodować zatrzymanie krążenia.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Trzymaj okna i drzwi zamknięte przed zimnem, ale regularnie i krótko wietrz pokoje.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
@@ -105,7 +105,7 @@
     {"doc": "pl-poradnik-bezpieczenstwa", "page": 18, "label": "Czujki dymu, czadu i gazu, gaśnica", "note": "Z rządowego „Poradnika bezpieczeństwa”: także koc gaśniczy, przeglądy instalacji kominowej, gazowej i elektrycznej oraz oznaczenie miejsc, gdzie odcina się gaz, prąd i wodę."}
   ],
   "learn": [
-    {"doc": "ifrc-extreme-cold", "label": "Silne mrozy i śnieżyce: najważniejsze komunikaty", "note": "Po angielsku. Komunikaty edukacyjne IFRC dla ludności: plan, przygotowanie domu i samochodu, utrzymanie ciepła, po śnieżycy."}
+    {"doc": "dgpce-guia-fenomenos-meteorologicos", "label": "Groźne zjawiska pogodowe: poradnik dla obywateli", "note": "Po hiszpańsku. Od hiszpańskiej obrony cywilnej: upał, mróz i śnieg, burze, deszcz, wiatr, fale, pył i susza, z radami i odpowiedziami na częste pytania."}
   ],
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {

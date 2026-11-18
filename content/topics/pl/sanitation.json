@@ -27,8 +27,8 @@
       "label": "Dbaj o czyste ręce, gdy wody jest mało",
       "hint": "Brak bieżącej wody, kończy się mydło",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "Kiedy każdy powinien myć ręce",
-         "note": "Po angielsku. Po skorzystaniu z toalety, przed przygotowaniem jedzenia, przed jedzeniem lub karmieniem dziecka i po podmyciu dziecka."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Kiedy i jak długo myć ręce",
+         "note": "Po angielsku. Rady WHO: myj ręce mydłem przed przygotowaniem jedzenia i w jego trakcie oraz po skorzystaniu z toalety, przez 40–60 sekund, albo wcieraj płyn na bazie alkoholu przez 20–30 sekund."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Czyste ręce, zanim dotkniesz wody pitnej",
          "note": "Po angielsku. Mycie rąk przed nabieraniem przechowywanej wody i kranik w pojemniku."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Rękawiczki, jednorazowe talerze i sztućce",
@@ -40,8 +40,8 @@
       "label": "Piętrzą się śmieci",
       "hint": "Brak wywozu, resztki jedzenia, przykry zapach, muchy",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Dlaczego odpady w ciągu kilku dni stają się groźne",
-         "note": "Po niemiecku. Podczas długiego blackoutu śmieci i odchody szybko stają się wylęgarnią owadów i chorób."},
+        {"doc": "who-floods-health-2024", "page": 4, "label": "Śmieci w zamkniętych pojemnikach",
+         "note": "Po angielsku. Rady WHO po powodzi: trzymaj odpady w zamkniętych pojemnikach, a jedzenie w szczelnych naczyniach, z dala od szczurów."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Unikaj odpadów i zbieraj je do worków",
          "note": "Po niemiecku."}
       ]

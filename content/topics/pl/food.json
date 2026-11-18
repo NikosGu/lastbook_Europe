@@ -16,8 +16,8 @@
          "note": "Z rządowego „Poradnika bezpieczeństwa”: woda, żywność gotowa do spożycia, apteczka, środki czystości i higieny; dalsza część listy na następnej stronie."},
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "Jaka żywność dobrze nadaje się na zapas",
          "note": "Z poradnika RCB „Bądź gotowy!”: trwałe produkty do zjedzenia na zimno, bez chłodzenia i gotowania, np. konserwy i batony; trzymaj je w chłodnym, suchym i ciemnym miejscu."},
-        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Lista zakupów według grup żywności",
-         "note": "Po niemiecku. Napoje, produkty zbożowe, konserwy, rośliny strączkowe, mleko UHT i inne; sprawdzaj daty i uzupełniaj to, co zużyjesz."}
+        {"doc": "eu-72h-preparedness-guidelines-2026", "page": 16, "label": "Czego według UE potrzebuje każde gospodarstwo na 72 godziny",
+         "note": "Po angielsku. Z wytycznych Komisji Europejskiej dla władz krajowych: żywność, woda pitna, ogrzewanie lub chłodzenie, światło, leki, higiena i dostęp do informacji, na co najmniej 72 godziny."}
       ]
     },
     {
@@ -49,8 +49,8 @@
       "label": "Lodówka i zamrażarka nie działają",
       "hint": "Co zjeść najpierw, zamknięte drzwiczki, woda z rozmrażania",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Łatwo psująca się żywność i zamrażarka",
-         "note": "Po niemiecku. Szybko zjedz lub ugotuj łatwo psującą się żywność i pilnuj, czy w zamrażarce nie pojawia się woda z topniejącego lodu; lodówki z zamrażarką rozmrażają się szybciej."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Po czterech godzinach bez prądu",
+         "note": "Po angielsku. Rady WHO: po czterech godzinach bez prądu wyrzuć łatwo psującą się żywność z lodówki, taką jak mięso, ryby i resztki; nigdy nie próbuj jedzenia, żeby sprawdzić, czy jest bezpieczne."},
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Otwieraj lodówkę i zamrażarkę jak najrzadziej",
          "note": "Z rządowego „Poradnika bezpieczeństwa”, wśród rad na czas przerwy w dostawie prądu: dzięki temu dłużej utrzymają niską temperaturę."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Zużyj łatwo psującą się żywność, zbieraj odpady do worków",
@@ -64,8 +64,8 @@
       "read": [
         {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Wybrzuszone puszki i spleśniały ser",
          "note": "Po niemiecku. Kiedy puszkę trzeba wyrzucić i kiedy pleśń z twardego sera można odkroić."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Zepsute orzechy, olej i mięso",
-         "note": "Po niemiecku. Oznaki, że trzeba je wyrzucić."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "W razie wątpliwości wyrzuć",
+         "note": "Po angielsku. Rady WHO: nigdy nie próbuj jedzenia, żeby sprawdzić, czy jest bezpieczne; wyrzuć żywność, która wygląda na zepsutą albo miała kontakt ze skażoną wodą."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Jedzenie, które miało kontakt z wodą powodziową",
          "note": "Po włosku. Wśród kroków po powodzi."}
       ]
@@ -98,7 +98,7 @@
   ],
   "learn": [
     {"doc": "oezsv-bevorratungsratgeber", "label": "Poradnik o zapasach", "note": "Po niemiecku. Austriacka ochrona ludności: potrzeby, przechowywanie i trwałość, woda, leki, o czym zapominają gospodarstwa domowe. Jego strony o jedzeniu dzikich roślin to porady survivalowe, których nie sprawdza żadne inne źródło w tej bibliotece."},
-    {"doc": "bwl-kluger-rat-notvorrat", "label": "Mądra rada: zapas awaryjny", "note": "Po niemiecku. Szwajcarska ulotka federalna, cztery strony."}
+    {"doc": "eu-72h-preparedness-guidelines-2026", "label": "Wytyczne dotyczące 72 godzin samowystarczalności", "note": "Po angielsku. Wytyczne Komisji Europejskiej (2026) dla władz krajowych o tym, z czym każde gospodarstwo domowe powinno poradzić sobie samo przez 72 godziny."}
   ],
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {

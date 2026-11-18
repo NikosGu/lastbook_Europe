@@ -12,10 +12,10 @@
       "label": "No sale agua del grifo o puede que no sea potable",
       "hint": "Una inundación, una tubería rota, un aviso de no beberla",
       "read": [
-        {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Por qué toda casa necesita una reserva de agua",
-         "note": "En alemán. Una tormenta puede dañar una tubería o hacer que el agua del grifo no sea segura; ten una reserva hasta que vuelva el suministro."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Lo que puede y lo que no puede hacer el tratamiento del agua en casa",
-         "note": "En inglés. Solo hay que tratar el agua para beber y para preparar la comida, unos 5 litros por persona y día. Estos métodos no eliminan los productos químicos."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "Por qué cada hogar necesita una reserva de agua",
+         "note": "En polaco. De la guía del RCB: en una crisis o una guerra puede faltar el agua; 14 litros por cada persona de la casa bastan para una semana sin agua corriente."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Hiérvela, o bebe agua embotellada precintada",
+         "note": "En inglés. Consejos de la OMS tras inundaciones: hervir el agua antes de beberla o de usarla para lavarse los dientes, limpiar heridas o preparar comida; si el agua del grifo no es segura, usar agua embotellada con el precinto intacto."},
         {"doc": "dgpce-guia-inundaciones", "page": 19, "label": "Inundaciones: no bebas agua que no sea potable",
          "note": "De la guía de Protección Civil sobre inundaciones: pueden causar brotes de enfermedades contagiosas; no bebas agua que no sea potable y, antes de beberla, hiérvela o fíltrala."}
       ]
@@ -25,8 +25,8 @@
       "label": "Puedo hervir agua",
       "hint": "Una cocina de gas, un hornillo de camping, un fuego",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Hervir, el cloro y la luz del sol",
-         "note": "En inglés. Lleva el agua a un hervor fuerte, a borbotones; es eficaz, pero gasta mucho combustible. La página también trata el cloro y la desinfección solar."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Hiérvela a borbotones y deja que se enfríe",
+         "note": "En inglés. Consejos de la OMS: cuando el agua hierva a borbotones, retirarla del fuego y dejarla enfriar sin añadir hielo; mantener el agua caliente lejos de los niños y guardarla tapada."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "Un filtro sencillo y luego hervir el agua",
          "note": "En alemán. Un filtro de arena improvisado para el agua turbia; después, el agua se hierve durante un minuto, más o menos."}
       ]
@@ -36,10 +36,10 @@
       "label": "Tengo pastillas potabilizadoras o cloro",
       "hint": "Pastillas o gotas de la farmacia o de una tienda de camping",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Cómo usar las pastillas de cloro, paso a paso",
-         "note": "En inglés. Una guía con dibujos para agua clara y para agua sucia, y luego una espera de 30 minutos. La dosis depende del producto: sigue sus instrucciones."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Lo que hace el cloro y lo que no hace",
-         "note": "En inglés. El cloro mata la mayoría de los gérmenes, pero no todos; cada producto tiene una concentración distinta, así que sigue siempre las instrucciones del fabricante."},
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Cloro, lejía o pastillas: la dosis y la espera",
+         "note": "En inglés. Una tabla de la OMS para viajeros: preparar el producto según sus instrucciones y añadirlo a agua clara o decantada; esperar al menos 30 minutos a 25 °C, el doble por cada 10 °C menos."},
+        {"doc": "who-gdwq-2026", "page": 165, "label": "Lo que el cloro no mata",
+         "note": "En inglés. De las guías de la OMS, escritas para los gestores del agua: el criptosporidio es muy resistente al cloro; la luz UV lo inactiva y el filtrado puede eliminarlo."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Pastillas, la bañera y el sol",
          "note": "En alemán. Pastillas desinfectantes de la farmacia, llenar la bañera como reserva y desinfección solar en botellas."}
       ]
@@ -49,10 +49,10 @@
       "label": "Sin combustible y sin pastillas",
       "hint": "Solo botellas transparentes, luz del sol, tela o arena",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Déjala reposar y luego fíltrala",
-         "note": "En inglés. Agitarla para airearla, dejar que la suciedad se asiente y filtros domésticos. El agua reposada sigue necesitando un tratamiento probado."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Desinfección solar en botellas transparentes (SODIS)",
-         "note": "En inglés. Botellas transparentes de uno o dos litros con agua clara, al sol directo; el tiempo depende del sol y de la botella."},
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Filtros, y antes aclarar el agua turbia",
+         "note": "En inglés. Una tabla de la OMS para viajeros: los filtros portátiles con poros de 1 µm o menos retienen bacterias y protozoos, pero el agua debe estar clara; el cloro funciona mejor en agua clara o decantada."},
+        {"doc": "who-gdwq-2026", "page": 182, "label": "Desinfección al sol en botellas transparentes (SODIS)",
+         "note": "En inglés. De las guías de la OMS, escritas para profesionales del agua: el método SODIS deja el agua al sol en botellas de plástico transparente, donde la luz UV, el calor y el oxígeno matan juntos los gérmenes."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "La desinfección solar, según una guía austriaca",
          "note": "En alemán. El tamaño de la botella, cuánto tiempo dejarla al sol y cuántos gérmenes mata."}
       ]
@@ -62,12 +62,12 @@
       "label": "¿Cuánta agua necesitamos?",
       "hint": "Por persona, por día, para cuántos días",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Unos 2 litros por persona y día",
-         "note": "En alemán. Medio litro de ellos para cocinar; cuánta necesita una familia de tres personas para 3, 5 o 10 días; agua para las mascotas."},
-        {"doc": "who-tn09-how-much-water", "page": 2, "label": "Lo mínimo para sobrevivir, y para la higiene",
-         "note": "En inglés. Escrita para quienes planifican la ayuda humanitaria: litros al día para beber y comer, para lavarse y para cocinar; cada descarga de la cisterna gasta hasta 7 litros."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Siete botellas por persona para una semana",
-         "note": "En alemán. La regla austriaca de una semana sin compras ni luz, y una revisión anual de las provisiones."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Al menos 3 litros por persona y día",
+         "note": "En polaco. De la guía de seguridad del Gobierno polaco: agua y comida lista para comer en casa para al menos 3 días, junto a un botiquín y productos de higiene."},
+        {"doc": "who-domestic-water-quantity-2020", "page": 57, "label": "Lo mínimo en una emergencia",
+         "note": "En inglés. De una revisión de la OMS: en emergencias, al menos 15 litros por persona y día para beber, cocinar y la higiene básica; 7,5 litros solo por poco tiempo, un mínimo absoluto que no basta para la higiene."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litros por persona para una semana",
+         "note": "En polaco. De la guía del RCB: suficiente para que cada persona de la casa pase una semana sin agua corriente, junto a consejos para guardar comida."}
       ]
     },
     {
@@ -77,8 +77,8 @@
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 20, "label": "Agua embotellada y cómo guardar agua del grifo durante meses",
          "note": "En alemán. Por qué el agua va primero, qué agua embotellada se conserva mejor, y cómo guardar agua del grifo en recipientes muy limpios, a oscuras y en un lugar fresco."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Mantener limpia el agua tratada",
-         "note": "En inglés. Recipientes limpios y tapados en un lugar fresco y oscuro, manos limpias, y un grifo en el recipiente para que nadie meta nada en él."}
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Mantén limpia el agua tratada",
+         "note": "En inglés. Consejos de la OMS: dejar enfriar el agua hervida y guardarla en un recipiente limpio y tapado para que no vuelva a contaminarse."}
       ]
     },
     {
@@ -86,8 +86,8 @@
       "label": "Se ha ido la luz: ¿seguirá saliendo agua?",
       "hint": "Un apagón largo, el suministro de agua, el alcantarillado",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 6, "label": "El suministro de agua necesita electricidad",
-         "note": "En alemán. Sin luz, el suministro de agua puede pararse; qué más puede fallar en un corte largo."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Sin electricidad puedes quedarte sin agua",
+         "note": "En polaco. De la guía de seguridad del Gobierno polaco: un apagón puede durar varios días, y con él pueden fallar el agua, la calefacción, internet, el teléfono y el pago con tarjeta."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Primeros pasos en un apagón: llena recipientes",
          "note": "En alemán. Revisa las provisiones, llena ollas, cubos y botellas mientras aún sale agua, y úsala con moderación."}
       ]
@@ -96,22 +96,22 @@
   "limits": [
     {"text": "Tratar el agua en casa elimina la suciedad y los gérmenes, pero no los productos químicos.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
     {"text": "El agua que se ha dejado reposar sigue necesitando un tratamiento probado antes de beberla.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
-    {"text": "El cloro no mata todos los gérmenes: algunos, como el criptosporidio, lo resisten. Sigue siempre las instrucciones del fabricante.", "doc": "who-tn05-emergency-water-treatment", "page": 2},
+    {"text": "El cloro no mata todos los gérmenes: el criptosporidio, por ejemplo, es muy resistente a él.", "doc": "who-gdwq-2026", "page": 165},
     {"text": "Durante una inundación, no bebas agua del grifo: puede estar contaminada.", "doc": "dpc-io-non-rischio", "page": 29},
     {"text": "Después de una inundación, bebe agua del grifo solo cuando ninguna orden ni aviso local lo prohíba.", "doc": "dpc-io-non-rischio", "page": 31},
     {"text": "Las enfermedades que transmite el agua sucia, como el cólera o la fiebre tifoidea, pueden matar si no se tratan.", "doc": "oezsv-bevorratungsratgeber", "page": 15},
     {"text": "Con 9 litros por persona hay para beber y cocinar durante tres días, pero no para lavarse ni para tirar de la cadena.", "doc": "bwl-kluger-rat-notvorrat", "page": 3}
   ],
   "prepare": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Cuánta agua guardar para 3, 5 o 10 días", "note": "En alemán."},
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 3, "label": "Al menos 9 litros por persona: un paquete de seis botellas", "note": "En alemán. Fácil de llevar y se conserva durante meses."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Provisiones para una semana, revisadas una vez al año", "note": "En alemán."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Cuánta agua guardar: al menos 3 litros por persona y día", "note": "En polaco."},
+    {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litros por cada persona de la casa", "note": "En polaco."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Reservas para al menos 3 días, revisadas cada pocos meses", "note": "En polaco."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Averigua dónde está la llave de paso y pregunta en tu ayuntamiento", "note": "En alemán. También agua para lavarse y para la cisterna, no solo para beber."},
-    {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Recipientes que mantienen limpia el agua", "note": "En inglés."}
+    {"doc": "who-floods-health-2024", "page": 5, "label": "Recipientes limpios y tapados para el agua de beber", "note": "En inglés."}
   ],
   "learn": [
-    {"doc": "who-tn05-emergency-water-treatment", "label": "Tratamiento de urgencia del agua potable en el punto de consumo", "note": "En inglés. Nota técnica de la OMS (2013), escrita para trabajadores humanitarios: reposo, filtros, hervido, cloro, luz del sol, almacenamiento."},
-    {"doc": "who-tn09-how-much-water", "label": "Cuánta agua se necesita en una emergencia", "note": "En inglés. Nota técnica de la OMS (2013) para quienes planifican la ayuda humanitaria."},
+    {"doc": "who-gdwq-2026", "label": "Guías para la calidad del agua de consumo humano", "note": "En inglés. OMS (2026), escritas para gestores del agua y autoridades sanitarias; la tabla 6.1 resume hervido, filtros y cloro para quien no tiene agua segura."},
+    {"doc": "who-domestic-water-quantity-2020", "label": "Cantidad de agua doméstica, nivel de servicio y salud", "note": "En inglés. Revisión de la OMS (2020) sobre cuánta agua necesitan las personas, también en emergencias."},
     {"doc": "oezsv-bevorratungsratgeber", "label": "Guía de provisiones", "note": "En alemán. De la protección civil austriaca: agua, comida, almacenamiento, medicamentos."}
   ],
   "related": ["food", "sanitation", "power"],

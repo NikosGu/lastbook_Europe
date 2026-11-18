@@ -12,12 +12,12 @@
       "label": "Quali cibi dovremmo tenere in casa?",
       "hint": "Cibo a lunga conservazione per una settimana o più",
       "read": [
-        {"doc": "bwl-scorte-d-emergenza", "page": 4, "label": "Una lista di controllo per sette giorni",
-         "note": "Bevande, cibi pronti, alimenti secchi, articoli sanitari e per l'igiene, luce, un modo per cucinare, contanti."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Quali cibi sono adatti come scorta di emergenza",
-         "note": "In tedesco. 10 giorni se puoi, almeno 3: cibi che non vanno in frigo, che non vanno cotti o che cuociono in fretta; allergie, bambini, animali domestici."},
-        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Una lista della spesa per gruppi di alimenti",
-         "note": "In tedesco. Bevande, cereali, scatolette, legumi, latte a lunga conservazione e altro; controlla le scadenze e sostituisci ciò che usi."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Una lista di scorte di casa per almeno 3 giorni",
+         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: acqua, cibo pronto, cassetta di pronto soccorso, prodotti per la pulizia e l'igiene; la lista continua alla pagina seguente."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "Che cibo si conserva bene nelle scorte",
+         "note": "In polacco. Dalla guida dell'RCB: cibi a lunga conservazione da mangiare freddi, senza frigo né cottura, come scatolette e barrette; tenerli in un luogo fresco, asciutto e buio."},
+        {"doc": "eu-72h-preparedness-guidelines-2026", "page": 16, "label": "Che cosa serve a ogni famiglia per 72 ore, secondo l'UE",
+         "note": "In inglese. Dalle linee guida della Commissione europea per le autorità nazionali: cibo, acqua da bere, riscaldamento o raffreddamento, luce, medicine, igiene e un modo per informarsi, per almeno 72 ore."}
       ]
     },
     {
@@ -29,8 +29,8 @@
          "note": "In tedesco. Quanto si conservano, a che temperatura, e dopo aver aperto una scatoletta."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Legumi, frutta secca, olio, carne e il congelatore",
          "note": "In tedesco. Le temperature di conservazione, e per quanti mesi il cibo si conserva nel congelatore."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Usare e sostituire, oppure una scorta a parte controllata ogni anno",
-         "note": "In tedesco."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Scorte a lunga conservazione e scorte da consumare e rinnovare, controllate ogni pochi mesi",
+         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: controllare anche le date di scadenza."}
       ]
     },
     {
@@ -49,8 +49,8 @@
       "label": "Frigo e congelatore sono spenti",
       "hint": "Cosa mangiare prima, tenere chiuse le porte, l'acqua di scongelamento",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Cibi deperibili e congelatore",
-         "note": "In tedesco. Mangia o cuoci presto i cibi deperibili e controlla se nel congelatore si forma acqua; i frigoriferi combinati si scongelano prima."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Dopo quattro ore senza corrente",
+         "note": "In inglese. Consigli dell'OMS: dopo quattro ore senza corrente, buttare i cibi deperibili del frigorifero, come carne, pesce e avanzi; non assaggiare mai un cibo per capire se è sicuro."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Apri frigo e congelatore il meno possibile",
          "note": "Fa parte dei consigli per il blackout."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Consuma i cibi deperibili, raccogli i rifiuti in sacchi",
@@ -64,8 +64,8 @@
       "read": [
         {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Scatolette gonfie e formaggio ammuffito",
          "note": "In tedesco. Quando una scatoletta va buttata, e quando la muffa sul formaggio duro si può tagliare via."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Frutta secca, olio e carne andati a male",
-         "note": "In tedesco. I segni che indicano quando vanno buttati."},
+        {"doc": "er-vademecum-alluvione-2023", "page": 2, "label": "Nel dubbio, buttalo",
+         "note": "Dal vademecum della Regione Emilia-Romagna dopo l'alluvione del 2023: mangiare solo cibo che non sia stato a contatto con acqua o fango dell'alluvione; nel dubbio gettare cibi o bevande che potrebbero essere contaminati."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Cibo toccato dall'acqua dell'alluvione",
          "note": "Tra le cose da fare dopo un'alluvione."}
       ]
@@ -90,15 +90,15 @@
     {"text": "Non mangiare cibo toccato dall'acqua dell'alluvione: potrebbe essere contaminato.", "doc": "dpc-io-non-rischio", "page": 31}
   ],
   "prepare": [
-    {"doc": "bwl-scorte-d-emergenza", "page": 4, "label": "Una lista di controllo per sette giorni", "note": "Dall'opuscolo svizzero sulle scorte."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Una lista per almeno 3 giorni", "note": "In polacco."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista di controllo: cibo e acqua per 3, 5, 7 o 10 giorni", "note": "In tedesco."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Costruisci le scorte poco alla volta", "note": "In tedesco."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Controlla le scorte una volta all'anno", "note": "In tedesco."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Controllare le scorte ogni pochi mesi", "note": "In polacco."},
     {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Una lista per gruppi di alimenti", "note": "In tedesco."}
   ],
   "learn": [
     {"doc": "oezsv-bevorratungsratgeber", "label": "Guida alle scorte", "note": "In tedesco. Della protezione civile austriaca: fabbisogno, conservazione e durata, acqua, medicinali, cosa dimenticano le famiglie. Le sue pagine sulle piante selvatiche da mangiare sono consigli di sopravvivenza che nessun'altra fonte qui verifica."},
-    {"doc": "bwl-scorte-d-emergenza", "label": "Scorte d'emergenza: per ogni evenienza", "note": "L'opuscolo federale svizzero, di quattro pagine."}
+    {"doc": "eu-72h-preparedness-guidelines-2026", "label": "Linee guida per 72 ore di autosufficienza", "note": "In inglese. Le linee guida della Commissione europea (2026), scritte per le autorità nazionali, su ciò che ogni famiglia dovrebbe poter fare da sola per 72 ore."}
   ],
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {

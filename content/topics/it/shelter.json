@@ -14,8 +14,8 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Quando il riscaldamento non funziona",
          "note": "In tedesco. Stufe omologate per l'uso in casa, vestiti caldi, coperte e sacchi a pelo; finestre chiuse, ma arieggia brevemente le stanze."},
-        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Vestiti a strati, bevi qualcosa di caldo",
-         "note": "In inglese. Abiti per il freddo, bevande calde e niente alcol, togliersi i vestiti bagnati, e quando cercare aiuto medico."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 24, "label": "Coprirsi bene e bere acqua",
+         "note": "In spagnolo. Dalla guida della protezione civile spagnola sui fenomeni meteorologici: con il freddo, abiti pesanti e scarpe chiuse che coprano il corpo, bere molto e coprirsi bocca e naso."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Scaldarsi senza corrente",
          "note": "In tedesco. Quando manca la corrente si fermano anche i riscaldamenti a gasolio e a gas; stufe da campeggio o a petrolio, da organizzare in anticipo con aerazione e canna fumaria."}
       ]
@@ -27,10 +27,10 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Monossido di carbonio: cosa è sicuro in casa",
          "note": "In tedesco. Solo apparecchi omologati per l'uso al chiuso; anche un fuoco aperto in casa può produrre monossido di carbonio; installa un rilevatore di CO."},
-        {"doc": "ifrc-extreme-cold", "page": 5, "label": "Niente generatori né stufe da esterno in casa",
-         "note": "In inglese. Non usare in casa un generatore, né stufe e fornelli pensati per l'esterno."},
-        {"doc": "ifrc-extreme-cold", "page": 1, "label": "Perché stufe e caminetti aumentano il rischio",
-         "note": "In inglese. In un'ondata di freddo, stufette e caminetti in casa rendono più probabili le intossicazioni da monossido di carbonio e gli incendi domestici."}
+        {"doc": "who-floods-health-2024", "page": 6, "label": "Niente generatore in casa",
+         "note": "In inglese. Consigli dell'OMS dopo un'alluvione: non usare mai in casa un generatore a benzina o a gasolio, e far controllare gli apparecchi a gas ed elettrici prima di riusarli."},
+        {"doc": "er-temperature-estreme", "page": 1, "label": "Stufe e caldaie: il rischio di monossido di carbonio",
+         "note": "Da Allerta Meteo Emilia-Romagna, sul freddo: far controllare gli impianti di riscaldamento a combustione, per evitare l'intossicazione da monossido di carbonio, che può essere mortale."}
       ]
     },
     {
@@ -38,8 +38,8 @@
       "label": "Preparare la casa a un'ondata di freddo",
       "hint": "Tubi gelati, scorte, un modo sicuro per scaldarsi",
       "read": [
-        {"doc": "ifrc-extreme-cold", "page": 3, "label": "Prepara la casa per una tempesta invernale",
-         "note": "In inglese. Acqua nel caso i tubi gelino, cibo per diversi giorni, una torcia e una radio, una fonte di calore ben ventilata."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Preparare la casa al freddo e alla neve",
+         "note": "In spagnolo. Dalla guida della protezione civile spagnola sui fenomeni meteorologici: una stufa, scorte di cibo e medicine, una radio portatile, tetto e riscaldamento controllati e un rubinetto un po' aperto se gela forte."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Tubi gelati, e i pericoli dopo la tempesta",
          "note": "In inglese. Un filo d'acqua che scorre, controllare i tubi, interruzioni di corrente, allagamenti per lo scioglimento della neve, percorsi ghiacciati."}
       ]
@@ -53,8 +53,8 @@
          "note": "In inglese. Evita di guidare, resta nel veicolo bloccato, guida piano sulla neve; come valutare il ghiaccio di stagni e laghi."},
         {"doc": "ifrc-extreme-cold", "page": 3, "label": "Un kit invernale per l'auto",
          "note": "In inglese. Pneumatici, cavi per la batteria, una cassetta di pronto soccorso, un caricatore, vestiti caldi, una pala, il pieno di carburante."},
-        {"doc": "ifrc-extreme-cold", "page": 4, "label": "Spalare la neve e altri lavori pesanti al freddo",
-         "note": "In inglese. Uno sforzo eccessivo al freddo può causare un arresto cardiaco."}
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 25, "label": "Spalare la neve senza sforzarsi troppo",
+         "note": "In spagnolo. Dalla guida della protezione civile spagnola sui fenomeni meteorologici, durante una nevicata: non sforzarsi troppo spalando la neve, proteggere viso, testa e mani e non uscire se c'è una bufera."}
       ]
     },
     {
@@ -91,7 +91,7 @@
   "limits": [
     {"text": "In casa, usa solo stufe e fornelli omologati per l'uso al chiuso.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "L'intossicazione da monossido di carbonio può uccidere, e anche un fuoco aperto in casa può provocarla. Un rilevatore di CO certificato ti avvisa.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
-    {"text": "Non usare in casa un generatore, né stufe e fornelli pensati per l'esterno.", "doc": "ifrc-extreme-cold", "page": 5},
+    {"text": "Non usare in casa un generatore a benzina o a gasolio.", "doc": "who-floods-health-2024", "page": 6},
     {"text": "Cerca aiuto medico se compaiono segni di ipotermia o di congelamento.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Evita gli sforzi eccessivi al freddo, come spalare la neve: possono causare un arresto cardiaco.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Tieni chiuse porte e finestre contro il freddo, ma arieggia le stanze per poco tempo e con regolarità.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
@@ -101,11 +101,11 @@
   "prepare": [
     {"doc": "ifrc-extreme-cold", "page": 3, "label": "Scorte, fonte di calore e kit per l'auto per le tempeste invernali", "note": "In inglese."},
     {"doc": "ifrc-extreme-cold", "page": 2, "label": "Conosci i rischi della zona in cui vivi e il soccorso medico più vicino", "note": "In inglese."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista di controllo: luce e calore", "note": "In tedesco. Torcia, candele, vestiti caldi e coperte, sacchi a pelo, una stufa che non ha bisogno della corrente di rete, e il combustibile."},
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Rilevatore di fumo, estintore, rilevatore di CO", "note": "In tedesco. In fondo alla lista di controllo."}
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 22, "label": "Lista: luce e calore", "note": "In polacco."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 18, "label": "Rilevatori di fumo, monossido di carbonio e gas, e un estintore", "note": "In polacco."}
   ],
   "learn": [
-    {"doc": "ifrc-extreme-cold", "label": "Freddo estremo e tempeste invernali: messaggi chiave", "note": "In inglese. Messaggi della FICR per informare il pubblico: pianificare, preparare casa e auto, stare al caldo, dopo la tempesta."}
+    {"doc": "dgpce-guia-fenomenos-meteorologicos", "label": "Fenomeni meteorologici avversi: una guida per i cittadini", "note": "In spagnolo. Dalla protezione civile spagnola: caldo, freddo e neve, temporali, pioggia, vento, mareggiate, polvere e siccità, con consigli e risposte alle domande più comuni."}
   ],
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {

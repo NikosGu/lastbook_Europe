@@ -11,8 +11,8 @@
       "label": "The toilet can't be flushed",
       "hint": "No water, a long blackout, damaged sewers",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 21, "label": "Toilet bags, a bucket or a camping toilet",
-         "note": "In German. Why the toilet becomes a problem in a long blackout, and what to keep: sealable bags, buckets, a camping toilet."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 45, "label": "A makeshift toilet: a bag on a bucket",
+         "note": "In Polish. From the government's safety guide: without running water, put a plastic bag on a bucket, throw it into a separate container after use, and cover the smell with soil, sawdust or cat litter."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Strong bags to hang in the toilet",
          "note": "In German. The hygiene checklist: large, sturdy bin bags for the toilet, a camping toilet, and other hygiene items."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "A substitute toilet if water or sewers fail",
@@ -26,8 +26,8 @@
       "label": "Keep hands clean with little water",
       "hint": "No running water, soap running out",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "When everyone should wash their hands",
-         "note": "After the toilet, before preparing food, before eating or feeding a child, and after cleaning a child."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "When and how long to wash your hands",
+         "note": "WHO advice: wash with soap before and while handling food and after the toilet, for 40–60 seconds, or rub with an alcohol hand rub for 20–30 seconds."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Clean hands before touching drinking water",
          "note": "Washing hands before handling stored water, and a tap on the container."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Gloves, disposable plates and cutlery",
@@ -39,8 +39,8 @@
       "label": "Rubbish is piling up",
       "hint": "No collection, food waste, smells, flies",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Why waste becomes dangerous within days",
-         "note": "In German. In a long blackout, rubbish and excrement soon breed insects and disease."},
+        {"doc": "who-floods-health-2024", "page": 4, "label": "Keep rubbish sealed",
+         "note": "WHO advice after floods: keep waste in sealed bins and food in sealed containers, out of reach of rats."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Avoid waste and collect it in bags",
          "note": "In German."}
       ]
@@ -63,7 +63,7 @@
     {"text": "In a long blackout, washing comes second: drinking water must be saved.", "doc": "zsv-steiermark-blackout", "page": 21}
   ],
   "prepare": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Hygiene checklist", "note": "In German."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Checklist: cleaning and hygiene supplies", "note": "In Polish."},
     {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Hygiene and health lists", "note": "In German."},
     {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "What households forget: toilet paper, bags, gloves", "note": "In German."}
   ],

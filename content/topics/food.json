@@ -11,12 +11,12 @@
       "label": "What food should we keep at home?",
       "hint": "Long-life food for a week or more",
       "read": [
-        {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "A checklist for seven days",
-         "note": "In German. Drinks, ready-to-eat food, dry goods, medical and hygiene items, light, a way to cook, cash."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "What makes good emergency food",
-         "note": "In German. 10 days if you can, at least 3: food that needs no fridge, needs no cooking or cooks fast; allergies, children, pets."},
-        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "A shopping list by food group",
-         "note": "In German. Drinks, cereals, tins, pulses, long-life milk and more; check dates and replace what you use."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "A list of home supplies for at least 3 days",
+         "note": "In Polish. From the government's safety guide: water, ready-to-eat food, a first aid kit, cleaning and hygiene supplies; the list goes on over the page."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "What food keeps well in a stock",
+         "note": "In Polish. From the RCB guide: long-life food you can eat cold, needing no fridge or cooking, such as tins and bars; keep it somewhere cool, dry and dark."},
+        {"doc": "eu-72h-preparedness-guidelines-2026", "page": 16, "label": "What the EU says every household needs for 72 hours",
+         "note": "From the European Commission's guidelines for national authorities: food, drinking water, heating or cooling, light, medicines, hygiene and a way to get information, for at least 72 hours."}
       ]
     },
     {
@@ -28,8 +28,8 @@
          "note": "In German. How long they keep, at what temperature, and once a tin is opened."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Pulses, nuts, oil, meat and the freezer",
          "note": "In German. Storage temperatures, and how many months food keeps in the freezer."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Use and replace, or a separate store checked yearly",
-         "note": "In German."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Long-life supplies and those you use and replace, checked every few months",
+         "note": "In Polish. From the government's safety guide: check the use-by dates too."}
       ]
     },
     {
@@ -48,8 +48,8 @@
       "label": "The fridge and freezer are off",
       "hint": "What to eat first, keeping the doors shut, meltwater",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Perishable food and the freezer",
-         "note": "In German. Eat or cook perishable food soon and watch the freezer for meltwater; fridge-freezers thaw sooner."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "After four hours without power",
+         "note": "WHO advice: after four hours of a power cut, throw away the perishable food in the fridge, such as meat, fish and leftovers; never taste food to find out whether it is safe."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Open the fridge and freezer as little as you can",
          "note": "In Italian. Part of the blackout advice."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Use up perishable food, collect waste in bags",
@@ -63,8 +63,8 @@
       "read": [
         {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Bulging tins and mouldy cheese",
          "note": "In German. When a tin must be thrown away, and when mould on hard cheese can be cut off."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Nuts, oil and meat that have gone off",
-         "note": "In German. Signs that they must be thrown away."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "If in doubt, throw it out",
+         "note": "WHO advice: never eat food to find out whether it is safe; throw out food that shows signs of spoiling or that touched contaminated water."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Food that touched flood water",
          "note": "In Italian. Among the steps after a flood."}
       ]
@@ -89,15 +89,15 @@
     {"text": "Do not eat food that touched flood water: it may be contaminated.", "doc": "dpc-io-non-rischio", "page": 31}
   ],
   "prepare": [
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "A seven-day checklist", "note": "In German."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "A list for at least 3 days", "note": "In Polish."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Checklist: food and water for 3, 5, 7 or 10 days", "note": "In German."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Build the stock step by step", "note": "In German."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Check the stock once a year", "note": "In German."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Check the stock every few months", "note": "In Polish."},
     {"doc": "zsv-steiermark-blackout", "page": 22, "label": "A list by food group", "note": "In German."}
   ],
   "learn": [
     {"doc": "oezsv-bevorratungsratgeber", "label": "Supplies guide", "note": "In German. Austrian civil protection: needs, storage and shelf life, water, medicines, what households forget. Its pages on eating wild plants are survival tips that no other source here checks."},
-    {"doc": "bwl-kluger-rat-notvorrat", "label": "Wise advice: emergency supplies", "note": "In German. The Swiss federal leaflet, four pages."}
+    {"doc": "eu-72h-preparedness-guidelines-2026", "label": "Guidelines for 72 hours of self-sufficiency", "note": "The European Commission's guidelines (2026), written for national authorities, on what every household should be able to manage on its own for 72 hours."}
   ],
   "related": ["water", "power", "preserve", "sanitation"]
 }

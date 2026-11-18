@@ -12,8 +12,8 @@
       "label": "No se puede tirar de la cadena",
       "hint": "Sin agua, un apagón largo, el alcantarillado dañado",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 21, "label": "Bolsas para el váter, un cubo o un váter de camping",
-         "note": "En alemán. Por qué el váter se convierte en un problema en un apagón largo, y qué tener: bolsas que se puedan cerrar, cubos, un váter de camping."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 45, "label": "Un váter improvisado: una bolsa en un cubo",
+         "note": "En polaco. De la guía de seguridad del Gobierno polaco: sin agua corriente, poner una bolsa de plástico en un cubo, tirarla después a un contenedor aparte y tapar el olor con tierra, serrín o arena para gatos."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Bolsas resistentes para colgar en el váter",
          "note": "En alemán. La lista de comprobación de higiene: bolsas de basura grandes y resistentes para el váter, un váter de camping y otros artículos de higiene."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Un váter de emergencia si fallan el agua o el alcantarillado",
@@ -27,8 +27,8 @@
       "label": "Mantener las manos limpias con poca agua",
       "hint": "Sin agua corriente, se acaba el jabón",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 4, "label": "Cuándo debe lavarse las manos todo el mundo",
-         "note": "En inglés. Después de ir al váter, antes de preparar la comida, antes de comer o de dar de comer a un niño, y después de limpiar a un niño."},
+        {"doc": "sanidad-salud-tras-inundaciones-2024", "page": 1, "label": "Lávate las manos antes de comer",
+         "note": "Del Ministerio de Sanidad tras la DANA de 2024: lavarse las manos siempre antes de comer o manipular alimentos, y a menudo con agua limpia y jabón durante la limpieza."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Manos limpias antes de tocar el agua para beber",
          "note": "En inglés. Lavarse las manos antes de manipular el agua guardada, y un grifo en el recipiente."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Guantes, platos y cubiertos desechables",
@@ -40,8 +40,8 @@
       "label": "La basura se acumula",
       "hint": "No pasan a recogerla, restos de comida, olores, moscas",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 10, "label": "Por qué la basura se vuelve peligrosa en pocos días",
-         "note": "En alemán. En un apagón largo, la basura y los excrementos pronto atraen insectos y provocan enfermedades."},
+        {"doc": "sanidad-salud-tras-inundaciones-2024", "page": 1, "label": "Basura en bolsas y contenedores",
+         "note": "Del Ministerio de Sanidad tras la DANA de 2024: guardar la basura en bolsas, mejor en contenedores, y no tirar barro ni residuos al alcantarillado."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Genera poca basura y recógela en bolsas",
          "note": "En alemán."}
       ]
@@ -64,7 +64,7 @@
     {"text": "En un apagón largo, lavarse va en segundo lugar: hay que ahorrar el agua para beber.", "doc": "zsv-steiermark-blackout", "page": 21}
   ],
   "prepare": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Lista de comprobación de higiene", "note": "En alemán."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Lista: productos de limpieza e higiene", "note": "En polaco."},
     {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Listas de higiene y salud", "note": "En alemán."},
     {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Lo que se suele olvidar en casa: papel higiénico, bolsas, guantes", "note": "En alemán."}
   ],

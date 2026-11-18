@@ -12,12 +12,12 @@
       "label": "Welche Lebensmittel sollten wir zu Hause haben?",
       "hint": "Lange haltbare Lebensmittel für eine Woche oder länger",
       "read": [
-        {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Eine Checkliste für sieben Tage",
-         "note": "Getränke, essfertige Lebensmittel, Trockenwaren, Medizin- und Hygieneartikel, Licht, eine Kochmöglichkeit, Bargeld."},
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Was einen guten Notvorrat ausmacht",
-         "note": "Möglichst 10 Tage, mindestens 3: Lebensmittel, die keinen Kühlschrank brauchen, die man nicht kochen muss oder die schnell gar sind; Allergien, Kinder, Haustiere."},
-        {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Eine Einkaufsliste nach Lebensmittelgruppen",
-         "note": "Getränke, Getreide, Konserven, Hülsenfrüchte, H-Milch und mehr; Haltbarkeitsdaten prüfen und Verbrauchtes ersetzen."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Eine Liste der Vorräte für mindestens 3 Tage",
+         "note": "Auf Polnisch. Aus dem Sicherheitsratgeber der polnischen Regierung: Wasser, verzehrfertige Lebensmittel, Erste-Hilfe-Set, Reinigungs- und Hygieneartikel; die Liste geht auf der nächsten Seite weiter."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "Welche Lebensmittel sich als Vorrat eignen",
+         "note": "Auf Polnisch. Aus dem Ratgeber der RCB: haltbare Lebensmittel, die man kalt essen kann, ohne Kühlschrank und Kochen, etwa Konserven und Riegel; kühl, trocken und dunkel lagern."},
+        {"doc": "eu-72h-preparedness-guidelines-2026", "page": 16, "label": "Was jeder Haushalt laut EU für 72 Stunden braucht",
+         "note": "Auf Englisch. Aus den Leitlinien der Europäischen Kommission für die nationalen Behörden: Lebensmittel, Trinkwasser, Heizen oder Kühlen, Licht, Medikamente, Hygiene und eine Möglichkeit, sich zu informieren, für mindestens 72 Stunden."}
       ]
     },
     {
@@ -29,8 +29,8 @@
          "note": "Wie lange sie halten, bei welcher Temperatur und nach dem Öffnen einer Dose."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Hülsenfrüchte, Nüsse, Öl, Fleisch und die Tiefkühltruhe",
          "note": "Lagertemperaturen und wie viele Monate Lebensmittel in der Tiefkühltruhe halten."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Verbrauchen und ersetzen – oder ein eigener Vorrat, jährlich geprüft",
-         "note": "Aus Österreich."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Langlebige Vorräte und solche, die man verbraucht und ersetzt, alle paar Monate geprüft",
+         "note": "Auf Polnisch. Aus dem Sicherheitsratgeber der polnischen Regierung: auch die Haltbarkeitsdaten prüfen."}
       ]
     },
     {
@@ -38,8 +38,8 @@
       "label": "Kochen ohne Strom",
       "hint": "Kein Elektroherd: Gas, Campingkocher, Grill, Fondue-Set",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Womit Sie drinnen kochen dürfen und was nur draußen",
-         "note": "Stövchen mit Teelichtern und Fondue-Sets drinnen; Campingkocher und Grills nur im Freien; die Gefahr durch Kohlenmonoxid."},
+        {"doc": "oesterreich-gv-blackout", "page": 1, "label": "Ersatzkochgelegenheiten: drinnen und draußen",
+         "note": "Aus Österreich (oesterreich.gv.at, Bundesministerium für Inneres): Spiritus-, Camping- oder Fonduekocher – manche Geräte sind nur für draußen; Herstellerhinweise beachten, denn Kohlenmonoxid ist ein Atemgift, das man weder sieht noch riecht."},
         {"doc": "zsv-steiermark-blackout", "page": 28, "label": "Kochen im Blackout",
          "note": "Warum Elektroherde ausfallen, besondere Ernährung, Lebensmittel aus Kühlschrank und Tiefkühltruhe aufbrauchen und Gas, Holz oder Holzkohle bereithalten."}
       ]
@@ -49,8 +49,8 @@
       "label": "Kühlschrank und Tiefkühltruhe sind aus",
       "hint": "Was man zuerst isst, die Türen geschlossen halten, Schmelzwasser",
       "read": [
-        {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Verderbliche Lebensmittel und die Tiefkühltruhe",
-         "note": "Verderbliche Lebensmittel bald essen oder kochen und bei der Tiefkühltruhe auf Schmelzwasser achten; Kühl-Gefrier-Kombinationen tauen früher auf."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Nach vier Stunden ohne Strom",
+         "note": "Auf Englisch. Rat der WHO: Nach vier Stunden Stromausfall leicht verderbliche Lebensmittel aus dem Kühlschrank wegwerfen, etwa Fleisch, Fisch und Reste; Essen nie probieren, um zu prüfen, ob es sicher ist."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Kühlschrank und Tiefkühltruhe so selten wie möglich öffnen",
          "note": "Auf Italienisch. Teil der Hinweise zum Blackout."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Verderbliches aufbrauchen, Abfall in Säcken sammeln",
@@ -64,8 +64,8 @@
       "read": [
         {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Aufgeblähte Dosen und schimmliger Käse",
          "note": "Wann eine Dose weggeworfen werden muss und wann man Schimmel bei Hartkäse wegschneiden kann."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Nüsse, Öl und Fleisch, die verdorben sind",
-         "note": "Anzeichen dafür, dass sie weggeworfen werden müssen."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Im Zweifel wegwerfen",
+         "note": "Auf Englisch. Rat der WHO: Essen nie probieren, um zu prüfen, ob es sicher ist; Lebensmittel wegwerfen, die verdorben aussehen oder mit verschmutztem Wasser in Berührung kamen."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Lebensmittel, die mit Hochwasser in Berührung kamen",
          "note": "Auf Italienisch. Unter den Schritten nach einem Hochwasser."}
       ]
@@ -90,15 +90,15 @@
     {"text": "Essen Sie keine Lebensmittel, die mit Hochwasser in Berührung kamen – sie könnten verunreinigt sein.", "doc": "dpc-io-non-rischio", "page": 31}
   ],
   "prepare": [
-    {"doc": "bwl-kluger-rat-notvorrat", "page": 4, "label": "Eine Checkliste für sieben Tage", "note": "Aus der Schweiz."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Eine Liste für mindestens 3 Tage", "note": "Auf Polnisch."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Checkliste: Lebensmittel und Wasser für 3, 5, 7 oder 10 Tage", "note": "Aus Deutschland."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Den Vorrat Schritt für Schritt anlegen", "note": "Aus Deutschland."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Den Vorrat einmal im Jahr prüfen", "note": "Aus Österreich."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Den Vorrat alle paar Monate prüfen", "note": "Auf Polnisch."},
     {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Eine Liste nach Lebensmittelgruppen", "note": "Aus der Steiermark (Österreich)."}
   ],
   "learn": [
     {"doc": "oezsv-bevorratungsratgeber", "label": "Bevorratungsratgeber", "note": "Vom österreichischen Zivilschutz: Bedarf, Lagerung und Haltbarkeit, Wasser, Medikamente, was Haushalte vergessen. Seine Seiten über das Essen von Wildpflanzen sind Überlebenstipps, die keine andere Quelle hier überprüft."},
-    {"doc": "bwl-kluger-rat-notvorrat", "label": "Kluger Rat – Notvorrat", "note": "Das Faltblatt des Schweizer Bundesamts für wirtschaftliche Landesversorgung, vier Seiten."}
+    {"doc": "eu-72h-preparedness-guidelines-2026", "label": "Leitlinien für 72 Stunden Selbstversorgung", "note": "Auf Englisch. Die Leitlinien der Europäischen Kommission (2026) für die nationalen Behörden: was jeder Haushalt 72 Stunden lang selbst bewältigen können sollte."}
   ],
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {

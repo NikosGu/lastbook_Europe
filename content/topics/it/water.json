@@ -12,10 +12,10 @@
       "label": "L'acqua del rubinetto non arriva o potrebbe non essere sicura",
       "hint": "Un'alluvione, un tubo rotto, un avviso che dice di non berla",
       "read": [
-        {"doc": "bwl-scorte-d-emergenza", "page": 3, "label": "Perché ogni casa ha bisogno di una scorta d'acqua",
-         "note": "Il maltempo può danneggiare una conduttura o rendere l'acqua del rubinetto non sicura; tieni una scorta che basti finché l'acqua non torna."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Cosa può fare, e cosa no, il trattamento dell'acqua in casa",
-         "note": "In inglese. Va trattata solo l'acqua per bere e per il cibo, circa 5 litri a persona al giorno. Questi metodi non eliminano le sostanze chimiche."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "Perché ogni casa ha bisogno di una scorta d'acqua",
+         "note": "In polacco. Dalla guida dell'RCB: in una crisi o in guerra l'acqua può mancare; 14 litri per ogni persona della casa bastano per una settimana senza acqua corrente."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Bollirla, o bere acqua in bottiglia sigillata",
+         "note": "In inglese. Consigli dell'OMS dopo un'alluvione: far bollire l'acqua prima di berla o di usarla per lavarsi i denti, pulire ferite o preparare il cibo; se l'acqua del rubinetto non è sicura, usare acqua in bottiglia con il sigillo intatto."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Dopo un'alluvione: prima di bere l'acqua del rubinetto",
          "note": "Tra le cose da fare dopo un'alluvione: verifica che nessun avviso locale vieti di bere l'acqua del rubinetto, e non mangiare cibi venuti a contatto con l'acqua."}
       ]
@@ -25,8 +25,8 @@
       "label": "Posso far bollire l'acqua",
       "hint": "Un fornello a gas, un fornelletto da campeggio, un fuoco",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Bollitura, cloro e luce del sole",
-         "note": "In inglese. Porta l'acqua a piena ebollizione; è efficace ma consuma molto combustibile. La pagina parla anche del cloro e della disinfezione con il sole."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Portarla a bollore pieno, poi lasciarla raffreddare",
+         "note": "In inglese. Consigli dell'OMS: quando l'acqua bolle con forza, toglierla dal fuoco e lasciarla raffreddare senza aggiungere ghiaccio; tenere l'acqua calda lontana dai bambini e conservarla coperta."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "Un semplice filtro, poi fai bollire l'acqua",
          "note": "In tedesco. Un filtro a sabbia improvvisato per l'acqua torbida, dopo il quale l'acqua viene fatta bollire per circa un minuto."}
       ]
@@ -36,10 +36,10 @@
       "label": "Ho pastiglie per l'acqua o cloro",
       "hint": "Pastiglie o gocce comprate in farmacia o in un negozio di articoli da campeggio",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Usare le pastiglie di cloro, passo dopo passo",
-         "note": "In inglese. Una guida illustrata per l'acqua limpida e per quella sporca, poi un'attesa di 30 minuti. La dose dipende dal prodotto: segui le sue istruzioni."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Cosa fa il cloro, e cosa non fa",
-         "note": "In inglese. Il cloro uccide la maggior parte dei germi, ma non tutti; i prodotti hanno concentrazioni diverse, quindi segui sempre le istruzioni del produttore."},
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Cloro, candeggina o pastiglie: dose e attesa",
+         "note": "In inglese. Una tabella dell'OMS per chi viaggia: preparare il prodotto come dicono le istruzioni e aggiungerlo ad acqua limpida o decantata; aspettare almeno 30 minuti a 25 °C, il doppio per ogni 10 °C in meno."},
+        {"doc": "who-gdwq-2026", "page": 165, "label": "Che cosa il cloro non uccide",
+         "note": "In inglese. Dalle linee guida dell'OMS, scritte per i gestori dell'acqua: il criptosporidio resiste molto bene al cloro; la luce UV lo inattiva e la filtrazione può toglierlo."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Pastiglie, vasca da bagno e sole",
          "note": "In tedesco. Pastiglie disinfettanti della farmacia, la vasca da bagno riempita come riserva e la disinfezione al sole in bottiglia."}
       ]
@@ -49,10 +49,10 @@
       "label": "Niente combustibile e niente pastiglie",
       "hint": "Solo bottiglie trasparenti, luce del sole, stoffa o sabbia",
       "read": [
-        {"doc": "who-tn05-emergency-water-treatment", "page": 1, "label": "Lasciala decantare, poi filtrala",
-         "note": "In inglese. Come agitare l'acqua perché prenda aria, come far depositare lo sporco, e i filtri domestici. L'acqua lasciata decantare ha comunque bisogno di un trattamento di provata efficacia."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 2, "label": "Disinfezione con il sole in bottiglie trasparenti (SODIS)",
-         "note": "In inglese. Bottiglie trasparenti da uno o due litri, piene di acqua limpida, al sole diretto; quanto tempo serve dipende dal sole e dalla bottiglia."},
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Filtri, e prima schiarire l'acqua torbida",
+         "note": "In inglese. Una tabella dell'OMS per chi viaggia: i filtri portatili con pori di 1 µm o meno trattengono batteri e protozoi, ma l'acqua deve essere limpida; il cloro funziona meglio in acqua limpida o decantata."},
+        {"doc": "who-gdwq-2026", "page": 182, "label": "Disinfezione al sole in bottiglie trasparenti (SODIS)",
+         "note": "In inglese. Dalle linee guida dell'OMS, scritte per i professionisti dell'acqua: il metodo SODIS lascia l'acqua al sole in bottiglie di plastica trasparenti, dove luce UV, calore e ossigeno insieme uccidono i germi."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "La disinfezione con il sole spiegata da una guida austriaca",
          "note": "In tedesco. Grandezza delle bottiglie, quanto lasciarle al sole e quanti germi uccide."}
       ]
@@ -62,12 +62,12 @@
       "label": "Di quanta acqua abbiamo bisogno?",
       "hint": "A persona, al giorno, per quanti giorni",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Circa 2 litri a persona al giorno",
-         "note": "In tedesco. Di questi, mezzo litro per cucinare; quanta ne serve a una famiglia di tre persone per 3, 5 o 10 giorni; l'acqua per gli animali domestici."},
-        {"doc": "who-tn09-how-much-water", "page": 2, "label": "Il minimo per sopravvivere, e quello per l'igiene",
-         "note": "In inglese. Scritta per chi organizza i soccorsi: litri al giorno per bere e mangiare, per lavarsi e per cucinare; uno sciacquone usa fino a 7 litri ogni volta."},
-        {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Sette bottiglie a persona per una settimana",
-         "note": "In tedesco. La regola austriaca di una settimana senza fare la spesa e senza corrente, e un controllo annuale delle scorte."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Almeno 3 litri a persona al giorno",
+         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: acqua e cibo pronto in casa per almeno 3 giorni, insieme a cassetta di pronto soccorso e prodotti per l'igiene."},
+        {"doc": "who-domestic-water-quantity-2020", "page": 57, "label": "Il minimo che serve in emergenza",
+         "note": "In inglese. Da una rassegna dell'OMS: in emergenza almeno 15 litri a persona al giorno per bere, cucinare e l'igiene di base; 7,5 litri solo per poco tempo, un minimo assoluto che non basta per l'igiene."},
+        {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litri a persona per una settimana",
+         "note": "In polacco. Dalla guida dell'RCB: abbastanza perché ogni persona della casa passi una settimana senza acqua corrente, accanto ai consigli per conservare il cibo."}
       ]
     },
     {
@@ -77,8 +77,8 @@
       "read": [
         {"doc": "zsv-steiermark-blackout", "page": 20, "label": "L'acqua in bottiglia, e quella del rubinetto conservata per mesi",
          "note": "In tedesco. Perché l'acqua viene prima di tutto, quale acqua in bottiglia si conserva meglio, e come tenere l'acqua del rubinetto in contenitori ben puliti, al buio e al fresco."},
-        {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Tieni pulita l'acqua trattata",
-         "note": "In inglese. Contenitori puliti e coperti in un luogo fresco e buio, mani pulite e un rubinetto sul contenitore, così nessuno ci deve immergere niente."}
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Tenere pulita l'acqua trattata",
+         "note": "In inglese. Consigli dell'OMS: lasciar raffreddare l'acqua bollita e conservarla in un recipiente pulito e coperto, perché non si contamini di nuovo."}
       ]
     },
     {
@@ -86,8 +86,8 @@
       "label": "Manca la corrente: l'acqua continuerà ad arrivare?",
       "hint": "Una lunga interruzione di corrente, l'acquedotto, le fognature",
       "read": [
-        {"doc": "bbk-vorsorgen-fuer-krisen", "page": 6, "label": "Gli acquedotti hanno bisogno di elettricità",
-         "note": "In tedesco. Senza corrente l'acqua può smettere di arrivare; cos'altro può bloccarsi in un'interruzione lunga."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Senza corrente puoi restare senz'acqua",
+         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: un blackout può durare anche alcuni giorni, e con esso possono fermarsi acqua, riscaldamento, internet, telefono e pagamenti con carta."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Le prime cose da fare in un blackout: riempire i contenitori",
          "note": "In tedesco. Controlla le scorte, riempi pentole, secchi e bottiglie finché l'acqua arriva ancora, e usala con parsimonia."}
       ]
@@ -96,22 +96,22 @@
   "limits": [
     {"text": "Trattare l'acqua in casa elimina sporco e germi, ma non le sostanze chimiche.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
     {"text": "L'acqua lasciata decantare ha comunque bisogno di un trattamento di provata efficacia prima di berla.", "doc": "who-tn05-emergency-water-treatment", "page": 1},
-    {"text": "Il cloro non uccide tutti i germi: alcuni, come il criptosporidio, gli resistono. Segui sempre le istruzioni del produttore.", "doc": "who-tn05-emergency-water-treatment", "page": 2},
+    {"text": "Il cloro non uccide tutti i germi: il criptosporidio, per esempio, gli resiste molto bene.", "doc": "who-gdwq-2026", "page": 165},
     {"text": "Durante un'alluvione non bere l'acqua del rubinetto: potrebbe essere contaminata.", "doc": "dpc-io-non-rischio", "page": 29},
     {"text": "Dopo un'alluvione, bevi l'acqua del rubinetto solo se nessuna ordinanza o avviso locale lo vieta.", "doc": "dpc-io-non-rischio", "page": 31},
     {"text": "Le malattie trasmesse dall'acqua sporca, come il colera o il tifo, possono uccidere se non vengono curate.", "doc": "oezsv-bevorratungsratgeber", "page": 15},
     {"text": "9 litri a persona bastano per bere e cucinare per tre giorni, non per lavarsi o per lo sciacquone.", "doc": "bwl-scorte-d-emergenza", "page": 3}
   ],
   "prepare": [
-    {"doc": "bbk-vorsorgen-fuer-krisen", "page": 9, "label": "Quanta acqua tenere per 3, 5 o 10 giorni", "note": "In tedesco."},
-    {"doc": "bwl-scorte-d-emergenza", "page": 3, "label": "Almeno 9 litri a persona: una confezione da sei bottiglie", "note": "Facile da trasportare, si conserva per mesi."},
-    {"doc": "oezsv-bevorratungsratgeber", "page": 16, "label": "Scorte per una settimana, controllate una volta all'anno", "note": "In tedesco."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Quanta acqua tenere: almeno 3 litri a persona al giorno", "note": "In polacco."},
+    {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litri per ogni persona della casa", "note": "In polacco."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Scorte per almeno 3 giorni, controllate ogni pochi mesi", "note": "In polacco."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Scopri dove si chiude l'acqua e chiedi al tuo Comune", "note": "In tedesco. Anche acqua per lavarsi e per lo sciacquone, non solo da bere."},
-    {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Contenitori che tengono pulita l'acqua", "note": "In inglese."}
+    {"doc": "who-floods-health-2024", "page": 5, "label": "Recipienti puliti e coperti per l'acqua da bere", "note": "In inglese."}
   ],
   "learn": [
-    {"doc": "who-tn05-emergency-water-treatment", "label": "Trattamento d'emergenza dell'acqua potabile nel punto d'uso", "note": "In inglese. Nota tecnica dell'OMS (2013), scritta per chi lavora nei soccorsi: decantazione, filtri, bollitura, cloro, luce del sole, conservazione."},
-    {"doc": "who-tn09-how-much-water", "label": "Quanta acqua serve nelle emergenze", "note": "In inglese. Nota tecnica dell'OMS (2013) per chi organizza i soccorsi."},
+    {"doc": "who-gdwq-2026", "label": "Linee guida per la qualità dell'acqua potabile", "note": "In inglese. OMS (2026), scritte per i gestori dell'acqua e le autorità sanitarie; la tabella 6.1 riassume bollitura, filtri e cloro per chi non ha acqua sicura."},
+    {"doc": "who-domestic-water-quantity-2020", "label": "Quantità d'acqua domestica, livello di servizio e salute", "note": "In inglese. Rassegna dell'OMS (2020) su quanta acqua serve alle persone, anche in emergenza."},
     {"doc": "oezsv-bevorratungsratgeber", "label": "Guida alle scorte", "note": "In tedesco. Della protezione civile austriaca: acqua, cibo, conservazione, medicinali."}
   ],
   "related": ["food", "sanitation", "power"],
