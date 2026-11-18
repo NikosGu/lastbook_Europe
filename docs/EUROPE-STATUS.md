@@ -178,7 +178,7 @@ Found along the way, for the maintainer:
 
 ## Being done now
 
-- Published on 18 Nov 2026, as a preview: the app, now `v0.1.3-preview`, the newest release, which the README's download
+- Published on 18 Nov 2026, as a preview: the app, now `v0.1.5-preview`, the newest release, which the README's download
   button and its links for each system point to (installers under fixed names, so the links stay right from one version
   to the next); and the data release `data-v1` (the starter library, revision redistributable-v4, and the regions built so
   far). The data workflows add to the published release: each region, and each new library pack, is followed by a new
@@ -196,7 +196,9 @@ Found along the way, for the maintainer:
   "Library and local AI" always offers the choice of the local AI (before, it did only for a model file in use: with no
   model, or a catalogue model, there was no way to choose), a model run from the disk is downloaded when chosen (before,
   nothing happened), adding the AI asks for no region, the three new answers of the engine are worded in each language,
-  and the six languages' words are checked on each push.
+  and the six languages' words are checked on each push. 0.1.5 published and checked from the README's link: an installed
+  library's page offers "Add" for the local AI. Its tests passed on Windows and Linux on GitHub and on this Mac (GitHub
+  had no Mac machine free for its Mac job, twice; its Mac installer was built there); the next push's run tries again.
 - All regions through the regions workflow (`missing`), one at a time, each into data-v1 as soon as it is built; a run in
   which a region fails starts the next pass for it by itself, up to the fourth, as Geofabrik turns some of GitHub's
   machines away (a machine it refuses now stops its region within minutes instead of 20).
@@ -239,7 +241,7 @@ needed: the AI tests used model files already there). Measured on 18 Nov 2026, a
 | Rust crates (the whole local cache, including what was there before) | 127 MB |
 | The publishers' terms pages and the IFRC's key-messages publication, read for the starter library's licences | 12 MB |
 | Fetched again on 18 Nov, after the agents' working folders were cleared for disk room: the Spanish weather guide, and the pinned PDFium for the Mac | 26 MB |
-| The published Mac installers of 0.1.2 and 0.1.3, from the README's link, tried as a person would and deleted | 28 MB |
+| The published Mac installers of 0.1.2, 0.1.3 and 0.1.5, from the README's link, tried as a person would and deleted | 42 MB |
 
 Everything larger (whole countries' extracts for the neighbours, the other regions, the installers) is downloaded on
 GitHub's machines, not here.
