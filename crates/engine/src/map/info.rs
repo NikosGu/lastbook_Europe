@@ -1,7 +1,7 @@
 //! What the map holds and says about itself (`/api/map/info`), the data version tiles are cached under, the open pack's
 //! description, a household's home area, and what the assistant can and cannot read (`coverage`).
 
-use super::{Map, AERIAL, AERIAL_COAST, AERIAL_DETAIL, ATLAS, BUILDINGS, CROPS, MAPDB, NATIONAL, PLACES, STATUS, TERRAIN, TERRAIN_DETAIL, WATER};
+use super::{Map, AERIAL, AERIAL_COAST, AERIAL_DETAIL, BUILDINGS, MAPDB, NATIONAL, PLACES, STATUS, TERRAIN, TERRAIN_DETAIL, WATER};
 use crate::regions;
 use serde_json::{json, Value};
 use std::collections::{BTreeSet, HashMap, HashSet};
@@ -13,8 +13,8 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 /// and for the address search `regions` (the regions' codes) with `region_names` (their names as the English says
 /// them). An area in a code: `_detail`, the area this map details; `_whole`, the whole map. The English label and
 /// status stay beside them, for logs and for an interface that does not know the code.
-pub const CODES: [&str; 12] = ["base", "streets_detail", "streets_whole", "no_detail", "places", "addresses", "elevation_contours", "elevation_broad",
-    "buildings_detail", "buildings_whole", "crops_detail", "crops_whole"];
+pub const CODES: [&str; 10] = ["base", "streets_detail", "streets_whole", "no_detail", "places", "addresses", "elevation_contours", "elevation_broad",
+    "buildings_detail", "buildings_whole"];
 
 /// One row of the panel: its code (one of [`CODES`]) and params beside the English.
 fn row(code: &str, params: Value, label: impl Into<String>, status: impl Into<String>) -> Value {
@@ -76,8 +76,8 @@ impl Map {
             .unwrap_or_else(|| json!({"state": "not-built"}))
     }
 
-    /// Changes whenever map data changes: every 20 s while the national map builds, and when the water, crop,
-    /// elevation or building files are written. Tiles and pins are cached under it.
+    /// Changes whenever map data changes: every 20 s while the national map builds, and when the water, elevation or
+    /// building files are written. Tiles and pins are cached under it.
     pub fn data_version(&self) -> String {
         let status = self.national_status();
         let mut v = if status["state"] == "building" {
@@ -89,7 +89,7 @@ impl Map {
                 n => format!("n{n}"),
             }
         };
-        for f in [WATER.to_string(), format!("{WATER}-wal"), CROPS.to_string(), TERRAIN.to_string(), BUILDINGS.to_string(), format!("{BUILDINGS}-wal")] {
+        for f in [WATER.to_string(), format!("{WATER}-wal"), TERRAIN.to_string(), BUILDINGS.to_string(), format!("{BUILDINGS}-wal")] {
             if let Some(m) = self.path(&f).and_then(|p| std::fs::metadata(p).ok()).and_then(|m| m.modified().ok()) {
                 v.push_str(&format!(".{}", secs(m) as i64 / 60));
             }
@@ -138,9 +138,7 @@ impl Map {
                         }
                     }
                 }
-                for file in [ATLAS, WATER, CROPS] {
-                    kinds.extend(self.distinct(file, "SELECT DISTINCT kind FROM resource"));
-                }
+                kinds.extend(self.distinct(WATER, "SELECT DISTINCT kind FROM resource"));
                 let contours = self.db(TERRAIN).is_some_and(|c| c.query_row("SELECT 1 FROM tile WHERE z>=11 LIMIT 1", [], |_| Ok(())).is_ok());
                 let mut bounds = boxes.iter().copied().reduce(|a, b| [a[0].min(b[0]), a[1].min(b[1]), a[2].max(b[2]), a[3].max(b[3])]);
                 if bounds.is_some_and(|b| b[2] - b[0] > 90.0) {
@@ -229,7 +227,7 @@ impl Map {
         for file in [TERRAIN, TERRAIN_DETAIL] {
             named.push((self.meta_source(file, "source"), self.meta_source(file, "licence")));
         }
-        for file in [CROPS, AERIAL, AERIAL_DETAIL, AERIAL_COAST] {
+        for file in [AERIAL, AERIAL_DETAIL, AERIAL_COAST] {
             named.push((self.meta_source(file, "source"), String::new()));
         }
         for path in self.address_files() {
@@ -304,11 +302,6 @@ impl Map {
                 ("buildings_whole", "For the whole map, shown from street level zoom")
             };
             out.push(row(code, json!({"source": src}), with("Building outlines", &src), status));
-        }
-        if self.exists(CROPS) {
-            let src = self.meta_source(CROPS, "source");
-            let (code, status) = if bounded { ("crops_detail", "For the area this map details") } else { ("crops_whole", "For the whole map") };
-            out.push(row(code, json!({"source": src}), with("Orchards, vineyards and olive groves", &src), status));
         }
         out
     }

@@ -1,8 +1,8 @@
-//! Image tiles: elevation (terrain-RGB PNG, for relief, contours and the 3D view), the crop colour overlay (PNG) and the
-//! optional aerial photos (JPEG or PNG), each read from its map file as built. A missing file or tile is None, and the
-//! route answers 204. Elevation is also read here, in metres, from the same tiles (the `png` crate).
+//! Image tiles: elevation (terrain-RGB PNG, for relief, contours and the 3D view) and the optional aerial photos (JPEG or
+//! PNG), each read from its map file as built. A missing file or tile is None, and the route answers 204. Elevation is
+//! also read here, in metres, from the same tiles (the `png` crate).
 
-use super::{Map, AERIAL, AERIAL_COAST, AERIAL_DETAIL, CROPS, TERRAIN, TERRAIN_DETAIL};
+use super::{Map, AERIAL, AERIAL_COAST, AERIAL_DETAIL, TERRAIN, TERRAIN_DETAIL};
 use std::f64::consts::PI;
 
 /// Zooms of the elevation tiles: 4 to 12 from terrain.sqlite, 13 to 17 from terrain-detail.sqlite where it has them.
@@ -48,11 +48,6 @@ impl Map {
             let above = heights(&self.tile_blob(TERRAIN, "png", z - up, x >> up, y >> up)?)?;
             Some(terrain_png(&enlarged(&above, up as u32, x & ((1 << up) - 1), y & ((1 << up) - 1))))
         })
-    }
-
-    /// An orchard and vineyard colour overlay tile (RGBA PNG), or None.
-    pub fn crop_tile(&self, z: i64, x: i64, y: i64) -> Option<Vec<u8>> {
-        self.tile_blob(CROPS, "png", z, x, y)
     }
 
     /// An aerial photo tile, or None: an optional layer, from aerial.sqlite (zoom 0-16) and, from zoom 17, the sharper

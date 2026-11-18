@@ -1,4 +1,4 @@
-//! The map: vector tiles, terrain and crop images, 3D buildings, help pins, nearby help, resources, the map's own
+//! The map: vector tiles, terrain images, 3D buildings, help pins, nearby help, resources, the map's own
 //! information, and place and address search. Ported from the original Lastbook's server.py and engine/address_search.py;
 //! the answers are the ones the original Lastbook gave, so web/map.js reads them unchanged. Europe only, metric only.
 //!
@@ -14,7 +14,7 @@ pub mod terrain;
 pub mod text;
 pub mod tiles;
 
-pub use pins::{haversine, help, is_resource, resource_summary, CROP_KINDS, HELP, RESOURCE_KINDS, TILE_POI};
+pub use pins::{haversine, help, is_resource, resource_summary, HELP, RESOURCE_KINDS, TILE_POI};
 
 use crate::db;
 use crate::http::{Request, Response};
@@ -32,7 +32,6 @@ const MAPDB: &str = "derived/geo/map.sqlite";
 const NATIONAL: &str = "derived/geo/national.sqlite";
 const STATUS: &str = "derived/geo/national-status.json";
 const WATER: &str = "derived/geo/water.sqlite";
-const CROPS: &str = "derived/geo/crops.sqlite";
 const TERRAIN: &str = "derived/geo/terrain.sqlite";
 const TERRAIN_DETAIL: &str = "derived/geo/terrain-detail.sqlite";
 const BUILDINGS: &str = "derived/geo/buildings.sqlite";
@@ -41,7 +40,6 @@ const AERIAL_DETAIL: &str = "derived/geo/aerial-detail.sqlite";
 const AERIAL_COAST: &str = "derived/geo/aerial-coast.sqlite";
 const PLACES: &str = "derived/geo/places.sqlite";
 const ADDRESSES: &str = "derived/geo/addresses";
-const ATLAS: &str = "library-data/geography/resources/atlas.sqlite";
 
 /// Kinds the "Nearest" panel asks for when the request names none.
 const NEAR_DEFAULT: &str = "hospital,clinic,pharmacy,fire_station,drinking_water";
@@ -146,15 +144,12 @@ impl Map {
         let rest = req.path.strip_prefix("/api/map/")?;
         let parts: Vec<&str> = rest.split('/').collect();
         let r = match parts.as_slice() {
-            [kind @ ("terrain" | "crops"), z, x, y] => match (int(z), int(x), y.strip_suffix(".png").and_then(int)) {
-                (Some(z), Some(x), Some(y)) => {
-                    let png = if *kind == "terrain" { self.terrain_tile(z, x, y) } else { self.crop_tile(z, x, y) };
-                    match png {
-                        // elevation detail may still be building: browsers must not remember those gaps
-                        None => empty(if *kind == "terrain" && z >= 13 { "no-store" } else { "max-age=3600" }),
-                        Some(b) => image("image/png", b, "max-age=86400"),
-                    }
-                }
+            ["terrain", z, x, y] => match (int(z), int(x), y.strip_suffix(".png").and_then(int)) {
+                (Some(z), Some(x), Some(y)) => match self.terrain_tile(z, x, y) {
+                    // elevation detail may still be building: browsers must not remember those gaps
+                    None => empty(if z >= 13 { "no-store" } else { "max-age=3600" }),
+                    Some(b) => image("image/png", b, "max-age=86400"),
+                },
                 _ => Response::not_found(),
             },
             ["aerial", z, x, y] => match (int(z), int(x), int(y)) {
@@ -184,17 +179,6 @@ impl Map {
                     }
                 }
                 _ => Response::not_found(),
-            },
-            ["resources"] => match bbox(req) {
-                Some([w, s, e, n]) => {
-                    let zoom = num(req, "zoom").unwrap_or(Some(10.0));
-                    let kinds = param(req, "kinds").unwrap_or_else(|| RESOURCE_KINDS.join(","));
-                    match zoom {
-                        Some(zoom) => Response::json(&self.resource_view(w, s, e, n, zoom, &kinds.split(',').collect::<Vec<_>>())),
-                        None => bad(),
-                    }
-                }
-                None => bad(),
             },
             [which @ ("pins" | "members")] => {
                 let kinds = param(req, "kinds").unwrap_or_default();

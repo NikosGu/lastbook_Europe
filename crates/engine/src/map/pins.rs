@@ -1,10 +1,10 @@
 //! Help points and resources: the clustered pins of the visible area (`/api/map/pins`), the records inside one cluster
-//! (`/api/map/members`), the nearest of each kind (`/api/map/near`, and the assistant), and resource records
-//! (`/api/map/resources`). Service points come from the `poi` table of map.sqlite and national.sqlite; resources from
-//! the `resource` tables of the library's atlas, water.sqlite and crops.sqlite.
+//! (`/api/map/members`) and the nearest of each kind (`/api/map/near`, and the assistant). Service points come from the
+//! `poi` table of map.sqlite and national.sqlite; resources (lakes, reservoirs, ponds and dams) from the `resource`
+//! table of water.sqlite.
 
 use super::text::thousands;
-use super::{Map, ATLAS, CROPS, MAPDB, NATIONAL, WATER};
+use super::{Map, MAPDB, NATIONAL, WATER};
 use rusqlite::types::Value as Sql;
 use serde_json::{json, Map as Obj, Value};
 use std::collections::HashMap;
@@ -27,17 +27,11 @@ pub const HELP: &[(&str, &str)] = &[
     ("car_repair", "Car repair"), ("bicycle_shop", "Bicycle shop"), ("wastewater_plant", "Wastewater plant"),
     ("comms_tower", "Communications tower"), ("park", "Park"), ("courthouse", "Courthouse"),
     ("college", "College"), ("university", "University"), ("kindergarten", "Kindergarten"), ("beach", "Beach"),
-    ("embassy", "Embassy"), ("mineral", "Recorded mineral / mine"), ("oil_gas_well", "Recorded oil / gas well"),
-    ("boat_launch", "Boating facility"), ("fish_stocking", "Fish-stocking record"),
-    ("dam", "Dam"), ("reservoir", "Reservoir"), ("lake", "Lake or pond"), ("pond", "Pond"),
-    ("orchard", "Orchard"), ("vineyard", "Vineyard"), ("berries", "Berry field"), ("perennial_veg", "Asparagus field"),
+    ("embassy", "Embassy"), ("dam", "Dam"), ("reservoir", "Reservoir"), ("lake", "Lake or pond"), ("pond", "Pond"),
 ];
 
-pub const CROP_KINDS: &[&str] = &["orchard", "vineyard", "berries", "perennial_veg"];
-const WATER_KINDS: &[&str] = &["dam", "reservoir", "lake", "pond"];
-/// Kinds read from resource tables rather than service points.
-pub const RESOURCE_KINDS: &[&str] = &["mineral", "oil_gas_well", "boat_launch", "fish_stocking", "dam", "reservoir", "lake", "pond",
-    "orchard", "vineyard", "berries", "perennial_veg"];
+/// Kinds read from water.sqlite's resource table rather than service points.
+pub const RESOURCE_KINDS: &[&str] = &["dam", "reservoir", "lake", "pond"];
 
 const CLUSTER_PX: f64 = 46.0;
 
@@ -82,23 +76,13 @@ fn truthy(v: Option<&Value>) -> bool {
     }
 }
 
-fn plain(v: &Value) -> String {
-    match v {
-        Value::String(s) => s.clone(),
-        Value::Bool(true) => "True".into(),
-        Value::Bool(false) => "False".into(),
-        v => v.to_string(),
-    }
-}
-
 /// What the line about a resource record says, each part a code the interface words in the person's language
 /// (web/locales: map.pin.<code>), with its params: its area (`ha`, in hectares: whole from 10 up, else to one decimal),
-/// that it is NOT drinking water, the area of a crop in its block (`ha`), what it stores (`m3`, whole cubic metres), and
-/// for a fish stocking that the record is a historical one. A pin of one record and a record of a cluster send the
-/// parts as `summary_parts`, the "Nearest" panel as `detail_parts`, each with its English `text`; the record's own
-/// words (its purpose, its river) are parts with their `text` alone, as the record gives them. The English line
-/// (`summary`, `detail`) stays beside them, for the assistant and for an interface that does not know the codes.
-pub const SUMMARY_CODES: [&str; 5] = ["area_ha", "not_drinking_water", "crop_block_ha", "stored_m3", "stocking_record"];
+/// as water.sqlite records it for a lake, reservoir or pond (a dam has none). A pin of one record and a record of a
+/// cluster send the parts as `summary_parts`, the "Nearest" panel as `detail_parts`, each with its English `text`. The
+/// English line (`summary`, `detail`) stays beside them, for the assistant and for an interface that does not know the
+/// codes.
+pub const SUMMARY_CODES: [&str; 1] = ["area_ha"];
 
 /// One part of the line: its code (one of [`SUMMARY_CODES`]) and params beside the English.
 fn part(code: &str, params: Value, text: impl Into<String>) -> Value {
@@ -120,9 +104,9 @@ fn hectares_param(ha: f64) -> Value {
     }
 }
 
-/// One line about a resource record, in metric units: a record carrying US units (acres, acre-feet) is converted.
-pub fn resource_summary(cls: &str, detail: &Value) -> String {
-    summary_text(&summary_parts(cls, detail))
+/// One line about a resource record: its area, when it has one.
+pub fn resource_summary(detail: &Value) -> String {
+    summary_text(&summary_parts(detail))
 }
 
 /// The English line of the parts, as [`resource_summary`] gives it.
@@ -131,52 +115,13 @@ fn summary_text(parts: &[Value]) -> String {
 }
 
 /// The line about a resource record as its parts ([`SUMMARY_CODES`]), in the order the English line has them.
-fn summary_parts(cls: &str, detail: &Value) -> Vec<Value> {
-    let keys: &[&str] = match cls {
-        "mineral" => &["commod1", "commod2", "dev_stat"],
-        "oil_gas_well" => &["WellTypeLabel", "FieldName", "API"],
-        "fish_stocking" => &["FishType", "Counties"],
-        "boat_launch" => &["Water_Body", "Facility_Type"],
-        "dam" => &["purpose", "river", "county"],
-        "reservoir" => &["reservoir_type", "water_type", "state"],
-        "orchard" | "vineyard" | "berries" | "perennial_veg" => &["crop"],
-        "lake" | "pond" => &["water_type", "state"],
-        _ => &[],
-    };
-    let mut out: Vec<Value> = keys.iter().filter(|k| truthy(detail.get(**k))).map(|k| json!({"text": plain(&detail[*k])})).collect();
-    if truthy(detail.get("not_drinking_water")) {
-        out.insert(0, part("not_drinking_water", json!({}), "NOT drinking water"));
-    }
-    if let Some(ha) = area_ha(detail) {
-        out.insert(0, part("area_ha", json!({"ha": hectares_param(ha)}), hectares(ha)));
-    }
-    let crop = if truthy(detail.get("crop_ha")) { Some(f(&detail["crop_ha"])) } else if truthy(detail.get("crop_acres")) { Some(f(&detail["crop_acres"]) * 0.404_686) } else { None };
-    if let Some(ha) = crop {
-        out.push(part("crop_block_ha", json!({"ha": hectares_param(ha)}), format!("about {} in this block", hectares(ha))));
-    }
-    let stored = if truthy(detail.get("storage_m3")) {
-        Some(number(&detail["storage_m3"]))
-    } else if truthy(detail.get("normal_storage_af")) {
-        Some(number(&detail["normal_storage_af"]) * 1233.48)
-    } else {
-        None
-    };
-    if let Some(m3) = stored {
-        let m3 = m3.round() as i64;
-        out.push(part("stored_m3", json!({"m3": m3}), format!("{} m³ stored", thousands(m3))));
-    }
-    out
+fn summary_parts(detail: &Value) -> Vec<Value> {
+    area_ha(detail).map(|ha| part("area_ha", json!({"ha": hectares_param(ha)}), hectares(ha))).into_iter().collect()
 }
 
-/// A record's area in hectares (`area_ha`, or `area_acres` converted), when it has one.
+/// A record's area in hectares (`area_ha`), when it has one.
 pub fn area_ha(detail: &Value) -> Option<f64> {
-    if truthy(detail.get("area_ha")) {
-        Some(number(&detail["area_ha"]))
-    } else if truthy(detail.get("area_acres")) {
-        Some(number(&detail["area_acres"]) * 0.404_686)
-    } else {
-        None
-    }
+    truthy(detail.get("area_ha")).then(|| number(&detail["area_ha"]))
 }
 
 fn number(v: &Value) -> f64 {
@@ -185,15 +130,6 @@ fn number(v: &Value) -> f64 {
 
 fn detail_of(raw: Option<String>) -> Value {
     raw.and_then(|s| serde_json::from_str(&s).ok()).unwrap_or_else(|| json!({}))
-}
-
-fn text_of(v: &Sql) -> Value {
-    match v {
-        Sql::Text(s) => Value::String(s.clone()),
-        Sql::Integer(i) => json!(i),
-        Sql::Real(r) => json!(r),
-        _ => Value::Null,
-    }
 }
 
 /// The same shop is often mapped twice (a pharmacy node and a chemist building): same-name points within ~80 m go.
@@ -219,19 +155,9 @@ fn by_km(a: &Value, b: &Value) -> std::cmp::Ordering {
 }
 
 impl Map {
-    /// The files holding these resource kinds: the library's atlas, the water inventory and the crop map.
-    fn resource_dbs(&self, kinds: &[&str]) -> Vec<&'static str> {
-        let mut out = Vec::new();
-        if kinds.iter().any(|k| !WATER_KINDS.contains(k) && !CROP_KINDS.contains(k)) && self.exists(ATLAS) {
-            out.push(ATLAS);
-        }
-        if kinds.iter().any(|k| WATER_KINDS.contains(k)) && self.exists(WATER) {
-            out.push(WATER);
-        }
-        if kinds.iter().any(|k| CROP_KINDS.contains(k)) && self.exists(CROPS) {
-            out.push(CROPS);
-        }
-        out
+    /// The file holding the resource records, water.sqlite, when one of these kinds is a resource and the map has it.
+    fn resource_db(&self, kinds: &[&str]) -> Option<std::rc::Rc<rusqlite::Connection>> {
+        kinds.iter().any(|k| is_resource(k)).then(|| self.db(WATER)).flatten()
     }
 
     /// The files that hold service points: map.sqlite and national.sqlite.
@@ -240,51 +166,26 @@ impl Map {
     }
 
     fn resource_near(&self, lat: f64, lon: f64, cls: &str, limit: usize) -> Vec<Value> {
+        let Some(c) = self.resource_db(&[cls]) else { return Vec::new() };
+        let Ok(mut st) = c.prepare("SELECT r.name,r.lat,r.lon,r.detail,r.source FROM spatial s CROSS JOIN resource r ON r.id=s.id \
+                                     WHERE r.kind=?1 AND s.minx>=?2 AND s.maxx<=?3 AND s.miny>=?4 AND s.maxy<=?5") else { return Vec::new() };
+        let mut radius = 0.15;
+        type Record = (Option<String>, f64, f64, Option<String>, Option<String>); // name, lat, lon, detail, source
+        let mut rows: Vec<Record> = Vec::new();
+        while radius <= 19.2 {
+            rows = st.query_map(rusqlite::params![cls, lon - radius, lon + radius, lat - radius, lat + radius], |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?)))
+                .map(|r| r.flatten().collect()).unwrap_or_default();
+            if rows.len() >= limit {
+                break;
+            }
+            radius *= 2.0;
+        }
         let mut out = Vec::new();
-        for file in self.resource_dbs(&[cls]) {
-            let Some(c) = self.db(file) else { continue };
-            let Ok(mut st) = c.prepare("SELECT r.name,r.lat,r.lon,r.detail,r.source FROM spatial s CROSS JOIN resource r ON r.id=s.id \
-                                         WHERE r.kind=?1 AND s.minx>=?2 AND s.maxx<=?3 AND s.miny>=?4 AND s.maxy<=?5") else { continue };
-            let mut radius = 0.15;
-            type Record = (Option<String>, f64, f64, Option<String>, Option<String>); // name, lat, lon, detail, source
-            let mut rows: Vec<Record> = Vec::new();
-            while radius <= 19.2 {
-                rows = st.query_map(rusqlite::params![cls, lon - radius, lon + radius, lat - radius, lat + radius], |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?)))
-                    .map(|r| r.flatten().collect()).unwrap_or_default();
-                if cls == "fish_stocking" {
-                    // one record per fish and place: stocked many times, it is still one spot
-                    let mut by: HashMap<String, usize> = HashMap::new();
-                    let mut kept: Vec<_> = Vec::new();
-                    for r in rows {
-                        let fish = detail_of(r.3.clone())["FishType"].clone();
-                        let k = format!("{:?}|{}|{}|{fish}", r.0, round_to(r.1, 3), round_to(r.2, 3));
-                        match by.get(&k) {
-                            Some(&i) => kept[i] = r,
-                            None => {
-                                by.insert(k, kept.len());
-                                kept.push(r);
-                            }
-                        }
-                    }
-                    rows = kept;
-                }
-                if rows.len() >= limit {
-                    break;
-                }
-                radius *= 2.0;
-            }
-            for (name, y, x, raw, source) in rows {
-                let detail = detail_of(raw);
-                let mut parts = summary_parts(cls, &detail);
-                let mut summary = summary_text(&parts);
-                if cls == "fish_stocking" {
-                    summary.push_str(" · historical stocking record");
-                    parts.push(part("stocking_record", json!({}), "historical stocking record"));
-                }
-                let (d, dir) = haversine(lat, lon, y, x);
-                out.push(json!({"cls": cls, "label": help(cls), "name": name, "lat": y, "lon": x, "km": round_to(d, 2), "dir": dir, "detail": summary,
-                                "detail_parts": parts, "source": source}));
-            }
+        for (name, y, x, raw, source) in rows {
+            let parts = summary_parts(&detail_of(raw));
+            let (d, dir) = haversine(lat, lon, y, x);
+            out.push(json!({"cls": cls, "label": help(cls), "name": name, "lat": y, "lon": x, "km": round_to(d, 2), "dir": dir, "detail": summary_text(&parts),
+                            "detail_parts": parts, "source": source}));
         }
         out.sort_by(by_km);
         out.truncate(limit);
@@ -432,23 +333,24 @@ impl Map {
                 }
             }
         }
-        for file in self.resource_dbs(&resources) {
-            let Some(c) = self.db(file) else { continue };
-            let sql = format!("SELECT r.kind,COUNT(*),AVG(r.lat),AVG(r.lon),MIN(r.lon),MAX(r.lon),MIN(r.lat),MAX(r.lat),r.name,r.detail,r.source,\
-                               COUNT(DISTINCT CASE WHEN r.kind='fish_stocking' THEN r.name ELSE r.source_id END) \
+        if let Some(c) = self.resource_db(&resources) {
+            let sql = format!("SELECT r.kind,COUNT(*),AVG(r.lat),AVG(r.lon),MIN(r.lon),MAX(r.lon),MIN(r.lat),MAX(r.lat),r.name,r.detail,r.source,COUNT(DISTINCT r.source_id) \
                                FROM spatial s CROSS JOIN resource r ON r.id=s.id WHERE s.minx>=? AND s.maxx<=? AND s.miny>=? AND s.maxy<=? \
                                AND r.kind IN ({}) GROUP BY r.kind, CAST((r.lon+180)/? AS INT), CAST((r.lat+90)/? AS INT)", vec!["?"; resources.len()].join(","));
-            // farm blocks are dense: they group more coarsely (the colour overlay shows the detail)
-            let g = if file == CROPS && cx > 1e-5 { 3.0 } else { 1.0 };
             let mut params: Vec<Sql> = [west, east, south, north].map(Sql::Real).to_vec();
             params.extend(resources.iter().map(|s| Sql::Text(s.to_string())));
-            params.extend([cx * g, cy * g].map(Sql::Real));
-            let Ok(mut st) = c.prepare(&sql) else { continue };
-            let Ok(rows) = st.query_map(rusqlite::params_from_iter(params.iter()), |r| {
-                Ok((r.get::<_, String>(0)?, r.get::<_, i64>(1)?, r.get::<_, f64>(2)?, r.get::<_, f64>(3)?, [r.get::<_, f64>(4)?, r.get::<_, f64>(6)?, r.get::<_, f64>(5)?, r.get::<_, f64>(7)?],
-                    r.get::<_, Option<String>>(8)?, r.get::<_, Option<String>>(9)?, r.get::<_, Option<String>>(10)?, r.get::<_, i64>(11)?))
-            }) else { continue };
-            for (k, n, la, lo, b, name, detail, source, sites) in rows.flatten() {
+            params.extend([cx, cy].map(Sql::Real));
+            type Group = (String, i64, f64, f64, [f64; 4], Option<String>, Option<String>, Option<String>, i64); // kind, records, lat, lon, bounds, name, detail, source, sites
+            let rows: Vec<Group> = c
+                .prepare(&sql)
+                .and_then(|mut st| {
+                    st.query_map(rusqlite::params_from_iter(params.iter()), |r| {
+                        Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, [r.get(4)?, r.get(6)?, r.get(5)?, r.get(7)?], r.get(8)?, r.get(9)?, r.get(10)?, r.get(11)?))
+                    })
+                    .map(|r| r.flatten().collect())
+                })
+                .unwrap_or_default();
+            for (k, n, la, lo, b, name, detail, source, sites) in rows {
                 let detail = if sites == 1 { detail_of(detail) } else { json!({}) };
                 add(k, n, sites, la, lo, b, name.unwrap_or_default(), detail, source.unwrap_or_default());
             }
@@ -457,9 +359,9 @@ impl Map {
         for c in cells.into_iter().filter(|c| c.count > 0) {
             let mut o = Obj::new();
             let (lat, lon) = (c.lat / c.count as f64, c.lon / c.count as f64);
-            let spot = c.count > 1 && c.bbox[2] - c.bbox[0] < 1e-4 && c.bbox[3] - c.bbox[1] < 1e-4; // e.g. one lake stocked many times
+            let spot = c.count > 1 && c.bbox[2] - c.bbox[0] < 1e-4 && c.bbox[3] - c.bbox[1] < 1e-4; // several places at one point
             if c.count == 1 {
-                let parts = summary_parts(&c.cls, &c.detail);
+                let parts = summary_parts(&c.detail);
                 o.insert("label".into(), json!(help(&c.cls).unwrap_or(&c.cls)));
                 o.insert("summary".into(), json!(summary_text(&parts)));
                 o.insert("summary_parts".into(), json!(parts));
@@ -510,19 +412,19 @@ impl Map {
                 }
             }
         }
-        for file in self.resource_dbs(&resources) {
-            let Some(c) = self.db(file) else { continue };
+        if let Some(c) = self.resource_db(&resources) {
             let sql = format!("SELECT r.kind,r.name,r.lat,r.lon,r.detail,r.source FROM spatial s CROSS JOIN resource r ON r.id=s.id \
                                WHERE s.minx>=? AND s.maxx<=? AND s.miny>=? AND s.maxy<=? AND r.kind IN ({}) LIMIT 2000", vec!["?"; resources.len()].join(","));
             let mut params: Vec<Sql> = [west - eps, east + eps, south - eps, north + eps].map(Sql::Real).to_vec();
             params.extend(resources.iter().map(|s| Sql::Text(s.to_string())));
-            let Ok(mut st) = c.prepare(&sql) else { continue };
-            let Ok(found) = st.query_map(rusqlite::params_from_iter(params.iter()), |r| {
-                Ok((r.get::<_, String>(0)?, r.get::<_, Option<String>>(1)?, r.get::<_, f64>(2)?, r.get::<_, f64>(3)?, r.get::<_, Option<String>>(4)?, r.get::<_, Option<String>>(5)?))
-            }) else { continue };
-            for (k, n, y, x, d, src) in found.flatten() {
+            type Record = (String, Option<String>, f64, f64, Option<String>, Option<String>); // kind, name, lat, lon, detail, source
+            let found: Vec<Record> = c
+                .prepare(&sql)
+                .and_then(|mut st| st.query_map(rusqlite::params_from_iter(params.iter()), |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?, r.get(5)?))).map(|r| r.flatten().collect()))
+                .unwrap_or_default();
+            for (k, n, y, x, d, src) in found {
                 let detail = detail_of(d);
-                let parts = summary_parts(&k, &detail);
+                let parts = summary_parts(&detail);
                 rows.push(json!({"cls": k, "label": help(&k), "name": n.unwrap_or_default(), "lat": y, "lon": x, "summary": summary_text(&parts), "summary_parts": parts,
                                  "detail": detail, "source": src.unwrap_or_default()}));
             }
@@ -535,46 +437,10 @@ impl Map {
             r["km"] = json!(d);
             r["dir"] = json!(dir);
         }
-        // the newest stocking first at one spot, then nearest first
-        let week = |r: &Value| match &r["detail"]["WeekOfPlantStart"] {
-            Value::Null => String::new(),
-            v => plain(v),
-        };
-        rows.sort_by_key(|r| std::cmp::Reverse(week(r)));
+        // nearest first
         rows.sort_by(|a, b| round_to(f(&a["km"]), 3).total_cmp(&round_to(f(&b["km"]), 3)));
         let total = rows.len();
         rows.truncate(limit);
         json!({"items": rows, "total": total, "capped": total >= 2000})
-    }
-
-    /// Resource records of the library's atlas in a box, grouped on a grid for the zoom.
-    pub fn resource_view(&self, west: f64, south: f64, east: f64, north: f64, zoom: f64, kinds: &[&str]) -> Value {
-        let kinds: Vec<&str> = kinds.iter().copied().filter(|k| is_resource(k)).collect();
-        let Some(c) = self.db(ATLAS).filter(|_| !kinds.is_empty()) else { return json!({"points": [], "records": 0}) };
-        let (west, east, south, north) = (west.max(-180.0), east.min(180.0), south.max(-85.0), north.min(85.0));
-        let cell = 180.0 / 2f64.powf(zoom.clamp(3.0, 18.0));
-        let sql = format!("SELECT r.kind,AVG(r.lat),AVG(r.lon),COUNT(*),r.name,r.detail,r.source,COUNT(DISTINCT CASE WHEN r.kind='fish_stocking' THEN r.name ELSE r.source_id END) \
-                           FROM spatial s CROSS JOIN resource r ON r.id=s.id WHERE s.minx>=? AND s.maxx<=? AND s.miny>=? AND s.maxy<=? AND r.kind IN ({}) \
-                           GROUP BY r.kind, CAST((r.lon+180)/? AS INTEGER), CAST((r.lat+90)/? AS INTEGER) ORDER BY COUNT(*) DESC LIMIT 2001", vec!["?"; kinds.len()].join(","));
-        let mut params: Vec<Sql> = [west, east, south, north].map(Sql::Real).to_vec();
-        params.extend(kinds.iter().map(|s| Sql::Text(s.to_string())));
-        params.extend([cell, cell].map(Sql::Real));
-        type Group = (String, f64, f64, i64, Sql, Option<String>, Sql, i64); // kind, lat, lon, records, name, detail, source, sites
-        let rows: Vec<Group> = c
-            .prepare(&sql)
-            .and_then(|mut st| st.query_map(rusqlite::params_from_iter(params.iter()), |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?, r.get(5)?, r.get(6)?, r.get(7)?))).map(|r| r.flatten().collect()))
-            .unwrap_or_default();
-        let truncated = rows.len() > 2000;
-        let points: Vec<Value> = rows
-            .into_iter()
-            .take(2000)
-            .map(|(k, lat, lon, n, name, detail, source, sites)| {
-                json!({"cls": k, "lat": lat, "lon": lon, "count": sites, "record_count": n,
-                       "name": if sites == 1 { text_of(&name) } else { json!(format!("{} locations", thousands(sites))) },
-                       "label": help(&k), "detail": if sites == 1 { detail_of(detail) } else { json!({}) }, "source": text_of(&source)})
-            })
-            .collect();
-        let records: i64 = points.iter().map(|p| p["record_count"].as_i64().unwrap_or(0)).sum();
-        json!({"points": points, "records": records, "truncated": truncated})
     }
 }

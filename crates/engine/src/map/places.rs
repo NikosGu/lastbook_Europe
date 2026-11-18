@@ -300,11 +300,11 @@ impl Map {
                 + (area + 1.0).log10() / 3.0
                 + near_bonus(near, lat, lon);
             let at = |keys: &[&str]| -> Vec<String> { keys.iter().filter_map(|k| d[*k].as_str()).filter(|s| !s.is_empty()).map(str::to_string).collect() };
-            let mut parts = vec![at(&["county", "region", "state", "country"]).join(", ")];
+            let mut parts = vec![at(&["region", "country"]).join(", ")];
             // where it is, for the interface: the country by its code, or (one the engine does not know) by its name as given
             let named = d["country"].as_str().filter(|s| !s.is_empty());
             let country = named.and_then(country_code).unwrap_or("");
-            let mut local = at(&["county", "region", "state"]);
+            let mut local = at(&["region"]);
             if country.is_empty() {
                 local.extend(named.map(str::to_string));
             }

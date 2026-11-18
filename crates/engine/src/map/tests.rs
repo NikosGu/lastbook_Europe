@@ -237,8 +237,8 @@ fn map_info_says_when_its_data_was_taken_and_who_made_it() {
                                            "data_as_of": "2026-10-25"}));
 }
 
-/// The panel's rows for three more map sets: a region with its places, buildings and crops; a map of everything whose
-/// files name no source, with the address indexes of a country and of a region; and the base map with elevation only.
+/// The panel's rows for three more map sets: a region with its places and buildings; a map of everything whose files
+/// name no source, with the address indexes of a country and of a region; and the base map with elevation only.
 /// Between them, every code is said.
 #[test]
 fn map_info_says_each_row_as_a_code() {
@@ -254,7 +254,6 @@ fn map_info_says_each_row_as_a_code() {
     vaduz(&f);
     places_db(&f, &[("Vaduz", "town", "Liechtenstein", 47.14, 9.52, 2, &[])]);
     f.sqlite("derived/geo/buildings.sqlite", bldg);
-    f.sqlite("derived/geo/crops.sqlite", &format!("{RESOURCE_TABLES} {meta} INSERT INTO meta VALUES ('source', 'EUCROPMAP 2022');"));
     let info = f.json("/api/map/info");
     assert_eq!(info["datasets"], json!([base,
         {"code": "streets_detail", "params": {}, "label": "Streets, places and help points (OpenStreetMap) for the area this map details",
@@ -262,8 +261,6 @@ fn map_info_says_each_row_as_a_code() {
         {"code": "places", "params": {}, "label": "Place names and postcodes", "status": "Used by \"Find a place\""},
         {"code": "buildings_detail", "params": {"source": "OpenStreetMap"}, "label": "Building outlines (OpenStreetMap)",
          "status": "For the area this map details, shown from street level zoom"},
-        {"code": "crops_detail", "params": {"source": "EUCROPMAP 2022"}, "label": "Orchards, vineyards and olive groves (EUCROPMAP 2022)",
-         "status": "For the area this map details"},
     ]));
     seen(&info);
 
@@ -274,7 +271,6 @@ fn map_info_says_each_row_as_a_code() {
     drop(c);
     f.sqlite("derived/geo/terrain.sqlite", terrain);
     f.sqlite("derived/geo/buildings.sqlite", &format!("{bldg} {meta} INSERT INTO meta VALUES ('source', 'Overture Maps Foundation');"));
-    f.sqlite("derived/geo/crops.sqlite", RESOURCE_TABLES);
     f.sqlite("derived/geo/addresses/AT.sqlite", meta);
     f.sqlite("derived/geo/addresses/DE-BY.sqlite", &format!("{meta} INSERT INTO meta VALUES ('publisher', 'Bayerische Vermessungsverwaltung');"));
     let info = f.json("/api/map/info");
@@ -286,7 +282,6 @@ fn map_info_says_each_row_as_a_code() {
         {"code": "elevation_contours", "params": {"source": ""}, "label": "Elevation", "status": "Shaded relief. Contour lines only where this map has fine detail."},
         {"code": "buildings_whole", "params": {"source": "Overture Maps Foundation"}, "label": "Building outlines (Overture Maps Foundation)",
          "status": "For the whole map, shown from street level zoom"},
-        {"code": "crops_whole", "params": {"source": ""}, "label": "Orchards, vineyards and olive groves", "status": "For the whole map"},
     ]), "the first index's publisher names the source");
     seen(&info);
 
@@ -434,8 +429,7 @@ fn image_tiles_and_their_gaps() {
     assert_eq!((gap.status, gap.header("Cache-Control")), (204, Some("max-age=3600")));
     assert!(gap.body.is_empty());
     assert_eq!(f.get("/api/map/terrain/14/1/1.png").header("Cache-Control"), Some("no-store"), "detail may still be building");
-    let crop = f.get("/api/map/crops/12/1/1.png");
-    assert_eq!((crop.status, crop.header("Cache-Control")), (204, Some("max-age=3600")));
+    assert_eq!(f.get("/api/map/crops/12/1/1.png").status, 404, "no crop overlay: the original Lastbook's was the American crop map's");
     let aerial = f.get("/api/map/aerial/10/176/409");
     assert_eq!((aerial.status, aerial.header("Cache-Control")), (204, Some("no-store")), "an optional layer: no file, no photo");
     assert_eq!(f.get("/api/map/terrain/12/1/x.png").status, 404);
@@ -550,58 +544,43 @@ fn the_assistant_asking_for_pharmacies_gets_no_drugstores() {
     assert!(text.contains("Drugstore: Drogerie"), "named a drugstore to the model too: {text}");
 }
 
+/// The records of water.sqlite as `lastbook-tools build-map` writes them (crates/tools/src/map/water.rs): a lake with
+/// its area, a dam with none, each with its region and country.
 #[test]
-fn water_and_crop_resources_in_metric() {
+fn water_resources_in_metric() {
     let f = fx("res");
     let w = f.sqlite("derived/geo/water.sqlite", RESOURCE_TABLES);
-    resource(&w, 1, "lake", "Steger See", 47.1, 9.6, r#"{"area_ha": 3.2, "water_type": "fresh"}"#, "Amt für Umwelt");
-    resource(&w, 2, "dam", "Saminatal", 47.12, 9.62, r#"{"storage_m3": 1500000, "purpose": "hydropower"}"#, "Amt für Umwelt");
+    resource(&w, 1, "lake", "Steger See", 47.1, 9.6, r#"{"area_ha": 3.2, "region": "Triesenberg", "country": "Liechtenstein"}"#, "OpenStreetMap");
+    resource(&w, 2, "dam", "Saminatal", 47.12, 9.62, r#"{"region": "Triesenberg", "country": "Liechtenstein"}"#, "OpenStreetMap");
     drop(w);
-    let c = f.sqlite("derived/geo/crops.sqlite", RESOURCE_TABLES);
-    resource(&c, 1, "vineyard", "", 47.13, 9.52, r#"{"crop": "Grapes", "crop_acres": 10}"#, "crop map");
-    drop(c);
-    let near = f.map.near(47.1, 9.6, &["lake", "dam", "vineyard"], 3);
-    assert_eq!(near[0]["detail"], "3.2 ha · fresh");
-    assert_eq!(near[0]["detail_parts"], json!([{"code": "area_ha", "params": {"ha": 3.2}, "text": "3.2 ha"}, {"text": "fresh"}]),
-               "the area a code with its number, for the interface to write; the record's own word as it is");
-    let dam = near.iter().find(|p| p["cls"] == "dam").unwrap();
-    assert_eq!(dam["detail"], "hydropower · 1,500,000 m³ stored");
-    assert_eq!(dam["detail_parts"], json!([{"text": "hydropower"}, {"code": "stored_m3", "params": {"m3": 1500000}, "text": "1,500,000 m³ stored"}]));
-    let vine = near.iter().find(|p| p["cls"] == "vineyard").unwrap();
-    assert_eq!(vine["detail"], "Grapes · about 4 ha in this block", "acres become hectares");
-    assert_eq!(vine["detail_parts"], json!([{"text": "Grapes"}, {"code": "crop_block_ha", "params": {"ha": 4.0}, "text": "about 4 ha in this block"}]));
-    let all = near.iter().map(|p| p.to_string()).collect::<String>();
-    assert!(!all.contains("acre") && !all.contains(" mi"));
+    let near = f.map.near(47.1, 9.6, &["lake", "dam"], 3);
+    assert_eq!(near[0]["detail"], "3.2 ha");
+    assert_eq!(near[0]["detail_parts"], json!([{"code": "area_ha", "params": {"ha": 3.2}, "text": "3.2 ha"}]),
+               "the area a code with its number, for the interface to write");
+    assert_eq!(near[1]["cls"], "dam");
     let pins = f.json("/api/map/pins?west=9.4&south=47&east=9.7&north=47.3&zoom=17&kinds=lake,dam");
     assert_eq!(pins["sites"], 2);
     let lake = pins["points"].as_array().unwrap().iter().find(|p| p["cls"] == "lake").unwrap();
-    assert_eq!((lake["summary"].as_str(), &lake["summary_parts"]), (Some("3.2 ha · fresh"), &near[0]["detail_parts"]), "a pin of one record: the same parts");
+    assert_eq!((lake["summary"].as_str(), &lake["summary_parts"]), (Some("3.2 ha"), &near[0]["detail_parts"]), "a pin of one record: the same parts");
     let m = f.json("/api/map/members?west=9.59&south=47.09&east=9.61&north=47.11&lat=47.1&lon=9.6&kinds=lake");
-    assert_eq!((m["items"][0]["summary"].as_str(), &m["items"][0]["summary_parts"]), (Some("3.2 ha · fresh"), &near[0]["detail_parts"]), "and a record of a cluster");
-    assert_eq!(resource_summary("reservoir", &json!({"area_acres": 100})), "40 ha");
-    // the library's atlas holds none here
-    assert_eq!(f.json("/api/map/resources?west=9&south=47&east=10&north=48"), json!({"points": [], "records": 0}));
+    assert_eq!((m["items"][0]["summary"].as_str(), &m["items"][0]["summary_parts"]), (Some("3.2 ha"), &near[0]["detail_parts"]), "and a record of a cluster");
+    assert_eq!(resource_summary(&json!({"area_ha": 40})), "40 ha");
+    // the original Lastbook's atlas of American records (fish stocking, mines, wells) is not read, nor asked for
+    assert_eq!(f.get("/api/map/resources?west=9&south=47&east=10&north=48").status, 404);
 }
 
 /// Every part of a resource's line, as codes with their params beside the English: a pond of 0.2 ha (the number the
-/// interface writes "0,2" in Italian), a lake of whole hectares, a pond that is NOT drinking water, a dam's storage, a
-/// crop block, a fish stocking. Between them, every code is said.
+/// interface writes "0,2" in Italian), a lake of whole hectares, and a dam, which records no area. Between them, every
+/// code is said.
 #[test]
 fn resource_lines_as_codes() {
     let f = fx("res-codes");
     let w = f.sqlite("derived/geo/water.sqlite", RESOURCE_TABLES);
     resource(&w, 1, "pond", "", 47.153, 9.515, r#"{"area_ha": 0.2, "region": "Vaduz", "country": "Liechtenstein"}"#, "OpenStreetMap");
     resource(&w, 2, "lake", "Bodensee", 47.6, 9.4, r#"{"area_ha": 53600}"#, "OpenStreetMap");
-    resource(&w, 3, "pond", "Klärteich", 47.16, 9.52, r#"{"area_ha": 1.26, "not_drinking_water": true}"#, "OpenStreetMap");
-    resource(&w, 4, "dam", "Steg", 47.11, 9.57, r#"{"normal_storage_af": 1000}"#, "OpenStreetMap");
+    resource(&w, 3, "dam", "Steg", 47.11, 9.57, r#"{"region": "Triesenberg", "country": "Liechtenstein"}"#, "OpenStreetMap");
     drop(w);
-    let c = f.sqlite("derived/geo/crops.sqlite", RESOURCE_TABLES);
-    resource(&c, 1, "vineyard", "", 47.13, 9.52, r#"{"crop_ha": 0.6}"#, "crop map");
-    drop(c);
-    let a = f.sqlite("library-data/geography/resources/atlas.sqlite", RESOURCE_TABLES);
-    resource(&a, 1, "fish_stocking", "Gampriner Seele", 47.22, 9.51, r#"{"FishType": "Trout"}"#, "stocking list");
-    drop(a);
-    let near = f.map.near(47.153, 9.515, &["pond", "lake", "dam", "vineyard", "fish_stocking"], 3);
+    let near = f.map.near(47.153, 9.515, &["pond", "lake", "dam"], 3);
     let of = |name: &str, cls: &str| near.iter().find(|p| p["cls"] == cls && p["name"].as_str().unwrap_or("") == name).unwrap_or_else(|| panic!("{name}: {near:?}"));
     let pond = of("", "pond");
     assert_eq!(pond["detail"], "0.2 ha");
@@ -609,18 +588,8 @@ fn resource_lines_as_codes() {
     let lake = of("Bodensee", "lake");
     assert_eq!(lake["detail"], "53,600 ha");
     assert_eq!(lake["detail_parts"], json!([{"code": "area_ha", "params": {"ha": 53600}, "text": "53,600 ha"}]), "whole hectares from 10 up");
-    let waste = of("Klärteich", "pond");
-    assert_eq!(waste["detail"], "1.3 ha · NOT drinking water");
-    assert_eq!(waste["detail_parts"], json!([{"code": "area_ha", "params": {"ha": 1.3}, "text": "1.3 ha"}, {"code": "not_drinking_water", "params": {}, "text": "NOT drinking water"}]));
     let dam = of("Steg", "dam");
-    assert_eq!(dam["detail"], "1,233,480 m³ stored", "acre-feet become cubic metres");
-    assert_eq!(dam["detail_parts"], json!([{"code": "stored_m3", "params": {"m3": 1233480}, "text": "1,233,480 m³ stored"}]));
-    let vine = of("", "vineyard");
-    assert_eq!(vine["detail"], "about 0.6 ha in this block");
-    assert_eq!(vine["detail_parts"], json!([{"code": "crop_block_ha", "params": {"ha": 0.6}, "text": "about 0.6 ha in this block"}]));
-    let fish = of("Gampriner Seele", "fish_stocking");
-    assert_eq!(fish["detail"], "Trout · historical stocking record");
-    assert_eq!(fish["detail_parts"], json!([{"text": "Trout"}, {"code": "stocking_record", "params": {}, "text": "historical stocking record"}]));
+    assert_eq!((dam["detail"].as_str(), &dam["detail_parts"]), (Some(""), &json!([])), "a dam records no area: its line says nothing");
     let mut said: Vec<String> = near.iter().flat_map(|p| p["detail_parts"].as_array().unwrap().iter().filter_map(|d| d["code"].as_str().map(str::to_string))).collect();
     said.sort();
     said.dedup();
@@ -824,7 +793,12 @@ fn a_lakes_line_as_codes() {
 fn no_southern_california_and_no_us_units_in_the_map_code() {
     let code = [include_str!("mod.rs"), include_str!("tiles.rs"), include_str!("pins.rs"), include_str!("info.rs"), include_str!("terrain.rs"), include_str!("places.rs"),
                  include_str!("address/mod.rs"), include_str!("address/countries.rs"), include_str!("address/words.rs")].concat();
-    for gone in [concat!("118", ".4"), concat!("So", "Cal"), concat!("Southern ", "California"), concat!("socal", "_"), concat!(" mi", "les")] {
+    for gone in [concat!("118", ".4"), concat!("So", "Cal"), concat!("Southern ", "California"), concat!("socal", "_"), concat!(" mi", "les"), concat!("ac", "re")] {
+        assert!(!code.contains(gone), "{gone}");
+    }
+    // nor the kinds and files only the original Lastbook's American records had: fish stocking, boating, mines, wells, crop blocks
+    for gone in [concat!("fish_", "stocking"), concat!("boat_", "launch"), concat!("\"min", "eral\""), concat!("oil_", "gas_well"), concat!("\"orch", "ard\""),
+                 concat!("\"vine", "yard\""), concat!("\"berr", "ies\""), concat!("perennial", "_veg"), concat!("crops", ".sqlite"), concat!("atlas", ".sqlite")] {
         assert!(!code.contains(gone), "{gone}");
     }
 }
