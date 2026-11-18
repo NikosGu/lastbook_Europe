@@ -208,8 +208,11 @@ pub const LANGS: &[Lang] = &[
     },
     Lang {
         code: "bg",
+        // ж.к. (жилищен комплекс, a housing estate) and кв. (квартал, a quarter) name what stands in for the street where
+        // the blocks have numbers instead of the houses: "ж.к. Дружба 1, бл. 3"
         words: &[("улица", ""), ("ул", ""), ("булевард", "boulevard"), ("бул", "boulevard"), ("площад", "plaza"), ("пл", "plaza"),
-            ("ulitsa", ""), ("ul", ""), ("bulevard", "boulevard"), ("bul", "boulevard"), ("ploshtad", "plaza"), ("pl", "plaza")],
+            ("жк", ""), ("квартал", ""), ("кв", ""),
+            ("ulitsa", ""), ("ul", ""), ("bulevard", "boulevard"), ("bul", "boulevard"), ("ploshtad", "plaza"), ("pl", "plaza"), ("zhk", ""), ("kvartal", "")],
         first: &[],
         last: &[],
         suffixes: &[],
@@ -343,7 +346,11 @@ pub const FRENCH_FIRST: &[&str] = &["rue", "avenue", "av", "boulevard", "bd", "p
 pub const UNITS: &[&str] = &["apt", "app", "appt", "apartment", "appartement", "wohnung", "whg", "top", "stiege", "stg", "tür", "etage", "étage", "et", "etg",
     "esc", "escalier", "bât", "bat", "bâtiment", "bloc", "piso", "puerta", "pta", "izq", "izqda", "izda", "izquierda", "dcha", "dcho", "dch", "derecha", "int",
     "interno", "scala", "sc", "esq", "esquerdo", "dto", "direito", "rc", "bajo", "ático", "lgh", "lok", "lokal", "mieszk", "m", "byt", "flat", "unit",
-    "suite", "tv", "th", "mf", "kl", "sal"];
+    "suite", "tv", "th", "mf", "kl", "sal", "вх", "ет", "ап"];
 
 /// Words that stand before a house number and are not part of it: Nr. 5, n° 5, No 5.
 pub const NUMBER_MARKS: &[&str] = &["nr", "no", "n", "num", "nro", "numero", "número", "nummer", "č", "cp", "#"];
+
+/// Words before the number of a block that is the address where blocks, not houses, have numbers (Bulgaria's housing
+/// estates: "ж.к. Дружба 1, бл. 3"): the block's number is filed and found as the house number.
+pub const BLOCK_MARKS: &[&str] = &["бл", "блок"];

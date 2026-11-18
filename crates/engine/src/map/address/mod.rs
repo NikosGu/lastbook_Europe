@@ -184,9 +184,10 @@ pub fn street_key(street: &str, country: &str) -> String {
 }
 
 /// A house number as the index files it: lower case, no spaces, no final dot, a letter after a slash or dash joined
-/// ("12 bis" 12bis, "12 A" 12a, "12/A" 12a, "10." 10; "12/3" and "12-14" stay).
+/// ("12 bis" 12bis, "12 A" 12a, "12/A" 12a, "10." 10; "12/3" and "12-14" stay), and no mark before it ("Nr. 5" 5,
+/// "бл. 3" 3).
 pub fn number_key(num: &str) -> String {
-    let mut s: String = fold(num).chars().filter(|c| !c.is_whitespace()).collect();
+    let mut s: String = without_mark(&fold(num)).chars().filter(|c| !c.is_whitespace()).collect();
     while s.ends_with('.') {
         s.pop();
     }
@@ -197,6 +198,21 @@ pub fn number_key(num: &str) -> String {
         }
     }
     s
+}
+
+/// A number mark (Nr., No, бл.) is a word and then a dot or a space before the digits: "Nr. 5", "бл.3", "No 5" lose it;
+/// "n12" or "nr" alone keep everything.
+fn without_mark(f: &str) -> &str {
+    let t = f.trim_start();
+    let end = t.find(|c: char| !c.is_alphabetic()).unwrap_or(t.len());
+    let (word, rest) = t.split_at(end);
+    let marked = words::NUMBER_MARKS.contains(&word) || words::BLOCK_MARKS.contains(&word);
+    let after = rest.trim_start_matches('.').trim_start();
+    if marked && after.len() < rest.len() && after.starts_with(|c: char| c.is_ascii_digit()) {
+        after
+    } else {
+        f
+    }
 }
 
 /// The numbers a house number may be filed under, the exact one first: a flat or a staircase after a slash, or the
@@ -344,8 +360,11 @@ fn tokens(q: &str) -> Vec<Tok> {
             out.push(Tok { raw, f, seg, num, word });
         }
     }
-    // "Nr. 5", "n° 5": the mark is not part of the street
-    let marks = |t: &Tok| words::NUMBER_MARKS.contains(&compact(&t.f).as_str());
+    // "Nr. 5", "n° 5", "бл. 3": the mark is not part of the street
+    let marks = |t: &Tok| {
+        let c = compact(&t.f);
+        words::NUMBER_MARKS.contains(&c.as_str()) || words::BLOCK_MARKS.contains(&c.as_str())
+    };
     let mut kept: Vec<Tok> = Vec::new();
     for i in 0..out.len() {
         if marks(&out[i]) && out.get(i + 1).is_some_and(|n| n.num) && i > 0 {
