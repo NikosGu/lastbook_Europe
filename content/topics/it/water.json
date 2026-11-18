@@ -13,8 +13,8 @@
       "hint": "Un'alluvione, un tubo rotto, un avviso che dice di non berla",
       "read": [
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "Perché ogni casa ha bisogno di una scorta d'acqua",
-         "note": "In polacco. Dalla guida dell'RCB: in una crisi o in guerra l'acqua può mancare; 14 litri per ogni persona della casa bastano per una settimana senza acqua corrente."},
-        {"doc": "who-floods-health-2024", "page": 5, "label": "Bollirla, o bere acqua in bottiglia sigillata",
+         "note": "In polacco. Dalla guida dell'RCB: in una crisi o in guerra procurarsi l'acqua può essere difficile; 14 litri per ogni persona della casa bastano per una settimana senza acqua corrente."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Farla bollire, o bere acqua in bottiglia sigillata",
          "note": "In inglese. Consigli dell'OMS dopo un'alluvione: far bollire l'acqua prima di berla o di usarla per lavarsi i denti, pulire ferite o preparare il cibo; se l'acqua del rubinetto non è sicura, usare acqua in bottiglia con il sigillo intatto."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Dopo un'alluvione: prima di bere l'acqua del rubinetto",
          "note": "Tra le cose da fare dopo un'alluvione: verifica che nessun avviso locale vieti di bere l'acqua del rubinetto, e non mangiare cibi venuti a contatto con l'acqua."}
@@ -25,7 +25,7 @@
       "label": "Posso far bollire l'acqua",
       "hint": "Un fornello a gas, un fornelletto da campeggio, un fuoco",
       "read": [
-        {"doc": "who-floods-health-2024", "page": 5, "label": "Portarla a bollore pieno, poi lasciarla raffreddare",
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Portarla a piena ebollizione, poi lasciarla raffreddare",
          "note": "In inglese. Consigli dell'OMS: quando l'acqua bolle con forza, toglierla dal fuoco e lasciarla raffreddare senza aggiungere ghiaccio; tenere l'acqua calda lontana dai bambini e conservarla coperta."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 14, "label": "Un semplice filtro, poi fai bollire l'acqua",
          "note": "In tedesco. Un filtro a sabbia improvvisato per l'acqua torbida, dopo il quale l'acqua viene fatta bollire per circa un minuto."}
@@ -39,7 +39,7 @@
         {"doc": "who-gdwq-2026", "page": 142, "label": "Cloro, candeggina o pastiglie: dose e attesa",
          "note": "In inglese. Una tabella dell'OMS per chi viaggia: preparare il prodotto come dicono le istruzioni e aggiungerlo ad acqua limpida o decantata; aspettare almeno 30 minuti a 25 °C, il doppio per ogni 10 °C in meno."},
         {"doc": "who-gdwq-2026", "page": 165, "label": "Che cosa il cloro non uccide",
-         "note": "In inglese. Dalle linee guida dell'OMS, scritte per i gestori dell'acqua: il criptosporidio resiste molto bene al cloro; la luce UV lo inattiva e la filtrazione può toglierlo."},
+         "note": "In inglese. Dalle linee guida dell'OMS, scritte per i gestori dell'acqua: il criptosporidio resiste molto bene al cloro; la luce UV lo inattiva e la filtrazione può rimuoverlo."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Pastiglie, vasca da bagno e sole",
          "note": "In tedesco. Pastiglie disinfettanti della farmacia, la vasca da bagno riempita come riserva e la disinfezione al sole in bottiglia."}
       ]
@@ -49,7 +49,7 @@
       "label": "Niente combustibile e niente pastiglie",
       "hint": "Solo bottiglie trasparenti, luce del sole, stoffa o sabbia",
       "read": [
-        {"doc": "who-gdwq-2026", "page": 142, "label": "Filtri, e prima schiarire l'acqua torbida",
+        {"doc": "who-gdwq-2026", "page": 142, "label": "Filtri, e prima rendere limpida l'acqua torbida",
          "note": "In inglese. Una tabella dell'OMS per chi viaggia: i filtri portatili con pori di 1 µm o meno trattengono batteri e protozoi, ma l'acqua deve essere limpida; il cloro funziona meglio in acqua limpida o decantata."},
         {"doc": "who-gdwq-2026", "page": 182, "label": "Disinfezione al sole in bottiglie trasparenti (SODIS)",
          "note": "In inglese. Dalle linee guida dell'OMS, scritte per i professionisti dell'acqua: il metodo SODIS lascia l'acqua al sole in bottiglie di plastica trasparenti, dove luce UV, calore e ossigeno insieme uccidono i germi."},
@@ -63,9 +63,9 @@
       "hint": "A persona, al giorno, per quanti giorni",
       "read": [
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Almeno 3 litri a persona al giorno",
-         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: acqua e cibo pronto in casa per almeno 3 giorni, insieme a cassetta di pronto soccorso e prodotti per l'igiene."},
+         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: acqua e cibo pronto in casa per almeno 3 giorni, insieme a una cassetta di pronto soccorso e a prodotti per l'igiene."},
         {"doc": "who-domestic-water-quantity-2020", "page": 57, "label": "Il minimo che serve in emergenza",
-         "note": "In inglese. Da una rassegna dell'OMS: in emergenza almeno 15 litri a persona al giorno per bere, cucinare e l'igiene di base; 7,5 litri solo per poco tempo, un minimo assoluto che non basta per l'igiene."},
+         "note": "In inglese. Da una rassegna dell'OMS: in emergenza almeno 15 litri a persona al giorno per bere, per cucinare e per l'igiene di base; 7,5 litri solo per poco tempo, un minimo assoluto che non basta per l'igiene."},
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litri a persona per una settimana",
          "note": "In polacco. Dalla guida dell'RCB: abbastanza perché ogni persona della casa passi una settimana senza acqua corrente, accanto ai consigli per conservare il cibo."}
       ]
@@ -87,7 +87,7 @@
       "hint": "Una lunga interruzione di corrente, l'acquedotto, le fognature",
       "read": [
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 33, "label": "Senza corrente puoi restare senz'acqua",
-         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: un blackout può durare anche alcuni giorni, e con esso possono fermarsi acqua, riscaldamento, internet, telefono e pagamenti con carta."},
+         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: un blackout può durare diversi giorni, e con esso possono fermarsi acqua, riscaldamento, internet, telefono e pagamenti con carta."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Le prime cose da fare in un blackout: riempire i contenitori",
          "note": "In tedesco. Controlla le scorte, riempi pentole, secchi e bottiglie finché l'acqua arriva ancora, e usala con parsimonia."}
       ]
@@ -105,7 +105,7 @@
   "prepare": [
     {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Quanta acqua tenere: almeno 3 litri a persona al giorno", "note": "In polacco."},
     {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litri per ogni persona della casa", "note": "In polacco."},
-    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Scorte per almeno 3 giorni, controllate ogni pochi mesi", "note": "In polacco."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Scorte per almeno 3 giorni, controllate ogni qualche mese", "note": "In polacco."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Scopri dove si chiude l'acqua e chiedi al tuo Comune", "note": "In tedesco. Anche acqua per lavarsi e per lo sciacquone, non solo da bere."},
     {"doc": "who-floods-health-2024", "page": 5, "label": "Recipienti puliti e coperti per l'acqua da bere", "note": "In inglese."}
   ],

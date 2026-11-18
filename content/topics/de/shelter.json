@@ -15,7 +15,7 @@
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Wenn die Heizung ausfällt",
          "note": "Heizgeräte, die für Innenräume zugelassen sind, warme Kleidung, Decken und Schlafsäcke; Fenster geschlossen halten, aber kurz lüften."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 24, "label": "Warm anziehen und Wasser trinken",
-         "note": "Auf Spanisch. Aus dem Ratgeber des spanischen Zivilschutzes zu Unwettern: bei Kälte dicke Kleidung und geschlossene Schuhe, die den Körper bedecken, viel trinken und Mund und Nase schützen."},
+         "note": "Auf Spanisch. Aus dem Ratgeber des spanischen Zivilschutzes zu Unwettern: bei Kälte dicke Kleidung und geschlossene Schuhe, die den Körper bedecken, viel trinken und Mund und Nase bedecken."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Heizen ohne Strom",
          "note": "Auch Öl- und Gasheizungen fallen bei einem Stromausfall aus; Camping- oder Petroleumöfen, mit Lüftung und Rauchabzug geplant."}
       ]
@@ -30,7 +30,7 @@
         {"doc": "who-floods-health-2024", "page": 6, "label": "Kein Stromaggregat in Innenräumen",
          "note": "Auf Englisch. Rat der WHO nach Überschwemmungen: nie ein Benzin- oder Dieselaggregat drinnen laufen lassen und Gas- und Elektrogeräte vor dem nächsten Gebrauch prüfen lassen."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Kohlebecken und Öfen in geschlossenen Räumen",
-         "note": "Auf Spanisch. Aus dem Ratgeber des spanischen Zivilschutzes zu Unwettern: Bei Kälte und Schnee können Kohlebecken sowie Holz-, Kohle- oder Gasöfen in geschlossenen, unbelüfteten Räumen vergiften."}
+         "note": "Auf Spanisch. Aus dem Ratgeber des spanischen Zivilschutzes zu Unwettern: Bei Kälte und Schnee können Kohlebecken sowie Holz-, Kohle- oder Gasöfen in geschlossenen, unbelüfteten Räumen zu Vergiftungen führen."}
       ]
     },
     {

@@ -14,8 +14,8 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Quand le chauffage tombe en panne",
          "note": "En allemand. Des chauffages autorisés pour l’intérieur, des vêtements chauds, des couvertures et des sacs de couchage ; fenêtres fermées, mais aérer brièvement les pièces."},
-        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 24, "label": "Bien se couvrir et boire de l'eau",
-         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques : par grand froid, des vêtements épais et des chaussures fermées qui couvrent le corps, boire beaucoup et se couvrir la bouche et le nez."},
+        {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 24, "label": "Bien se couvrir et boire de l’eau",
+         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques dangereux : par grand froid, des vêtements épais et des chaussures fermées qui couvrent le corps, boire beaucoup et se couvrir la bouche et le nez."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Se chauffer sans électricité",
          "note": "En allemand. Même le chauffage au fioul ou au gaz s’arrête lors d’une coupure de courant ; des réchauds de camping ou des poêles à pétrole, prévus avec une aération et un conduit d’évacuation."}
       ]
@@ -27,10 +27,10 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Monoxyde de carbone : ce qui est sûr à l’intérieur",
          "note": "En allemand. Seulement des appareils autorisés pour l’intérieur ; un foyer ouvert à l’intérieur peut produire du monoxyde de carbone ; installer un détecteur de CO."},
-        {"doc": "service-public-monoxyde-carbone-2024", "page": 1, "label": "Groupes électrogènes et chauffages : le risque de monoxyde de carbone",
-         "note": "De Service-Public : un groupe électrogène s'installe toujours à l'extérieur ; ne jamais se chauffer avec une cuisinière, un brasero ou un barbecue ; faire entretenir les appareils chaque année et aérer chaque jour."},
+        {"doc": "service-public-monoxyde-carbone-2024", "page": 1, "label": "Groupes électrogènes et chauffages : le risque de monoxyde de carbone",
+         "note": "De Service-Public : un groupe électrogène s’installe toujours à l’extérieur ; ne jamais se chauffer avec une cuisinière, un brasero ou un barbecue ; faire entretenir les appareils chaque année et aérer chaque jour."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Braseros et poêles dans des pièces fermées",
-         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques : par froid et neige, braseros et poêles à bois, à charbon ou à gaz dans des pièces fermées sans aération peuvent intoxiquer."}
+         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques dangereux : en cas de froid et de neige, les braseros et les poêles à bois, à charbon ou à gaz dans des pièces fermées sans aération peuvent vous intoxiquer."}
       ]
     },
     {
@@ -39,7 +39,7 @@
       "hint": "Canalisations gelées, provisions, un moyen sûr de se chauffer",
       "read": [
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Préparer la maison au froid et à la neige",
-         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques : un poêle, des réserves de nourriture et de médicaments, une radio portable, le toit et le chauffage vérifiés, et un robinet un peu ouvert par fort gel."},
+         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques dangereux : un poêle, des réserves de nourriture et de médicaments, une radio portable, le toit et le chauffage vérifiés, et un robinet un peu ouvert par fort gel."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Canalisations gelées, et dangers après la tempête",
          "note": "En anglais. Laisser couler un filet d’eau, vérifier les canalisations, les coupures de courant, les inondations dues à la fonte des neiges, les chemins verglacés."}
       ]
@@ -54,7 +54,7 @@
         {"doc": "ifrc-extreme-cold", "page": 3, "label": "Un équipement d’hiver pour la voiture",
          "note": "En anglais. Pneus, câbles de démarrage, une trousse de secours, un chargeur, des vêtements chauds, une pelle, un réservoir plein."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 25, "label": "Déneiger sans trop forcer",
-         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques, lors d'une chute de neige : ne pas trop forcer en déneigeant, protéger le visage, la tête et les mains, et rester à l'intérieur en cas de tempête de neige."}
+         "note": "En espagnol. Du guide de la protection civile espagnole sur les phénomènes météorologiques dangereux, lors d’une chute de neige : ne pas trop forcer en déneigeant, protéger le visage, la tête et les mains, et rester à l’intérieur en cas de tempête de neige."}
       ]
     },
     {
@@ -91,7 +91,7 @@
   "limits": [
     {"text": "À l’intérieur, n’utilisez que des chauffages et des poêles autorisés pour l’intérieur.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "L’intoxication au monoxyde de carbone peut tuer, et un foyer ouvert à l’intérieur peut aussi la provoquer. Un détecteur de CO testé vous avertit.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
-    {"text": "N'utilisez pas de groupe électrogène à essence ou à gazole à l'intérieur.", "doc": "who-floods-health-2024", "page": 6},
+    {"text": "N’utilisez pas de groupe électrogène à essence ou à gazole à l’intérieur.", "doc": "who-floods-health-2024", "page": 6},
     {"text": "Demandez une aide médicale si des signes d’hypothermie ou de gelures apparaissent.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Évitez les efforts excessifs dans le froid, comme déblayer la neige : ils peuvent provoquer un arrêt cardiaque.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Gardez les fenêtres et les portes fermées contre le froid, mais aérez les pièces brièvement et régulièrement.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},
@@ -101,11 +101,11 @@
   "prepare": [
     {"doc": "ifrc-extreme-cold", "page": 3, "label": "Provisions, source de chaleur et équipement de la voiture pour les tempêtes d’hiver", "note": "En anglais."},
     {"doc": "ifrc-extreme-cold", "page": 2, "label": "Connaître les risques là où vous vivez, et l’aide médicale la plus proche", "note": "En anglais."},
-    {"doc": "pl-poradnik-bezpieczenstwa", "page": 22, "label": "Liste : lumière et chaleur", "note": "En polonais."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 22, "label": "Liste : lumière et chaleur", "note": "En polonais."},
     {"doc": "pl-poradnik-bezpieczenstwa", "page": 18, "label": "Détecteurs de fumée, de monoxyde de carbone et de gaz, et un extincteur", "note": "En polonais."}
   ],
   "learn": [
-    {"doc": "dgpce-guia-fenomenos-meteorologicos", "label": "Phénomènes météorologiques : un guide pour les citoyens", "note": "En espagnol. De la protection civile espagnole : chaleur, froid et neige, orages, pluie, vent, vagues, poussière et sécheresse, avec des conseils et des réponses aux questions fréquentes."}
+    {"doc": "dgpce-guia-fenomenos-meteorologicos", "label": "Phénomènes météorologiques dangereux : un guide pour les citoyens", "note": "En espagnol. De la protection civile espagnole : chaleur, froid et neige, orages, pluie, vent, vagues, poussière et sécheresse, avec des conseils et des réponses aux questions fréquentes."}
   ],
   "related": ["power", "hurt", "health", "disaster"],
   "gaps": {

@@ -13,7 +13,7 @@
       "hint": "Niente acqua, un lungo blackout, fognature danneggiate",
       "read": [
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 45, "label": "Un gabinetto di fortuna: un sacchetto su un secchio",
-         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: senza acqua corrente, mettere un sacchetto di plastica su un secchio, buttarlo dopo l'uso in un contenitore a parte e coprire l'odore con terra, segatura o lettiera."},
+         "note": "In polacco. Dalla guida alla sicurezza del governo polacco: senza acqua corrente, mettere un sacchetto di plastica su un secchio, buttarlo dopo l'uso in un contenitore a parte e coprire l'odore con terra, segatura o lettiera per gatti."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Sacchi resistenti da sistemare nella tazza del WC",
          "note": "In tedesco. La lista di controllo per l'igiene: sacchi della spazzatura grandi e robusti per il WC, un WC da campeggio e altri articoli per l'igiene."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Un WC di fortuna se mancano l'acqua o le fognature",
@@ -28,7 +28,7 @@
       "hint": "Niente acqua corrente, il sapone sta finendo",
       "read": [
         {"doc": "er-vademecum-alluvione-2023", "page": 1, "label": "Lavarsi le mani dopo il contatto con acqua e fango",
-         "note": "Dal vademecum della Regione Emilia-Romagna dopo l'alluvione del 2023: guanti quando si tocca fango o acqua dell'alluvione, poi lavarsi bene le mani con sapone e acqua corrente."},
+         "note": "Dal vademecum della Regione Emilia-Romagna dopo l'alluvione del 2023: indossare i guanti quando si tocca fango o acqua dell'alluvione, poi lavarsi bene le mani con sapone e acqua corrente."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Mani pulite prima di toccare l'acqua da bere",
          "note": "In inglese. Lavarsi le mani prima di maneggiare l'acqua conservata, e un rubinetto sul contenitore."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Guanti, piatti e posate usa e getta",

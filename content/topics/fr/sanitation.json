@@ -12,8 +12,8 @@
       "label": "La chasse d’eau ne fonctionne plus",
       "hint": "Plus d’eau, un long black-out, des égouts endommagés",
       "read": [
-        {"doc": "pl-poradnik-bezpieczenstwa", "page": 45, "label": "Des toilettes de fortune : un sac sur un seau",
-         "note": "En polonais. Du guide de sécurité du gouvernement polonais : sans eau courante, mettre un sac en plastique sur un seau, le jeter après usage dans un conteneur à part et couvrir l'odeur avec de la terre, de la sciure ou de la litière."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 45, "label": "Des toilettes de fortune : un sac sur un seau",
+         "note": "En polonais. Du guide de sécurité du gouvernement polonais : sans eau courante, mettre un sac en plastique sur un seau, le jeter après usage dans un conteneur à part et couvrir l’odeur avec de la terre, de la sciure ou de la litière pour chat."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Des sacs solides à suspendre dans la cuvette des toilettes",
          "note": "En allemand. La liste de contrôle pour l’hygiène : de grands sacs poubelle solides pour les toilettes, des toilettes de camping, et d’autres articles d’hygiène."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Des toilettes de fortune si l’eau ou les égouts ne fonctionnent plus",
@@ -28,7 +28,7 @@
       "hint": "Pas d’eau courante, bientôt plus de savon",
       "read": [
         {"doc": "who-floods-health-2024", "page": 5, "label": "Quand et combien de temps se laver les mains",
-         "note": "En anglais. Conseils de l'OMS : se laver les mains au savon avant et pendant la manipulation des aliments et après être allé aux toilettes, 40 à 60 secondes, ou 20 à 30 secondes avec une solution hydroalcoolique."},
+         "note": "En anglais. Conseils de l’OMS : se laver les mains au savon avant et pendant la manipulation des aliments et après être allé aux toilettes, 40 à 60 secondes, ou 20 à 30 secondes avec une solution hydroalcoolique."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Des mains propres avant de toucher l’eau potable",
          "note": "En anglais. Se laver les mains avant de manipuler l’eau stockée, et un robinet sur le récipient."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Gants, assiettes et couverts jetables",
@@ -40,8 +40,8 @@
       "label": "Les ordures s’accumulent",
       "hint": "Plus de ramassage, déchets alimentaires, odeurs, mouches",
       "read": [
-        {"doc": "who-floods-health-2024", "page": 4, "label": "Garder les déchets fermés",
-         "note": "En anglais. Conseils de l'OMS après une inondation : garder les déchets dans des poubelles fermées et la nourriture dans des récipients hermétiques, hors de portée des rats."},
+        {"doc": "who-floods-health-2024", "page": 4, "label": "Garder les déchets dans des poubelles fermées",
+         "note": "En anglais. Conseils de l’OMS après une inondation : garder les déchets dans des poubelles fermées et la nourriture dans des récipients hermétiques, hors de portée des rats."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Éviter les déchets et les rassembler dans des sacs",
          "note": "En allemand."}
       ]
@@ -64,7 +64,7 @@
     {"text": "Lors d’un long black-out, se laver passe au second plan : il faut économiser l’eau potable.", "doc": "zsv-steiermark-blackout", "page": 21}
   ],
   "prepare": [
-    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Liste : produits d'entretien et d'hygiène", "note": "En polonais."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Liste : produits d’entretien et d’hygiène", "note": "En polonais."},
     {"doc": "zsv-steiermark-blackout", "page": 23, "label": "Listes pour l’hygiène et la santé", "note": "En allemand."},
     {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Ce que les ménages oublient : papier toilette, sacs, gants", "note": "En allemand."}
   ],

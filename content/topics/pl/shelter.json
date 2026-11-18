@@ -28,9 +28,9 @@
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Tlenek węgla: co jest bezpieczne w pomieszczeniach",
          "note": "Po niemiecku. Tylko urządzenia dopuszczone do użytku w pomieszczeniach; otwarty ogień w pomieszczeniu może wytwarzać tlenek węgla; zamontuj czujnik czadu."},
         {"doc": "who-floods-health-2024", "page": 6, "label": "Żadnego agregatu w pomieszczeniach",
-         "note": "Po angielsku. Rady WHO po powodzi: nigdy nie uruchamiaj agregatu benzynowego ani diesla w pomieszczeniach, a urządzenia gazowe i elektryczne daj sprawdzić przed ponownym użyciem."},
+         "note": "Po angielsku. Rady WHO po powodzi: nigdy nie uruchamiaj w pomieszczeniach agregatu na benzynę ani na olej napędowy, a urządzenia gazowe i elektryczne daj sprawdzić przed ponownym użyciem."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Koksowniki i piecyki w zamkniętych pomieszczeniach",
-         "note": "Po hiszpańsku. Z poradnika hiszpańskiej obrony cywilnej o groźnych zjawiskach pogodowych: przy mrozie i śniegu koksowniki oraz piecyki na drewno, węgiel lub gaz w zamkniętych, niewietrzonych pomieszczeniach mogą zatruć."}
+         "note": "Po hiszpańsku. Z poradnika hiszpańskiej obrony cywilnej o groźnych zjawiskach pogodowych: przy mrozie i śniegu koksowniki oraz piecyki na drewno, węgiel lub gaz w zamkniętych, niewietrzonych pomieszczeniach mogą cię zatruć."}
       ]
     },
     {
@@ -91,7 +91,7 @@
   "limits": [
     {"text": "W pomieszczeniach używaj tylko grzejników i piecyków dopuszczonych do użytku wewnątrz.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "Zatrucie tlenkiem węgla może zabić, a otwarty ogień w pomieszczeniu też może je spowodować. Sprawdzony czujnik czadu cię ostrzeże.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
-    {"text": "Nie używaj agregatu benzynowego ani diesla w pomieszczeniach.", "doc": "who-floods-health-2024", "page": 6},
+    {"text": "Nie używaj w pomieszczeniach agregatu na benzynę ani na olej napędowy.", "doc": "who-floods-health-2024", "page": 6},
     {"text": "Szukaj pomocy medycznej, jeśli pojawią się objawy hipotermii lub odmrożeń.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Unikaj przemęczenia na mrozie, na przykład przy odśnieżaniu: może spowodować zatrzymanie krążenia.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Trzymaj okna i drzwi zamknięte przed zimnem, ale regularnie i krótko wietrz pokoje.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},

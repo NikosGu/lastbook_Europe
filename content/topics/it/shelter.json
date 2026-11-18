@@ -15,7 +15,7 @@
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 25, "label": "Quando il riscaldamento non funziona",
          "note": "In tedesco. Stufe omologate per l'uso in casa, vestiti caldi, coperte e sacchi a pelo; finestre chiuse, ma arieggia brevemente le stanze."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 24, "label": "Coprirsi bene e bere acqua",
-         "note": "In spagnolo. Dalla guida della protezione civile spagnola sui fenomeni meteorologici: con il freddo, abiti pesanti e scarpe chiuse che coprano il corpo, bere molto e coprirsi bocca e naso."},
+         "note": "In spagnolo. Dalla guida della protezione civile spagnola sui fenomeni meteorologici avversi: con il freddo, abiti pesanti e scarpe chiuse che coprano il corpo, bere molto e coprirsi bocca e naso."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 18, "label": "Scaldarsi senza corrente",
          "note": "In tedesco. Quando manca la corrente si fermano anche i riscaldamenti a gasolio e a gas; stufe da campeggio o a petrolio, da organizzare in anticipo con aerazione e canna fumaria."}
       ]
@@ -27,10 +27,10 @@
       "read": [
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 24, "label": "Monossido di carbonio: cosa è sicuro in casa",
          "note": "In tedesco. Solo apparecchi omologati per l'uso al chiuso; anche un fuoco aperto in casa può produrre monossido di carbonio; installa un rilevatore di CO."},
-        {"doc": "who-floods-health-2024", "page": 6, "label": "Niente generatore in casa",
-         "note": "In inglese. Consigli dell'OMS dopo un'alluvione: non usare mai in casa un generatore a benzina o a gasolio, e far controllare gli apparecchi a gas ed elettrici prima di riusarli."},
+        {"doc": "who-floods-health-2024", "page": 6, "label": "Niente generatore al chiuso",
+         "note": "In inglese. Consigli dell'OMS dopo un'alluvione: non usare mai al chiuso un generatore a benzina o a gasolio, e far controllare gli apparecchi a gas ed elettrici prima di riusarli."},
         {"doc": "er-temperature-estreme", "page": 1, "label": "Stufe e caldaie: il rischio di monossido di carbonio",
-         "note": "Da Allerta Meteo Emilia-Romagna, sul freddo: far controllare gli impianti di riscaldamento a combustione, per evitare l'intossicazione da monossido di carbonio, che può essere mortale."}
+         "note": "Da Allerta Meteo Emilia-Romagna, sul freddo: verificare la manutenzione degli impianti di riscaldamento a combustione (caminetti, caldaie o stufe a gas), per evitare l'intossicazione da monossido di carbonio, che può essere mortale."}
       ]
     },
     {
@@ -39,7 +39,7 @@
       "hint": "Tubi gelati, scorte, un modo sicuro per scaldarsi",
       "read": [
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 20, "label": "Preparare la casa al freddo e alla neve",
-         "note": "In spagnolo. Dalla guida della protezione civile spagnola sui fenomeni meteorologici: una stufa, scorte di cibo e medicine, una radio portatile, tetto e riscaldamento controllati e un rubinetto un po' aperto se gela forte."},
+         "note": "In spagnolo. Dalla guida della protezione civile spagnola sui fenomeni meteorologici avversi: una stufa, scorte di cibo e medicine, una radio portatile, tetto e riscaldamento controllati e un rubinetto un po' aperto se gela forte."},
         {"doc": "ifrc-extreme-cold", "page": 5, "label": "Tubi gelati, e i pericoli dopo la tempesta",
          "note": "In inglese. Un filo d'acqua che scorre, controllare i tubi, interruzioni di corrente, allagamenti per lo scioglimento della neve, percorsi ghiacciati."}
       ]
@@ -54,7 +54,7 @@
         {"doc": "ifrc-extreme-cold", "page": 3, "label": "Un kit invernale per l'auto",
          "note": "In inglese. Pneumatici, cavi per la batteria, una cassetta di pronto soccorso, un caricatore, vestiti caldi, una pala, il pieno di carburante."},
         {"doc": "dgpce-guia-fenomenos-meteorologicos", "page": 25, "label": "Spalare la neve senza sforzarsi troppo",
-         "note": "In spagnolo. Dalla guida della protezione civile spagnola sui fenomeni meteorologici, durante una nevicata: non sforzarsi troppo spalando la neve, proteggere viso, testa e mani e non uscire se c'è una bufera."}
+         "note": "In spagnolo. Dalla guida della protezione civile spagnola sui fenomeni meteorologici avversi, durante una nevicata: non sforzarsi troppo spalando la neve, proteggere viso, testa e mani e non uscire se c'è una bufera."}
       ]
     },
     {
@@ -91,7 +91,7 @@
   "limits": [
     {"text": "In casa, usa solo stufe e fornelli omologati per l'uso al chiuso.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
     {"text": "L'intossicazione da monossido di carbonio può uccidere, e anche un fuoco aperto in casa può provocarla. Un rilevatore di CO certificato ti avvisa.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 24},
-    {"text": "Non usare in casa un generatore a benzina o a gasolio.", "doc": "who-floods-health-2024", "page": 6},
+    {"text": "Non usare al chiuso un generatore a benzina o a gasolio.", "doc": "who-floods-health-2024", "page": 6},
     {"text": "Cerca aiuto medico se compaiono segni di ipotermia o di congelamento.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Evita gli sforzi eccessivi al freddo, come spalare la neve: possono causare un arresto cardiaco.", "doc": "ifrc-extreme-cold", "page": 4},
     {"text": "Tieni chiuse porte e finestre contro il freddo, ma arieggia le stanze per poco tempo e con regolarità.", "doc": "bbk-vorsorgen-fuer-krisen", "page": 25},

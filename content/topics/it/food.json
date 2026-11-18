@@ -15,7 +15,7 @@
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Una lista di scorte di casa per almeno 3 giorni",
          "note": "In polacco. Dalla guida alla sicurezza del governo polacco: acqua, cibo pronto, cassetta di pronto soccorso, prodotti per la pulizia e l'igiene; la lista continua alla pagina seguente."},
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "Che cibo si conserva bene nelle scorte",
-         "note": "In polacco. Dalla guida dell'RCB: cibi a lunga conservazione da mangiare freddi, senza frigo né cottura, come scatolette e barrette; tenerli in un luogo fresco, asciutto e buio."},
+         "note": "In polacco. Dalla guida dell'RCB: cibi a lunga conservazione che si possono mangiare freddi, senza frigo né cottura, come scatolette e barrette; tenerli in un luogo fresco, asciutto e buio."},
         {"doc": "eu-72h-preparedness-guidelines-2026", "page": 16, "label": "Che cosa serve a ogni famiglia per 72 ore, secondo l'UE",
          "note": "In inglese. Dalle linee guida della Commissione europea per le autorità nazionali: cibo, acqua da bere, riscaldamento o raffreddamento, luce, medicine, igiene e un modo per informarsi, per almeno 72 ore."}
       ]
@@ -29,7 +29,7 @@
          "note": "In tedesco. Quanto si conservano, a che temperatura, e dopo aver aperto una scatoletta."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Legumi, frutta secca, olio, carne e il congelatore",
          "note": "In tedesco. Le temperature di conservazione, e per quanti mesi il cibo si conserva nel congelatore."},
-        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Scorte a lunga conservazione e scorte da consumare e rinnovare, controllate ogni pochi mesi",
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Scorte a lunga conservazione e scorte da consumare e rinnovare, controllate ogni qualche mese",
          "note": "In polacco. Dalla guida alla sicurezza del governo polacco: controllare anche le date di scadenza."}
       ]
     },
@@ -93,7 +93,7 @@
     {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Una lista per almeno 3 giorni", "note": "In polacco."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Lista di controllo: cibo e acqua per 3, 5, 7 o 10 giorni", "note": "In tedesco."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Costruisci le scorte poco alla volta", "note": "In tedesco."},
-    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Controllare le scorte ogni pochi mesi", "note": "In polacco."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Controllare le scorte ogni qualche mese", "note": "In polacco."},
     {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Una lista per gruppi di alimenti", "note": "In tedesco."}
   ],
   "learn": [

@@ -13,7 +13,7 @@
       "hint": "Kein Wasser, ein langer Blackout, beschädigte Kanalisation",
       "read": [
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 45, "label": "Eine Behelfstoilette: ein Beutel im Eimer",
-         "note": "Auf Polnisch. Aus dem Sicherheitsratgeber der polnischen Regierung: ohne fließendes Wasser einen Plastikbeutel über einen Eimer legen, ihn nach Gebrauch in einen eigenen Behälter werfen und den Geruch mit Erde, Sägemehl oder Katzenstreu binden."},
+         "note": "Auf Polnisch. Aus dem Sicherheitsratgeber der polnischen Regierung: ohne fließendes Wasser einen Plastikbeutel über einen Eimer legen, ihn nach Gebrauch in einen separaten Behälter werfen und den Geruch mit Erde, Sägemehl oder Katzenstreu binden."},
         {"doc": "bbk-vorsorgen-fuer-krisen", "page": 37, "label": "Reißfeste Beutel zum Einhängen in die Toilette",
          "note": "Die Checkliste Hygiene: große, reißfeste Müllbeutel für die Toilette, eine Campingtoilette und weitere Hygieneartikel."},
         {"doc": "zsv-steiermark-blackout", "page": 26, "label": "Eine Ersatztoilette, wenn Wasser oder Kanalisation ausfallen",
@@ -27,8 +27,8 @@
       "label": "Mit wenig Wasser die Hände sauber halten",
       "hint": "Kein fließendes Wasser, die Seife geht aus",
       "read": [
-        {"doc": "who-floods-health-2024", "page": 5, "label": "Wann und wie lange Hände waschen",
-         "note": "Auf Englisch. Rat der WHO: vor und beim Umgang mit Lebensmitteln und nach der Toilette 40–60 Sekunden mit Seife waschen oder 20–30 Sekunden mit alkoholischem Desinfektionsmittel einreiben."},
+        {"doc": "who-floods-health-2024", "page": 5, "label": "Wann und wie lange die Hände waschen",
+         "note": "Auf Englisch. Rat der WHO: vor und beim Umgang mit Lebensmitteln und nach der Toilette die Hände 40–60 Sekunden mit Seife waschen oder 20–30 Sekunden mit einem alkoholischen Händedesinfektionsmittel einreiben."},
         {"doc": "who-tn05-emergency-water-treatment", "page": 3, "label": "Saubere Hände vor dem Umgang mit Trinkwasser",
          "note": "Auf Englisch. Hände waschen, bevor man mit gelagertem Wasser hantiert, und ein Zapfhahn am Behälter."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 17, "label": "Handschuhe, Einweggeschirr und -besteck",

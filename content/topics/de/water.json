@@ -13,9 +13,9 @@
       "hint": "Hochwasser, ein Rohrbruch, eine Warnung vor dem Trinken",
       "read": [
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "Warum jeder Haushalt einen Wasservorrat braucht",
-         "note": "Auf Polnisch. Aus dem Ratgeber der RCB: In einer Krise oder im Krieg kann Wasser knapp werden; 14 Liter für jede Person im Haushalt reichen eine Woche ohne fließendes Wasser."},
+         "note": "Auf Polnisch. Aus dem RCB-Ratgeber: In einer Krise oder im Krieg kann es schwierig sein, an Wasser zu kommen; 14 Liter für jede Person im Haushalt reichen für eine Woche ohne fließendes Wasser."},
         {"doc": "who-floods-health-2024", "page": 5, "label": "Abkochen oder versiegeltes Flaschenwasser trinken",
-         "note": "Auf Englisch. Rat der WHO nach Überschwemmungen: Wasser abkochen, bevor man es trinkt oder damit Zähne putzt, Wunden reinigt oder Essen zubereitet; ist das Leitungswasser nicht sicher, Flaschenwasser mit unversehrtem Verschluss nehmen."},
+         "note": "Auf Englisch. Rat der WHO nach Überschwemmungen: Wasser abkochen, bevor man es trinkt oder damit Zähne putzt, Wunden reinigt oder Essen zubereitet; ist das Leitungswasser nicht sicher, Flaschenwasser mit unversehrtem Verschluss verwenden."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Nach einem Hochwasser: bevor Sie Leitungswasser trinken",
          "note": "Auf Italienisch. Unter den Schritten nach einem Hochwasser: prüfen, ob eine örtliche Bekanntmachung das Trinken von Leitungswasser verbietet, und nichts essen, was das Wasser berührt hat."}
       ]
@@ -37,7 +37,7 @@
       "hint": "Tabletten oder Tropfen aus der Apotheke oder dem Campingladen",
       "read": [
         {"doc": "who-gdwq-2026", "page": 142, "label": "Chlor, Bleichmittel oder Tabletten: Dosis und Wartezeit",
-         "note": "Auf Englisch. Eine Tabelle der WHO für Reisende: das Mittel nach Anleitung zubereiten und klarem oder abgesetztem Wasser zugeben; mindestens 30 Minuten warten bei 25 °C, doppelt so lange je 10 °C kälter."},
+         "note": "Auf Englisch. Eine Tabelle der WHO für Reisende: das Mittel nach Anleitung zubereiten und klarem oder abgesetztem Wasser zugeben; bei 25 °C mindestens 30 Minuten warten, je 10 °C kälter doppelt so lange."},
         {"doc": "who-gdwq-2026", "page": 165, "label": "Was Chlor nicht abtötet",
          "note": "Auf Englisch. Aus den Leitlinien der WHO, geschrieben für Wasserversorger: Kryptosporidien sind sehr widerstandsfähig gegen Chlor; UV-Licht macht sie unschädlich, Filtern kann sie entfernen."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 15, "label": "Tabletten, die Badewanne und die Sonne",
@@ -63,11 +63,11 @@
       "hint": "Pro Person, pro Tag, für wie viele Tage",
       "read": [
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Mindestens 3 Liter pro Person und Tag",
-         "note": "Auf Polnisch. Aus dem Sicherheitsratgeber der polnischen Regierung: Wasser und verzehrfertige Lebensmittel für mindestens 3 Tage, neben Erste-Hilfe-Set und Hygieneartikeln."},
+         "note": "Auf Polnisch. Aus dem Sicherheitsratgeber der polnischen Regierung: Wasser und verzehrfertige Lebensmittel zu Hause für mindestens 3 Tage, neben einem Erste-Hilfe-Set und Hygieneartikeln."},
         {"doc": "who-domestic-water-quantity-2020", "page": 57, "label": "Das Mindeste im Notfall",
-         "note": "Auf Englisch. Aus einer Übersicht der WHO: im Notfall mindestens 15 Liter pro Person und Tag zum Trinken, Kochen und für die einfachste Hygiene; 7,5 Liter nur für kurze Zeit, ein absolutes Minimum, das für die Hygiene nicht reicht."},
+         "note": "Auf Englisch. Aus einer Übersicht der WHO: im Notfall mindestens 15 Liter pro Person und Tag zum Trinken, Kochen und für die grundlegende Hygiene; 7,5 Liter nur für kurze Zeit, ein absolutes Minimum, das für die Hygiene nicht reicht."},
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 Liter pro Person für eine Woche",
-         "note": "Auf Polnisch. Aus dem Ratgeber der RCB: genug, damit jede Person im Haushalt eine Woche ohne fließendes Wasser auskommt, neben Hinweisen zum Lagern von Lebensmitteln."}
+         "note": "Auf Polnisch. Aus dem RCB-Ratgeber: genug, damit jede Person im Haushalt eine Woche ohne fließendes Wasser auskommt, neben Hinweisen zum Lagern von Lebensmitteln."}
       ]
     },
     {
@@ -103,7 +103,7 @@
     {"text": "9 Liter pro Person reichen für drei Tage zum Trinken und Kochen, nicht zum Waschen oder für die Toilettenspülung.", "doc": "bwl-kluger-rat-notvorrat", "page": 3}
   ],
   "prepare": [
-    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Wie viel Wasser: mindestens 3 Liter pro Person und Tag", "note": "Auf Polnisch."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Wie viel Wasser Sie vorrätig haben sollten: mindestens 3 Liter pro Person und Tag", "note": "Auf Polnisch."},
     {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 Liter für jede Person im Haushalt", "note": "Auf Polnisch."},
     {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Vorräte für mindestens 3 Tage, alle paar Monate geprüft", "note": "Auf Polnisch."},
     {"doc": "zsv-steiermark-blackout", "page": 24, "label": "Wissen, wo man das Wasser absperrt, und bei der Gemeinde nachfragen", "note": "Auch Wasser zum Waschen und für die Toilettenspülung, nicht nur zum Trinken."},

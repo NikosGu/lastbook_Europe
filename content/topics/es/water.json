@@ -13,7 +13,7 @@
       "hint": "Una inundación, una tubería rota, un aviso de no beberla",
       "read": [
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "Por qué cada hogar necesita una reserva de agua",
-         "note": "En polaco. De la guía del RCB: en una crisis o una guerra puede faltar el agua; 14 litros por cada persona de la casa bastan para una semana sin agua corriente."},
+         "note": "En polaco. De la guía del RCB: en una crisis o una guerra puede ser difícil conseguir agua; 14 litros por cada persona de la casa bastan para una semana sin agua corriente."},
         {"doc": "who-floods-health-2024", "page": 5, "label": "Hiérvela, o bebe agua embotellada precintada",
          "note": "En inglés. Consejos de la OMS tras inundaciones: hervir el agua antes de beberla o de usarla para lavarse los dientes, limpiar heridas o preparar comida; si el agua del grifo no es segura, usar agua embotellada con el precinto intacto."},
         {"doc": "dgpce-guia-inundaciones", "page": 19, "label": "Inundaciones: no bebas agua que no sea potable",
@@ -65,7 +65,7 @@
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Al menos 3 litros por persona y día",
          "note": "En polaco. De la guía de seguridad del Gobierno polaco: agua y comida lista para comer en casa para al menos 3 días, junto a un botiquín y productos de higiene."},
         {"doc": "who-domestic-water-quantity-2020", "page": 57, "label": "Lo mínimo en una emergencia",
-         "note": "En inglés. De una revisión de la OMS: en emergencias, al menos 15 litros por persona y día para beber, cocinar y la higiene básica; 7,5 litros solo por poco tiempo, un mínimo absoluto que no basta para la higiene."},
+         "note": "En inglés. De una revisión de la OMS: en emergencias, al menos 15 litros por persona y día para beber, para cocinar y para la higiene básica; 7,5 litros solo por poco tiempo, un mínimo absoluto que no basta para la higiene."},
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "14 litros por persona para una semana",
          "note": "En polaco. De la guía del RCB: suficiente para que cada persona de la casa pase una semana sin agua corriente, junto a consejos para guardar comida."}
       ]

@@ -12,12 +12,12 @@
       "label": "Quelle nourriture garder à la maison ?",
       "hint": "Des aliments de longue conservation pour une semaine ou plus",
       "read": [
-        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Une liste de réserves pour au moins 3 jours",
-         "note": "En polonais. Du guide de sécurité du gouvernement polonais : eau, aliments prêts à manger, trousse de secours, produits d'entretien et d'hygiène ; la liste continue page suivante."},
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Une liste de réserves pour au moins 3 jours",
+         "note": "En polonais. Du guide de sécurité du gouvernement polonais : eau, aliments prêts à manger, trousse de secours, produits d’entretien et d’hygiène ; la liste continue page suivante."},
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "Quels aliments se gardent bien en réserve",
-         "note": "En polonais. Du guide du RCB : des aliments de longue conservation à manger froids, sans réfrigérateur ni cuisson, comme les conserves et les barres ; à garder au frais, au sec et à l'abri de la lumière."},
-        {"doc": "eu-72h-preparedness-guidelines-2026", "page": 16, "label": "Ce dont chaque foyer a besoin pour 72 heures, selon l'UE",
-         "note": "En anglais. Des lignes directrices de la Commission européenne aux autorités nationales : nourriture, eau potable, chauffage ou rafraîchissement, éclairage, médicaments, hygiène et un moyen de s'informer, pour au moins 72 heures."}
+         "note": "En polonais. Du guide du RCB : des aliments de longue conservation que l’on peut manger froids, sans réfrigérateur ni cuisson, comme les conserves et les barres ; à garder au frais, au sec et à l’abri de la lumière."},
+        {"doc": "eu-72h-preparedness-guidelines-2026", "page": 16, "label": "Ce dont chaque foyer a besoin pour 72 heures, selon l’UE",
+         "note": "En anglais. Des lignes directrices de la Commission européenne destinées aux autorités nationales : nourriture, eau potable, chauffage ou rafraîchissement, éclairage, médicaments, hygiène et un moyen de s’informer, pour au moins 72 heures."}
       ]
     },
     {
@@ -29,8 +29,8 @@
          "note": "En allemand. Combien de temps ils se conservent, à quelle température, et une fois la boîte ouverte."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Légumineuses, fruits à coque, huile, viande et le congélateur",
          "note": "En allemand. Les températures de stockage, et combien de mois les aliments se conservent au congélateur."},
-        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Des réserves de longue durée et des réserves tournantes, vérifiées tous les quelques mois",
-         "note": "En polonais. Du guide de sécurité du gouvernement polonais : vérifier aussi les dates de péremption."}
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Des réserves de longue durée et des réserves tournantes, vérifiées à intervalles de quelques mois",
+         "note": "En polonais. Du guide de sécurité du gouvernement polonais : vérifier aussi les dates de péremption."}
       ]
     },
     {
@@ -50,7 +50,7 @@
       "hint": "Ce qu’il faut manger en premier, garder les portes fermées, l’eau de fonte",
       "read": [
         {"doc": "who-floods-health-2024", "page": 5, "label": "Après quatre heures sans électricité",
-         "note": "En anglais. Conseils de l'OMS : après quatre heures de coupure, jeter les aliments périssables du réfrigérateur, comme la viande, le poisson et les restes ; ne jamais goûter un aliment pour savoir s'il est sûr."},
+         "note": "En anglais. Conseils de l’OMS : après quatre heures de coupure, jeter les aliments périssables du réfrigérateur, comme la viande, le poisson et les restes ; ne jamais goûter un aliment pour savoir s’il est sûr."},
         {"doc": "ravenna-rischio-blackout", "page": 1, "label": "Ouvrir le réfrigérateur et le congélateur le moins possible",
          "note": "En italien. Fait partie des conseils en cas de black-out."},
         {"doc": "oezsv-blackout-checkliste", "page": 6, "label": "Finir les aliments périssables, rassembler les déchets dans des sacs",
@@ -65,7 +65,7 @@
         {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Boîtes bombées et fromage moisi",
          "note": "En allemand. Quand une boîte de conserve doit être jetée, et quand on peut couper la moisissure sur un fromage à pâte dure."},
         {"doc": "who-floods-health-2024", "page": 5, "label": "Dans le doute, jetez-le",
-         "note": "En anglais. Conseils de l'OMS : ne jamais goûter un aliment pour savoir s'il est sûr ; jeter les aliments qui semblent gâtés ou qui ont touché de l'eau contaminée."},
+         "note": "En anglais. Conseils de l’OMS : ne jamais goûter un aliment pour savoir s’il est sûr ; jeter les aliments qui semblent gâtés ou qui ont été en contact avec de l’eau contaminée."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Les aliments touchés par l’eau d’inondation",
          "note": "En italien. Parmi les mesures après une inondation."}
       ]
@@ -90,15 +90,15 @@
     {"text": "Ne mangez pas d’aliments touchés par l’eau d’inondation : ils peuvent être contaminés.", "doc": "dpc-io-non-rischio", "page": 31}
   ],
   "prepare": [
-    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Une liste pour au moins 3 jours", "note": "En polonais."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Une liste pour au moins 3 jours", "note": "En polonais."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 34, "label": "Liste de contrôle : nourriture et eau pour 3, 5, 7 ou 10 jours", "note": "En allemand."},
     {"doc": "bbk-vorsorgen-fuer-krisen", "page": 8, "label": "Constituer ses provisions petit à petit", "note": "En allemand."},
-    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Vérifier les réserves tous les quelques mois", "note": "En polonais."},
+    {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Vérifier les réserves à intervalles de quelques mois", "note": "En polonais."},
     {"doc": "zsv-steiermark-blackout", "page": 22, "label": "Une liste par groupe d’aliments", "note": "En allemand."}
   ],
   "learn": [
     {"doc": "oezsv-bevorratungsratgeber", "label": "Guide des provisions", "note": "En allemand. Protection civile autrichienne : besoins, stockage et durée de conservation, eau, médicaments, ce que les ménages oublient. Ses pages sur la consommation de plantes sauvages sont des conseils de survie qu’aucune autre source ici ne vérifie."},
-    {"doc": "eu-72h-preparedness-guidelines-2026", "label": "Lignes directrices pour 72 heures d'autonomie", "note": "En anglais. Les lignes directrices de la Commission européenne (2026), écrites pour les autorités nationales, sur ce que chaque foyer devrait pouvoir assurer seul pendant 72 heures."}
+    {"doc": "eu-72h-preparedness-guidelines-2026", "label": "Lignes directrices pour 72 heures d’autonomie", "note": "En anglais. Les lignes directrices de la Commission européenne (2026), écrites pour les autorités nationales, sur ce que chaque foyer devrait pouvoir assurer seul pendant 72 heures."}
   ],
   "related": ["water", "power", "preserve", "sanitation"],
   "gaps": {

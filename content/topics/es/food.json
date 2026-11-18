@@ -15,7 +15,7 @@
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Una lista de reservas de casa para al menos 3 días",
          "note": "En polaco. De la guía de seguridad del Gobierno polaco: agua, comida lista para comer, botiquín, productos de limpieza e higiene; la lista sigue en la página siguiente."},
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "Qué comida se conserva bien en la reserva",
-         "note": "En polaco. De la guía del RCB: alimentos duraderos que se comen fríos, sin nevera ni cocción, como latas y barritas; guardarlos en un lugar fresco, seco y oscuro."},
+         "note": "En polaco. De la guía del RCB: alimentos de larga duración que se pueden comer fríos, sin nevera ni cocción, como latas y barritas; guardarlos en un lugar fresco, seco y oscuro."},
         {"doc": "eu-72h-preparedness-guidelines-2026", "page": 16, "label": "Lo que según la UE necesita cada hogar para 72 horas",
          "note": "En inglés. De las directrices de la Comisión Europea para las autoridades nacionales: comida, agua potable, calefacción o refrigeración, luz, medicinas, higiene y un modo de informarse, para al menos 72 horas."}
       ]
@@ -29,7 +29,7 @@
          "note": "En alemán. Cuánto tiempo se conservan, a qué temperatura, y cuánto duran una vez abierta la lata."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Legumbres, frutos secos, aceite, carne y el congelador",
          "note": "En alemán. Temperaturas de conservación, y cuántos meses se conservan los alimentos en el congelador."},
-        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Reservas duraderas y otras que se usan y reponen, revisadas cada pocos meses",
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Reservas de larga duración y otras que se usan y reponen, revisadas cada pocos meses",
          "note": "En polaco. De la guía de seguridad del Gobierno polaco: revisar también las fechas de caducidad."}
       ]
     },
@@ -65,7 +65,7 @@
         {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Latas hinchadas y queso con moho",
          "note": "En alemán. Cuándo hay que tirar una lata, y cuándo se puede cortar el moho de un queso duro."},
         {"doc": "sanidad-salud-tras-inundaciones-2024", "page": 1, "label": "Fuera lo que tocó el agua o el barro",
-         "note": "Del Ministerio de Sanidad tras la DANA de 2024: no comer alimentos que hayan estado en contacto con el agua o el barro, salvo latas y tarros herméticos sin daños, que se lavan y se hierven antes de abrirlos."},
+         "note": "Del Ministerio de Sanidad tras la DANA de 2024: no comer alimentos que hayan estado en contacto con el agua o el barro, salvo latas y tarros herméticos sin daños, que se lavan, se sumergen dos minutos en agua hirviendo y se dejan secar una hora antes de abrirlos."},
         {"doc": "dgpce-guia-inundaciones", "page": 20, "label": "Comida mojada por el agua de la inundación",
          "note": "De la guía de Protección Civil sobre inundaciones. Entre lo que hay que hacer después: no comer alimentos mojados por el agua de la inundación."}
       ]

@@ -15,7 +15,7 @@
         {"doc": "pl-poradnik-bezpieczenstwa", "page": 21, "label": "Eine Liste der Vorräte für mindestens 3 Tage",
          "note": "Auf Polnisch. Aus dem Sicherheitsratgeber der polnischen Regierung: Wasser, verzehrfertige Lebensmittel, Erste-Hilfe-Set, Reinigungs- und Hygieneartikel; die Liste geht auf der nächsten Seite weiter."},
         {"doc": "rcb-badz-gotowy", "page": 16, "label": "Welche Lebensmittel sich als Vorrat eignen",
-         "note": "Auf Polnisch. Aus dem Ratgeber der RCB: haltbare Lebensmittel, die man kalt essen kann, ohne Kühlschrank und Kochen, etwa Konserven und Riegel; kühl, trocken und dunkel lagern."},
+         "note": "Auf Polnisch. Aus dem RCB-Ratgeber: haltbare Lebensmittel, die man kalt essen kann und die weder Kühlschrank noch Kochen brauchen, etwa Konserven und Riegel; kühl, trocken und dunkel lagern."},
         {"doc": "eu-72h-preparedness-guidelines-2026", "page": 16, "label": "Was jeder Haushalt laut EU für 72 Stunden braucht",
          "note": "Auf Englisch. Aus den Leitlinien der Europäischen Kommission für die nationalen Behörden: Lebensmittel, Trinkwasser, Heizen oder Kühlen, Licht, Medikamente, Hygiene und eine Möglichkeit, sich zu informieren, für mindestens 72 Stunden."}
       ]
@@ -29,7 +29,7 @@
          "note": "Wie lange sie halten, bei welcher Temperatur und nach dem Öffnen einer Dose."},
         {"doc": "oezsv-bevorratungsratgeber", "page": 11, "label": "Hülsenfrüchte, Nüsse, Öl, Fleisch und die Tiefkühltruhe",
          "note": "Lagertemperaturen und wie viele Monate Lebensmittel in der Tiefkühltruhe halten."},
-        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Langlebige Vorräte und solche, die man verbraucht und ersetzt, alle paar Monate geprüft",
+        {"doc": "pl-poradnik-bezpieczenstwa", "page": 20, "label": "Lang haltbare Vorräte und solche, die man verbraucht und ersetzt, alle paar Monate geprüft",
          "note": "Auf Polnisch. Aus dem Sicherheitsratgeber der polnischen Regierung: auch die Haltbarkeitsdaten prüfen."}
       ]
     },
@@ -39,7 +39,7 @@
       "hint": "Kein Elektroherd: Gas, Campingkocher, Grill, Fondue-Set",
       "read": [
         {"doc": "oesterreich-gv-blackout", "page": 1, "label": "Ersatzkochgelegenheiten: drinnen und draußen",
-         "note": "Aus Österreich (oesterreich.gv.at, Bundesministerium für Inneres): Spiritus-, Camping- oder Fonduekocher – manche Geräte sind nur für draußen; Herstellerhinweise beachten, denn Kohlenmonoxid ist ein Atemgift, das man weder sieht noch riecht."},
+         "note": "Aus Österreich (oesterreich.gv.at, Bundesministerium für Inneres): Spiritus-, Camping- oder Fonduekocher – manche Geräte sind nur für draußen; Herstellerhinweise beachten. Kohlenmonoxid ist ein gefährliches Atemgift, das man weder sieht noch riecht."},
         {"doc": "zsv-steiermark-blackout", "page": 28, "label": "Kochen im Blackout",
          "note": "Warum Elektroherde ausfallen, besondere Ernährung, Lebensmittel aus Kühlschrank und Tiefkühltruhe aufbrauchen und Gas, Holz oder Holzkohle bereithalten."}
       ]
@@ -65,7 +65,7 @@
         {"doc": "oezsv-bevorratungsratgeber", "page": 10, "label": "Aufgeblähte Dosen und schimmliger Käse",
          "note": "Wann eine Dose weggeworfen werden muss und wann man Schimmel bei Hartkäse wegschneiden kann."},
         {"doc": "who-floods-health-2024", "page": 5, "label": "Im Zweifel wegwerfen",
-         "note": "Auf Englisch. Rat der WHO: Essen nie probieren, um zu prüfen, ob es sicher ist; Lebensmittel wegwerfen, die verdorben aussehen oder mit verschmutztem Wasser in Berührung kamen."},
+         "note": "Auf Englisch. Rat der WHO: Essen nie probieren, um zu prüfen, ob es sicher ist; Lebensmittel wegwerfen, die verdorben aussehen oder mit verunreinigtem Wasser in Berührung kamen."},
         {"doc": "dpc-io-non-rischio", "page": 31, "label": "Lebensmittel, die mit Hochwasser in Berührung kamen",
          "note": "Auf Italienisch. Unter den Schritten nach einem Hochwasser."}
       ]
