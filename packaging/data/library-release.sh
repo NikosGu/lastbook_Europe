@@ -22,7 +22,7 @@
 # would make and upload, without asking GitHub anything.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-LIST="$ROOT/content/library/starter.json"
+LIST="${LIST:-$ROOT/content/library/starter.json}"   # the library workflow gives the list it built from
 REPO="${REPO:-$(sed -n 's/^pub const REPO: &str = "\(.*\)";/\1/p' "$ROOT/crates/engine/src/dist.rs")}"
 DATA_TAG="$(sed -n 's/^pub const DATA_TAG: &str = "\(.*\)";/\1/p' "$ROOT/crates/engine/src/dist.rs")"
 SOURCES_TAG=sources-v1
