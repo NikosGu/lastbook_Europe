@@ -176,10 +176,14 @@ Found along the way, for the maintainer:
 
 ## Being done now
 
-- Published on 18 Nov 2026, as a preview: the app (`v0.1.0-preview`, a pre-release; `v0.1.1-preview` follows with the
-  app named Lastbook Europe, its contact, what it owes Lastbook and Bulgaria's block addresses) and the data release
-  `data-v1` (the starter library and the first regions' maps). The data workflows add to the published release: each
-  region, and each new library pack, is followed by a new `manifest-v1.json` (`packaging/data/write-manifest.sh`).
+- Published on 18 Nov 2026, as a preview: the app, now `v0.1.2-preview`, the newest release, which the README's download
+  button and its links for each system point to (installers under fixed names, so the links stay right from one version
+  to the next); and the data release `data-v1` (the starter library, revision redistributable-v4, and the regions built so
+  far). The data workflows add to the published release: each region, and each new library pack, is followed by a new
+  `manifest-v1.json` (`packaging/data/write-manifest.sh`). Checked as a person would: the Mac installer downloaded from
+  the README's link, its app on its first start in Italian offering the published library and the countries' maps.
+- 0.1.1 had an installed app's first setup page say no library was ready while the published list was on its way (an
+  installed app carries no list of its own); 0.1.2 waits for it (`Manifest::fetch_first`, with a test).
 - All regions through the regions workflow (`missing`), one at a time, each into data-v1 as soon as it is built; a run in
   which a region fails starts the next pass for it by itself, up to the fourth, as Geofabrik turns some of GitHub's
   machines away (a machine it refuses now stops its region within minutes instead of 20).
