@@ -18,10 +18,15 @@
 //! Lastbook being free; `conditions` says what they ask in return), "no" when they do not, "unclear" when nothing
 //! settles it. `terms_quote` is the sentence that decides, in the publisher's words. A pack of only the documents marked
 //! "yes" (build-library --redistributable-only) takes its summary and content revision from `pack.redistributable`.
+//!
+//! `alt_text`, for a PDF whose pictures carry words its file gives no alt text for: page numbers (from 1) to the words of
+//! each picture on that page, as printed, e.g. `{"17": ["AUTOPROTECCIÓN: Altas temperaturas. Limita tu exposición…"]}`.
+//! They are written out for this library, so the Sources page says so; the build adds them to those pages as it adds a
+//! tagged PDF's own alt text, and stops if the file has alt text of its own there or no such page.
 
 use lastbook_engine::setup::manifest::{name_ok, sha_ok};
 use serde_json::Value;
-use std::collections::HashSet;
+use std::collections::{BTreeMap, HashSet};
 use std::path::Path;
 
 /// The id of the Sources and permissions page every library gets.
@@ -64,6 +69,8 @@ pub struct Doc {
     pub collection: String,
     pub category: String,
     pub notes: Option<String>,
+    /// Alt text written out for this library: page (from 1) -> the words of each picture on it, as printed.
+    pub alt_text: BTreeMap<usize, Vec<String>>,
 }
 
 #[derive(Debug, Clone)]
@@ -99,6 +106,26 @@ fn text(v: &Value, key: &str, at: &str) -> Result<String, String> {
 
 fn optional(v: &Value, key: &str) -> Option<String> {
     v.get(key).and_then(Value::as_str).map(str::trim).filter(|s| !s.is_empty()).map(str::to_string)
+}
+
+/// A document's `alt_text`: page numbers as written ("17", not "017" or "0") to one or more texts, each with words.
+fn alt_text(d: &Value, at: &str, kind: &str) -> Result<BTreeMap<usize, Vec<String>>, String> {
+    let Some(v) = d.get("alt_text") else { return Ok(BTreeMap::new()) };
+    let bad = || format!("{at}: \"alt_text\" maps page numbers (from 1) to the words of each picture on the page, e.g. {{\"17\": [\"...\"]}}");
+    let pages = v.as_object().ok_or_else(bad)?;
+    if kind != "pdf" {
+        return Err(format!("{at}: \"alt_text\" is for a PDF's pages"));
+    }
+    let mut out = BTreeMap::new();
+    for (k, v) in pages {
+        let page = k.parse::<usize>().ok().filter(|n| *n >= 1 && n.to_string() == *k).ok_or_else(bad)?;
+        let texts: Option<Vec<String>> = v.as_array().ok_or_else(bad)?.iter().map(|t| t.as_str().map(str::trim).filter(|t| super::extract::letters(t) > 0).map(str::to_string)).collect();
+        match texts {
+            Some(texts) if !texts.is_empty() => out.insert(page, texts),
+            _ => return Err(bad()),
+        };
+    }
+    Ok(out)
 }
 
 /// The list, checked: every field a library record needs, ids that can name files, no id twice.
@@ -167,7 +194,9 @@ pub fn parse(v: &Value) -> Result<Sources, String> {
             Some(Value::String(s)) if !s.trim().is_empty() => Some(s.trim().to_string()),
             _ => None,
         };
+        let alt_text = alt_text(d, &at, kind)?;
         docs.push(Doc {
+            alt_text,
             file,
             kind,
             url: optional(d, "url"),

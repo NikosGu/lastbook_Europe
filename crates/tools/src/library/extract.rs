@@ -77,6 +77,20 @@ pub fn pdf_pages(path: &Path) -> Result<Vec<Page>, String> {
     Ok(pages)
 }
 
+/// The alt text a sources list writes out for pages whose PDF gives none (its `alt_text`: pages from 1), added to them.
+/// A page the document does not have, or one whose PDF has alt text of its own, means the list and the file disagree.
+pub fn add_alt_text(pages: &mut [Page], alt: &std::collections::BTreeMap<usize, Vec<String>>) -> Result<(), String> {
+    let count = pages.len();
+    for (&n, texts) in alt {
+        let page = n.checked_sub(1).and_then(|i| pages.get_mut(i)).ok_or(format!("\"alt_text\" names page {n}, and the document has {count}"))?;
+        if !page.alt.is_empty() {
+            return Err(format!("page {n} has alt text of its own in the PDF: \"alt_text\" is only for pages that have none"));
+        }
+        page.alt = texts.clone();
+    }
+    Ok(())
+}
+
 /// The alt text of the pages asked for (from 0), from the PDF's structure tree: what a tagged (accessible) PDF says its
 /// pictures show. pdfium-render does not walk the tree, so this is PDFium's own calls, on the same bytes opened again.
 /// The same text twice on a page is kept once; a page with none is left out. Nothing is read from a PDF that has no

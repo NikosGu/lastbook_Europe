@@ -30,6 +30,7 @@ None of these blocks the work: each has a placeholder.
 
 | When | Decision | Why |
 |---|---|---|
+| 18 Nov 2026 | The Spanish weather guide's four infographics on pages 17 and 20 (heat, dust haze, cold in the countryside, heavy snow) have their words written out in the sources list (`alt_text` in `content/library/starter.json`), read off the page and checked against Tesseract's reading; the build adds them as "[Alt text: …]" where the PDF gives none, and the Sources page says these were written by Lastbook Europe. The starter revisions move to v5 and redistributable v3 | the PDF has no tags, so the search, the chat's model and a screen reader saw nothing of three Spanish readings; the original's typo ("en la horas") is kept, as the words are the publisher's |
 | 18 Nov 2026 | The starter library is published as the part whose terms let it be passed on: 9 of its 22 documents (the Italian Civil Protection's, the fire brigade's and Ravenna's, under CC BY 4.0; the IFRC's first-aid guidelines, copies for non-commercial use; the three Spanish guides, under Spain's conditions for reusing public-sector information; the two Polish government guides, under gov.pl's CC BY-SA 4.0 and CC BY-NC-ND 4.0), built by `build-library --redistributable-only` and the library workflow. The other 13 stay out of it: 10 whose terms do not allow it (the Swiss federal leaflets, BBK, the Austrian civil-protection associations, the WHO's 2013 notes) and 3 that nothing settles (the IFRC's extreme-cold section; the two French SGDSN guides, which credit illustrations and pictograms to others). The whole list still builds a library for this computer | each document's terms, read on its publisher's site or in its imprint (below): "yes" only where they clearly allow copying the document and passing it on, a non-commercial licence included since Lastbook is free |
 | 18 Nov 2026 | Ten more documents whose terms let them be passed on, so the published pack keeps more of its guides: the WHO's flood leaflet, drinking-water guidelines and review of how much water people need (CC BY-NC-SA 3.0 IGO), the European Commission's 72-hour guidelines (CC BY 4.0), the Spanish health and consumer ministries' notes after the 2024 floods and the 2025 blackout, Service-Public on carbon monoxide (Licence Ouverte), Emilia-Romagna's flood vademecum and extreme-temperature advice, and oesterreich.gv.at on blackouts (CC BY 4.0). 19 of the 32 documents may be published. A copy of each, exactly as listed, is kept in the draft release `sources-v1` (`packaging/data/library-release.sh sources`), and the library workflow takes a document from there when its publisher turns GitHub's machines away (vigilfuoco.it did) | the published pack kept 3 of the water guide's 33 items; the terms of each were read as before, "yes" only where they clearly allow passing the document on; candidates whose pages credit photographs or illustrations to others, or whose sites turned automated readers away, were left out |
 | 17 Nov 2026 | The data is hosted on this repository's GitHub releases: the library packs, region maps, address indexes and their manifest in the release `data-v1`, kept as a draft until the maintainer publishes it; each app version's `app-v1.json` in its own release, read through GitHub's "latest release" address; on github.com setup may fetch only this repository's release files. The name stays Lastbook Europe, with no domain of its own; removal requests go to the repository's public issues | free, already used for the installers, files up to 2 GB; GitHub's hosts verify through the pinned roots (two USERTrust roots added for github.com) |
@@ -184,9 +185,7 @@ Found along the way, for the maintainer:
    model at 4 bits (about 21 GB) and a cache of experts kept by use, as BigMoeOnEdge does.
 3. A native speaker's read of the first-aid wording in the five translations (the line-by-line review is done; what
    each language should check first is in "The five translations, reviewed").
-4. Pictures with no alt text: of the ten Spanish readings on infographic pages, seven now have the infographics' alt
-   text; the three on the weather guide (Fenómenos meteorológicos, pages 17 and 20), a PDF with no tags, need OCR.
-5. The 13 starter documents left out of the published pack: ask their publishers for permission (BWL, BBK, the Styrian
+4. The 13 starter documents left out of the published pack: ask their publishers for permission (BWL, BBK, the Styrian
    and Austrian civil-protection associations and the WHO for its 2013 notes; the IFRC for the extreme-cold section;
    SGDSN, or the illustrator and the owners of the pictograms, for the French guides). Each yes brings its document
    back. The published pack now keeps, of each guide's items in English: water 22 of 33, food 12 of 28, sanitation 6
@@ -196,7 +195,7 @@ Found along the way, for the maintainer:
 ## Downloads on the development machine
 
 The work's limit was 5 GB downloaded to the maintainer's computer (and the 26B model once, which in the end was not
-needed: the AI tests used model files already there). Measured on 17 Nov 2026, about 0.9 GB in all:
+needed: the AI tests used model files already there). Measured on 18 Nov 2026, about 0.95 GB in all:
 
 | What | Size |
 |---|---|
@@ -209,6 +208,7 @@ needed: the AI tests used model files already there). Measured on 17 Nov 2026, a
 | The draft release's Mac installer, scanned and deleted | 13 MB |
 | Rust crates (the whole local cache, including what was there before) | 127 MB |
 | The publishers' terms pages and the IFRC's key-messages publication, read for the starter library's licences | 12 MB |
+| Fetched again on 18 Nov, after the agents' working folders were cleared for disk room: the Spanish weather guide, and the pinned PDFium for the Mac | 26 MB |
 
 Everything larger (whole countries' extracts for the neighbours, the other regions, the installers) is downloaded on
 GitHub's machines, not here.

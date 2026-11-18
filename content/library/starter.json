@@ -4,11 +4,11 @@
   "id": "starter",
   "title": "Starter library",
   "summary": "Drinking water, food, hygiene, first aid, power cuts, emergency supplies, floods and keeping warm, in Italian, German, English, French, Spanish and Polish, from public bodies of Switzerland, Austria, Germany, Italy, France, Spain and Poland, the European Commission, the WHO and the IFRC.",
-  "revision": "2026-11-18-starter-v4",
+  "revision": "2026-11-18-starter-v5",
   "map": "base",
   "redistributable": {
    "summary": "Drinking water, food, hygiene, first aid, floods, earthquakes, severe weather, cold, power cuts and emergency supplies, in English, Italian, Spanish, Polish, French and German, from the WHO, the European Commission, the IFRC and public bodies of Italy, Spain, Poland, France and Austria: the documents whose publishers let them be passed on.",
-   "revision": "2026-11-18-starter-redistributable-v2"
+   "revision": "2026-11-18-starter-redistributable-v3"
   }
  },
  "documents": [
@@ -396,7 +396,17 @@
    "source": "https://www.proteccioncivil.es/documentacion/publicaciones (Colección Cultura Preventiva, NIPO 126-23-095-0)",
    "collection": "España: Protección Civil (DGPCE)",
    "category": "preparedness",
-   "notes": "Adverse weather in Spain (heat waves, strong winds, coastal storms, heavy rain, thunderstorms, cold and snow) with its warning levels, illustrated advice that also covers dust haze and drought, and common questions. Much of its advice is in pictures."
+   "notes": "Adverse weather in Spain (heat waves, strong winds, coastal storms, heavy rain, thunderstorms, cold and snow) with its warning levels, illustrated advice that also covers dust haze and drought, and common questions. Much of its advice is in pictures.",
+   "alt_text": {
+    "17": [
+     "AUTOPROTECCIÓN: Altas temperaturas. Limita tu exposición al sol, protégete el mayor tiempo posible y ventila las estancias. Toma comidas ligeras y regulares, alimentos ricos en agua y sales minerales, frutas, ensaladas, hortalizas... Así repones las sales perdidas por el sudor. Viste con ropa adecuada y colores claros, cubriendo la mayor parte del cuerpo, especialmente la cabeza. Evita hacer ejercicio físico en la horas centrales del día. Interésate por las personas mayores y enfermas próximas, que vivan solas o aisladas. Nunca deje a niños ni personas mayores en el interior de un vehículo.",
+     "RIESGOS NATURALES: episodios intensos de calima. Procura mantener puertas y ventanas cerradas, y evita salir a la calle si padeces enfermedades respiratorias crónicas. Bebe mucho líquido y evita los ambientes secos. Haz uso de la mascarilla en el exterior para evitar la entrada en las vías respiratorias de partículas en suspensión. No realices ejercicio físico severo mientras dure esta situación. Si circulas por carretera, extrema las precauciones."
+    ],
+    "20": [
+     "RIESGOS NATURALES: zonas rurales ante la llegada de olas de frío y nieve. Ten siempre a mano una estufa, cocina de gas y una reserva de alimentos y medicinas de uso habitual en cantidades suficientes para un período de aislamiento. Prepara ropa, calzado y un aparato de radio portátil. Permanece atento a las instrucciones de las autoridades. Revisa tejados, cierres de ventanas, puertas y bajadas de agua. Asegúrate del buen funcionamiento de braseros de picón o estufas de leña, carbón o gas en lugares cerrados sin renovación de aire para evitar el envenenamiento producido por su uso en malas condiciones.",
+     "RIESGOS NATURALES: vivienda con nevadas intensas en el exterior. Comprueba el estado de tu vivienda, especialmente el tejado y el sistema de calefacción. Evita las salidas o desplazamientos innecesarios. Toma precauciones para evitar envenenamientos producidos por braseros, estufas de carbón o gas en lugares cerrados sin renovación de aire. Ante heladas intensas, mantén un grifo ligeramente abierto a fin de evitar la rotura de tubería por congelación del agua."
+    ]
+   }
   },
   {
    "id": "pl-poradnik-bezpieczenstwa",

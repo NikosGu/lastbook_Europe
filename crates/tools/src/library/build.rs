@@ -13,7 +13,8 @@
 //!   library-data/pages/<file>         the saved web pages
 //!   library-data/text/<id>.txt        each document's text, its pages separated by "\n\f\n"; on a page with few words
 //!                                     of its own, what a tagged PDF says its pictures show follows them, each on a line
-//!                                     of its own as "[Alt text: …]"
+//!                                     of its own as "[Alt text: …]" (or the list's `alt_text` for that page, where the
+//!                                     PDF has none)
 //!   library-data/search.sqlite        the full-text index: FTS5 table `pages`, a row for each page that has words
 //!                                     (alt text among them, without its mark)
 //!   library-data/summary.json         the counts /api/library gives
@@ -115,7 +116,7 @@ fn source_file(d: &Doc, docs: &Path) -> Result<PathBuf, String> {
 
 /// The Sources and permissions page, and its words for the index: each publisher, what of theirs is here, on what
 /// terms, and where it came from. Addresses are words, not links: in the app a link to the web can only do nothing.
-fn sources_page(docs: &[Doc]) -> (String, String) {
+pub(super) fn sources_page(docs: &[Doc]) -> (String, String) {
     let removal = match dist::CONTACT {
         Some(c) => format!("To ask for anything to be removed, write to {c}."),
         None => "To ask for anything to be removed, open an issue where this project is published.".to_string(),
@@ -152,6 +153,9 @@ fn sources_page(docs: &[Doc]) -> (String, String) {
             if let Some(r) = d.redistribute {
                 terms.push(format!("may be passed on: {r}{}", d.conditions.as_deref().map(|c| format!(" ({c})")).unwrap_or_default()));
             }
+            if !d.alt_text.is_empty() {
+                terms.push(format!("the words in the pictures on {} written out as alt text by {}, the PDF giving none", pages_named(&d.alt_text), dist::NAME));
+            }
             let terms = terms.join(" · ");
             let small = if terms.is_empty() { String::new() } else { format!("<br><small>{}</small>", esc(&terms)) };
             page.push_str(&format!("<li>{}{year} · {} · source: {}{small}</li>", esc(&d.title), esc(&d.lang), esc(&d.source)));
@@ -161,6 +165,16 @@ fn sources_page(docs: &[Doc]) -> (String, String) {
     }
     page.push_str("</body></html>");
     (page, text.join("\n"))
+}
+
+/// "page 17", "pages 17 and 20", "pages 3, 5 and 9".
+fn pages_named(alt: &BTreeMap<usize, Vec<String>>) -> String {
+    let n: Vec<String> = alt.keys().map(usize::to_string).collect();
+    match n.as_slice() {
+        [one] => format!("page {one}"),
+        [rest @ .., last] => format!("pages {} and {last}", rest.join(", ")),
+        [] => String::new(),
+    }
 }
 
 /// The search index, as the engine reads it: one row for each page with words, optimized and checked.
@@ -229,10 +243,11 @@ pub fn build(list: &Sources, docs: &Path, out: &Path, replace: bool, built: &str
         let dest = lib.join(&rel);
         std::fs::create_dir_all(dest.parent().unwrap()).map_err(io(&dest))?;
         std::fs::copy(&src, &dest).map_err(io(&dest))?; // a copy (a clone where the disk can), never a hard link: the engine refuses those
-        let pages = match d.kind {
+        let mut pages = match d.kind {
             "pdf" => extract::pdf_pages(&dest)?,
             _ => vec![extract::Page::of(extract::html_text(&std::fs::read(&dest).map_err(io(&dest))?))],
         };
+        extract::add_alt_text(&mut pages, &d.alt_text).map_err(|e| format!("document {}: {e}", d.id))?;
         let text_rel = format!("text/{}.txt", d.id);
         write(&lib.join(&text_rel), pages.iter().map(extract::Page::kept).collect::<Vec<_>>().join("\n\u{c}\n").as_bytes())?;
         let words: Vec<String> = pages.iter().map(extract::Page::words).collect();

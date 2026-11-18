@@ -151,10 +151,25 @@ fn the_sources_list_is_checked() {
         ("licence", json!(""), "\"licence\" is missing"),
         ("redistribute", json!("maybe"), "yes, no or unclear"),
         ("redistribute", json!("yes"), "\"terms_quote\""),
+        ("alt_text", json!(["Agua"]), "maps page numbers"),
+        ("alt_text", json!({"0": ["Agua"]}), "maps page numbers"),
+        ("alt_text", json!({"017": ["Agua"]}), "maps page numbers"),
+        ("alt_text", json!({"uno": ["Agua"]}), "maps page numbers"),
+        ("alt_text", json!({"17": "Agua"}), "maps page numbers"),
+        ("alt_text", json!({"17": []}), "maps page numbers"),
+        ("alt_text", json!({"17": ["Agua", " ... "]}), "maps page numbers"),
     ] {
         let e = sources::parse(&with(k, v)).unwrap_err();
         assert!(e.contains(says), "{k}: {e}");
     }
+    // alt text written out for a PDF's pictures: by page, one text for each picture; a saved web page has its own
+    let written = sources::parse(&with("alt_text", json!({"17": [" Calor: bebe agua. ", "Calima: cierra las ventanas."], "3": ["Frío"]}))).unwrap();
+    assert_eq!(written.docs[0].alt_text, std::collections::BTreeMap::from([(3, vec!["Frío".to_string()]),
+                                                                           (17, vec!["Calor: bebe agua.".to_string(), "Calima: cierra las ventanas.".to_string()])]));
+    let mut page = ok.clone();
+    page["file"] = json!("a.html");
+    page["alt_text"] = json!({"1": ["Agua"]});
+    assert!(sources::parse(&json!({"pack": {"id": "p", "title": "P"}, "documents": [page]})).unwrap_err().contains("for a PDF's pages"));
     // a decision about passing a document on carries the address of its terms and the sentence that decides
     let mut decided = ok.clone();
     for (k, v) in [("redistribute", "yes"), ("licence_url", "https://example.org/terms"), ("terms_quote", "Reuse is allowed.")] {
@@ -184,6 +199,34 @@ fn the_sources_list_is_checked() {
     assert!(!open.docs.is_empty() && open.docs.len() < starter.docs.len());
     assert_ne!(open.pack.revision, starter.pack.revision);
     assert_eq!(open.pack.id, starter.pack.id, "the same pack, made of what may be published");
+}
+
+#[test]
+fn alt_text_written_out_goes_only_where_the_pdf_has_none() {
+    use super::extract::{add_alt_text, Page};
+    let pages = vec![Page::of("Agua".into()), Page { text: "Calor".into(), alt: vec!["The PDF's own".into()] }, Page::default()];
+    let alt = |n: usize, t: &str| std::collections::BTreeMap::from([(n, vec![t.to_string(), "Otra figura".to_string()])]);
+    let mut done = pages.clone();
+    add_alt_text(&mut done, &alt(3, "RIESGOS NATURALES: calima")).unwrap();
+    assert_eq!(done[2].kept(), "[Alt text: RIESGOS NATURALES: calima]\n[Alt text: Otra figura]", "each picture's words on a line of its own, marked");
+    assert_eq!(done[2].words(), "RIESGOS NATURALES: calima\nOtra figura");
+    assert_eq!(done[..2], pages[..2], "the other pages as they were");
+    assert!(add_alt_text(&mut pages.clone(), &alt(2, "Calor")).unwrap_err().contains("of its own in the PDF"));
+    assert!(add_alt_text(&mut pages.clone(), &alt(4, "Frío")).unwrap_err().contains("the document has 3"));
+    add_alt_text(&mut done, &Default::default()).unwrap();
+}
+
+#[test]
+fn the_sources_page_says_which_alt_text_this_library_wrote() {
+    let starter = sources::load(&repo().join("content/library/starter.json")).unwrap();
+    let weather = starter.docs.iter().find(|d| d.id == "dgpce-guia-fenomenos-meteorologicos").unwrap();
+    assert_eq!(weather.alt_text.keys().copied().collect::<Vec<_>>(), [17, 20], "the Spanish weather guide's infographics on heat, dust haze, cold and snow");
+    assert!(weather.alt_text.values().flatten().all(|t| t.starts_with("AUTOPROTECCIÓN") || t.starts_with("RIESGOS NATURALES")));
+    let (page, text) = super::build::sources_page(&starter.docs);
+    let says = format!("the words in the pictures on pages 17 and 20 written out as alt text by {}, the PDF giving none", lastbook_engine::dist::NAME);
+    assert!(text.contains(&says), "{text}");
+    assert!(page.contains(&says));
+    assert_eq!(text.matches("written out as alt text").count(), starter.docs.iter().filter(|d| !d.alt_text.is_empty()).count());
 }
 
 #[test]
@@ -416,15 +459,23 @@ fn a_page_with_few_words_has_what_its_tagged_pdf_says_its_pictures_show() {
     assert!(letters(&pages[1].text) >= FEW_LETTERS && pages[1].text.contains("prepara una mochila"), "{:?}", pages[1]);
     assert!(pages[1].alt.is_empty(), "a page of text keeps its own words, not its photo's description: {:?}", pages[1]);
     assert_eq!(pages[2], Page::default(), "a picture with no tags has no words");
-    // built into a library: the page texts keep the mark, the index has the words without it
-    let list = sources::parse(&json!({"pack": {"id": "test-pack", "title": "Test pack", "revision": "2026-11-17-test", "map": "base"}, "documents": [
-        {"id": "inundaciones-es", "file": "inundaciones.pdf", "title": "Inundaciones", "publisher": "Protección Civil", "year": 2023, "lang": "es",
-         "licence": "No licence stated.", "source": "https://example.org/inundaciones", "collection": "España", "category": "preparedness"}]}))
-    .unwrap();
+    // built into a library: the page texts keep the mark, the index has the words without it; the list's own alt text
+    // goes on the page whose picture has none, and on a page whose PDF gives one it stops the build
+    let listed = |alt: Value| {
+        sources::parse(&json!({"pack": {"id": "test-pack", "title": "Test pack", "revision": "2026-11-17-test", "map": "base"}, "documents": [
+            {"id": "inundaciones-es", "file": "inundaciones.pdf", "title": "Inundaciones", "publisher": "Protección Civil", "year": 2023, "lang": "es",
+             "licence": "No licence stated.", "source": "https://example.org/inundaciones", "collection": "España", "category": "preparedness", "alt_text": alt}]}))
+        .unwrap()
+    };
+    let written = "Mapa: las zonas inundables, en azul";
     let data = dir.join("LastbookData");
-    build(&list, &docs, &data, false, "2026-11-17").unwrap();
+    let e = build(&listed(json!({"1": ["Otra"]})), &docs, &data, false, "2026-11-17").unwrap_err();
+    assert!(e.contains("inundaciones-es") && e.contains("of its own in the PDF"), "{e}");
+    build(&listed(json!({"3": [written]})), &docs, &data, false, "2026-11-17").unwrap();
     let kept = std::fs::read_to_string(data.join("library-data/text/inundaciones-es.txt")).unwrap();
-    assert_eq!(kept.split("\n\u{c}\n").map(str::to_string).collect::<Vec<_>>(), pages.iter().map(Page::kept).collect::<Vec<_>>());
+    let mut want: Vec<String> = pages.iter().map(Page::kept).collect();
+    want[2] = format!("[Alt text: {written}]");
+    assert_eq!(kept.split("\n\u{c}\n").map(str::to_string).collect::<Vec<_>>(), want);
     let l = library(&data);
     let p = get(&l, "/api/page/inundaciones-es/1");
     assert_eq!(p["text"], format!("Agua\n[Alt text: {alt}]"), "the reading page's text view shows it as alt text");
