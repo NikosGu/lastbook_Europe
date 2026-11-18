@@ -78,7 +78,8 @@
     library_read_only: 'setup.code.library_read_only', wrong_size: 'setup.code.wrong_size', pack_not_in_version: 'setup.code.pack_not_in_version',
     wrong_size_model: 'setup.code.wrong_size_model', unknown_file: 'setup.code.unknown_file', not_done: 'setup.code.not_done',
     no_ai_to_remove: 'setup.code.no_ai_to_remove', cannot_remove_model: 'setup.code.cannot_remove_model', not_moved_aside: 'setup.code.not_moved_aside',
-    not_old_library: 'setup.code.not_old_library',
+    not_old_library: 'setup.code.not_old_library', not_a_model: 'setup.code.not_a_model', unknown_model: 'setup.code.unknown_model',
+    no_runtime: 'setup.code.no_runtime',
   };
   const REC_WHY = {   // why setup suggests what it does: recommend.why_codes
     none_ready: 'setup.rec.none_ready', none_fits: 'setup.rec.none_fits', other_disk: 'setup.rec.other_disk', other_disk_network: 'setup.rec.other_disk_network',
@@ -127,6 +128,8 @@
   const modelFiles = () => (S.found || []).filter(f => f.kind === 'model_file');
   const fitOf = id => ((S.hardware && S.hardware.ai_models) || {})[id] || null;
   const fitsHere = id => !!(fitOf(id) || {}).fits;
+  // a catalogue model this computer can run: in its memory, or, a mixture of experts too large for it, from the disk (slowly)
+  const canRun = id => { const m = catalogue().find(x => x.id === id); return !!m && (fitsHere(id) || !!m.active_params) };
   const isFile = v => String(v || '').startsWith('file:');
   // the model setup suggests: the engine's (the largest that fits, room on the disk included), else the largest that fits the memory
   const suggested = () => (S.recommend || {}).model || (S.hardware && S.hardware.ai && S.hardware.ai.fits ? S.hardware.ai.model : null);
@@ -177,7 +180,9 @@
   const addresses = () => (S.manifest && S.manifest.address_indexes) || [];
   const addressById = id => addresses().find(a => a.id === id);
   const addressAdds = () => { const a = addressById(selectedRegion()); return a && a.available !== false && !((cur() || {}).address_indexes || []).includes(a.id) ? a : null };
-  const mapMissing = () => maps().length > 0 && !selectedRegion();   // no region maps published yet: nothing to choose
+  // a first setup asks for the person's region (no region maps published yet: nothing to choose); a library already here
+  // adds the AI or a new library without one, its own row offering a region's map
+  const mapMissing = () => !cur() && maps().length > 0 && !selectedRegion();
   const mapAdds = () => choice.map && choice.map !== mapNow() && mapNow() !== 'europe' ? mapById(choice.map) : null;
   const packDl = p => p.download_bytes || (p.files || []).reduce((n, f) => n + (f.size || 0), 0);
   const SEP = WIN ? '\\' : '/', DATA = 'LastbookData';
@@ -190,7 +195,8 @@
   const foundTitle = f => f.kind === 'library' ? t('setup.found.library') : f.kind === 'model' ? t('setup.found.model')
     : (f.kind === 'pack' ? packById(f.id) : (f.kind === 'map' || f.kind === 'addresses') && mapById(f.id)) ? itemTitle({ kind: f.kind, id: f.id, title: f.name })
     : f.name || baseName(f.path);
-  const aiFits = () => { const m = model(); return m ? fitsHere(m.id) : !!(S.hardware && S.hardware.ai && S.hardware.ai.fits) };
+  // the model in play can run here (from the disk included): setup then downloads it when it is chosen
+  const aiFits = () => { const m = model(); return m ? canRun(m.id) : !!(S.hardware && S.hardware.ai && S.hardware.ai.fits) };
   // why the local AI does not fit this computer
   const aiWhy = () => { const a = (S.hardware && S.hardware.ai) || {}; return sayWhy(a.why_codes, a.why) };
 
@@ -582,15 +588,21 @@
     const libraryUpdate = p && p.available !== false && packNeedsInstall(p);
     const o = [].concat(c.old || [])[0], old = o ? (typeof o === 'string' ? { path: o } : o) : null;   // the engine lists the paths it moved aside
     const larger = packs().filter(x => (x.installed_bytes || 0) > ((p && p.installed_bytes) || 0));
+    // the local AI: the model in use (one of the catalogue's, or a file already on this computer) or none; another can always
+    // be chosen, among the catalogue's, the files found here, any file, or none
+    const file = c.model === 'custom' && c.model_file ? c.model_file : null;
+    const own = !file && c.model ? catalogue().find(x => x.id === c.model) || { id: c.model } : null;
+    const aiSub = file ? `${esc(file.title)} · ${size(file.size)} · ${esc(home(file.path))}`
+      : own ? `${esc(own.title || own.id)} · ${th('setup.manage.ai_here', { size: size(own.size || 0) })}`
+      : m && aiFits() ? th('setup.manage.ai_absent', { size: size(m.size) }) : th('setup.ai.none');
+    const aiButtons = !file && !own ? `<button class="btn" id="addAi">${th('setup.manage.add')}</button>`
+      : `<span class="s-confirm"><button class="btn plain" id="chAi">${th('setup.manage.choose_model')}</button>${own && CAN.removeAi ? (confirmRemove ? `<button class="btn danger" id="rmYes">${th('setup.manage.remove')}</button><button class="btn plain" id="rmNo">${th('setup.manage.keep')}</button>` : `<button class="btn plain" id="rmAi">${th('setup.manage.remove')}</button>`) : ''}</span>`;
     const bigger = larger.filter(x => x.available !== false), later = larger.find(x => x.available === false);
     main.innerHTML = `<h1>${th('setup.manage.title')}</h1>
       <div class="s-have">
         <div class="s-row">${ico('book', 's-ri')}<span><b>${p ? esc(packItem(p)) : c.pack ? esc(packItem({ id: c.pack })) : th('setup.manage.library')}</b><small>${libraryUpdate ? th('setup.manage.update_available') + ' · ' : p ? size(p.installed_bytes) + ' · ' : ''}${esc(home(c.folder))}</small>${LIVES[c.disk_kind] ? `<small class="s-where${c.disk_kind === 'local' ? '' : ' s-ext'}">${ico(c.disk_kind === 'network' ? 'nas' : c.disk_kind === 'removable' ? 'usb' : 'disk')}${th(LIVES[c.disk_kind])}</small>` : ''}</span>
           ${libraryUpdate ? `<button class="btn" id="libraryUpdate">${th('setup.manage.update', { name: packTitle(p) })}</button>` : bigger.length ? `<button class="btn" id="upgrade">${ico('up')}${th('setup.manage.get', { name: packTitle(bigger[0]) })}</button>` : later ? `<span class="s-badge later">${th('setup.manage.comes_later', { name: packTitle(later) })}</span>` : `<span class="s-badge here">${th('setup.manage.largest')}</span>`}</div>
-        ${c.model === 'custom' && c.model_file ? `<div class="s-row">${ico('ai', 's-ri')}<span><b>${th('setup.ai.title')}</b><small>${esc(c.model_file.title)} · ${size(c.model_file.size)} · ${esc(home(c.model_file.path))}</small></span>
-          <button class="btn plain" id="chAi">${th('setup.manage.choose_model')}</button></div>`
-        : m && m.available !== false ? `<div class="s-row">${ico('ai', 's-ri')}<span><b>${th('setup.ai.title')}</b><small>${c.model ? th('setup.manage.ai_here', { size: size(m.size) }) : aiFits() ? th('setup.manage.ai_absent', { size: size(m.size) }) : esc(aiWhy())}</small></span>
-          ${c.model ? (!CAN.removeAi ? '' : confirmRemove ? `<span class="s-confirm"><button class="btn danger" id="rmYes">${th('setup.manage.remove')}</button><button class="btn plain" id="rmNo">${th('setup.manage.keep')}</button></span>` : `<button class="btn plain" id="rmAi">${th('setup.manage.remove')}</button>`) : aiFits() ? `<button class="btn" id="addAi">${th('setup.manage.add')}</button>` : ''}</div>` : ''}
+        <div class="s-row">${ico('ai', 's-ri')}<span><b>${th('setup.ai.title')}</b><small>${aiSub}</small></span>${aiButtons}</div>
         ${maps().length ? (() => { const mNow = c.map && c.map !== 'base' ? c.map : packMap(c.pack);
           return `<div class="s-row">${ico('map', 's-ri')}<span><b>${mNow ? th('setup.manage.map_named', { name: mapName(mNow) }) : th('setup.manage.map')}</b><small>${mNow ? (mNow === 'europe' ? th('setup.manage.map_everywhere') : th('setup.manage.map_local')) : th('setup.manage.map_none')}</small></span>
           <button class="btn plain" id="mapCh">${(c.address_indexes || []).length ? th('setup.manage.choose_region') : th('setup.manage.add_addresses')}</button></div>` })() : ''}
@@ -604,7 +616,8 @@
     if ($('#libraryUpdate')) $('#libraryUpdate').onclick = () => { choice.pack = c.pack; keepModel(); go('choose') };
     if ($('#upgrade')) $('#upgrade').onclick = () => { choice.pack = bigger[0].id; keepModel(); go('choose') };
     if ($('#mapCh')) $('#mapCh').onclick = () => { choice.pack = c.pack; keepModel(); choice.map = null; choice.country = null; go('choose'); const m = $('#mapCountry'); if (m) m.focus() };
-    if ($('#addAi')) $('#addAi').onclick = () => { choice.pack = c.pack; const r = (S.recommend || {}).model; choice.model = r || 'none'; choice.ai = !!r && fitsHere(r); go('choose') };
+    // "Add": the choice of models, the suggested one chosen when this computer can run it
+    if ($('#addAi')) $('#addAi').onclick = () => { choice.pack = c.pack; const r = suggested(); choice.ai = !!r && canRun(r); choice.model = choice.ai ? r : 'none'; go('choose'); const x = main.querySelector('input[name=ai]:checked'); if (x) x.focus() };
     if ($('#chAi')) $('#chAi').onclick = () => { choice.pack = c.pack; keepModel(); go('choose'); const r = main.querySelector('input[name=ai]:checked'); if (r) r.focus() };
     if ($('#rmAi')) $('#rmAi').onclick = () => { confirmRemove = true; manageView(); $('#rmNo').focus() };
     if ($('#rmNo')) $('#rmNo').onclick = () => { confirmRemove = false; manageView(); $('#rmAi').focus() };

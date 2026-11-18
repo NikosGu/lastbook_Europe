@@ -40,6 +40,9 @@ jobs:
         run: cargo build --workspace --locked
       - name: Test
         run: cargo test --workspace --locked
+      - name: The six languages' words, against what the interface uses
+        if: runner.os == 'Linux'
+        run: node tools/check_locales.mjs
       - name: Pictures of the app (setup, with no library), to look at
         shell: bash
         run: |
