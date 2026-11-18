@@ -197,8 +197,8 @@ Found along the way, for the maintainer:
   model, or a catalogue model, there was no way to choose), a model run from the disk is downloaded when chosen (before,
   nothing happened), adding the AI asks for no region, the three new answers of the engine are worded in each language,
   and the six languages' words are checked on each push. 0.1.5 published and checked from the README's link: an installed
-  library's page offers "Add" for the local AI. Its tests passed on Windows and Linux on GitHub and on this Mac (GitHub
-  had no Mac machine free for its Mac job, twice; its Mac installer was built there); the next push's run tries again.
+  library's page offers "Add" for the local AI. Its tests passed on GitHub on macOS, Windows and Linux (the Mac job
+  of its own run found no Mac machine free, twice, and ran on the next push, 8fb95ff).
 - All regions through the regions workflow (`missing`), one at a time, each into data-v1 as soon as it is built; a run in
   which a region fails starts the next pass for it by itself, up to the fourth, as Geofabrik turns some of GitHub's
   machines away (a machine it refuses now stops its region within minutes instead of 20).
