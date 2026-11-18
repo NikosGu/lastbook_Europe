@@ -1,0 +1,65 @@
+# Documents waiting to join the library (content/library/pending.json), each downloaded on GitHub's machines from its
+# publisher, checked to be a PDF, measured (size and SHA-256), and kept in the draft release sources-v1, from which the
+# library workflow takes a document whenever its publisher turns GitHub's machines away or changes the file. The
+# measurements come back as the artifact "pinned" (pinned.json; failed.tsv names what could not be downloaded here), to
+# be written into content/library/starter.json. Run by hand; only the draft release sources-v1 is touched.
+name: Library sources
+
+on:
+  workflow_dispatch:
+    inputs:
+      list:
+        description: "The list of documents to download and measure"
+        default: "content/library/pending.json"
+
+permissions:
+  contents: write   # to add to the draft release sources-v1
+
+concurrency:
+  group: sources-v1
+  cancel-in-progress: false
+
+jobs:
+  pin:
+    name: Download, measure and keep
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      LIST: ${{ inputs.list }}
+      SOURCES_TAG: sources-v1
+      GH_TOKEN: ${{ github.token }}
+      UA: "lastbook-tools/0.1 (offline library builder)"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Each document, from its publisher
+        run: |
+          set -uo pipefail
+          mkdir -p "$RUNNER_TEMP/docs" out
+          echo '{}' > out/pinned.json
+          : > out/failed.tsv
+          jq -r '.documents[] | [.id, .file, .url] | @tsv' "$LIST" > "$RUNNER_TEMP/want.tsv"
+          while IFS=$'\t' read -r id file url; do
+            doc="$RUNNER_TEMP/docs/$file"
+            if curl -fsSL --retry 3 --retry-delay 10 --max-time 600 -A "$UA" -o "$doc" "$url" && [ "$(head -c 5 "$doc")" = "%PDF-" ]; then
+              b=$(stat -c %s "$doc")
+              s=$(sha256sum "$doc" | cut -d' ' -f1)
+              jq --arg id "$id" --argjson b "$b" --arg s "$s" '.[$id] = {"bytes": $b, "sha256": $s}' out/pinned.json > out/p.json && mv out/p.json out/pinned.json
+              echo "$id: $b bytes, $s"
+            else
+              if [ -s "$doc" ]; then why="not a PDF"; else why="not downloaded"; fi
+              rm -f "$doc"
+              printf '%s\t%s\t%s\n' "$id" "$url" "$why" >> out/failed.tsv
+              echo "$id: $why ($url)"
+            fi
+          done < "$RUNNER_TEMP/want.tsv"
+          echo "measured: $(jq length out/pinned.json); not downloaded here: $(wc -l < out/failed.tsv)" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Kept in the draft release sources-v1
+        run: |
+          shopt -s nullglob
+          files=("$RUNNER_TEMP"/docs/*)
+          if [ ${#files[@]} -gt 0 ]; then gh release upload "$SOURCES_TAG" --repo "$GITHUB_REPOSITORY" --clobber "${files[@]}"; fi
+          echo "${#files[@]} documents in $SOURCES_TAG"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pinned
+          path: out/
