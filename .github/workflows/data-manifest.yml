@@ -1,9 +1,9 @@
 # The data release's manifest-v1.json, which setup fetches to learn what it can install: the model catalogue
 # (packaging/data/manifest-base.json), every map-entry-*.json and addresses-entry-*.json among data-v1's files, and the
 # starter pack's starter-entry.json when it is there, checked by `lastbook-tools build-manifest` as setup checks a
-# manifest, then put into the release. Runs at the end of each Regions run, and by hand (Actions, Data manifest, Run
-# workflow) after anything else adds to the release. Only the data-v1 draft is changed: never published, no other
-# release touched.
+# manifest, then put into the release (packaging/data/write-manifest.sh, which the Regions and Library workflows also run
+# after each region and pack). Runs at the end of each Regions run, and by hand (Actions, Data manifest, Run workflow).
+# Only data-v1 is changed, a draft or published; no other release is touched.
 name: Data manifest
 
 on:
@@ -26,34 +26,5 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - run: cargo build --release --locked -p lastbook-tools
-      - name: The entries in the release
-        run: |
-          # every release tagged so, drafts included: exactly one, a draft
-          draft=$(gh api "repos/$GH_REPO/releases?per_page=100" --paginate --jq ".[] | select(.tag_name == \"$RELEASE\") | .draft")
-          if [ "$draft" != true ]; then
-            echo "$RELEASE is not one draft (\"$draft\"): its manifest is not changed here" >&2
-            exit 1
-          fi
-          gh release view "$RELEASE" --json assets > "$RUNNER_TEMP/assets.json"
-          mkdir -p "$RUNNER_TEMP/entries"
-          jq -r '.assets[] | select(.state == null or .state == "uploaded") | .name
-                 | select(test("^(map|addresses)-entry-[A-Z0-9-]+[.]json$") or . == "starter-entry.json")' "$RUNNER_TEMP/assets.json" > "$RUNNER_TEMP/names.txt"
-          echo "$(wc -l < "$RUNNER_TEMP/names.txt") entries in $RELEASE"
-          if [ -s "$RUNNER_TEMP/names.txt" ]; then
-            gh release download "$RELEASE" --dir "$RUNNER_TEMP/entries" \
-              --pattern 'map-entry-*.json' --pattern 'addresses-entry-*.json' --pattern 'starter-entry.json'
-          fi
-      - name: manifest-v1.json, as setup takes it
-        run: |
-          target/release/lastbook-tools build-manifest --base packaging/data/manifest-base.json --entries "$RUNNER_TEMP/entries" \
-            --assets "$RUNNER_TEMP/assets.json" --out "$RUNNER_TEMP/manifest-v1.json" > "$RUNNER_TEMP/held.json"
-          jq -r '"### manifest-v1.json",
-                 "- maps: \(.maps | length) (\(.maps | join(" ")))",
-                 "- address indexes: \(.address_indexes | length)",
-                 "- packs: \(.packs | join(" "))",
-                 "- models: \(.models | join(" "))",
-                 (if (.left_out | length) > 0 then "- left out, their zips not in the release whole: \(.left_out | map(.entry) | join(" "))" else empty end),
-                 (if (.maps_without_addresses | length) > 0 then "- maps without their address index: \(.maps_without_addresses | join(" "))" else empty end)' \
-            "$RUNNER_TEMP/held.json" | tee -a "$GITHUB_STEP_SUMMARY"
-      - name: Into the release
-        run: gh release upload "$RELEASE" "$RUNNER_TEMP/manifest-v1.json" --clobber
+      - name: manifest-v1.json, from what the release holds now, into it
+        run: packaging/data/write-manifest.sh "$GITHUB_STEP_SUMMARY"

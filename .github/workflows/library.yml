@@ -3,8 +3,8 @@
 # publisher (or, where a publisher turns GitHub's machines away, from this repository's copy of it in the draft release
 # sources-v1, made by packaging/data/library-release.sh sources) and checked against the size and SHA-256 the list
 # gives, read with the PDFium pinned in packaging/rust/pdfium.txt, packed, checked, and uploaded with its manifest entry
-# to the data release (data-v1), which stays a draft until the maintainer publishes it. No other release is touched, and
-# nothing is published here.
+# to the data release (data-v1, a draft or published), whose manifest is then written again. No other release is
+# touched, and nothing is published here.
 name: Library
 
 on:
@@ -75,7 +75,7 @@ jobs:
           cat "$RUNNER_TEMP/out/starter-entry.json"
       - name: Nothing of the other documents is in the zip, and the entry names it
         run: packaging/data/library-release.sh check "$RUNNER_TEMP/out/Lastbook-starter.zip" "$RUNNER_TEMP/out/starter-entry.json"
-      - name: Upload to the data release (a draft until the maintainer publishes it)
+      - name: Upload to the data release
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -83,3 +83,10 @@ jobs:
         run: |
           packaging/data/library-release.sh starter "$RUNNER_TEMP/out/Lastbook-starter.zip" "$RUNNER_TEMP/out/starter-entry.json"
           gh release view "$TAG" --repo "$REPO" --json isDraft,assets --jq '"draft: \(.isDraft); files: \([.assets[].name] | join(", "))"'
+      - name: The data release's manifest, with this pack
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE: ${{ env.TAG }}
+          GH_REPO: ${{ github.repository }}
+        # setup checks the pack against the manifest's SHA-256: written now, so it names the new zip
+        run: packaging/data/write-manifest.sh "$GITHUB_STEP_SUMMARY"
