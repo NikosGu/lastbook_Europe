@@ -20,7 +20,7 @@ not have.
 | `derived/geo/buildings.sqlite` | `bldg`, `bldg_osm`, `meta` | Building outlines, and mapped heights for the 3D view | `tiles.rs` |
 | `derived/geo/terrain.sqlite` | `tile`, `meta` | Elevation tiles for relief, contours, elevation and the 3D view | `terrain.rs` |
 | `derived/geo/addresses/<REGION>.sqlite` | `addr`, `area`, `meta` | Street addresses (installed on its own; [ADDRESSES.md](ADDRESSES.md)) | `address/` |
-| `derived/geo/map.sqlite`, `crops.sqlite`, `aerial*.sqlite`, `library-data/geography/resources/atlas.sqlite` | | Layers of the original Lastbook that no European region has yet (a local street map, crops, aerial photos, resource records); `/api/map/aerial` answers 204 without them | |
+| `derived/geo/map.sqlite`, `aerial*.sqlite` | | Layers of the original Lastbook that no European region has yet (a local street map, aerial photos); `/api/map/aerial` answers 204 without them | |
 
 Zoomed-out vector tiles (zoom 9 and below) are kept in `derived/geo/tilecache/<data version>/` once the map is complete;
 that cache is the only thing the map writes.
@@ -76,8 +76,8 @@ Muenchen, Łódź and Lodz; `map::text::fold` and `loose`, described in [ADDRESS
 
 Older files without a `key` column are still searched, by every way a word may be written in them.
 
-Resource details are metric: `area_ha` (and `region`, `country`); records carrying US fields (`area_acres`,
-`normal_storage_af`) are converted when shown.
+Resource details are metric: `area_ha` (and `region`, `country`). The pins, the "Nearest" panel and a record's card
+say its area; the place finder says where it is.
 
 ## Building a region
 

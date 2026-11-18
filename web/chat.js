@@ -63,11 +63,8 @@ const Chat = (() => {
     nursing_home: 'chat.src.kind.nursing_home', fuel: 'chat.src.kind.fuel', car_repair: 'chat.src.kind.car_repair',
     bicycle_shop: 'chat.src.kind.bicycle_shop', wastewater_plant: 'chat.src.kind.wastewater_plant', comms_tower: 'chat.src.kind.comms_tower',
     park: 'chat.src.kind.park', courthouse: 'chat.src.kind.courthouse', college: 'chat.src.kind.college', university: 'chat.src.kind.university',
-    kindergarten: 'chat.src.kind.kindergarten', beach: 'chat.src.kind.beach', embassy: 'chat.src.kind.embassy', mineral: 'chat.src.kind.mineral',
-    oil_gas_well: 'chat.src.kind.oil_gas_well', boat_launch: 'chat.src.kind.boat_launch', fish_stocking: 'chat.src.kind.fish_stocking',
-    dam: 'chat.src.kind.dam', reservoir: 'chat.src.kind.reservoir', lake: 'chat.src.kind.lake', pond: 'chat.src.kind.pond',
-    orchard: 'chat.src.kind.orchard', vineyard: 'chat.src.kind.vineyard', berries: 'chat.src.kind.berries',
-    perennial_veg: 'chat.src.kind.perennial_veg' };
+    kindergarten: 'chat.src.kind.kindergarten', beach: 'chat.src.kind.beach', embassy: 'chat.src.kind.embassy',
+    dam: 'chat.src.kind.dam', reservoir: 'chat.src.kind.reservoir', lake: 'chat.src.kind.lake', pond: 'chat.src.kind.pond' };
   function mapSource(s) {
     const p = s.params && typeof s.params === 'object' ? s.params : {}, text = v => typeof v === 'string' ? v : '';
     const M = typeof MapView === 'object' && MapView && MapView.dirName ? MapView : null;

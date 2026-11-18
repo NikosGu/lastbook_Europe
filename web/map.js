@@ -37,55 +37,31 @@ const MapView = (() => {
     ['drugstore', 'map.layer.drugstore', 'Dr', '#8e5572', 'chemist', 'supply'],   // shop=chemist: dm, Rossmann, Müller. No prescription medicines, so not under the cross
     ['fuel', 'map.layer.fuel', 'G', '#37474f', 'fuel', 'supply'],
     ['camp', 'map.layer.camp', '▲', '#558b2f', 'camp_site', 'supply'],
-    ['orchard', 'map.layer.orchard', '♣', '#3f7a2a', 'orchard', 'food'],
-    ['vineyard', 'map.layer.vineyard', '✽', '#6a2c8f', 'vineyard', 'food'],
-    ['berries', 'map.layer.berries', '✿', '#3949ab', 'berries,perennial_veg', 'food'],
-    ['fish', 'map.layer.fish', 'Fi', '#007d9c', 'fish_stocking', 'resource'],
-    ['boat', 'map.layer.boat', 'B', '#176d43', 'boat_launch', 'resource'],
-    ['mineral', 'map.layer.mineral', 'M', '#8b5429', 'mineral', 'resource'],
-    ['well', 'map.layer.well', 'O', '#633ca6', 'oil_gas_well', 'resource'],
   ].map(([id, key, sym, col, cls, group]) => ({ id, key, sym, col, cls: cls.split(','), group }));
-  const GROUPS = [['help', 'map.group.help'], ['water', 'map.group.water'], ['supply', 'map.group.supply'], ['food', 'map.group.food'], ['resource', 'map.group.resource']];
+  const GROUPS = [['help', 'map.group.help'], ['water', 'map.group.water'], ['supply', 'map.group.supply']];
   const BY_CLS = {}; for (const l of LAYERS) for (const c of l.cls) BY_CLS[c] = l;
-  const DEFAULT_LAYERS = ['hospital', 'clinic', 'pharmacy', 'fire', 'police', 'shelter', 'water', 'reservoir', 'fish', 'boat'];
+  const DEFAULT_LAYERS = ['hospital', 'clinic', 'pharmacy', 'fire', 'police', 'shelter', 'water', 'reservoir'];
   // Quick choices in the Layers panel: id, name, layers
-  const PRESETS = [['emergency', 'map.preset.emergency', ['hospital', 'clinic', 'dentist', 'pharmacy', 'fire', 'police', 'shelter', 'community']], ['water', 'map.preset.water', ['water', 'spring', 'reservoir', 'pond', 'dam', 'fish', 'boat']],
-    ['supplies', 'map.preset.supplies', ['food', 'drugstore', 'hardware', 'fuel', 'camp']], ['food', 'map.preset.food', ['orchard', 'vineyard', 'berries']], ['resources', 'map.preset.resources', ['fish', 'boat', 'mineral', 'well']], ['all', 'map.preset.all', LAYERS.map(l => l.id)]];
-  const LEGACY = { all_resources: ['fish', 'boat', 'mineral', 'well'], mineral: ['mineral'], oil_gas_well: ['well'], fish_stocking: ['fish'], boat_launch: ['boat'] };
-  // A record's fields, by the names its source gives them. (A field named year is the crop map's year: the dams' "Built" year was
-  // listed first under the same name, and never shown.)
-  const FIELD = { commod1: 'map.field.commodity', commod2: 'map.field.also', commod3: 'map.field.also', ore: 'map.field.ore', dev_stat: 'map.field.dev_stat', oper_type: 'map.field.operation', yr_lst_prd: 'map.field.last_production',
-    county: 'map.field.district', state: 'map.field.region', WellTypeLabel: 'map.field.well_type', WellStatus: 'map.field.well_status', FieldName: 'map.field.oil_field', API: 'map.field.well_id', CountyName: 'map.field.district',
-    FishType: 'map.field.fish', Counties: 'map.field.district', WeekOfPlantStart: 'map.field.stocked_week', Water_Body: 'map.field.water', Facility_Type: 'map.field.facility', County: 'map.field.district', Owner: 'map.field.owner',
-    other_names: 'map.field.other_names', purpose: 'map.field.purpose', purposes: 'map.field.purposes', river: 'map.field.river', city: 'map.field.nearest_town', owner: 'map.field.owner',
-    normal_storage_af: 'map.field.normal_storage', max_storage_af: 'map.field.max_storage', surface_acres: 'map.field.surface', height_ft: 'map.field.height',
-    dam_type: 'map.field.dam_type', hazard: 'map.field.hazard', condition: 'map.field.condition', status: 'map.field.status', area_acres: 'map.field.area', water_type: 'map.field.water_present',
-    reservoir_type: 'map.field.reservoir_type', crop: 'map.field.crop', crop_acres: 'map.field.crop_area', perennial_acres: 'map.field.perennial_area', year: 'map.field.crop_year',
-    FUEL_SALES: 'map.field.fuel_sales', NO_OF_RAMP_LANE_USE_ONE_TIME: 'map.field.ramp_lanes', FISH_CLEANING: 'map.field.fish_cleaning', Comments: 'map.field.notes', Website: 'map.field.website' };
-  // Fields a source records in US units, shown in metric: [factor, decimals]. Acre-feet to m³, acres to hectares, feet to metres.
-  const METRIC = { normal_storage_af: [1233.48, 0], max_storage_af: [1233.48, 0], surface_acres: [0.404686, 1], area_acres: [0.404686, 1], crop_acres: [0.404686, 1], perennial_acres: [0.404686, 1], height_ft: [0.3048, 1] };
-  const fieldValue = (k, v) => { const m = METRIC[k], n = Number(String(v).replace(/,/g, '')); return m && String(v).trim() !== '' && isFinite(n) ? I18N.num(n * m[0], { maximumFractionDigits: m[1] }) : v };
-  const CAVEAT = { mineral: 'map.caveat.mineral', oil_gas_well: 'map.caveat.well', fish_stocking: 'map.caveat.fish', boat_launch: 'map.caveat.boat', dam: 'map.caveat.dam',
-    reservoir: 'map.caveat.surface_water', lake: 'map.caveat.surface_water',
-    orchard: 'map.caveat.crops', vineyard: 'map.caveat.crops', berries: 'map.caveat.crops', perennial_veg: 'map.caveat.crops',
+  const PRESETS = [['emergency', 'map.preset.emergency', ['hospital', 'clinic', 'dentist', 'pharmacy', 'fire', 'police', 'shelter', 'community']], ['water', 'map.preset.water', ['water', 'spring', 'reservoir', 'pond', 'dam']],
+    ['supplies', 'map.preset.supplies', ['food', 'drugstore', 'hardware', 'fuel', 'camp']], ['all', 'map.preset.all', LAYERS.map(l => l.id)]];
+  // A warning under a place's details, by the server's class
+  const CAVEAT = { dam: 'map.caveat.dam', reservoir: 'map.caveat.surface_water', lake: 'map.caveat.surface_water',
     pond: 'map.caveat.pond', spring: 'map.caveat.spring', drinking_water: 'map.caveat.tap' };
   // A place with no name, said whole in each language ("Unnamed hospital"): by the server's class
   const UNNAMED = { hospital: 'map.unnamed.hospital', clinic: 'map.unnamed.clinic', doctors: 'map.unnamed.doctors', dentist: 'map.unnamed.dentist', pharmacy: 'map.unnamed.pharmacy', chemist: 'map.unnamed.chemist',
     fire_station: 'map.unnamed.fire_station', police: 'map.unnamed.police', shelter: 'map.unnamed.shelter', community_centre: 'map.unnamed.community_centre', town_hall: 'map.unnamed.town_hall', library: 'map.unnamed.library',
     drinking_water: 'map.unnamed.drinking_water', reservoir: 'map.unnamed.reservoir', lake: 'map.unnamed.lake', pond: 'map.unnamed.pond', dam: 'map.unnamed.dam', spring: 'map.unnamed.spring',
-    supermarket: 'map.unnamed.supermarket', convenience: 'map.unnamed.convenience', hardware: 'map.unnamed.hardware', doityourself: 'map.unnamed.hardware', fuel: 'map.unnamed.fuel', camp_site: 'map.unnamed.camp_site',
-    orchard: 'map.unnamed.orchard', vineyard: 'map.unnamed.vineyard', berries: 'map.unnamed.berries', perennial_veg: 'map.unnamed.perennial_veg',
-    fish_stocking: 'map.unnamed.fish_stocking', boat_launch: 'map.unnamed.boat_launch', mineral: 'map.unnamed.mineral', oil_gas_well: 'map.unnamed.oil_gas_well' };
+    supermarket: 'map.unnamed.supermarket', convenience: 'map.unnamed.convenience', hardware: 'map.unnamed.hardware', doityourself: 'map.unnamed.hardware', fuel: 'map.unnamed.fuel', camp_site: 'map.unnamed.camp_site' };
   // The server's direction from the map's centre ("north-east"), with the words each language puts before it
   const DIR = { north: 'map.dir.north', 'north-east': 'map.dir.north_east', east: 'map.dir.east', 'south-east': 'map.dir.south_east', south: 'map.dir.south', 'south-west': 'map.dir.south_west', west: 'map.dir.west', 'north-west': 'map.dir.north_west' };
   // "What this map covers": each row's code (crates/engine/src/map/info.rs CODES) → its label, and → its status. A row whose code
   // this page does not know shows the engine's English label and status.
   const INFO_LABEL = { base: 'map.info.base', streets_detail: 'map.info.streets_detail', streets_whole: 'map.info.streets_whole', no_detail: 'map.info.no_detail',
     places: 'map.info.places', addresses: 'map.info.addresses', elevation_contours: 'map.info.elevation_contours', elevation_broad: 'map.info.elevation_broad',
-    buildings_detail: 'map.info.buildings_detail', buildings_whole: 'map.info.buildings_whole', crops_detail: 'map.info.crops_detail', crops_whole: 'map.info.crops_whole' };
+    buildings_detail: 'map.info.buildings_detail', buildings_whole: 'map.info.buildings_whole' };
   const INFO_STATUS = { base: 'map.info.base_status', streets_detail: 'map.info.streets_detail_status', streets_whole: 'map.info.streets_whole_status', no_detail: 'map.info.no_detail_status',
     places: 'map.info.places_status', addresses: 'map.info.addresses_status', elevation_contours: 'map.info.elevation_contours_status', elevation_broad: 'map.info.elevation_broad_status',
-    buildings_detail: 'map.info.buildings_detail_status', buildings_whole: 'map.info.buildings_whole_status', crops_detail: 'map.info.crops_detail_status', crops_whole: 'map.info.crops_whole_status' };
+    buildings_detail: 'map.info.buildings_detail_status', buildings_whole: 'map.info.buildings_whole_status' };
   // A place's kind: by the address search's code (crates/engine/src/map/address KIND_CODES, kind_code), else by the kind the place
   // files give, lowercased (places.sqlite: city, town, village…; the water file: Lake, Reservoir, Dam, Pond, Water). Another kind shows as it comes.
   const KIND = { street_address: 'map.kind.street_address', street: 'map.kind.street', postcode: 'map.kind.postcode', town: 'map.kind.town', city: 'map.kind.city',
@@ -102,10 +78,8 @@ const MapView = (() => {
     bicycle_shop: 'map.kind.bicycle_shop', car_repair: 'map.kind.car_repair', fuel: 'map.kind.fuel', camp_site: 'map.kind.camp_site' };
   // The line under a lake's or dam's name, after where it is: each part's code (crates/engine/src/map/places.rs PLACE_CODES) → its words
   const PLACE_PART = { also_called: 'map.place.also_called', km_away: 'map.place.km_away', nearby: 'map.place.nearby' };
-  // A resource's line (crates/engine/src/map/pins.rs SUMMARY_CODES): its area, NOT drinking water, a crop's area in its block, what it
-  // stores, a historical stocking record. A part with no code is the record's own word, shown as it comes.
-  const PIN_PART = { area_ha: 'map.pin.area_ha', not_drinking_water: 'map.pin.not_drinking_water', crop_block_ha: 'map.pin.crop_block_ha',
-    stored_m3: 'map.pin.stored_m3', stocking_record: 'map.pin.stocking_record' };
+  // A resource's line (crates/engine/src/map/pins.rs SUMMARY_CODES): a lake's, reservoir's or pond's area
+  const PIN_PART = { area_ha: 'map.pin.area_ha' };
   // The credits under the map (crates/engine/src/map/info.rs CREDIT_CODES): OpenStreetMap in the interface's language, any other source
   // by the name its file gives. The outline of the world this page draws itself (world-context.json, geographic-context.json) is
   // Natural Earth's, so that credit is always there.
@@ -126,7 +100,7 @@ const MapView = (() => {
   const sym = (l, size = 22) => `<i class="msym" style="background:${l.col};width:${size}px;height:${size}px">${escH(l.sym)}</i>`;
   const layerOf = cls => BY_CLS[cls] || { sym: '•', col: '#555', name: cls };
   const lname = l => l.key ? t(l.key) : l.name || '';   // a layer's name in the interface's language (a class the layers do not know keeps its own)
-  const unnamed = p => p.name || p.detail?.reservoir_type || t(UNNAMED[p.cls] || 'map.unnamed.place');
+  const unnamed = p => p.name || t(UNNAMED[p.cls] || 'map.unnamed.place');
   // One row of "What this map covers" in the interface's language: the source a map file names after the label; the regions of the
   // address search as the setup page names them, a country by Intl, a part of one by its own name (Bayern, Lombardia).
   function covers(d) {
@@ -182,7 +156,6 @@ const MapView = (() => {
     const home = load('mapHome', HOME);
     const lat = parseFloat(q.get('lat')), lon = parseFloat(q.get('lon')), z = parseFloat(q.get('z'));
     let on = (q.get('layers') || '').split(',').filter(id => LAYERS.some(l => l.id === id));
-    if (!on.length && LEGACY[q.get('kind')]) on = LEGACY[q.get('kind')];
     if (!on.length) on = (load('mapLayers', DEFAULT_LAYERS) || []).filter(id => LAYERS.some(l => l.id === id));  // drop retired layers (e.g. toilets)
     if (!on.length) on = DEFAULT_LAYERS;
     main.classList.add('map-page');
@@ -275,7 +248,7 @@ const MapView = (() => {
       st.national = info.national; st.ver = info.version; st.aerialDetail = info.aerial_detail; st.aerialRev = info.aerial_rev; st.terrainCircle = info.terrain_circle;
       own(info); describe(info); if (openWhole) fit(wholeMap(), 0.92, true); coverage(); draw();
       $('mdata').innerHTML = info.datasets.map(d => { const c = covers(d); return `<li class="row" style="display:block"><b>${escH(c.label)}</b><span class="muted">${escH(c.status)}</span>${d.bytes ? ` · ${I18N.unit(d.bytes / 1073741824, 'gigabyte', 1)}` : ''}</li>` }).join('') +
-        (st.have && !st.have.size ? '' : `<li class="row small muted" style="display:block">${st.have ? '' : th('map.not_drawn') + ' '}${th('map.records_note')}</li>`);
+        (st.have ? '' : `<li class="row small muted" style="display:block">${th('map.not_drawn')}</li>`);
     }).catch(() => { $('mdata').innerHTML = `<li class="muted">${th('map.details_unavailable')}</li>`; if (openWhole && st) fit(EUROPE, 0.92, true) });
     // When map data changes (national build, water import), quietly refresh visible tiles; old tiles stay up until new ones arrive.
     st.nationalTimer = setInterval(async () => {
@@ -343,8 +316,7 @@ const MapView = (() => {
       <fieldset class="style"><legend>${th('map.style.legend')}</legend>
         ${st.noAerial ? '' : `<label><input type="checkbox" data-style="aerial"${st.style.aerial ? ' checked' : ''}><i class="msym style-ico">🛰</i><span>${th('map.aerial')}</span></label>`}
         <label><input type="checkbox" data-style="relief"${st.style.relief ? ' checked' : ''}><i class="msym style-ico">⛰</i><span>${th('map.style.relief')}</span></label>
-        ${st.noContours ? '' : `<label><input type="checkbox" data-style="contours"${st.style.contours ? ' checked' : ''}><i class="msym style-ico">〰</i><span>${th('map.style.contours')}</span></label>`}
-        ${st.have && !st.have.has('orchard') ? '' : `<label><input type="checkbox" data-style="crops"${st.style.crops !== false ? ' checked' : ''}><i class="msym style-ico" style="background:#3f7a2a">♣</i><span>${th('map.style.crops')}</span></label>`}</fieldset>
+        ${st.noContours ? '' : `<label><input type="checkbox" data-style="contours"${st.style.contours ? ' checked' : ''}><i class="msym style-ico">〰</i><span>${th('map.style.contours')}</span></label>`}</fieldset>
       ${GROUPS.filter(([g]) => LAYERS.some(l => l.group === g && offered(l))).map(([g, gk]) => `<fieldset><legend>${th(gk)}</legend>${LAYERS.filter(l => l.group === g && offered(l)).map(l => `<label class="ly"><input type="checkbox" value="${l.id}"${st.on.has(l.id) ? ' checked' : ''}>${sym(l, 20)}<span>${escH(lname(l))}</span><small>${st.on.has(l.id) ? I18N.num(counts[l.id] || 0) : ''}</small></label>`).join('')}</fieldset>`).join('')}
       ${st.have && !st.have.size ? '' : `<p class="small muted" style="margin:6px 2px 0">${th('map.layers_numbers')}</p>`}`;
     box.querySelector('.x').onclick = () => { box.hidden = true; $('layers-btn').setAttribute('aria-expanded', 'false') };
@@ -370,7 +342,7 @@ const MapView = (() => {
     cv.addEventListener('pointerleave', () => { if (!pts.size) { hideTip(); $('melev').hidden = true } });
     cv.addEventListener('wheel', e => { e.preventDefault(); hideTip(); zoomAt(-e.deltaY / (e.deltaMode ? 3 : (e.ctrlKey ? 100 : 300)), e.offsetX, e.offsetY, true); clearTimeout(st.wt); st.wt = setTimeout(settle, 250) }, { passive: false });
     // touch taps are a little forgiving: up to 10px of finger wobble still counts as a tap
-    cv.addEventListener('click', e => { if (!st || travel > (e.pointerType === 'mouse' ? 4 : 10)) return; $('pres').hidden = true; if (!$('layers').hidden) { $('layers').hidden = true; $('layers-btn').setAttribute('aria-expanded', 'false') } const hit = hitAt(e.offsetX, e.offsetY, e.pointerType !== 'mouse'); if (hit) activate(hit); else if (!identifyCrop(e.offsetX, e.offsetY) && !$('card').hidden) closeCard() });
+    cv.addEventListener('click', e => { if (!st || travel > (e.pointerType === 'mouse' ? 4 : 10)) return; $('pres').hidden = true; if (!$('layers').hidden) { $('layers').hidden = true; $('layers-btn').setAttribute('aria-expanded', 'false') } const hit = hitAt(e.offsetX, e.offsetY, e.pointerType !== 'mouse'); if (hit) activate(hit); else if (!$('card').hidden) closeCard() });
     cv.addEventListener('dblclick', e => { if (!hitAt(e.offsetX, e.offsetY)) zoomAt(1, e.offsetX, e.offsetY) });
     cv.addEventListener('keydown', e => {
       const k = e.key, s = 100;
@@ -380,22 +352,6 @@ const MapView = (() => {
     });
     function spread() { const [a, b] = [...pts.values()]; return Math.hypot(a.x - b.x, a.y - b.y) || 1 }
     function mid() { const [a, b] = [...pts.values()]; return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 } }
-  }
-  const CROP_RGB = {"Almonds":[150,100,50],"Walnuts":[120,80,40],"Pecans":[135,90,45],"Pistachios":[140,160,60],"Cherries":[190,30,60],"Peaches":[240,140,90],"Apples":[200,40,40],"Pears":[170,190,60],"Prunes":[110,50,120],"Nectarines":[240,120,70],"Plums":[130,40,110],"Apricots":[245,160,50],"Pomegranates":[180,30,50],"Avocados":[70,120,40],"Olives":[110,120,50],"Other tree crops":[90,150,70],"Citrus":[250,160,20],"Oranges":[255,140,0],"Grapes":[120,50,150],"Blueberries":[60,70,180],"Cranberries":[170,20,50],"Caneberries":[150,30,90],"Asparagus":[90,160,90]};  // overlay colours, as the crop map is drawn
-  // Clicking a coloured orchard / vineyard patch opens the crop block under it.
-  function identifyCrop(x, y) {
-    if (st.style.crops === false || st.z < 11) return false;
-    const tz = Math.min(13, Math.floor(st.z + 0.01)), w = st.cv.clientWidth, h = st.cv.clientHeight;
-    const fx = lon2x(st.lon, tz) + (x - w / 2) / 256 / 2 ** (st.z - tz), fy = lat2y(st.lat, tz) + (y - h / 2) / 256 / 2 ** (st.z - tz);
-    const img = st.crops?.get(tileKey(tz, Math.floor(fx), Math.floor(fy))); if (!img) return false;
-    const c = document.createElement('canvas'); c.width = c.height = 1; const g = c.getContext('2d');
-    g.drawImage(img, Math.floor((fx % 1) * 256), Math.floor((fy % 1) * 256), 1, 1, 0, 0, 1, 1);
-    const px = g.getImageData(0, 0, 1, 1).data; if (px[3] < 40) return false;
-    const crop = Object.entries(CROP_RGB).sort((a, b) => Math.hypot(...a[1].map((v, i) => v - px[i])) - Math.hypot(...b[1].map((v, i) => v - px[i])))[0][0];
-    const lon = x2lon(fx, tz), lat = y2lat(fy, tz), d = 0.006, state = st;
-    fetch('/api/map/members?' + new URLSearchParams({ west: lon - d, south: lat - d, east: lon + d, north: lat + d, lat, lon, kinds: 'orchard,vineyard,berries,perennial_veg' }))
-      .then(r => r.json()).then(r => { const m = r.items?.find(i => i.detail?.crop === crop) || r.items?.[0]; if (st === state && m) showDetail(m) }).catch(() => { });
-    return true;
   }
   function cursorElev(x, y) {
     const el = $('melev'); if (!el) return;
@@ -548,7 +504,6 @@ const MapView = (() => {
       }
     }
     st.loading = loading;
-    if (st.style.crops !== false) cropLayer(g, V);
     if (!st.style.aerial) terrainLayer(g, V);
     else if (st.style.contours) terrainLayer(g, V, true);
     labels.sort((a, b) => a.pri - b.pri);
@@ -590,7 +545,7 @@ const MapView = (() => {
         g.beginPath(); g.arc(p.sx, p.sy, p.r, 0, 7); g.fillStyle = l.col; g.fill(); g.shadowColor = 'transparent';
         g.lineWidth = 2; g.strokeStyle = '#fff'; g.stroke();
         g.fillStyle = '#fff'; g.font = `700 ${l.sym.length > 1 ? 9 : 11}px -apple-system,Segoe UI,sans-serif`; g.fillText(l.sym, p.sx, p.sy + 0.5);
-        const badge = p.spot ? p.count : p.records > 1 ? p.records : 0;  // several records at one spot (e.g. repeated stocking)
+        const badge = p.spot ? p.count : p.records > 1 ? p.records : 0;  // several records at one spot
         if (badge) { g.beginPath(); g.arc(p.sx + 9, p.sy - 9, 7.5, 0, 7); g.fillStyle = '#263238'; g.fill(); g.fillStyle = '#fff'; g.font = '700 9px -apple-system,sans-serif'; g.fillText(badge > 99 ? '99+' : badge, p.sx + 9, p.sy - 8.5) }
         p.labelWidth = 0;
         if (st.z >= 15 && p.name && p.count === 1) {
@@ -804,25 +759,6 @@ const MapView = (() => {
     }
     g.restore();
   }
-  // Orchard / vineyard colour overlay (/api/map/crops/z/x/y.png, zoom 7-13)
-  function cropLayer(g, V) {
-    if (st.z < 7) return;
-    const tz = Math.min(13, Math.floor(st.z + 0.01)), ts = 256 * 2 ** (st.z - tz), cx = lon2x(st.lon, tz), cy = lat2y(st.lat, tz), w = V.w, h = V.h;
-    const x0 = Math.floor(cx - w / 2 / ts), x1 = Math.floor(cx + w / 2 / ts), y0 = Math.max(0, Math.floor(cy - h / 2 / ts)), y1 = Math.min(2 ** tz - 1, Math.floor(cy + h / 2 / ts));
-    st.crops = st.crops || new Map();
-    g.save(); g.imageSmoothingEnabled = st.z < 13; g.globalAlpha = 0.75;
-    for (let ty = y0; ty <= y1; ty++) for (let tx = x0; tx <= x1; tx++) {
-      const k = tileKey(tz, tx, ty); let t = st.crops.get(k);
-      if (t === undefined) {
-        st.crops.set(k, null); const state = st;
-        fetch(`/api/map/crops/${k}.png${st.ver ? '?v=' + st.ver : ''}`).then(r => r.status === 200 ? r.blob() : null).then(b => b && createImageBitmap(b))
-          .then(img => { if (st === state && img) { st.crops.set(k, img); if (st.crops.size > 300) st.crops.delete(st.crops.keys().next().value); draw() } }).catch(() => { });
-        continue;
-      }
-      if (t) g.drawImage(t, w / 2 + (tx - cx) * ts, h / 2 + (ty - cy) * ts, ts + 0.5, ts + 0.5);
-    }
-    g.restore();
-  }
   // Height (m) at a point from the most detailed loaded tile, or null. With load=true, fetches the most detailed tile.
   function elevAt(lat, lon, load) {
     const top = tzMax(lat, lon);
@@ -878,16 +814,12 @@ const MapView = (() => {
     el.querySelector('[data-a=zoom]')?.addEventListener('click', () => { go(p.lat, p.lon, Math.max(st.z, 16)); reveal(p.lat, p.lon) });
   }
   function showDetail(p, back) {
-    const l = layerOf(p.cls), detail = p.detail || {};
+    const l = layerOf(p.cls);
     st.sel = { lat: p.lat, lon: p.lon, cls: p.cls }; draw();
-    const rows = Object.entries(detail).filter(([k, v]) => FIELD[k] && v != null && String(v).trim() !== '' && !(k === 'commod2' && v === detail.commod1))
-      .map(([k, v]) => `<tr><th>${th(FIELD[k])}</th><td>${escH(fieldValue(k, v))}</td></tr>`).join('');
-    const notWater = detail.not_drinking_water ? `<p class="caveat"><b>${th('map.caveat.not_water_head')}</b> ${th('map.caveat.not_water', { kind: detail.reservoir_type ? String(detail.reservoir_type).toLowerCase() : t('map.caveat.waste_pond') })}</p>` : '';
-    const tailings = /tailings/i.test(detail.purposes || '') ? `<p class="caveat"><b>${th('map.caveat.tailings_head')}</b> ${th('map.caveat.tailings')}</p>` : '';
     const summary = summaryOf(p.summary_parts, p.summary);
     const el = openCard(`${back ? `<button class="back">← ${escH(back.title)}</button>` : ''}<div class="kind">${sym(l, 20)}${escH(lname(l))}</div><h3>${escH(unnamed(p))}</h3>
       ${p.records > 1 ? `<p class="muted small">${th('map.card.source_records', { n: p.records })}</p>` : ''}
-      ${rows ? `<table>${rows}</table>` : summary ? `<p>${escH(summary)}</p>` : ''}${notWater}${tailings}${CAVEAT[p.cls] && !detail.not_drinking_water ? `<p class="caveat">${th(CAVEAT[p.cls])}</p>` : ''}${coordsBlock(p)}
+      ${summary ? `<p>${escH(summary)}</p>` : ''}${CAVEAT[p.cls] ? `<p class="caveat">${th(CAVEAT[p.cls])}</p>` : ''}${coordsBlock(p)}
       <div class="acts"><button data-a="zoom">${th('map.card.zoom_here')}</button><button data-a="copy">${th('map.card.copy')}</button></div>`);   // no web links: the words stay, the addresses go
     if (back) el.querySelector('.back').onclick = () => showMembers(back.p);
     wireCoords(p); reveal(p.lat, p.lon);
@@ -908,7 +840,7 @@ const MapView = (() => {
       const head = p.spot && names.size === 1 && items[0]?.name ? items[0].name : title;
       const el = openCard(`<div class="kind">${sym(layerOf(p.cls), 20)}${kind}</div><h3>${escH(head)}</h3>${breakdown(p)}
         <p class="muted small">${r.total > items.length ? th('map.card.showing_nearest', { n: items.length, total: I18N.num(r.total) + (r.capped ? '+' : '') }) : th('map.card.n_records', { n: items.length })}</p>
-        <div class="members">${items.map((m, i) => `<button data-i="${i}">${sym(layerOf(m.cls), 20)}<span><b>${escH(unnamed(m))}</b><small>${escH([summaryOf(m.summary_parts, m.summary) || lname(layerOf(m.cls)), m.detail?.WeekOfPlantStart ? t('map.card.stocked', { week: String(m.detail.WeekOfPlantStart) }) : ''].filter(Boolean).join(' · '))}</small></span></button>`).join('')}</div>
+        <div class="members">${items.map((m, i) => `<button data-i="${i}">${sym(layerOf(m.cls), 20)}<span><b>${escH(unnamed(m))}</b><small>${escH(summaryOf(m.summary_parts, m.summary) || lname(layerOf(m.cls)))}</small></span></button>`).join('')}</div>
         <div class="acts"><button data-a="zoom">${th('map.card.zoom_here')}</button></div>`);
       el.querySelectorAll('.members button').forEach(bt => bt.onclick = () => showDetail(items[+bt.dataset.i], { title, p }));
       el.querySelector('[data-a=zoom]').onclick = () => fit(b);
