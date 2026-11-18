@@ -5,6 +5,73 @@
  "address_indexes": [],
  "models": [
   {
+   "id": "qwen3.5-4b-q4",
+   "title": "Qwen3.5 4B",
+   "file": "Qwen_Qwen3.5-4B-Q4_K_M.gguf",
+   "url": "https://huggingface.co/bartowski/Qwen_Qwen3.5-4B-GGUF/resolve/main/Qwen_Qwen3.5-4B-Q4_K_M.gguf",
+   "size": 3013027808,
+   "sha256": "13c16f426047e2de38cd075bdade4a7bcbc8c774384876f677740cda65f8a983",
+   "memory_bytes": 4500000000,
+   "available": true,
+   "family": "qwen35",
+   "params": "4B",
+   "ctx": 16384,
+   "languages": [
+    "en",
+    "it",
+    "de",
+    "fr",
+    "es",
+    "pl"
+   ],
+   "summary": "Small and quick: for a computer with 8 GB of memory. Short answers; check what it says against the pages it cites."
+  },
+  {
+   "id": "qwen3.5-9b-q4",
+   "title": "Qwen3.5 9B",
+   "file": "Qwen_Qwen3.5-9B-Q4_K_M.gguf",
+   "url": "https://huggingface.co/bartowski/Qwen_Qwen3.5-9B-GGUF/resolve/main/Qwen_Qwen3.5-9B-Q4_K_M.gguf",
+   "size": 6169341984,
+   "sha256": "d784ce9eda1a5a7b51e8f705a9e6310844bf4f173654d115823c775fdea56d43",
+   "memory_bytes": 8000000000,
+   "available": true,
+   "family": "qwen35",
+   "params": "9B",
+   "ctx": 16384,
+   "languages": [
+    "en",
+    "it",
+    "de",
+    "fr",
+    "es",
+    "pl"
+   ],
+   "summary": "Balanced: for a computer with 16 GB of memory."
+  },
+  {
+   "id": "qwen3.6-35b-a3b-q4",
+   "title": "Qwen3.6 35B A3B (4-bit)",
+   "file": "Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf",
+   "url": "https://huggingface.co/bartowski/Qwen_Qwen3.6-35B-A3B-GGUF/resolve/main/Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf",
+   "size": 22285080192,
+   "sha256": "b46fedd33e0bfb0cae308aa3c158d0a4b2c4a1d2185a1ed6f093cdaf39064772",
+   "memory_bytes": 24500000000,
+   "available": true,
+   "family": "qwen35",
+   "params": "35B",
+   "active_params": "3B",
+   "ctx": 16384,
+   "languages": [
+    "en",
+    "it",
+    "de",
+    "fr",
+    "es",
+    "pl"
+   ],
+   "summary": "Large and still quick, a mixture of experts (256 experts, 8 used for each word): for a computer with 32 GB of memory."
+  },
+  {
    "id": "qwen3.6-35b-a3b-q8",
    "title": "Qwen3.6 35B A3B (8-bit)",
    "file": "Qwen_Qwen3.6-35B-A3B-Q8_0.gguf",
@@ -25,7 +92,7 @@
     "es",
     "pl"
    ],
-   "summary": "A mixture of experts: 256 experts, 8 used for each word. Larger than this computer's memory, it runs from the disk."
+   "summary": "The largest, a mixture of experts at 8 bits (256 experts, 8 used for each word): for a computer with 48 GB of memory or more. On a smaller one it can run from the disk, slowly."
   }
  ]
 }

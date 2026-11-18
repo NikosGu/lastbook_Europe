@@ -27,4 +27,4 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - run: cargo build --release --locked -p lastbook-tools
       - name: manifest-v1.json, from what the release holds now, into it
-        run: packaging/data/write-manifest.sh "$GITHUB_STEP_SUMMARY"
+        run: BRANCH="${GITHUB_REF_NAME}" packaging/data/write-manifest.sh "$GITHUB_STEP_SUMMARY"

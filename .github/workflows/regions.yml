@@ -258,7 +258,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         # setup offers a region once the manifest lists it: written now, not only at the end of the run
-        run: packaging/data/write-manifest.sh "$GITHUB_STEP_SUMMARY"
+        run: BRANCH="${GITHUB_REF_NAME}" packaging/data/write-manifest.sh "$GITHUB_STEP_SUMMARY"
       - name: What it made
         if: always()
         run: |

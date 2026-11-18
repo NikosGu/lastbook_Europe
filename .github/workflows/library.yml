@@ -89,4 +89,4 @@ jobs:
           RELEASE: ${{ env.TAG }}
           GH_REPO: ${{ github.repository }}
         # setup checks the pack against the manifest's SHA-256: written now, so it names the new zip
-        run: packaging/data/write-manifest.sh "$GITHUB_STEP_SUMMARY"
+        run: BRANCH="${GITHUB_REF_NAME}" packaging/data/write-manifest.sh "$GITHUB_STEP_SUMMARY"

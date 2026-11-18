@@ -5,10 +5,12 @@
 # whose zip is not in the release whole is left out). Setup reads this file to learn what it can install, so it is
 # written after every change to the release: by the Data manifest workflow, after each region, and after a library pack.
 #
-#   RELEASE=data-v1 GH_REPO=owner/repo [TOOLS=lastbook-tools] packaging/data/write-manifest.sh [SUMMARY_FILE]
+#   RELEASE=data-v1 GH_REPO=owner/repo [TOOLS=lastbook-tools] [BRANCH=name] packaging/data/write-manifest.sh [SUMMARY_FILE]
 #
-# Needs gh (with write access to the repository) and jq. The release is the one release with that tag, a draft or
-# published; anything else stops here.
+# The model catalogue is the branch's newest packaging/data/manifest-base.json (BRANCH, read through the GitHub API), so a
+# run started on an older commit does not put an older catalogue back; without BRANCH, or when it cannot be read, this
+# checkout's. Needs gh (with write access to the repository) and jq. The release is the one release with that tag, a
+# draft or published; anything else stops here.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 TOOLS="${TOOLS:-$ROOT/target/release/lastbook-tools}"
@@ -31,7 +33,13 @@ echo "$(wc -l < "$work/names.txt" | tr -d ' ') entries in $RELEASE"
 while read -r name; do
   gh release download "$RELEASE" --dir "$work/entries" --pattern "$name"
 done < "$work/names.txt"
-"$TOOLS" build-manifest --base "$ROOT/packaging/data/manifest-base.json" --entries "$work/entries" \
+base="$ROOT/packaging/data/manifest-base.json"
+if [ -n "${BRANCH:-}" ] && gh api "repos/$GH_REPO/contents/packaging/data/manifest-base.json?ref=$BRANCH" --jq .content 2>/dev/null | base64 -d > "$work/base.json" 2>/dev/null \
+   && jq -e '.version == 1 and (.models | type == "array")' "$work/base.json" >/dev/null 2>&1; then
+  base="$work/base.json"
+  echo "the model catalogue of $BRANCH"
+fi
+"$TOOLS" build-manifest --base "$base" --entries "$work/entries" \
   --assets "$work/assets.json" --out "$work/manifest-v1.json" > "$work/held.json"
 jq -r '"### manifest-v1.json",
        "- maps: \(.maps | length) (\(.maps | join(" ")))",
