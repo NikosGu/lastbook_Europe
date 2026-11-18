@@ -39,20 +39,24 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p "$RUNNER_TEMP/docs"
-          jq -r '.documents[] | select(.redistribute == "yes") | [.id, .file, .url] | @tsv' "$LIST" > "$RUNNER_TEMP/wanted.tsv"
+          jq -r '.documents[] | select(.redistribute == "yes") | [.id, .file, .url, (.bytes | tostring), .sha256] | @tsv' "$LIST" > "$RUNNER_TEMP/wanted.tsv"
           test -s "$RUNNER_TEMP/wanted.tsv"
-          while IFS=$'\t' read -r id file url; do
-            if curl -fsSL --retry 3 --retry-delay 10 -A "lastbook-tools/0.1 (offline library builder)" -o "$RUNNER_TEMP/docs/$file" "$url"; then
+          listed() { [ "$(stat -c %s "$1")" = "$2" ] && [ "$(sha256sum "$1" | cut -d' ' -f1)" = "$3" ]; }
+          while IFS=$'\t' read -r id file url bytes sum; do
+            doc="$RUNNER_TEMP/docs/$file"
+            if curl -fsSL --retry 3 --retry-delay 10 -A "lastbook-tools/0.1 (offline library builder)" -o "$doc" "$url" && listed "$doc" "$bytes" "$sum"; then
               echo "$id: from its publisher, $url"
-            else
-              # a publisher may turn GitHub's machines away, and that is respected: the document's terms let it be passed
-              # on, so this repository keeps a copy in the draft release sources-v1 (packaging/data/library-release.sh
-              # sources), checked below against the list like any download
-              rm -f "$RUNNER_TEMP/docs/$file"
-              echo "$id: $url turned this machine away; taken from this repository's copy in $SOURCES_TAG"
-              gh release download "$SOURCES_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$file" --dir "$RUNNER_TEMP/docs" \
-                || { echo "$id: not in $SOURCES_TAG either: nothing is uploaded" >&2; exit 1; }
+              continue
             fi
+            # A publisher may turn GitHub's machines away, and that is respected; or it may serve something other than
+            # the listed file (a web page changes from one request to the next). The document's terms let it be passed
+            # on, so this repository keeps the listed file in the draft release sources-v1 (packaging/data/library-release.sh
+            # sources), checked below against the list like any download.
+            if [ -s "$doc" ]; then why="served a file other than the one listed"; else why="turned this machine away"; fi
+            rm -f "$doc"
+            echo "$id: $url $why; taken from this repository's copy in $SOURCES_TAG"
+            gh release download "$SOURCES_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$file" --dir "$RUNNER_TEMP/docs" \
+              || { echo "$id: not in $SOURCES_TAG either: nothing is uploaded" >&2; exit 1; }
           done < "$RUNNER_TEMP/wanted.tsv"
           ls -l "$RUNNER_TEMP/docs"
       - name: Build the library (each document checked against its size and SHA-256)
