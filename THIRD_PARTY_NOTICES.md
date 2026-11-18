@@ -143,6 +143,8 @@ as `Cargo.lock` pins them. Each crate's licence is the one it declares; the full
 | markup5ever | 0.40.0 | MIT OR Apache-2.0 | https://github.com/servo/html5ever |
 | memchr | 2.8.3 | Unlicense OR MIT | https://github.com/BurntSushi/memchr |
 | memoffset | 0.9.1 | MIT | https://github.com/Gilnaa/memoffset |
+| minijinja | 3.1.0 | Apache-2.0 | https://github.com/mitsuhiko/minijinja |
+| minijinja-contrib | 3.1.0 | Apache-2.0 | https://github.com/mitsuhiko/minijinja |
 | miniz_oxide | 0.8.9 | MIT OR Zlib OR Apache-2.0 | https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide |
 | miniz_oxide | 0.9.1 | MIT OR Zlib OR Apache-2.0 | https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide |
 | ndk | 0.9.0 | MIT OR Apache-2.0 | https://github.com/rust-mobile/ndk |

@@ -47,6 +47,7 @@ html.plat-mac.in-app .s-top{padding-top:30px}   /* below the traffic lights of a
 .s-opt-in{display:grid;gap:4px;min-width:0;flex:1}
 @media (min-width:640px){.s-opt-in{grid-template-columns:1fr auto;column-gap:20px}.s-opt-in>.s-sizes{grid-column:2;grid-row:1/span 2;flex-direction:column;align-items:flex-end;align-self:center;margin:0;text-align:right}}
 .s-opt-h{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+@media (min-width:640px){.s-opt-in>.s-opt-h,.s-opt-in>small{grid-column:1}}   /* each line under the title in the first column, the sizes beside them */
 .s-opt-h b{font:650 19px/1.2 var(--display)}
 .s-opt small{font-size:15px;color:var(--ink2);line-height:1.38}
 .s-sizes{display:flex;flex-wrap:wrap;gap:2px 12px;margin-top:4px;font-size:15px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}

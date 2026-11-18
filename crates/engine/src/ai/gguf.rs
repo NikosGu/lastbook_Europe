@@ -13,6 +13,16 @@ pub struct Info {
     pub expert_count: u64,
     pub expert_used_count: u64,
     pub chat_template: Option<String>,
+    /// general.type: "model" for a model; "imatrix", "mmproj" (a vision projector) and the like are not one.
+    pub kind: String,
+    /// tokenizer.ggml.model: the tokenizer the file carries ("gpt2", "llama"…); empty without one.
+    pub tokenizer: String,
+    /// The texts of the beginning- and end-of-text tokens, as a chat template writes them (bos_token, eos_token).
+    pub bos_token: String,
+    pub eos_token: String,
+    /// tokenizer.ggml.add_bos_token: whether the tokenizer puts the beginning-of-text token first itself (as the runner
+    /// does when it is so); None when the file does not say.
+    pub add_bos: Option<bool>,
 }
 
 impl Info {
@@ -66,6 +76,7 @@ fn bad(what: &str) -> std::io::Error {
 enum V {
     Num(u64),
     Str(String),
+    Strs(Vec<String>),
     Other,
 }
 
@@ -80,7 +91,8 @@ fn fixed(t: u32) -> Option<u64> {
     }
 }
 
-fn value<T: Read>(r: &mut R<T>, t: u32) -> std::io::Result<V> {
+/// A value; a list of strings is kept only when `keep` (the tokenizer's tokens), else read past.
+fn value<T: Read>(r: &mut R<T>, t: u32, keep: bool) -> std::io::Result<V> {
     Ok(match t {
         0 | 7 => V::Num(r.bytes::<1>()?[0] as u64),
         1 => V::Num(r.bytes::<1>()?[0] as i8 as i64 as u64),
@@ -98,6 +110,13 @@ fn value<T: Read>(r: &mut R<T>, t: u32) -> std::io::Result<V> {
             match fixed(it) {
                 Some(size) => r.skip(size.checked_mul(n).ok_or_else(|| bad("an array too large"))?)?,
                 None if it == 8 => {
+                    if keep {
+                        let mut all = Vec::with_capacity(n.min(1 << 20) as usize);
+                        for _ in 0..n {
+                            all.push(r.string()?);
+                        }
+                        return Ok(V::Strs(all));
+                    }
                     for _ in 0..n {
                         r.string()?;
                     }
@@ -133,17 +152,25 @@ pub fn read(path: &Path) -> std::io::Result<Info> {
     }
     let mut info = Info::default();
     let mut nums: Vec<(String, u64)> = Vec::new();
+    let mut tokens: Vec<String> = Vec::new();
     for _ in 0..kv {
         let key = r.string()?;
         let t = r.u32()?;
-        match value(&mut r, t)? {
+        match value(&mut r, t, key == "tokenizer.ggml.tokens")? {
             V::Str(s) if key == "general.architecture" => info.arch = s,
             V::Str(s) if key == "general.name" => info.name = s,
+            V::Str(s) if key == "general.type" => info.kind = s,
+            V::Str(s) if key == "tokenizer.ggml.model" => info.tokenizer = s,
             V::Str(s) if key == "tokenizer.chat_template" => info.chat_template = Some(s),
+            V::Strs(all) => tokens = all,
             V::Num(n) => nums.push((key, n)),
             _ => {}
         }
     }
+    let token = |key: &str| nums.iter().find(|(k, _)| k == key).and_then(|(_, n)| tokens.get(*n as usize)).cloned().unwrap_or_default();
+    info.bos_token = token("tokenizer.ggml.bos_token_id");
+    info.add_bos = nums.iter().find(|(k, _)| k == "tokenizer.ggml.add_bos_token").map(|(_, n)| *n != 0);
+    info.eos_token = token("tokenizer.ggml.eos_token_id");
     let get = |suffix: &str| nums.iter().find(|(k, _)| *k == format!("{}.{suffix}", info.arch)).map(|(_, n)| *n).unwrap_or(0);
     info.block_count = get("block_count");
     info.context_length = get("context_length");

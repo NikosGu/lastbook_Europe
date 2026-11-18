@@ -29,6 +29,9 @@ pdfium-render = { version = "0.9", default-features = false, features = ["pdfium
 ruzstd = "0.9"
 lzma-rs = "0.3"
 flate2 = "1"
+# a model's own chat template (Jinja, as Hugging Face writes them), for a model of a family Lastbook does not prompt itself
+minijinja = { version = "3", features = ["loop_controls", "json"] }
+minijinja-contrib = { version = "3", features = ["pycompat"] }
 
 [target.'cfg(unix)'.dependencies]
 libc = "0.2"

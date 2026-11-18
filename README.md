@@ -106,12 +106,23 @@ says which kind each is, and downloads to the one chosen; the app then reads the
 
 ## The local AI
 
-The model is never part of the app. The person adds one in setup, or points setup at a GGUF model file already on the
-computer. Lastbook Europe knows each model it offers by name, size and SHA-256, and checks the file before using it.
+The model is never part of the app. In setup the person chooses one:
 
-**Which models.** Lastbook Europe prompts two families, telling them apart by the model file's own header: **Qwen 3.5 / 3.6**
-(including mixtures of experts such as Qwen3.6-35B-A3B) and **Gemma 4**. The answers cite the library in every
-language.
+- **A model to download**, from a catalogue of four, small to large: Qwen3.5 4B (3 GB, for computers with 8 GB of
+  memory), Qwen3.5 9B (6 GB, for 16 GB), Qwen3.6 35B A3B at 4 bits (22 GB, for 32 GB) and at 8 bits (38 GB, for 48 GB or
+  more). Setup says how each fits this computer and suggests the largest that fits. Lastbook Europe knows each by name,
+  size and SHA-256, and checks the file before using it.
+- **A model file already on the computer**, from any program: setup finds the GGUF files that LM Studio, Ollama, Jan,
+  GPT4All, llama.cpp and Hugging Face's cache downloaded, or that lie in Downloads, Documents, Desktop or a models folder,
+  and any other can be chosen by hand. It is used where it is, never copied.
+- **No local AI**: guides, search and reading work the same.
+
+**Which models.** Any model made for conversation: Lastbook Europe reads the model file's own header. Qwen 3.5 / 3.6
+(including mixtures of experts such as Qwen3.6-35B-A3B) and Gemma 4 are prompted in their own formats, with the
+library's tools (search, read pages, transcripts, places). Any other model whose file carries a chat template (Llama,
+Mistral, Phi, DeepSeek, Granite, older Qwen and Gemma…) is prompted through that template, as Hugging Face runs it; it
+gets the library's pages with the question instead of tools. A base model without a chat template, a reranker or an
+embedding model is refused, with the reason. The answers cite the library in every language.
 
 **Does it fit this computer?** Lastbook Europe asks llama.cpp to fit the model to this computer's memory, then gives one of
 three answers:

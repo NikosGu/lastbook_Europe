@@ -31,11 +31,12 @@ pub const LONGEST_INSIDE: usize = 190; // the longest file path inside LastbookD
 /// the person's language (web/locales: setup.code.<code>), with its params (sizes in params named *_bytes, names as
 /// strings); the English sentence stays beside them, for logs and for an interface that does not know the code. busy and
 /// not_done are answered with 409, no_space with 507, the rest with 400.
-pub const CODES: [&str; 28] = ["busy", "pack_unavailable", "no_ai_offered", "model_unavailable", "map_unavailable", "addresses_unavailable",
+pub const CODES: [&str; 31] = ["busy", "pack_unavailable", "no_ai_offered", "model_unavailable", "map_unavailable", "addresses_unavailable",
                                "choose_library", "nothing_to_add", "cannot_make_folder", "cannot_save_there", "too_deep", "not_library_there",
                                "no_space", "cannot_save_progress", "nothing_to_repair", "repair_unknown", "missing", "not_library",
                                "library_read_only", "wrong_size", "pack_not_in_version", "wrong_size_model", "unknown_file", "not_done",
-                               "no_ai_to_remove", "cannot_remove_model", "not_moved_aside", "not_old_library"];
+                               "no_ai_to_remove", "cannot_remove_model", "not_moved_aside", "not_old_library", "not_a_model", "unknown_model",
+                               "no_runtime"];
 
 /// Why setup suggests what it does (recommend.why_codes, a list of {code, params} beside the English recommend.why), each
 /// worded in web/locales as setup.rec.<code>. The local AI's own reasons (hardware::AI_CODES) can follow them.
@@ -72,6 +73,16 @@ pub trait AiHooks: Send + Sync {
     fn stop(&self, why: &str);
     /// Look for the model files again.
     fn rediscover(&self);
+    /// The model file the person chose, where it is, if the local AI uses one ({title, size, path}).
+    fn chosen_file(&self) -> Option<Value> {
+        None
+    }
+    /// Use a model file the person already has, where it is: Ok(what it is: title, size, family, tools, path), or
+    /// Err((code, English sentence)).
+    fn use_model_file(&self, path: &Path) -> Result<Value, (String, String)> {
+        let _ = path;
+        Err(("no_runtime".into(), "This copy of Lastbook Europe has no local AI runtime.".into()))
+    }
 }
 
 pub struct Options {
@@ -98,12 +109,16 @@ pub struct Options {
     /// The app's own folder for AI models on this computer: a model can live there instead of beside the library, which
     /// is the better place when the library is on a network share or an external disk.
     pub models_here: Option<PathBuf>,
+    /// The person's home folder, where other programs keep the model files they downloaded (model_files): setup offers
+    /// them. None: not looked for (tests).
+    pub model_files_home: Option<PathBuf>,
 }
 
 impl Options {
     pub fn new(mode: Mode, settings_dir: PathBuf, default_parent: PathBuf, current: Option<PathBuf>) -> Options {
         Options { mode, settings_dir, default_parent, current, manifest: Manifest::product(), allow: Allow::Product, tls: None, default_why: None,
-                  on_finish: None, pick_folder: None, look_for_libraries: None, ai: None, backoff: None, windows_paths: cfg!(windows), disk_space: None, missing: None, models_here: None }
+                  on_finish: None, pick_folder: None, look_for_libraries: None, ai: None, backoff: None, windows_paths: cfg!(windows), disk_space: None, missing: None, models_here: None,
+                  model_files_home: None }
     }
 }
 
@@ -117,6 +132,8 @@ struct Inner {
     rejected: Mutex<HashMap<String, (u64, i128)>>,
     ai_measure: Mutex<HashMap<String, Value>>,
     measuring: Mutex<HashSet<String>>,
+    /// The model files other programs keep on this computer, looked for once (model_files::find).
+    model_files: Mutex<Option<Vec<Value>>>,
     deleting: Mutex<HashSet<String>>,
 }
 
@@ -289,6 +306,7 @@ impl Setup {
             rejected: Mutex::new(HashMap::new()),
             ai_measure: Mutex::new(HashMap::new()),
             measuring: Mutex::new(HashSet::new()),
+            model_files: Mutex::new(None),
             deleting: Mutex::new(HashSet::new()),
         }));
         let job = me.load_job();
@@ -514,8 +532,10 @@ impl Setup {
         let pack = meta["name"].as_str().map(str::to_string);
         let revision = meta["content_revision"].as_str().unwrap_or("").to_string();
         let models = self.models_here();
+        let chosen = self.o().ai.as_ref().and_then(|a| a.chosen_file());
+        let model = if chosen.is_some() { Some(json!(crate::ai::local::CUSTOM)) } else { models.first().map(|m| json!(m)) };
         json!({"folder": cur.to_string_lossy(), "disk_kind": super::volumes::kind(cur), "pack": pack, "content_revision": revision, "map_bytes": install::map_bytes(cur),
-               "model": models.first(), "models": models, "map": install::map_name(cur), "address_indexes": self.address_indexes(),
+               "model": model, "models": models, "model_file": chosen, "map": install::map_name(cur), "address_indexes": self.address_indexes(),
                "old": self.settings()["old"].clone().as_array().cloned().unwrap_or_default()})
     }
 
@@ -596,7 +616,19 @@ impl Setup {
             out.push(json!({"kind": kind, "path": c.to_string_lossy(), "name": name, "id": id, "size": len,
                             "size_ok": size == Some(len) && !is_rejected, "rejected": is_rejected}));
         }
+        out.extend(self.model_files());
         out
+    }
+
+    /// The model files other programs downloaded to this computer (LM Studio, Ollama, Jan…), or the person kept in their
+    /// own folders, looked for once per setup. One that is also the catalogue's is offered as it is: used where it lies.
+    pub fn model_files(&self) -> Vec<Value> {
+        let Some(home) = self.o().model_files_home.clone() else { return Vec::new() };
+        let mut g = self.0.model_files.lock().unwrap();
+        if g.is_none() {
+            *g = Some(super::model_files::find(&home, &HashSet::new()));
+        }
+        g.clone().unwrap_or_default()
     }
 
     fn model_path_here(&self, model_id: &str) -> Option<PathBuf> {
@@ -759,8 +791,14 @@ impl Setup {
         let hw = self.hardware();
         let rec = self.recommend(&hw);
         let missing = self.o().missing.as_ref().map(|m| json!({"folder": m.to_string_lossy(), "here": m.exists()}));
+        // each model file found here, with how it would fit: its size and some room for the conversation
+        let gpus = hw["gpus"].as_array().cloned().unwrap_or_default();
+        let mut found = self.found();
+        for f in found.iter_mut().filter(|f| f["kind"] == "model_file") {
+            f["fit"] = hardware::estimate_ai(hw["ram_bytes"].as_u64(), &gpus, hw["unified_memory"].as_bool().unwrap_or(false), u(&f["size"]) + 1_500_000_000);
+        }
         json!({"mode": self.o().mode.as_str(), "hardware": hw, "manifest": self.manifest().public(), "current": self.current_info(),
-               "found": self.found(), "recommend": rec, "job": self.public_job(), "missing": missing})
+               "found": found, "recommend": rec, "job": self.public_job(), "missing": missing})
     }
 
     pub fn public_job(&self) -> Value {
@@ -1236,7 +1274,17 @@ impl Setup {
                 return if j.is_null() { json!({"job": null, "noted": true}) } else { j };
             }
         }
-        err("unknown_file", json!({}), "That is not a file Lastbook Europe knows. Choose a Lastbook Europe library zip or the model file.")
+        // a model file of the person's own, from any program: used where it is
+        if is_gguf(&p) {
+            let Some(ai) = self.o().ai.clone() else {
+                return err("no_runtime", json!({}), "This copy of Lastbook Europe has no local AI runtime.");
+            };
+            return match ai.use_model_file(&p) {
+                Ok(m) => json!({"job": null, "noted": true, "model_file": m}),
+                Err((code, msg)) => err(&code, json!({"name": name}), msg),
+            };
+        }
+        err("unknown_file", json!({}), "That is not a file Lastbook Europe knows. Choose a Lastbook Europe library zip or a model file (.gguf).")
     }
 
     pub fn finish(&self) -> Value {
@@ -1870,4 +1918,10 @@ pub fn opened(settings_dir: &Path, note: Option<&Map<String, Value>>, ai: Option
     st["old"] = Value::Array(olds);
     let _ = std::fs::create_dir_all(settings_dir);
     let _ = install::write_json(&settings_dir.join("setup.json"), &st);
+}
+
+/// A GGUF file, by its first four bytes (Ollama's model files have no extension).
+fn is_gguf(p: &Path) -> bool {
+    let mut b = [0u8; 4];
+    std::fs::File::open(p).and_then(|mut f| std::io::Read::read_exact(&mut f, &mut b)).is_ok() && &b == b"GGUF"
 }

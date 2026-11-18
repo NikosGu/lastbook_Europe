@@ -7,6 +7,7 @@ pub mod download;
 pub mod hardware;
 pub mod install;
 pub mod manifest;
+pub mod model_files;
 pub mod net;
 pub mod volumes;
 #[cfg(test)]

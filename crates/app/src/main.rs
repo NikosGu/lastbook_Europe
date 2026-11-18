@@ -195,6 +195,8 @@ fn main() {
     // network share or an external disk)
     let models_here = appdata.join("models");
     opts.models_here = Some(models_here.clone());
+    // the model files other programs downloaded (LM Studio, Ollama, Jan…): setup offers them, to be used where they are
+    opts.model_files_home = Some(appdirs::home());
     let ai = data.as_ref().map(|d| {
         let manifest = opts.manifest.clone();
         // (what it remembers goes beside the library, or in the app's own folder when the library cannot be written)

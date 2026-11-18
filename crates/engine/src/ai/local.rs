@@ -158,6 +158,17 @@ impl ModelEntry {
     }
 }
 
+/// The id under which a model file the person chose (not one of the catalogue's) is remembered.
+pub const CUSTOM: &str = "custom";
+
+/// Tokens a model is run with: CTX, or the number it was trained on when that is fewer (but not under 2048).
+pub fn ctx_of(info: &gguf::Info) -> u32 {
+    match info.context_length {
+        0 => CTX,
+        n => (n.min(CTX as u64) as u32).max(2048),
+    }
+}
+
 /// Does the model fit this computer? From the runner's fit line and the model file's header.
 /// fits: in memory. from_disk: only from the disk (a mixture of experts larger than the memory). too_big: neither.
 /// Why, unless it fits: `why` (English) with its "code" and "params".
@@ -305,6 +316,8 @@ struct St {
     next_id: u64,
     failed_loads: u32,
     found: Vec<(ModelEntry, PathBuf)>,
+    /// Tokens the model is run with: CTX, or less for a model trained on fewer.
+    ctx: u32,
 }
 
 struct Inner {
@@ -339,7 +352,7 @@ impl Local {
             runner,
             st: Mutex::new(St { state: "absent".into(), pct: None, said: None, model: None, path: None, family: None, fit: None,
                                 ready: None, disk_mb_s: None, proc: None, events: None, spawned: Instant::now(), last_used: Instant::now(),
-                                next_id: 0, failed_loads: 0, found: Vec::new() }),
+                                next_id: 0, failed_loads: 0, found: Vec::new(), ctx: CTX }),
             saved: Mutex::new(saved),
             gen_lock: Mutex::new(()),
             started: AtomicBool::new(false),
@@ -354,10 +367,25 @@ impl Local {
     /// A folder of this computer's own (in the app's data folder) for what the AI writes, its choices and its log, when the
     /// library's folder cannot be written: a library on a read-only network share or USB stick keeps its local AI.
     pub fn with_own_folder(self, dir: PathBuf) -> Local {
+        let state = dir.join("derived").join("llm").join("state.json");
+        let own = crate::setup::install::read_json(&state).filter(Value::is_object);
         if !writable(&self.0.data) {
-            let state = dir.join("derived").join("llm").join("state.json");
-            if let Some(s) = crate::setup::install::read_json(&state).filter(Value::is_object) {
+            if let Some(s) = own {
                 *self.0.saved.lock().unwrap_or_else(|e| e.into_inner()) = s;
+            }
+        } else if let Some(own) = own.filter(|o| o["model"] == CUSTOM && o["custom"].is_object()) {
+            // a model file chosen in the first setup, before there was a library (setup's AI kept it in this folder)
+            let carried = {
+                let mut saved = self.0.saved.lock().unwrap_or_else(|e| e.into_inner());
+                let free = saved["model"].is_null();
+                if free {
+                    saved["model"] = own["model"].clone();
+                    saved["custom"] = own["custom"].clone();
+                }
+                free
+            };
+            if carried {
+                self.save();
             }
         }
         *self.0.own.lock().unwrap_or_else(|e| e.into_inner()) = Some(dir);
@@ -418,7 +446,32 @@ impl Local {
     }
 
     pub fn family(&self) -> Option<Family> {
-        self.st().family
+        self.st().family.clone()
+    }
+
+    /// Tokens the model holds: the prompt and the answer together.
+    pub fn ctx(&self) -> u32 {
+        self.st().ctx
+    }
+
+    /// A model file the person already has, wherever it is (another program's models folder, a download): used where it is,
+    /// not copied. It needs to be a model one can talk to (Family::of): the instructions-following kind, with its chat
+    /// template. Ok: what it is; Err: (code, English sentence).
+    pub fn use_file(&self, path: &Path) -> Result<Value, (String, String)> {
+        let info = gguf::read(path).map_err(|e| ("not_a_model".to_string(), format!("That is not a model file Lastbook Europe can read ({e}).")))?;
+        let family = Family::of(&info).ok_or_else(|| ("unknown_model".to_string(), "Lastbook Europe does not know how to ask this model questions: it has no chat template (a base model, or not a language model).".to_string()))?;
+        let size = std::fs::metadata(path).map(|m| m.len()).unwrap_or(0);
+        let title = if info.name.trim().is_empty() { path.file_stem().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default() } else { info.name.trim().to_string() };
+        self.set_saved("custom", json!({"path": path.to_string_lossy(), "size": size, "title": title}));
+        self.set_saved("model", json!(CUSTOM));
+        self.set_saved("enabled", json!(true));
+        self.stop("another model chosen");
+        {
+            let mut st = self.st();
+            (st.state, st.said) = ("absent".into(), None);
+        }
+        self.rediscover();
+        Ok(json!({"title": title, "size": size, "family": family.id(), "tools": family.tools(), "path": path.to_string_lossy()}))
     }
 
     /// The state for the interface. A state with a message carries its "code" and "params"; `why` (how the model fits, unless
@@ -503,6 +556,16 @@ impl Local {
                 }
             }
         }
+        // a file the person chose, where it is (Local::use_file): offered as long as it is there, at its size
+        let custom = self.saved("custom");
+        if let (Some(p), Some(size)) = (custom["path"].as_str(), custom["size"].as_u64()) {
+            let p = PathBuf::from(p);
+            if std::fs::metadata(&p).is_ok_and(|m| m.is_file() && m.len() == size) {
+                let file = p.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+                let title = custom["title"].as_str().map(str::to_string).unwrap_or_else(|| file.clone());
+                found.push((ModelEntry { id: CUSTOM.into(), title, file, size, sha256: String::new() }, p));
+            }
+        }
         // the one chosen before, else the largest here: the person can choose another
         found.sort_by_key(|(m, _)| std::cmp::Reverse(m.size));
         let chosen = self.saved("model").as_str().and_then(|id| found.iter().position(|(m, _)| m.id == id)).unwrap_or(0);
@@ -521,7 +584,8 @@ impl Local {
             return;
         };
         let stamp = stamp(&path);
-        if self.saved("checked")[&model.id] != stamp {
+        // a catalogue model is checked against its SHA-256 once; a file the person chose has none to check against
+        if !model.sha256.is_empty() && self.saved("checked")[&model.id] != stamp {
             if !self.check(&model, &path) {
                 return;
             }
@@ -536,6 +600,7 @@ impl Local {
         {
             let mut st = self.st();
             st.family = info.as_ref().and_then(Family::of);
+            st.ctx = info.as_ref().map(ctx_of).unwrap_or(CTX);
             if st.family.is_none() {
                 st.state = "error".into();
                 st.said = Some(fixed("unknown_model"));
@@ -604,7 +669,8 @@ impl Local {
         let threads = std::thread::available_parallelism().map(|n| n.get()).unwrap_or(8);
         let threads = (threads / 2).clamp(4, 16); // about the number of performance cores; more only contend
         let mut c = Command::new(self.0.runner.as_ref().expect("runner"));
-        c.arg("--model").arg(path).args(["--ctx", &CTX.to_string(), "--threads", &threads.to_string()]).args(extra);
+        let ctx = gguf::read(path).map(|i| ctx_of(&i)).unwrap_or(CTX);
+        c.arg("--model").arg(path).args(["--ctx", &ctx.to_string(), "--threads", &threads.to_string()]).args(extra);
         quiet(&mut c);
         c
     }
@@ -875,11 +941,11 @@ impl Local {
             }
             st.next_id += 1;
             st.last_used = Instant::now();
-            (st.next_id, st.events.take(), st.family)
+            (st.next_id, st.events.take(), st.family.clone())
         };
         let Some(events) = events else { return Err(tell(fixed("busy"))) };
         while events.try_recv().is_ok() {} // anything left from an answer that was stopped
-        let stops = family.map(|f| f.stops()).unwrap_or_default();
+        let stops = family.as_ref().map(|f| f.stops()).unwrap_or_default();
         let req = json!({"op": "gen", "id": rid, "segments": segments.iter().map(|(t, s)| json!([t, s])).collect::<Vec<_>>(),
                          "max_tokens": max_tokens, "temp": 0.2, "top_k": 64, "top_p": 0.95, "min_p": 0.05, "seed": 1234 + rid, "stop": stops});
         let result = (|| {
@@ -946,6 +1012,15 @@ impl crate::setup::api::AiHooks for Local {
 
     fn rediscover(&self) {
         Local::rediscover(self)
+    }
+
+    fn use_model_file(&self, path: &Path) -> Result<Value, (String, String)> {
+        Local::use_file(self, path)
+    }
+
+    fn chosen_file(&self) -> Option<Value> {
+        let custom = self.saved("custom");
+        (self.saved("model") == CUSTOM && custom.is_object()).then_some(custom)
     }
 }
 
@@ -1492,7 +1567,7 @@ mod tests {
         assert_eq!(l.family(), Some(Family::Qwen35));
         assert_eq!(l.ensure_running(&mut |_| {}, &|| false), None);
         let msgs = vec![json!({"role": "system", "content": "Be brief."}), json!({"role": "user", "content": "Ciao"})];
-        let segs = Family::Qwen35.render(&msgs, &[]);
+        let segs = Family::Qwen35.render(&msgs, &[]).unwrap();
         let mut text = String::new();
         let done = l.generate(&segs, 8, &|| false, &mut |t| text.push_str(t)).unwrap();
         assert_eq!(done["ev"], "done");
