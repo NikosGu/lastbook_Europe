@@ -808,8 +808,25 @@ async function reader(id, page, from, view) {
 }
 
 /* --------------------------------------------------------------- wiki -- */
-const ZIMNAMES = { mdwiki: 'app.zim.mdwiki_label', wikipedia: 'app.zim.wikipedia_label', wikibooks: 'app.zim.wikibooks_label', appropedia: 'app.zim.appropedia_label' };
-const zimLabel = name => { for (const k in ZIMNAMES) if (name.startsWith(k)) return t(ZIMNAMES[k]); return name };
+/* An encyclopedia by its file's name, as Kiwix names them: <project>_<language>_<selection>_<flavour>_<date>.zim
+   (wikipedia_it_medicine_maxi_2026-10.zim): its name, what it is and its icon, in the interface's words; the language
+   by its own name. A file named otherwise keeps its name. */
+const ZPROJ = { wikipedia: ['app.zim.wikipedia', 'app.zim.wikipedia_about', 'wiki'], wikivoyage: ['app.zim.wikivoyage', 'app.zim.wikivoyage_about', 'map'],
+  mdwiki: ['app.zim.mdwiki', 'app.zim.mdwiki_desc', 'health'], wikibooks: ['app.zim.wikibooks', 'app.zim.wikibooks_desc', 'book'],
+  appropedia: ['app.zim.appropedia', 'app.zim.appropedia_desc', 'repair'] };
+const ZSEL = { medicine: 'app.zim.sel_medicine', top: 'app.zim.sel_top', top1m: 'app.zim.sel_top' };
+const ZFLAV = { nopic: 'app.zim.flav_nopic', mini: 'app.zim.flav_mini' };
+function zimInfo(file) {
+  const [project, lang, sel, flav] = String(file || '').replace(/\.zim$/, '').split('_');
+  const p = ZPROJ[project];
+  if (!p) return { file, name: String(file || ''), desc: '', icon: 'wiki', lang: '', rank: 9 };
+  const name = [t(p[0]), ZSEL[sel] ? t(ZSEL[sel]) : '', I18N.NAME[lang] || lang].filter(Boolean).join(' · ');
+  const desc = [t(p[1]), ZFLAV[flav] ? t(ZFLAV[flav]) : ''].filter(Boolean).join(' ');
+  // the interface's language first, then English, then the others; health before the rest
+  const rank = (lang === I18N.lang ? 0 : lang === 'en' ? 3 : 6) + (sel === 'medicine' || project === 'mdwiki' ? 0 : project === 'wikipedia' ? 1 : 2);
+  return { file, name, desc, icon: sel === 'medicine' ? 'health' : p[2], lang, rank };
+}
+const zimLabel = name => zimInfo(name).name;
 async function wiki(path, from, y) {
   const [zim, ...rest] = path.split('/');
   const art = rest.join('/');
@@ -968,18 +985,16 @@ function lookOf(fd) {
   r.setProperty('--lb-link', getComputedStyle(probe).color); probe.remove();
   for (const [k, v] of [['--lb-ink', '--ink'], ['--lb-ink2', '--ink2'], ['--lb-line', '--line2'], ['--lb-font', '--font'], ['--lb-display', '--display']]) { const x = cs.getPropertyValue(v).trim(); if (x) r.setProperty(k, x) }
 }
-const ZIMS = [['mdwiki_en_all_maxi_2025-11.zim', 'app.zim.mdwiki', 'app.zim.mdwiki_desc', 'health'],   // file, name, description (keys), icon
-['wikibooks_en_all_maxi_2026-04.zim', 'app.zim.wikibooks', 'app.zim.wikibooks_desc', 'book'],
-['appropedia_en_all_maxi_2026-02.zim', 'app.zim.appropedia', 'app.zim.appropedia_desc', 'repair'],
-['wikipedia_en_all_nopic_2026-06.zim', 'app.zim.wikipedia', 'app.zim.wikipedia_desc', 'wiki']];
-const zimsHere = async () => { const here = (await libInfo()).zims; return here ? ZIMS.filter(z => here.includes(z[0])) : ZIMS };
+// the encyclopedias this library holds (library-data/collections/), in the order zimInfo ranks them
+const zimsHere = async () => ((await libInfo()).zims || []).map(zimInfo).sort((a, b) => a.rank - b.rank || a.name.localeCompare(b.name));
+const zimCard = (z, from) => `<a class="card" href="#/wiki/${esc(z.file)}/?from=${encodeURIComponent(from)}"><span class="ico">${ico(z.icon)}</span><b>${esc(z.name)}</b><small>${esc(z.desc)}</small></a>`;
 async function encyclopedias(q) {
   setTitle(t('app.zim.title'));
   const zims = await zimsHere();
   if (!zims.length) { main.innerHTML = `<h1>${th('app.zim.title')}</h1><p class="lead">${th('app.zim.none')}</p>`; return }
   main.innerHTML = `<h1>${th('app.zim.title')}</h1><p class="lead">${th('app.zim.lead', { n: zims.length })}</p>
   <div style="margin:16px 0">${searchBox('zq', q, t('app.zim.ph'))}</div><div id="zres"></div>
-  ${secHead(th('app.zim.open_one'))}<div class="cards2">${zims.map(z => `<a class="card" href="#/wiki/${z[0]}/?from=${encodeURIComponent('#/encyclopedias')}"><span class="ico">${ico(z[3])}</span><b>${th(z[1])}</b><small>${th(z[2])}</small></a>`).join('')}</div>`;
+  ${secHead(th('app.zim.open_one'))}<div class="cards2">${zims.map(z => zimCard(z, '#/encyclopedias')).join('')}</div>`;
   $('#zqF').addEventListener('submit', e => { e.preventDefault(); location.hash = '#/encyclopedias?q=' + encodeURIComponent($('#zq').value.trim()) });
   if (q) zimResults(q, $('#zres'), 40);
 }
@@ -989,8 +1004,7 @@ async function zimResults(q, el, max = 8, heading = '') {
   try {
     const hits = await api('/api/collection-search?q=' + encodeURIComponent(q));
     if (!hits.length) { el.innerHTML = heading ? '' : `<div class="empty"><span class="e-ico">${ico('wiki')}</span><b>${th('app.zim.no_articles')}</b><p>${th('app.zim.try_another')}</p></div>`; return false }
-    const ord = ['mdwiki', 'wikibooks', 'appropedia', 'wikipedia'];
-    hits.sort((a, b) => ord.findIndex(k => a.collection.startsWith(k)) - ord.findIndex(k => b.collection.startsWith(k)));
+    hits.sort((a, b) => zimInfo(a.collection).rank - zimInfo(b.collection).rank);   // stable: each file's own order kept
     el.innerHTML = `${heading ? `<h2>${heading}</h2>` : ''}<ul class="list">${hits.slice(0, max).map(h => `<li><a class="row" href="#/wiki/${esc(h.path.replace(/^zim\//, ''))}?${fromQ()}"><span class="k">${ico('wiki')}</span><span><b>${esc(h.title)}</b><small>${esc(zimLabel(h.collection))}</small></span></a></li>`).join('')}</ul>`;
     return true;
   } catch (e) { el.innerHTML = heading || (e && e.away) ? '' : `<p class="muted">${th('app.zim.unavailable', { error: e.message })}</p>`; return false }   // the library out of reach: the banner says so
@@ -1098,7 +1112,7 @@ async function library() {
   </div>
   ${secHead(th('app.learn.title'), th('app.lib.learn_sub'))}
   <div class="needs">${learnTopics().map(topic => `<a class="need" href="#/t/${topic.id}" ${tcStyle(topic.id)}><span class="ico">${ico(topic.id)}</span><b>${esc(shortOf(topic.id, topic.title))}</b><small>${esc(topic.short || '')} · ${th('app.learn.steps', { n: (topic.route || []).length })}</small></a>`).join('')}</div>
-  ${zims.length ? secHead(th('app.zim.title'), th('app.lib.zims_sub'), `<a href="#/encyclopedias">${th('app.lib.zims_search')}</a>`) + `<div class="cards2">${zims.map(z => `<a class="card" href="#/wiki/${z[0]}/?from=${encodeURIComponent('#/library')}"><span class="ico">${ico(z[3])}</span><b>${th(z[1])}</b><small>${th(z[2])}</small></a>`).join('')}</div>` : ''}
+  ${zims.length ? secHead(th('app.zim.title'), th('app.lib.zims_sub'), `<a href="#/encyclopedias">${th('app.lib.zims_search')}</a>`) + `<div class="cards2">${zims.map(z => zimCard(z, '#/library')).join('')}</div>` : ''}
   ${secHead(th('app.lib.browse'), th('app.lib.browse_sub'))}<div id="shelves"><p class="loading">${th('app.loading')}</p></div>
   <p style="margin-top:20px"><a href="#/about">${th('app.lib.about_link')}</a>${IN_WINDOW ? ` · <a href="/ui/setup.html#manage">${th('app.lib.setup_link')}</a>` : ''}</p>`;
   try {

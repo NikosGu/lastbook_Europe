@@ -1,0 +1,28 @@
+{
+ "about": "The encyclopedias of each language's pack: Kiwix's ZIM files (download.kiwix.org, by name; each checked against the SHA-256 Kiwix publishes beside it), each put in a zip of its own (LastbookData/library-data/collections/<file>) in the data release, with a note of what it holds (encyclopedia-<file>.json). A language's pack is the starter pack's zip with that language's encyclopedias (packaging/data/encyclopedias.sh, run by the Encyclopedias workflow; its entry is made again whenever the starter pack changes). Wikipedia's and Wikivoyage's articles are their authors', under CC BY-SA 4.0, as Kiwix packs them. A release file is at most 2 GiB: English has the opening of Wikipedia's most read articles (mini) instead of their whole text (2.6 GB); Polish has no medical selection on Kiwix.",
+ "packs": [
+  {"id": "enc-it", "lang": "it", "zims": [
+   {"file": "wikipedia_it_medicine_maxi_2026-10.zim", "dir": "wikipedia", "content": "wikipedia_medicine"},
+   {"file": "wikipedia_it_top_nopic_2026-10.zim", "dir": "wikipedia", "content": "wikipedia_top"},
+   {"file": "wikivoyage_it_all_nopic_2026-09.zim", "dir": "wikivoyage", "content": "wikivoyage"}]},
+  {"id": "enc-de", "lang": "de", "zims": [
+   {"file": "wikipedia_de_medicine_maxi_2026-10.zim", "dir": "wikipedia", "content": "wikipedia_medicine"},
+   {"file": "wikipedia_de_top_nopic_2026-10.zim", "dir": "wikipedia", "content": "wikipedia_top"},
+   {"file": "wikivoyage_de_all_nopic_2026-10.zim", "dir": "wikivoyage", "content": "wikivoyage"}]},
+  {"id": "enc-fr", "lang": "fr", "zims": [
+   {"file": "wikipedia_fr_medicine_maxi_2026-10.zim", "dir": "wikipedia", "content": "wikipedia_medicine"},
+   {"file": "wikipedia_fr_top_nopic_2026-10.zim", "dir": "wikipedia", "content": "wikipedia_top"},
+   {"file": "wikivoyage_fr_all_nopic_2026-10.zim", "dir": "wikivoyage", "content": "wikivoyage"}]},
+  {"id": "enc-es", "lang": "es", "zims": [
+   {"file": "wikipedia_es_medicine_maxi_2026-10.zim", "dir": "wikipedia", "content": "wikipedia_medicine"},
+   {"file": "wikipedia_es_top_nopic_2026-10.zim", "dir": "wikipedia", "content": "wikipedia_top"},
+   {"file": "wikivoyage_es_all_nopic_2026-09.zim", "dir": "wikivoyage", "content": "wikivoyage"}]},
+  {"id": "enc-pl", "lang": "pl", "zims": [
+   {"file": "wikipedia_pl_top_nopic_2026-10.zim", "dir": "wikipedia", "content": "wikipedia_top"},
+   {"file": "wikivoyage_pl_all_nopic_2026-09.zim", "dir": "wikivoyage", "content": "wikivoyage"}]},
+  {"id": "enc-en", "lang": "en", "zims": [
+   {"file": "wikipedia_en_medicine_nopic_2026-10.zim", "dir": "wikipedia", "content": "wikipedia_medicine"},
+   {"file": "wikipedia_en_top_mini_2026-09.zim", "dir": "wikipedia", "content": "wikipedia_mini"},
+   {"file": "wikivoyage_en_all_nopic_2026-09.zim", "dir": "wikivoyage", "content": "wikivoyage"}]}
+ ]
+}

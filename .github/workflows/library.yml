@@ -83,6 +83,12 @@ jobs:
         run: |
           packaging/data/library-release.sh starter "$RUNNER_TEMP/out/Lastbook-starter.zip" "$RUNNER_TEMP/out/starter-entry.json"
           gh release view "$TAG" --repo "$REPO" --json isDraft,assets --jq '"draft: \(.isDraft); files: \([.assets[].name] | join(", "))"'
+      - name: The encyclopedia packs' entries, with this starter pack's zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE: ${{ env.TAG }}
+          GH_REPO: ${{ github.repository }}
+        run: packaging/data/encyclopedias.sh entries
       - name: The data release's manifest, with this pack
         env:
           GH_TOKEN: ${{ github.token }}

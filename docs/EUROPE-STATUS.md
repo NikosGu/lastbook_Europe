@@ -30,6 +30,9 @@ None of these blocks the work: each has a placeholder.
 
 | When | Decision | Why |
 |---|---|---|
+| 18 Nov 2026 | The published library holds every document of the list, whatever its publisher's terms; each document's terms stay recorded in `content/library/starter.json` (`redistribute`, `licence`, `terms_quote`), and a publisher who asks for removal is answered at the contact on the Sources page | the maintainer: "I did not ask you to exclude them"; asked how, they chose the zip on GitHub over a download from each publisher in setup, told that a publisher can ask GitHub to take the release down |
+| 18 Nov 2026 | 142 more documents, 174 in all: 38 in English, 33 in German, 28 in French, 27 in Polish, 24 in Italian and 24 in Spanish, from civil-protection and health bodies of Italy, Germany, Austria, Switzerland, France, Belgium, Luxembourg, Spain, Poland, Ireland, Greece, the United Kingdom and the United States, the WHO, the IFRC and the European Commission; each found and its terms read by a search in its language, measured on GitHub's machines and kept in `sources-v1` (seven sites that turn GitHub's machines away were downloaded once from the maintainer's computer under the project's own client name; a site that turns automated readers away is never fetched under another name) | the maintainer: "I don't think you put in enough material, for each language" |
+| 18 Nov 2026 | A pack per language: the starter's documents with Kiwix's encyclopedias in that language: Wikipedia's medical articles, its most read articles without pictures, and Wikivoyage (English: the opening of the most read articles, a release file being at most 2 GiB; Polish: Kiwix has no medical selection); listed in setup after the starter, the interface's language first; the encyclopedias page lists whatever encyclopedias the library holds, named from their file names | the same; the plan's encyclopedias per language; the original listed four English files by name |
 | 18 Nov 2026 | The local AI is chosen in setup from a list: four catalogue models from 8 GB computers to 48 GB ones (Qwen3.5 4B and 9B, Qwen3.6 35B A3B at 4 and 8 bits; the mixtures of experts too large for the memory can be chosen to run from the disk), any model file already on the computer (LM Studio, Ollama, Jan, GPT4All, llama.cpp, Hugging Face's cache, a models folder, and on Windows and Linux Downloads, Documents and Desktop, which a Mac guards with a permission question for each, so there the picker, opening in Downloads, finds them; or one chosen by hand, used where it is), or none. Any GGUF model with a chat template works: Qwen 3.5/3.6 and Gemma 4 with the library's tools, any other through its own template (minijinja) with the library's pages given in the question | the maintainer: a friend's installed app could neither set up the local AI nor choose a model (the catalogue had one 38 GB model, and setup showed only the first); "who told you it must accept only those families?" |
 | 18 Nov 2026 | The app and the data are published as a preview now, not when every region is built: the app as a pre-release, the data release with the regions ready, the others added as they are built | the maintainer's decision |
 | 18 Nov 2026 | Problems and removal requests go to the maintainer, nikos.gu.devs@gmail.com (the GitHub account's email): the README's Contact, the About page's Contact, each pack's Sources page, the Code of Conduct, the release notes and the installers' contact fields; the starter revisions move to v6 and redistributable v4 for the Sources page | the maintainer's decision; the Code of Conduct still gave the original Lastbook's address |
@@ -55,7 +58,9 @@ None of these blocks the work: each has a placeholder.
 
 ## The starter library's documents and their terms
 
-Read on 17 and 18 November 2026, on each publisher's site or in the document's imprint (the ten documents added on 18 November checked the same way); the same is in
+The table holds the first 32 documents; the 142 added on 18 November are in `content/library/starter.json` with the same
+fields. Since 18 November every document is in the published pack, whatever "redistribute" says (the maintainer's
+decision above). Read on 17 and 18 November 2026, on each publisher's site or in the document's imprint (the ten documents added on 18 November checked the same way); the same is in
 `content/library/starter.json` (`redistribute`, `licence`, `licence_url`, `conditions`, `terms_quote`). Sites that
 turned automated readers away (ifrc.org's pages, sgdsn.gouv.fr, zivilschutz.at) were left alone: those documents' terms
 rest on the documents themselves and on the sites they were downloaded from.
@@ -217,12 +222,9 @@ Found along the way, for the maintainer:
    model at 4 bits (about 21 GB) and a cache of experts kept by use, as BigMoeOnEdge does.
 3. A native speaker's read of the first-aid wording in the five translations (the line-by-line review is done; what
    each language should check first is in "The five translations, reviewed").
-4. The 13 starter documents left out of the published pack: ask their publishers for permission (BWL, BBK, the Styrian
-   and Austrian civil-protection associations and the WHO for its 2013 notes; the IFRC for the extreme-cold section;
-   SGDSN, or the illustrator and the owners of the pictograms, for the French guides). Each yes brings its document
-   back. The published pack now keeps, of each guide's items in English: water 22 of 33, food 12 of 28, sanitation 6
-   of 17, shelter 12 of 29, comms 4 of 23, power 6 of 31, health 9 of 34, disaster 26 of 47, first aid 65 of 74
-   (Polish keeps the most, 199 of 316 in all, from the Polish government's guides).
+4. The guides read from the first 32 documents; the 142 added on 18 November are searched and cited by the chat but
+   not yet read into the guides' steps (first aid from the French national references and the German first-aid
+   handbook, heat and cold from the national services, nuclear and iodine, wildfires, earthquakes).
 
 ## Downloads on the development machine
 

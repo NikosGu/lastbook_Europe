@@ -1,0 +1,45 @@
+# Each language's encyclopedias (content/library/encyclopedias.json), from Kiwix into the data release, then each
+# language's pack entry (the starter pack's zip with that language's encyclopedias) and the data release's manifest
+# (packaging/data/encyclopedias.sh, write-manifest.sh). Run by hand; only the data release is touched.
+name: Encyclopedias
+
+on:
+  workflow_dispatch:
+    inputs:
+      packs:
+        description: "The packs to build, by id, separated by spaces (none: every pack of the list)"
+        default: ""
+
+permissions:
+  contents: write   # to add to the data release
+
+concurrency:
+  group: data-v1   # one upload to the data release at a time, with the library workflow
+  cancel-in-progress: false
+
+jobs:
+  encyclopedias:
+    name: Encyclopedias into the data release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    env:
+      RELEASE: data-v1
+      GH_REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ github.token }}
+      PACKS: ${{ inputs.packs }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Room on the disk
+        run: df -h / "$RUNNER_TEMP"
+      - name: Each encyclopedia, from Kiwix, checked and zipped into the data release
+        run: |
+          set -f
+          packaging/data/encyclopedias.sh build $PACKS
+      - name: Each pack's entry
+        run: packaging/data/encyclopedias.sh entries
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: The tools
+        run: cargo build --release --locked -p lastbook-tools
+      - name: The data release's manifest, with the packs
+        run: BRANCH="${GITHUB_REF_NAME}" packaging/data/write-manifest.sh "$GITHUB_STEP_SUMMARY"

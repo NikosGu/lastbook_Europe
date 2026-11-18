@@ -42,9 +42,10 @@ and maps, and the way its setup works.
   country's postcodes, several languages where a country has them).
 - **Six languages.** The interface and the guides in English, Italian, German, French, Spanish and Polish; Lastbook was in
   English only.
-- **A new library.** A starter library of 32 public documents from European civil-protection and health bodies, the WHO,
-  the European Commission and the IFRC, each with its terms checked; the 19 whose terms let them be passed on are in the
-  published pack. The guides were written again on them: 112, metric units, Europe's own hazards.
+- **A new library.** 174 public documents in the six languages, from civil-protection and health bodies across Europe,
+  the WHO, the IFRC and the European Commission, and for each language a pack with Kiwix's encyclopedias: Wikipedia's
+  medical and most read articles and Wikivoyage. The guides were written again on the library: 112, metric units,
+  Europe's own hazards.
 - **Rewritten in Rust.** The engine, setup, the window, the local AI's runner and the data tools, which in Lastbook were
   Python, with a C++ runner and an iPad app in Swift; no Python is left.
 - **The local AI.** A catalogue of models instead of a single one, and a "from the disk" mode that runs a model larger
