@@ -43,11 +43,11 @@ and maps, and the way its setup works.
   GitHub Actions.
 - **Left out:** Lastbook's iPad app and website.
 
-> **Status: under construction.** The window, setup with the region choice, the map with European address search,
-> the library, the local AI with its chat, and the installers are written in Rust and tested on macOS, Windows and Linux.
-> The tools that build the European map data and a first small library are being written now; the library packs,
-> region maps and models are not published yet. What is done, what is left and what is waiting for a decision is in
-> [docs/EUROPE-STATUS.md](docs/EUROPE-STATUS.md).
+> **Status: preview.** The app (window, setup with the region choice, the map with European address search, the
+> library, the local AI with its chat) is written in Rust and tested on macOS, Windows and Linux; its installers and
+> its data are published as a preview on the [Releases](https://github.com/NikosGu/lastbook_Europe/releases) page:
+> the starter library and the first regions' maps, with the other regions added as they are built. What is done,
+> what is left and what is waiting for a decision is in [docs/EUROPE-STATUS.md](docs/EUROPE-STATUS.md).
 
 ## Download and install
 

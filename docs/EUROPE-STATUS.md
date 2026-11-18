@@ -30,6 +30,7 @@ None of these blocks the work: each has a placeholder.
 
 | When | Decision | Why |
 |---|---|---|
+| 18 Nov 2026 | The app and the data are published as a preview now, not when every region is built: the app as a pre-release, the data release with the regions ready, the others added as they are built | the maintainer's decision |
 | 18 Nov 2026 | Problems and removal requests go to the maintainer, nikos.gu.devs@gmail.com (the GitHub account's email): the README's Contact, the About page's Contact, each pack's Sources page, the Code of Conduct, the release notes and the installers' contact fields; the starter revisions move to v6 and redistributable v4 for the Sources page | the maintainer's decision; the Code of Conduct still gave the original Lastbook's address |
 | 18 Nov 2026 | The app calls itself Lastbook Europe everywhere (its six languages, its window and page titles, its own messages), and says what it owes Lastbook: the README's "Lastbook Europe and Lastbook" and the About page say Lastbook was made by its contributors for the United States, what this version kept and what it did, and that Lastbook's authors did not make it and are not responsible for it | the maintainer's decision: Lastbook is another project, made by other people |
 | 18 Nov 2026 | On a Mac, "from the disk" keeps the processor for the experts (disk_cpu) by default; the graphics processor path stays a choice (LASTBOOK_FROM_DISK_GPU=1) until it is measured on a Mac | disk_cpu is the path the Italian Liechtenstein chat was checked with; the graphics path is measured on Windows and Linux only, and the Mac's graphics processor is busy with the maintainer's training, which a measurement must not slow |
@@ -175,15 +176,18 @@ Found along the way, for the maintainer:
 
 ## Being done now
 
-- All regions through the regions workflow (`missing`, run 44201482707), one at a time into the data-v1 draft, with the
-  data release's manifest written after; a second `missing` run (44235789533) waits behind it and builds again any region
-  that failed (Bulgaria did: Geofabrik turned GitHub's machine away for 20 minutes). The draft already holds the
-  publishable starter library, revision redistributable-v3 (62 MB, 19 documents and the Sources page, built on GitHub's
-  machines by the library workflow; v2 was checked byte for byte against a build here), and the first regions.
+- Published on 18 Nov 2026, as a preview: the app (`v0.1.0-preview`, a pre-release; `v0.1.1-preview` follows with the
+  app named Lastbook Europe, its contact, what it owes Lastbook and Bulgaria's block addresses) and the data release
+  `data-v1` (the starter library and the first regions' maps). The data workflows add to the published release: each
+  region, and each new library pack, is followed by a new `manifest-v1.json` (`packaging/data/write-manifest.sh`).
+- All regions through the regions workflow (`missing`), one at a time, each into data-v1 as soon as it is built; a run in
+  which a region fails starts the next pass for it by itself, up to the fourth, as Geofabrik turns some of GitHub's
+  machines away (a machine it refuses now stops its region within minutes instead of 20).
 
 ## Left, in order
 
-1. Publishing the data release (data-v1) once it holds every region: the maintainer's click.
+1. The other regions of the data release, built by the regions workflow's passes (nothing to click: they are added to the
+   published release as they are built).
 2. "From the disk" faster. The llama.cpp change is made (`crates/llm/llama/lastbook.cmake`: with
    LASTBOOK_COPY_GPU_WEIGHTS, a graphics device's weights are copied into memory of their own instead of handing it the
    mapped file from its first to its last tensor), and the runner gives the graphics processor the shared part on
