@@ -174,8 +174,10 @@ Found along the way, for the maintainer:
 ## Being done now
 
 - All regions through the regions workflow (`missing`, run 44201482707), one at a time into the data-v1 draft, with the
-  data release's manifest written after. The draft already holds the publishable starter library (built on GitHub's
-  machines by the library workflow, byte for byte the same as here) and the first regions.
+  data release's manifest written after; a second `missing` run (44235789533) waits behind it and builds again any region
+  that failed (Bulgaria did: Geofabrik turned GitHub's machine away for 20 minutes). The draft already holds the
+  publishable starter library, revision redistributable-v3 (62 MB, 19 documents and the Sources page, built on GitHub's
+  machines by the library workflow; v2 was checked byte for byte against a build here), and the first regions.
 
 ## Left, in order
 
