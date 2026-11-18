@@ -279,7 +279,7 @@ jobs:
           if-no-files-found: warn
           overwrite: true   # a job run again replaces its first try's
       - name: A pause before the next region, for Geofabrik
-        if: always()
+        if: ${{ !cancelled() }}
         run: sleep 120
 
   manifest:
@@ -293,7 +293,8 @@ jobs:
   again:
     name: The next pass, for this run's regions still missing
     needs: [plan, region, manifest]
-    if: always() && needs.plan.result == 'success' && needs.region.result == 'failure'
+    # not when the run is cancelled: a run someone stops does not start another (always() would)
+    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.region.result == 'failure' }}
     runs-on: ubuntu-24.04
     permissions:
       contents: write   # a draft release is seen only with write access

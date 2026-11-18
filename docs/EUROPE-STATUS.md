@@ -105,12 +105,13 @@ rest on the documents themselves and on the sites they were downloaded from.
 | The app's start | settings and data folders on each system, the remembered library, setup when there is none, the system's file picker, a restart after setup | snapshots of the app (setup page) |
 | Setup's region choice | country, then region for a split country | snapshots: Germany → region list, Bremen → sizes, Liechtenstein → one choice |
 | Local AI runner | `lastbook-llm` on llama.cpp: JSON lines, no sockets; llama.cpp's fit; Metal on a Mac; on Windows and Linux, Vulkan for graphics cards or the best processor variant, as separate libraries beside the runner, each loaded only where it can run (`--devices` lists what it found); "from the disk" for models larger than the memory, with each layer's chosen experts read ahead | protocol tests in CI; a small Qwen 3.5 mixture-of-experts test model on Metal, and from the disk with experts read ahead writing exactly the same; Qwen3.6-35B-A3B Q8_0 (37.8 GB) loads on a 16 GB Mac with its weights read from the disk |
-| Prompt formats | Qwen 3.5/3.6 (ChatML, XML tool calls) and Gemma 4, chosen by the model file's header | tests against the chat templates |
+| Prompt formats | Qwen 3.5/3.6 (ChatML, XML tool calls) and Gemma 4, chosen by the model file's header; any other GGUF chat model through the chat template in its own file (minijinja), with the system words put in the first question where a template has no place for them, and the library's pages given in the question to a model without tools | tests against the chat templates, among them Llama 3's, Gemma 2's, one using Python's string methods, and templates that fail |
 | Installers and releases | `.dmg` (12.7 MB), Inno Setup installer (16.2 MB) and `.zip`, `.deb` (16.2 MB) and `.tar.gz`, each with PDFium, and Vulkan's backends on Windows and Linux; a draft release on each push | the `.dmg` opened and photographed here; the release workflow on GitHub |
 | Windows | downloads, paths and file locks fixed after the first run on GitHub's Windows machines | CI |
 | The map | vector tiles, terrain, buildings, help pins, the nearest help in metres, place and lake search with both spellings of a name, and address search for the 31 countries (word order, postcodes, street words, house numbers) ([ADDRESSES.md](ADDRESSES.md)); drugstores apart from pharmacies, which keep the green cross; the date of the data and the credits taken from the installed map | 62 tests, one per country; the app photographed on a small Vaduz data folder ("Aeulestr. 10, 9490 Vaduz" found) |
 | The library | catalog, guides, search with the interface's language preferred (words for six languages in `content/search/`), shelves and videos, PDF pages through PDFium, saved pages and encyclopedias (ZIM) cleaned, the library's files with their checks | 47 tests; the app photographed on a small library (search, a PDF page, an article) |
 | The local AI in the engine | the model files the catalogue offers, their SHA-256, the three-way fit with a disk speed test, the runner started on a question and stopped when unused | tests, among them a whole cycle with a small real model |
+| The local AI in setup | the catalogue's four models, each with its download size, the memory it needs and whether it fits this computer (the largest that fits suggested; a mixture of experts too large for the memory offered "from the disk"); the model files other programs downloaded (LM Studio, Ollama, Jan, GPT4All, llama.cpp, Hugging Face's cache) or left in the usual folders, each read from its header and used where it is; any `.gguf` chosen by hand; or none; changed later on setup's page for an installed library | engine tests (each program's folders, Ollama's manifests, split models, projectors and rerankers left out, on all three systems); the published 0.1.3, installed from the README's link and photographed in Italian: the four models, a model found in an Ollama folder, none, and the file picker |
 | The assistant and the chat | the question searched at once, tools (search, read pages, transcripts, places and nearest help), every citation checked against what the tools returned, the answer in the person's language; the chat streamed to the page by polls | tests with a scripted model |
 | Check for updates | only when asked; nothing while the download site is the placeholder | tests against a local HTTPS server |
 | Pictures on all three systems | `--snapshot` with WKWebView, WebView2 and WebKitGTK; CI photographs the app on each | the pictures from GitHub's Windows and Ubuntu machines, looked at |
@@ -177,7 +178,7 @@ Found along the way, for the maintainer:
 
 ## Being done now
 
-- Published on 18 Nov 2026, as a preview: the app, now `v0.1.2-preview`, the newest release, which the README's download
+- Published on 18 Nov 2026, as a preview: the app, now `v0.1.3-preview`, the newest release, which the README's download
   button and its links for each system point to (installers under fixed names, so the links stay right from one version
   to the next); and the data release `data-v1` (the starter library, revision redistributable-v4, and the regions built so
   far). The data workflows add to the published release: each region, and each new library pack, is followed by a new
@@ -185,6 +186,11 @@ Found along the way, for the maintainer:
   the README's link, its app on its first start in Italian offering the published library and the countries' maps.
 - 0.1.1 had an installed app's first setup page say no library was ready while the published list was on its way (an
   installed app carries no list of its own); 0.1.2 waits for it (`Manifest::fetch_first`, with a test).
+- 0.1.3 lets setup choose the local AI: a model from the catalogue (four, from 8 GB computers to 48 GB ones), a model
+  file already on the computer, used where it is, or none; any GGUF chat model answers. The published data manifest
+  carries the four models; a regions run started on an older commit could have put its one-model list back, so the
+  manifest script now takes the branch's newest catalogue, and a regions run that is cancelled no longer starts its
+  next pass.
 - All regions through the regions workflow (`missing`), one at a time, each into data-v1 as soon as it is built; a run in
   which a region fails starts the next pass for it by itself, up to the fourth, as Geofabrik turns some of GitHub's
   machines away (a machine it refuses now stops its region within minutes instead of 20).
@@ -213,7 +219,7 @@ Found along the way, for the maintainer:
 ## Downloads on the development machine
 
 The work's limit was 5 GB downloaded to the maintainer's computer (and the 26B model once, which in the end was not
-needed: the AI tests used model files already there). Measured on 18 Nov 2026, about 0.95 GB in all:
+needed: the AI tests used model files already there). Measured on 18 Nov 2026, about 1 GB in all:
 
 | What | Size |
 |---|---|
@@ -227,6 +233,7 @@ needed: the AI tests used model files already there). Measured on 18 Nov 2026, a
 | Rust crates (the whole local cache, including what was there before) | 127 MB |
 | The publishers' terms pages and the IFRC's key-messages publication, read for the starter library's licences | 12 MB |
 | Fetched again on 18 Nov, after the agents' working folders were cleared for disk room: the Spanish weather guide, and the pinned PDFium for the Mac | 26 MB |
+| The published Mac installers of 0.1.2 and 0.1.3, from the README's link, tried as a person would and deleted | 28 MB |
 
 Everything larger (whole countries' extracts for the neighbours, the other regions, the installers) is downloaded on
 GitHub's machines, not here.
