@@ -1581,7 +1581,7 @@ dependencies = [
 
 [[package]]
 name = "lastbook-app"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "block2",
  "cairo-rs",
@@ -1603,7 +1603,7 @@ dependencies = [
 
 [[package]]
 name = "lastbook-engine"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "filetime",
  "flate2",
@@ -1631,7 +1631,7 @@ dependencies = [
 
 [[package]]
 name = "lastbook-llm"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "libc",
  "llama-cpp-2",
@@ -1641,7 +1641,7 @@ dependencies = [
 
 [[package]]
 name = "lastbook-tools"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "flate2",
  "hex",
