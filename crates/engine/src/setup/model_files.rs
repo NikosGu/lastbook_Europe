@@ -202,9 +202,11 @@ mod tests {
         let titles: Vec<&str> = found.iter().map(|f| f["title"].as_str().unwrap()).collect();
         assert!(titles.contains(&"Llama 3.2 3B Instruct"), "{found:?}");
         assert!(titles.contains(&"gemma3:4b"), "Ollama's, by its own name: {found:?}");
-        assert!(found.iter().any(|f| f["path"] == first.to_string_lossy().as_ref() && f["family"] == "qwen35"), "the first part of a split model, Qwen's");
+        // by file name: the walk writes the system's own separators (Windows' \\), the test's paths may mix them
+        let named = |p: &Path, f: &Value| Path::new(f["path"].as_str().unwrap_or("")).file_name() == p.file_name();
+        assert!(found.iter().any(|f| named(&first, f) && f["family"] == "qwen35"), "the first part of a split model, Qwen's: {found:?}");
         assert_eq!(found.len(), 3, "no projector, no base model, no later part of a split model: {found:?}");
-        let ollama = found.iter().find(|f| f["path"] == blob.to_string_lossy().as_ref()).unwrap();
+        let ollama = found.iter().find(|f| named(&blob, f)).unwrap();
         assert_eq!((ollama["from"].as_str(), ollama["family"].as_str(), ollama["tools"].as_bool()), (Some("Ollama"), Some("template"), Some(false)));
         // the catalogue's own files are listed as the catalogue's, not twice
         let skip: HashSet<String> = ["Llama-3.2-3B-Instruct-Q4_K_M.gguf".to_string()].into();
