@@ -801,4 +801,9 @@ fn no_southern_california_and_no_us_units_in_the_map_code() {
                  concat!("\"vine", "yard\""), concat!("\"berr", "ies\""), concat!("perennial", "_veg"), concat!("crops", ".sqlite"), concat!("atlas", ".sqlite")] {
         assert!(!code.contains(gone), "{gone}");
     }
+    // nor do setup and the library look for those files in a pack
+    let elsewhere = [include_str!("../library/api.rs"), include_str!("../setup/install.rs"), include_str!("../setup/api.rs"), include_str!("../setup/api_tests.rs")].concat();
+    for gone in [concat!("crops", ".sqlite"), concat!("atlas", ".sqlite"), concat!("geography", "/resources")] {
+        assert!(!elsewhere.contains(gone), "{gone}");
+    }
 }

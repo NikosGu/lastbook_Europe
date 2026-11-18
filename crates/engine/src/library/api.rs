@@ -9,10 +9,6 @@ use std::sync::LazyLock;
 
 static PAGE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^/api/page/([^/]+)/(\d+)(\.png)?$").unwrap());
 
-/// What a pack's map holds, as server.py's map_contents looked for it. Until the map is ported, `pins` is whether
-/// these files are there at all.
-const MAP_FILES: [&str; 5] = ["derived/geo/map.sqlite", "derived/geo/national.sqlite", "library-data/geography/resources/atlas.sqlite", "derived/geo/water.sqlite", "derived/geo/crops.sqlite"];
-
 /// A JSON answer, with the header every library answer has.
 pub fn json(v: &Value) -> Response {
     Response::json(v).with("X-Content-Type-Options", "nosniff")
@@ -101,8 +97,8 @@ impl Library {
         })
     }
 
-    /// What this library holds, for the interface (`/api/library`). `pins` is whether the map has help pins: for now,
-    /// whether a pack has any of the map's files (the map's own module will say what they hold).
+    /// What this library holds, for the interface (`/api/library`). `pins` is whether the map has help pins: whether a
+    /// pack has any of the files they come from (crate::map::PIN_FILES); a library that is not a pack is taken to.
     pub fn library_info(&self) -> Value {
         let lib = self.lib().unwrap_or_default();
         let data = self.paths.data.clone().unwrap_or_default();
@@ -117,7 +113,7 @@ impl Library {
         out.insert("zims".into(), json!(self.zim_names()));
         out.insert("sources".into(), sources);
         out.insert("pack".into(), json!(pack));
-        out.insert("pins".into(), json!(!pack || MAP_FILES.iter().any(|f| data.join(f).is_file())));
+        out.insert("pins".into(), json!(!pack || crate::map::PIN_FILES.iter().any(|f| data.join(f).is_file())));
         Value::Object(out)
     }
 

@@ -41,6 +41,10 @@ const AERIAL_COAST: &str = "derived/geo/aerial-coast.sqlite";
 const PLACES: &str = "derived/geo/places.sqlite";
 const ADDRESSES: &str = "derived/geo/addresses";
 
+/// The files the map's pins come from: service points in map.sqlite and national.sqlite, resources in water.sqlite. A
+/// pack with none of them has a map of roads, towns and water but no places of help to show.
+pub(crate) const PIN_FILES: [&str; 3] = [MAPDB, NATIONAL, WATER];
+
 /// Kinds the "Nearest" panel asks for when the request names none.
 const NEAR_DEFAULT: &str = "hospital,clinic,pharmacy,fire_station,drinking_water";
 

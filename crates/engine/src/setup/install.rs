@@ -25,8 +25,8 @@ const SLACK: f64 = 1.02; // installed_bytes is measured; a zip's members may add
 pub const SPACE_MARGIN: u64 = 2_000_000_000;
 const COPY: usize = 4 * 1024 * 1024;
 
-pub const MAP_FIXED: &[&str] = &["map-set.json", "derived/geo/national-status.json", "library-data/geography/resources/atlas.sqlite"];
-const MAP_DIRS: &[&str] = &["", "derived", "derived/geo", "library-data", "library-data/geography", "library-data/geography/resources"];
+pub const MAP_FIXED: &[&str] = &["map-set.json", "derived/geo/national-status.json"];
+const MAP_DIRS: &[&str] = &["", "derived", "derived/geo"];
 const SQLITE_SIDES: &[&str] = &["-wal", "-shm", "-journal"]; // SQLite's own files beside a database: they move with it
 
 fn refused(m: impl Into<String>) -> SetupError {
@@ -780,13 +780,14 @@ mod tests {
 
     #[test]
     fn map_members() {
-        for ok in ["map-set.json", "derived/geo/national-status.json", "derived/geo/terrain.sqlite", "library-data/geography/resources/atlas.sqlite"] {
+        for ok in ["map-set.json", "derived/geo/national-status.json", "derived/geo/terrain.sqlite", "derived/geo/places.sqlite"] {
             assert!(map_member(ok, false), "{ok}");
         }
-        for bad in ["derived/geo/socal-cells.json", "library-data/catalog.json", "derived/geo/a/b.sqlite", "derived/geo/.sqlite", "derived/geo/x.sqlite.bak"] {
+        for bad in ["derived/geo/socal-cells.json", "library-data/catalog.json", concat!("library-data/geography", "/resources/atlas", ".sqlite"), "derived/geo/a/b.sqlite",
+                    "derived/geo/.sqlite", "derived/geo/x.sqlite.bak"] {
             assert!(!map_member(bad, false), "{bad}");
         }
-        assert!(map_member("derived/geo", true) && !map_member("library-data/documents", true));
+        assert!(map_member("derived/geo", true) && !map_member("library-data/documents", true) && !map_member("library-data", true));
     }
 
     #[test]

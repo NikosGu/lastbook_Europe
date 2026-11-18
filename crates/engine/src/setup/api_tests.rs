@@ -81,7 +81,7 @@ impl Env {
     fn add_map(&mut self, id: &str) -> Map<String, Value> {
         let mut files: Vec<(String, Vec<u8>)> = vec![("derived/geo/national.sqlite".into(), noise(300_000, 3)), ("derived/geo/terrain.sqlite".into(), noise(500_000, 4)),
                                                      ("derived/geo/national-status.json".into(), b"{\"state\":\"complete\"}".to_vec()),
-                                                     ("library-data/geography/resources/atlas.sqlite".into(), noise(100_000, 5))];
+                                                     ("derived/geo/places.sqlite".into(), noise(100_000, 5))];
         let sizes: Map<String, Value> = files.iter().map(|(n, d)| (n.clone(), json!(d.len()))).collect();
         files.push(("map-set.json".into(), serde_json::to_vec(&json!({"name": id, "files": sizes})).unwrap()));
         let zip = self.dir.join(format!("Lastbook-Map-{id}.zip"));
@@ -263,7 +263,7 @@ fn map_only_in_manage_mode_swaps_at_restart() {
     assert_eq!(install::map_name(&lib.unwrap()), "LU");
     let mut geo: Vec<String> = std::fs::read_dir(cur.join("derived/geo")).unwrap().flatten().map(|e| e.file_name().to_string_lossy().into_owned()).collect();
     geo.sort();
-    assert_eq!(geo, ["national-status.json", "national.sqlite", "terrain.sqlite"]);     // the old set, -wal too, went
+    assert_eq!(geo, ["national-status.json", "national.sqlite", "places.sqlite", "terrain.sqlite"]);     // the old set, -wal too, went
     assert!(Path::new(note["map_old"].as_str().unwrap()).join("derived/geo/water.sqlite-wal").is_file());
 }
 
