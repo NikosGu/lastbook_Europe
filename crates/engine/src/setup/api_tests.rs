@@ -166,6 +166,24 @@ fn kinds(j: &Value) -> Vec<String> {
 }
 
 #[test]
+fn an_installed_app_waits_for_the_published_list_on_its_first_page() {
+    // an installed app carries no list of its own: the first page must not say that no library is ready while the
+    // download site's list is still on its way, and a list that could not be had is asked for again on the next page
+    let mut env = Env::new("first-page");
+    env.add_pack("starter", &[("library-data/catalog.json", b"{}".to_vec())]);
+    let published = manifest::validate(&env.manifest, &env.srv.allow()).expect("manifest");
+    let mut o = env.options(Mode::FirstRun, None);
+    o.manifest = Manifest::new(manifest::empty(), Some(format!("{}/manifest-v1.json", env.srv.base)), env.srv.allow(), Some(env.srv.tls.clone()));
+    let s = Setup::new(o);
+    assert_eq!(s.state()["manifest"]["packs"].as_array().unwrap().len(), 0, "not published yet: nothing, and no wait beyond the answer");
+    env.srv.put("manifest-v1.json", serde_json::to_vec(&published).unwrap());
+    let st = s.state();
+    let ids: Vec<&str> = st["manifest"]["packs"].as_array().unwrap().iter().filter_map(|p| p["id"].as_str()).collect();
+    assert!(ids.contains(&"starter"), "{st}");
+    assert!(st["recommend"]["pack"].is_string(), "a library is suggested: {}", st["recommend"]);
+}
+
+#[test]
 fn the_smallest_library_is_suggested_whatever_its_name() {
     let mut env = Env::new("smallest");
     env.add_pack("large", &[("library-data/catalog.json", b"{\"records\": []}".to_vec()), ("pack.json", b"{\"name\": \"large\", \"map\": \"base\"}".to_vec()),

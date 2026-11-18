@@ -198,6 +198,32 @@ impl Manifest {
         self.state.lock().unwrap().source
     }
 
+    /// The remote manifest, waited for when there is nothing else to offer: an installed app carries no bundled copy, so
+    /// the first setup page would otherwise say no library is ready while the GET is still on its way. A failed wait is
+    /// tried again on the next call; with a bundled copy to show, it is [`Manifest::fetch_once`] in the background.
+    pub fn fetch_first(&self) {
+        let nothing = {
+            let s = self.state.lock().unwrap();
+            s.source == "bundled" && ["packs", "maps", "models"].iter().all(|k| s.current[*k].as_array().is_none_or(|a| a.is_empty()))
+        };
+        if !nothing {
+            return self.fetch_once();
+        }
+        let Some(remote) = self.remote.clone() else { return };
+        {
+            let mut s = self.state.lock().unwrap();
+            if s.fetching {
+                return;
+            }
+            s.fetching = true;
+        }
+        self.fetch(&remote);
+        let mut s = self.state.lock().unwrap();
+        if s.source != "fetched" {
+            s.fetching = false;
+        }
+    }
+
     /// One background GET of the remote manifest per Manifest; failures leave the bundled copy.
     pub fn fetch_once(&self) {
         let Some(remote) = self.remote.clone() else { return };

@@ -755,7 +755,7 @@ impl Setup {
     }
 
     pub fn state(&self) -> Value {
-        self.manifest().fetch_once();
+        self.manifest().fetch_first();
         let hw = self.hardware();
         let rec = self.recommend(&hw);
         let missing = self.o().missing.as_ref().map(|m| json!({"folder": m.to_string_lossy(), "here": m.exists()}));
