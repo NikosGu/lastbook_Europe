@@ -27,10 +27,13 @@ pub fn places(home: &Path) -> Vec<(PathBuf, &'static str)> {
         (h("models"), ""),
         (h("llama-models"), ""),
         (h("Models"), ""),
-        (h("Downloads"), ""),
-        (h("Documents"), ""),
-        (h("Desktop"), ""),
     ];
+    // On a Mac, an app that reads Downloads, Documents or Desktop makes the system ask the person for permission, once
+    // for each: setup opening with three such questions is not what anyone asked for. There a file in them is chosen
+    // with the system's picker, which asks nothing.
+    if !cfg!(target_os = "macos") {
+        out.extend([(h("Downloads"), ""), (h("Documents"), ""), (h("Desktop"), "")]);
+    }
     if cfg!(target_os = "macos") {
         out.extend([
             (h("Library/Application Support/Jan/data/models"), "Jan"),
@@ -190,7 +193,7 @@ mod tests {
                                              ("tokenizer.ggml.model", Kv::Str("gpt2")), ("tokenizer.chat_template", Kv::Str("{{ messages }}"))];
         model(&home, ".lmstudio/models/bartowski/Llama-3.2-3B-Instruct-GGUF/Llama-3.2-3B-Instruct-Q4_K_M.gguf", &chat("llama"));
         model(&home, ".lmstudio/models/x/mmproj-model-f16.gguf", &chat("clip"));
-        model(&home, "Downloads/base-model.gguf", &[("general.architecture", Kv::Str("llama")), ("tokenizer.ggml.model", Kv::Str("gpt2"))]);
+        model(&home, "models/base-model.gguf", &[("general.architecture", Kv::Str("llama")), ("tokenizer.ggml.model", Kv::Str("gpt2"))]);
         model(&home, "models/qwen3-30b-a3b-00002-of-00003.gguf", &chat("qwen3moe"));
         let first = model(&home, "models/qwen3-30b-a3b-00001-of-00003.gguf", &[("general.architecture", Kv::Str("qwen3moe")), ("tokenizer.ggml.model", Kv::Str("gpt2"))]);
         // Ollama: a manifest names the model's blob, which has no extension
@@ -212,5 +215,14 @@ mod tests {
         let skip: HashSet<String> = ["Llama-3.2-3B-Instruct-Q4_K_M.gguf".to_string()].into();
         assert_eq!(find(&home, &skip).len(), 2);
         let _ = std::fs::remove_dir_all(&home);
+    }
+
+    #[test]
+    fn a_mac_asks_nothing_at_setup() {
+        let home = Path::new("/home/someone");
+        let protected = ["Downloads", "Documents", "Desktop"].map(|d| home.join(d));
+        let walked = places(home).into_iter().filter(|(p, _)| protected.contains(p)).count();
+        // a Mac asks the person before an app reads these folders: setup leaves them to the picker there
+        assert_eq!(walked, if cfg!(target_os = "macos") { 0 } else { 3 });
     }
 }

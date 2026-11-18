@@ -113,8 +113,9 @@ The model is never part of the app. In setup the person chooses one:
   more). Setup says how each fits this computer and suggests the largest that fits. Lastbook Europe knows each by name,
   size and SHA-256, and checks the file before using it.
 - **A model file already on the computer**, from any program: setup finds the GGUF files that LM Studio, Ollama, Jan,
-  GPT4All, llama.cpp and Hugging Face's cache downloaded, or that lie in Downloads, Documents, Desktop or a models folder,
-  and any other can be chosen by hand. It is used where it is, never copied.
+  GPT4All, llama.cpp and Hugging Face's cache downloaded, or that lie in a models folder (and, on Windows and Linux, in
+  Downloads, Documents or Desktop: on a Mac, an app reading those makes the system ask permission, so there a file in them
+  is chosen by hand), and any other can be chosen by hand. It is used where it is, never copied.
 - **No local AI**: guides, search and reading work the same.
 
 **Which models.** Any model made for conversation: Lastbook Europe reads the model file's own header. Qwen 3.5 / 3.6

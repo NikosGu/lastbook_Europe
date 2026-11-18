@@ -152,8 +152,11 @@ fn relaunch(test_run: bool) -> ! {
     }
 }
 
-/// The system's folder or file picker, opened only at the person's request.
+/// The system's folder or file picker, opened only at the person's request. A file (a library's zip, a model) is looked
+/// for first in Downloads, where a browser puts it; a folder in the app's own.
 fn pick(files: bool, start: &std::path::Path) -> Option<PathBuf> {
+    let downloads = appdirs::home().join("Downloads");
+    let start = if files && downloads.is_dir() { downloads.as_path() } else { start };
     let dialog = rfd::AsyncFileDialog::new().set_directory(start);
     let handle = if files { pollster::block_on(dialog.set_title("Choose a library zip or AI model file").pick_file()) } else { pollster::block_on(dialog.set_title("Choose a folder").pick_folder()) };
     handle.map(|h| h.path().to_path_buf())
