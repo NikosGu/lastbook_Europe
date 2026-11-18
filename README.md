@@ -1,5 +1,16 @@
 # Lastbook Europe
 
+<p align="center">
+  <a href="https://github.com/NikosGu/lastbook_Europe/releases/latest"><img alt="Download Lastbook Europe" src="https://img.shields.io/badge/Download-Lastbook_Europe-2ea44f?style=for-the-badge"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/NikosGu/lastbook_Europe/releases/latest/download/LastbookEurope-macos-arm64.dmg"><b>macOS</b></a> (Apple silicon) ·
+  <a href="https://github.com/NikosGu/lastbook_Europe/releases/latest/download/LastbookEurope-windows-x64-setup.exe"><b>Windows</b></a> (10 and 11) ·
+  <a href="https://github.com/NikosGu/lastbook_Europe/releases/latest/download/LastbookEurope-linux-amd64.deb"><b>Linux</b></a> (Debian, Ubuntu)
+  <br><sub>Free. The library, the maps and the AI are chosen and downloaded by the app at its first start.</sub>
+</p>
+
 Lastbook Europe is an offline survival library for Europe, for macOS, Windows and Linux. It puts practical guides,
 manuals, videos, encyclopedias, an offline map with help points and address search, and an optional local AI on one
 computer. After setup it works with no internet. The AI answers from the library and links every answer to its pages.
@@ -51,14 +62,14 @@ and maps, and the way its setup works.
 
 ## Download and install
 
-Installers are on the [Releases](https://github.com/NikosGu/lastbook_Europe/releases) page. They are built on GitHub's
+Installers are on the [newest release](https://github.com/NikosGu/lastbook_Europe/releases/latest); every version is on the [Releases](https://github.com/NikosGu/lastbook_Europe/releases) page. They are built on GitHub's
 machines from this repository by [.github/workflows/release.yml](.github/workflows/release.yml).
 
 | System | File | Install |
 |---|---|---|
-| macOS 13 or later, Apple silicon | `LastbookEurope-<version>-macos-arm64.dmg` | Open the disk image and drag **Lastbook Europe** to Applications. The app is signed ad hoc, not with a paid Apple Developer ID, so the first time macOS asks: on macOS 15 and later open **System Settings → Privacy & Security** and choose **Open Anyway**; on macOS 13 and 14, Control-click the app and choose **Open**. |
-| Windows 10 and 11, x64 | `LastbookEurope-<version>-windows-x64-setup.exe` | Run it; no administrator rights are needed. The installer carries no paid code-signing certificate, so SmartScreen may warn the first time: choose **More info → Run anyway**. A `.zip` to unpack anywhere is there too. |
-| Linux x86-64 (Debian, Ubuntu and similar) | `lastbook-europe_<version>_amd64.deb` | `sudo apt install ./lastbook-europe_<version>_amd64.deb`, then open **Lastbook Europe** from the menu. A `.tar.gz` is there too; it needs WebKitGTK 4.1. |
+| macOS 13 or later, Apple silicon | [`LastbookEurope-macos-arm64.dmg`](https://github.com/NikosGu/lastbook_Europe/releases/latest/download/LastbookEurope-macos-arm64.dmg) | Open the disk image and drag **Lastbook Europe** to Applications. The app is signed ad hoc, not with a paid Apple Developer ID, so the first time macOS asks: on macOS 15 and later open **System Settings → Privacy & Security** and choose **Open Anyway**; on macOS 13 and 14, Control-click the app and choose **Open**. |
+| Windows 10 and 11, x64 | [`LastbookEurope-windows-x64-setup.exe`](https://github.com/NikosGu/lastbook_Europe/releases/latest/download/LastbookEurope-windows-x64-setup.exe) | Run it; no administrator rights are needed. The installer carries no paid code-signing certificate, so SmartScreen may warn the first time: choose **More info → Run anyway**. A `.zip` to unpack anywhere is there too. |
+| Linux x86-64 (Debian, Ubuntu and similar) | [`LastbookEurope-linux-amd64.deb`](https://github.com/NikosGu/lastbook_Europe/releases/latest/download/LastbookEurope-linux-amd64.deb) | `sudo apt install ./LastbookEurope-linux-amd64.deb`, then open **Lastbook Europe** from the menu. A `.tar.gz` is there too; it needs WebKitGTK 4.1. |
 
 The installers are small (13 to 31 MB): the library, the maps and the AI model are chosen and downloaded by setup, or
 taken from files already on the computer.

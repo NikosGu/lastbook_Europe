@@ -163,10 +163,33 @@ jobs:
           if gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" >/dev/null 2>&1; then
             echo "$TAG is already published: left as it is"; exit 0
           fi
-          { cat packaging/rust/RELEASE_NOTES.md; echo; echo "Built from ${GITHUB_SHA::12}."; } > notes.md
+          # the files under names that stay the same from one version to the next: the README's download links ask the
+          # newest release for them (releases/latest/download/<name>)
+          named() { [ "$1" = "dist/$2" ] || mv "$1" "dist/$2"; }
+          for f in dist/*; do
+            case "$f" in
+              *-macos-arm64.dmg) named "$f" LastbookEurope-macos-arm64.dmg ;;
+              *-windows-x64-setup.exe) named "$f" LastbookEurope-windows-x64-setup.exe ;;
+              *-windows-x64.zip) named "$f" LastbookEurope-windows-x64.zip ;;
+              *_amd64.deb|*-linux-amd64.deb) named "$f" LastbookEurope-linux-amd64.deb ;;
+              *-linux-amd64.tar.gz) named "$f" LastbookEurope-linux-amd64.tar.gz ;;
+            esac
+          done
+          B="https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG"
+          mb() { echo "$(( ($(stat -c %s "dist/$1") + 500000) / 1000000 )) MB"; }
+          {
+            echo "## Download"
+            echo
+            echo "- **macOS** 13 or later, Apple silicon: [LastbookEurope-macos-arm64.dmg]($B/LastbookEurope-macos-arm64.dmg) ($(mb LastbookEurope-macos-arm64.dmg))"
+            echo "- **Windows** 10 and 11, x64: [LastbookEurope-windows-x64-setup.exe]($B/LastbookEurope-windows-x64-setup.exe) ($(mb LastbookEurope-windows-x64-setup.exe)), or the [.zip]($B/LastbookEurope-windows-x64.zip) to unpack anywhere ($(mb LastbookEurope-windows-x64.zip))"
+            echo "- **Linux** x86-64: [LastbookEurope-linux-amd64.deb]($B/LastbookEurope-linux-amd64.deb) for Debian and Ubuntu ($(mb LastbookEurope-linux-amd64.deb)), or the [.tar.gz]($B/LastbookEurope-linux-amd64.tar.gz) ($(mb LastbookEurope-linux-amd64.tar.gz))"
+            echo
+            cat packaging/rust/RELEASE_NOTES.md
+            echo
+            echo "Built from ${GITHUB_SHA::12}."
+          } > notes.md
           # the update check reads app-v1.json from the newest published release (crates/engine/src/update.rs, dist.rs)
           printf '{"version": 1, "mac": {"version": "%s", "min_os": "13.0"}, "windows": {"version": "%s", "min_os": "10.0"}, "linux": {"version": "%s"}}\n' "$VER" "$VER" "$VER" > dist/app-v1.json
-          # a version tag makes a release that, once published, is the newest; the branch's preview stays a pre-release
-          if [[ "$GITHUB_REF" == refs/tags/* ]]; then PRE=""; else PRE="--prerelease"; fi
-          gh release create "$TAG" dist/* --draft $PRE --target "$GITHUB_SHA" --title "$TITLE" --notes-file notes.md
+          # once published it is the newest release, which the README's download links and the update check ask for
+          gh release create "$TAG" dist/* --draft --target "$GITHUB_SHA" --title "$TITLE" --notes-file notes.md
           ls -la dist
