@@ -2,7 +2,9 @@
 # time, from its public sources to the zips setup downloads and their manifest entries, checked as setup takes them and
 # as a person uses them (packaging/regions/build-region.sh, docs/MAPS.md). Each region's zips and entries go into the
 # release tagged data-v1, kept as a draft until the maintainer publishes it, and manifest-v1.json is written again at
-# the end (data-manifest.yml). Nothing here publishes a release, and no other release is touched.
+# the end (data-manifest.yml). A run in which some region failed starts the next pass by itself, for its regions still
+# missing, up to the fourth: Geofabrik turns some of GitHub's machines away for hours, and a new job is usually given
+# another machine. Nothing here publishes a release, and no other release is touched.
 name: Regions
 
 on:
@@ -16,6 +18,9 @@ on:
         description: "Take the neighbours' extracts too, read only inside each region's boxes: those under 300 MB, and larger ones already in this week's cache"
         type: boolean
         default: true
+      pass:
+        description: "Which pass this is (1 to 4): a run in which a region failed starts the next pass, for its regions still missing, until the fourth"
+        default: "1"
 
 permissions:
   contents: read
@@ -65,6 +70,7 @@ jobs:
         id: list
         env:
           REGIONS: ${{ inputs.regions }}
+          PASS: ${{ inputs.pass }}
           GH_TOKEN: ${{ github.token }}
         run: |
           set -f   # the input is split into words, never read as file names
@@ -89,7 +95,7 @@ jobs:
           esac
           list=$(printf '%s\n' $want | jq -R . | jq -sc 'map(select(length > 0))')
           echo "regions=$list" >> "$GITHUB_OUTPUT"
-          echo "$(jq length <<<"$list") regions to build: $(jq -r 'join(" ")' <<<"$list")" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "Pass ${PASS:-1}: $(jq length <<<"$list") regions to build: $(jq -r 'join(" ")' <<<"$list")" | tee -a "$GITHUB_STEP_SUMMARY"
 
   tools:
     name: The tools
@@ -282,3 +288,41 @@ jobs:
     permissions:
       contents: write
     uses: ./.github/workflows/data-manifest.yml
+
+  again:
+    name: The next pass, for this run's regions still missing
+    needs: [plan, region, manifest]
+    if: always() && needs.plan.result == 'success' && needs.region.result == 'failure'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write   # a draft release is seen only with write access
+      actions: write    # to start this workflow again
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          PASS: ${{ inputs.pass }}
+          NEIGHBOURS: ${{ inputs.neighbours }}
+          REGIONS: ${{ needs.plan.outputs.regions }}
+        run: |
+          pass=${PASS:-1}
+          case "$pass" in [1-9]) ;; *) echo "pass \"$pass\" is not a number from 1 to 4" >&2; exit 1 ;; esac
+          # this run's regions that the release still lacks, as the plan counts them (the others of the table are not
+          # this run's to build)
+          have=$(gh release view "$RELEASE" --json assets --jq '.assets[] | select(.state == null or .state == "uploaded") | .name')
+          still=$(for r in $(jq -r '.[]' <<<"$REGIONS"); do
+            for f in "Lastbook-Map-$r.zip" "Lastbook-Addresses-$r.zip" "map-entry-$r.json" "addresses-entry-$r.json"; do
+              if ! grep -qxF "$f" <<<"$have"; then echo "$r"; break; fi
+            done
+          done | tr '\n' ' ' | sed 's/ $//')
+          if [ -z "$still" ]; then
+            echo "Every region of this run is in the release" | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if [ "$pass" -ge 4 ]; then
+            echo "Pass $pass was the last: $still wait for a run started by hand" | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          # it waits for this run to end (one run at a time adds to the data release)
+          gh workflow run regions.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" \
+            -f regions="$still" -f neighbours="$NEIGHBOURS" -f pass=$((pass + 1))
+          echo "Pass $((pass + 1)) asked for, for $still: it starts when this run ends" | tee -a "$GITHUB_STEP_SUMMARY"

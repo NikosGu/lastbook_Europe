@@ -30,6 +30,23 @@ agent="lastbook-europe region builder"
 release_max=2147483648
 plan=$("$tools" region-sources --region "$region" --neighbours "$neighbours")
 
+# geofabrik_or_stop URL: Geofabrik, shared by everyone, turns some of GitHub's machines away for hours while others get
+# through. It is asked once, before the first file this run would take from it; a machine it refuses stops the region at
+# once (exit 75), and the workflow's next pass builds it on another machine, rather than trying each file for 20 minutes
+# or leaving a neighbour out.
+geofabrik=unknown
+geofabrik_or_stop() {
+  case "$1" in https://download.geofabrik.de/*) ;; *) return 0 ;; esac
+  [ "${OFFLINE:-0}" = 1 ] || [ "$geofabrik" = ok ] && return 0
+  if curl -fsS -o /dev/null -I -A "$agent" --connect-timeout 20 --retry 5 --retry-connrefused --retry-delay 30 --retry-max-time 300 \
+       https://download.geofabrik.de/ 2>/dev/null; then
+    geofabrik=ok
+    return 0
+  fi
+  echo "$region: Geofabrik turns this machine away; the region is left for a pass on another machine" >&2
+  exit 75
+}
+
 # fetch URL FILE: kept if it is there already; under OFFLINE=1 only what is there
 fetch() {
   local url=$1 file=$2
@@ -38,6 +55,7 @@ fetch() {
     echo "$region: not here, and offline: $file" >&2
     return 1
   fi
+  geofabrik_or_stop "$url"
   mkdir -p "$(dirname "$file")"
   local try
   for try in 1 2 3; do
@@ -90,6 +108,7 @@ for group in extracts neighbours; do
     pbf="$dir/$name-latest.osm.pbf"
     if [ "$group" = neighbours ] && [ "${OFFLINE:-0}" != 1 ] && ! { [ -s "$gpkg" ] && [ -s "$pbf" ]; }; then
       # not in this week's cache: a large neighbour costs Geofabrik more than its strip is worth
+      geofabrik_or_stop "$gpkg_url"   # here, not in size's subshell: a machine turned away stops the region, not the neighbour
       bytes=$(( $(size "$gpkg_url") + $(size "$pbf_url") ))
       sleep 1
       if [ "$bytes" -le 0 ] || [ "$bytes" -ge "$neighbour_max" ]; then
